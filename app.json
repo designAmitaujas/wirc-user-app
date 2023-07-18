@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "WIRC-USER",
+    "slug": "WIRC-USER",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/wirc-logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-logo.png",
+      "resizeMode": "conatin",
+      "backgroundColor": "#fff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/wirc-logo.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/wirc-logo.png"
+    }
+  }
+}

@@ -46,41 +46,43 @@ const RestHeader = () => {
     navigate("Login");
   };
   return (
-    <HStack
-      backgroundColor="#0f045d"
-      borderBottomRadius={40}
-      // justifyContent={"space-between"}
-      py="3"
-      // h={16}
-      px={4}
-      alignItems="center"
-      alignSelf={"center"}
-      w={"100%"}
-    >
-      <Button
-        bg="transparent"
-        colorScheme={"white"}
-        // w="14%"
-        onPress={goBack}
-        leftIcon={
-          <Icon
-            size="md"
-            as={<FontAwesome5 name="arrow-left" />}
-            color="white"
-          />
-        }
-      />
-      <Text
-        color="white"
-        ml={16}
-        fontSize="22"
-        fontWeight="bold"
-        // mb={1}
-        // w={"40%"}
+    <>
+      <HStack
+        backgroundColor="#0f045d"
+        borderBottomRadius={40}
+        // justifyContent={"space-between"}
+        py="3"
+        // h={16}
+        px={4}
+        alignItems="center"
+        alignSelf={"center"}
+        w={"100%"}
       >
-        Visiting Card
-      </Text>
-    </HStack>
+        <Button
+          bg="transparent"
+          colorScheme={"white"}
+          // w="14%"
+          onPress={goBack}
+          leftIcon={
+            <Icon
+              size="md"
+              as={<FontAwesome5 name="arrow-left" />}
+              color="white"
+            />
+          }
+        />
+        <Text
+          color="white"
+          ml={16}
+          fontSize="22"
+          fontWeight="bold"
+          // mb={1}
+          // w={"40%"}
+        >
+          Visiting Card
+        </Text>
+      </HStack>
+    </>
   );
 };
 
@@ -782,54 +784,55 @@ const ForthRoute = () => (
 
 const FifthRoute = () => (
   <>
-    <Center mt={10} mb={10}>
-      <VStack>
-        <VStack bg={"#62A8C7"} shadow={9} m={5}>
-          <VStack p={12} space={1} alignSelf={"center"}>
-            <Image
-              mt={2}
-              alignSelf={"center"}
-              w={"12"}
-              h={"12"}
-              resizeMode="contain"
-              alt="Image not found"
-              source={require("../../../assets/amitaujas.png")}
-            />
-            <Heading
-              color={"#fff"}
-              mb={2}
-              fontWeight={"thin"}
-              // textTransform={"uppercase"}
-              letterSpacing={"2xl"}
-            >
-              Amitaujas
-            </Heading>
+    <ScrollView>
+      <Center mt={10} mb={10}>
+        <VStack>
+          <VStack bg={"#62A8C7"} shadow={9} m={5}>
+            <VStack p={12} space={1} alignSelf={"center"}>
+              <Image
+                mt={2}
+                alignSelf={"center"}
+                w={"12"}
+                h={"12"}
+                resizeMode="contain"
+                alt="Image not found"
+                source={require("../../../assets/amitaujas.png")}
+              />
+              <Heading
+                color={"#fff"}
+                mb={2}
+                fontWeight={"thin"}
+                // textTransform={"uppercase"}
+                letterSpacing={"2xl"}
+              >
+                Amitaujas
+              </Heading>
+            </VStack>
           </VStack>
-        </VStack>
-        <VStack bg={"#fff"} shadow={9} justifyContent={"center"} m={5}>
-          <VStack p={3}>
-            <Text
-              color="#424242"
-              fontSize={"lg"}
-              textAlign={"center"}
-              fontWeight={"thin"}
-              textTransform={"uppercase"}
-            >
-              Ashish Jaiswal
-            </Text>
-            <Text
-              color={"#9E9E9E"}
-              fontWeight={"thin"}
-              textAlign={"center"}
-              fontSize={"10"}
-              textTransform={"uppercase"}
-            >
-              CA | CMA(AIR 41) | CS (Executive)
-            </Text>
-          </VStack>
-          <HStack w={"100%"}>
-            <VStack bg={"white"} justifyContent={"center"} w={"35%"}>
-              {/* <Image
+          <VStack bg={"#fff"} shadow={9} justifyContent={"center"} m={5}>
+            <VStack p={3}>
+              <Text
+                color="#424242"
+                fontSize={"lg"}
+                textAlign={"center"}
+                fontWeight={"thin"}
+                textTransform={"uppercase"}
+              >
+                Ashish Jaiswal
+              </Text>
+              <Text
+                color={"#9E9E9E"}
+                fontWeight={"thin"}
+                textAlign={"center"}
+                fontSize={"10"}
+                textTransform={"uppercase"}
+              >
+                CA | CMA(AIR 41) | CS (Executive)
+              </Text>
+            </VStack>
+            <HStack w={"100%"}>
+              <VStack bg={"white"} justifyContent={"center"} w={"35%"}>
+                {/* <Image
                   alignSelf={"center"}
                   w={"8"}
                   h={"8"}
@@ -837,13 +840,13 @@ const FifthRoute = () => (
                   alt="Image not found"
                   source={require("../../../assets/c4.png")}
                 /> */}
-              <Box alignSelf={"center"}>
-                <QRCode color="#424242" size="60" codeStyle="square" />
-              </Box>
-            </VStack>
+                <Box alignSelf={"center"}>
+                  <QRCode color="#424242" size="60" codeStyle="square" />
+                </Box>
+              </VStack>
 
-            <VStack w={"65%"} p={3}>
-              {/* <Text
+              <VStack w={"65%"} p={3}>
+                {/* <Text
                 color={"#385ca6"}
                 fontSize={"lg"}
                 fontWeight={"semibold"}
@@ -860,58 +863,63 @@ const FifthRoute = () => (
                 CA | CMA(AIR 41) | CS (Executive)
               </Text> */}
 
-              <VStack space={1.5} w={"85%"}>
-                <HStack space={2}>
-                  <Ionicons name="call" size={15} color="#424242" />
-                  <Text fontSize={10} color={"#9E9E9E"} fontWeight={"thin"}>
-                    +91 78782 61327
-                  </Text>
-                </HStack>
-                <HStack space={2}>
-                  <Ionicons name="mail" size={16} color="#424242" />
-                  <Text fontSize={10} color={"#9E9E9E"} fontWeight={"thin"}>
-                    ashish@amitaujas.com
-                  </Text>
-                </HStack>
-                <HStack space={2}>
-                  <Ionicons name="ios-globe-sharp" size={16} color="#424242" />
-                  <Text fontSize={10} color={"#9E9E9E"} fontWeight={"thin"}>
-                    WWW.AMITAUJAS.COM
-                  </Text>
-                </HStack>
-                <HStack space={2}>
-                  <Ionicons name="location" size={16} color="#424242" />
-                  <Text
-                    fontSize={10}
-                    color={"#9E9E9E"}
-                    fontWeight={"thin"}
-                    textAlign={"justify"}
-                  >
-                    FF-05, Avishkar Complex, Nr GEB Colony, Old Padra Rd,
-                    Vadodara-390015, Gujrat, India
-                  </Text>
-                </HStack>
+                <VStack space={1.5} w={"85%"}>
+                  <HStack space={2}>
+                    <Ionicons name="call" size={15} color="#424242" />
+                    <Text fontSize={10} color={"#9E9E9E"} fontWeight={"thin"}>
+                      +91 78782 61327
+                    </Text>
+                  </HStack>
+                  <HStack space={2}>
+                    <Ionicons name="mail" size={16} color="#424242" />
+                    <Text fontSize={10} color={"#9E9E9E"} fontWeight={"thin"}>
+                      ashish@amitaujas.com
+                    </Text>
+                  </HStack>
+                  <HStack space={2}>
+                    <Ionicons
+                      name="ios-globe-sharp"
+                      size={16}
+                      color="#424242"
+                    />
+                    <Text fontSize={10} color={"#9E9E9E"} fontWeight={"thin"}>
+                      WWW.AMITAUJAS.COM
+                    </Text>
+                  </HStack>
+                  <HStack space={2}>
+                    <Ionicons name="location" size={16} color="#424242" />
+                    <Text
+                      fontSize={10}
+                      color={"#9E9E9E"}
+                      fontWeight={"thin"}
+                      textAlign={"justify"}
+                    >
+                      FF-05, Avishkar Complex, Nr GEB Colony, Old Padra Rd,
+                      Vadodara-390015, Gujrat, India
+                    </Text>
+                  </HStack>
+                </VStack>
               </VStack>
-            </VStack>
-          </HStack>
+            </HStack>
+          </VStack>
         </VStack>
-      </VStack>
 
-      <Button
-        mt="12"
-        mb="2"
-        borderRadius={25}
-        size={"lg"}
-        w={"40"}
-        alignSelf={"center"}
-        bgColor={"#0f045d"}
-        //@ts-ignore
-      >
-        <Text color={"white"} fontSize={"sm"} fontWeight={"medium"}>
-          Download
-        </Text>
-      </Button>
-    </Center>
+        <Button
+          mt="12"
+          mb="2"
+          borderRadius={25}
+          size={"lg"}
+          w={"40"}
+          alignSelf={"center"}
+          bgColor={"#0f045d"}
+          //@ts-ignore
+        >
+          <Text color={"white"} fontSize={"sm"} fontWeight={"medium"}>
+            Download
+          </Text>
+        </Button>
+      </Center>
+    </ScrollView>
   </>
 );
 

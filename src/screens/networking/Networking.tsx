@@ -594,7 +594,7 @@ const NetworkingScreen = () => {
               color={"gray.400"}
               ml={2}
             >
-              Select Seminar
+              Select Event
             </Text>
             <Select
               dropdownIcon={

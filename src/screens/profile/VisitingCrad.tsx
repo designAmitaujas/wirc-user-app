@@ -22,13 +22,24 @@ import {
   VStack,
   ScrollView,
   Divider,
+  Modal,
+  Input,
+  FormControl,
 } from "native-base";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useWindowDimensions, Dimensions } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 import LinearGradient from "react-native-linear-gradient";
 import { QRCode } from "react-native-custom-qr-codes-expo";
+import * as Yup from "yup";
+import { Formik } from "formik";
+import {
+  CustomButton,
+  CustomInput,
+  CustomTextArea,
+} from "../../components/CustomForm";
+import * as DocumentPicker from "expo-document-picker";
 <QRCode content="https://reactnative.com" />;
 
 const RestHeader = () => {
@@ -86,10 +97,271 @@ const RestHeader = () => {
   );
 };
 
+const initialValue = {
+  logo: "",
+  name: "",
+  mobilenumber: "",
+  email: "",
+  website: "",
+  address: "",
+};
+
+const validationSchema = Yup.object().shape({
+  logo: Yup.string().required(),
+  name: Yup.string().required("Name is required field"),
+  mobilenumber: Yup.string().min(10).max(10).required(),
+  email: Yup.string().email().required(),
+  website: Yup.string()
+    .matches(
+      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+      "Enter correct url!"
+    )
+    .required("Website is required field"),
+  address: Yup.string().required("Address is required field"),
+});
+
+const VisitingCardForm = () => {
+  const [modalVisible, setModalVisible] = React.useState(false);
+
+  // const selectDoc = async () => {
+  //   try {
+  //     const doc = await DocumentPicker.pick({
+  //       type: [DocumentPicker.types.images],
+  //     });
+  //     console.log(doc);
+  //   } catch (err) {
+  //     if (DocumentPicker.isCancel(err))
+  //       console.log("User Cancelled the upload", err);
+  //     else console.log(err);
+  //   }
+  // };
+
+  const selectDoc = async () => {
+    const res = await DocumentPicker.getDocumentAsync({
+      type: ["image/*"],
+    });
+
+    //@ts-ignore
+    console.log(res?.name);
+  };
+
+  const handleSubmit = () => {};
+  return (
+    <>
+      <VStack>
+        <Formik
+          initialValues={initialValue}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({
+            handleSubmit,
+            values,
+            touched,
+            errors,
+            handleChange,
+            setFieldValue,
+            isSubmitting,
+          }) => {
+            return (
+              <>
+                <Modal
+                  isOpen={modalVisible}
+                  onClose={() => setModalVisible(false)}
+                  avoidKeyboard
+                  bottom="4"
+                  size="xl"
+                >
+                  <Modal.Content borderRadius={"xl"}>
+                    <Modal.CloseButton />
+                    <Modal.Header>Edit Details</Modal.Header>
+                    <Modal.Body>
+                      <ScrollView showsVerticalScrollIndicator={false}>
+                        <VStack space={1} mb={3} alignSelf={"center"}>
+                          {/* <HStack space={3}>
+                            <Button
+                              onPress={selectDoc}
+                              borderRadius={10}
+                              size={"xs"}
+                              w={"20"}
+                              alignSelf={"center"}
+                              // bgColor={"#0f045d"}
+                            >
+                              Select Image
+                            </Button>
+                          </HStack> */}
+                          {/* <CustomButton
+                            isSubmitting={true}
+                            name="Select Image"
+                            onSubmit={selectDoc}
+                          /> */}
+                          <FormControl
+                            isRequired={true}
+                            isInvalid={!!touched.logo && !!errors.logo}
+                          >
+                            {"Logo" && (
+                              <FormControl.Label fontWeight={"bold"}>
+                                {"Logo"}
+                              </FormControl.Label>
+                            )}
+                            <Button
+                              onPress={selectDoc}
+                              borderRadius={10}
+                              size={"xs"}
+                              w={"20"}
+                              alignSelf={"center"}
+                              // bgColor={"#0f045d"}
+                            >
+                              Select Image
+                            </Button>
+
+                            <FormControl.ErrorMessage mt={0.5}>
+                              {errors.logo}
+                            </FormControl.ErrorMessage>
+                          </FormControl>
+
+                          <CustomInput
+                            w={"72"}
+                            h={"10"}
+                            borderColor={"#0f045d"}
+                            bgColor={"white"}
+                            currentValue={values.name}
+                            errMsg={errors.name}
+                            isInvalid={!!touched.name && !!errors.name}
+                            label="Name"
+                            name="name"
+                            placeholder="Enter Name"
+                            setFieldValue={setFieldValue}
+                            isRequired={true}
+                            value={values.name}
+                          />
+
+                          <CustomInput
+                            w={"72"}
+                            h={"10"}
+                            borderColor={"#0f045d"}
+                            bgColor={"white"}
+                            currentValue={values.mobilenumber}
+                            errMsg={errors.mobilenumber}
+                            isInvalid={
+                              !!touched.mobilenumber && !!errors.mobilenumber
+                            }
+                            label="Mobile Number"
+                            name="mobilenumber"
+                            placeholder="Enter Mobile Number"
+                            setFieldValue={setFieldValue}
+                            isRequired={true}
+                            keyboardAppearance="light"
+                            keyboardType="number-pad"
+                            value={values.mobilenumber}
+                          />
+
+                          <CustomInput
+                            w={"72"}
+                            h={"10"}
+                            borderColor={"#0f045d"}
+                            bgColor={"white"}
+                            currentValue={values.email}
+                            errMsg={errors.email}
+                            isInvalid={!!touched.email && !!errors.email}
+                            label="Email Address"
+                            keyboardType="email-address"
+                            name="email"
+                            placeholder="Enter Email Address"
+                            setFieldValue={setFieldValue}
+                            isRequired={true}
+                            value={values.email}
+                          />
+
+                          <CustomInput
+                            w={"72"}
+                            h={"10"}
+                            borderColor={"#0f045d"}
+                            bgColor={"white"}
+                            currentValue={values.website}
+                            errMsg={errors.website}
+                            isInvalid={!!touched.website && !!errors.website}
+                            label="Website"
+                            keyboardType="email-address"
+                            name="website"
+                            placeholder="Enter Website"
+                            setFieldValue={setFieldValue}
+                            isRequired={true}
+                            value={values.website}
+                          />
+
+                          <CustomTextArea
+                            w={"72"}
+                            borderColor={"#0f045d"}
+                            bgColor={"white"}
+                            currentValue={values.address}
+                            errMsg={errors.address}
+                            isInvalid={!!touched.address && !!errors.address}
+                            label="Address"
+                            name="address"
+                            placeholder="Enter Address"
+                            setFieldValue={setFieldValue}
+                            isRequired={true}
+                            value={values.address}
+                          />
+
+                          <Button
+                            mt="8"
+                            borderRadius={20}
+                            size={"sm"}
+                            w={"32"}
+                            alignSelf={"center"}
+                            bgColor={"#0f045d"}
+                            //@ts-ignore
+                            onPress={handleSubmit}
+                          >
+                            <Text
+                              color={"white"}
+                              fontSize={"sm"}
+                              fontWeight={"medium"}
+                            >
+                              Submit
+                            </Text>
+                          </Button>
+                        </VStack>
+                      </ScrollView>
+                    </Modal.Body>
+                  </Modal.Content>
+                </Modal>
+              </>
+            );
+          }}
+        </Formik>
+      </VStack>
+      {/* <Modal
+        isOpen={modalVisible}
+        onClose={() => setModalVisible(false)}
+        avoidKeyboard
+        bottom="4"
+        size="xl"
+      >
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Edit Details</Modal.Header>
+          <Modal.Body>
+            Enter email address and we'll send a link to reset your password.
+          </Modal.Body>
+        </Modal.Content>
+      </Modal> */}
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <FontAwesome5 name="user-edit" size={24} color="#0f045d" />
+      </TouchableOpacity>
+    </>
+  );
+};
+
 const FirstRoute = () => (
   <>
-    <ScrollView>
-      <Center mt={10} mb={10}>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <Box alignSelf={"flex-end"} pt={5} pr={5}>
+        <VisitingCardForm />
+      </Box>
+      <Center mt={5} mb={10}>
         <VStack>
           <VStack bg={"#fff"} shadow={9} m={5}>
             <Box h={5} w={"45%"} bg={"#4f7329"} />
@@ -235,7 +507,10 @@ const FirstRoute = () => (
 const SecondRoute = () => (
   <>
     <ScrollView>
-      <Center mt={10} mb={10}>
+      <Box alignSelf={"flex-end"} pt={5} pr={5}>
+        <VisitingCardForm />
+      </Box>
+      <Center mt={5} mb={10}>
         <VStack>
           <VStack m={5} bg={"#fff"} shadow={9}>
             <Box
@@ -424,7 +699,10 @@ const SecondRoute = () => (
 const ThirdRoute = () => (
   <>
     <ScrollView>
-      <Center mt={10} mb={10}>
+      <Box alignSelf={"flex-end"} pt={5} pr={5}>
+        <VisitingCardForm />
+      </Box>
+      <Center mt={5} mb={10}>
         <VStack>
           <VStack bg={"#313031"} shadow={9} m={5}>
             <Box borderColor={"white"} m={4}>
@@ -619,7 +897,10 @@ const ThirdRoute = () => (
 const ForthRoute = () => (
   <>
     <ScrollView>
-      <Center mt={10} mb={10}>
+      <Box alignSelf={"flex-end"} pt={5} pr={5}>
+        <VisitingCardForm />
+      </Box>
+      <Center mt={5} mb={10}>
         <VStack>
           <VStack bg={"#385ca6"} shadow={9} m={5}>
             <VStack p={8}>
@@ -785,7 +1066,10 @@ const ForthRoute = () => (
 const FifthRoute = () => (
   <>
     <ScrollView>
-      <Center mt={10} mb={10}>
+      <Box alignSelf={"flex-end"} pt={5} pr={5}>
+        <VisitingCardForm />
+      </Box>
+      <Center mt={5} mb={10}>
         <VStack>
           <VStack bg={"#62A8C7"} shadow={9} m={5}>
             <VStack p={12} space={1} alignSelf={"center"}>

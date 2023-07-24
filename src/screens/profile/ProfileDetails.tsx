@@ -208,6 +208,7 @@ const ProfileScreen = () => {
                           keyboardType="number-pad"
                           value={values.mobilenumber}
                         />
+
                         <FormControl.Label isRequired mt={1}>
                           State
                         </FormControl.Label>
@@ -235,6 +236,7 @@ const ProfileScreen = () => {
                             {errors.state}
                           </Text>
                         )}
+
                         <FormControl.Label isRequired>City</FormControl.Label>
                         <Select
                           // @ts-ignore

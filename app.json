@@ -4,7 +4,7 @@
     "slug": "WIRC-User",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/wirc-logo.png",
+    "icon": "./assets/wirclogo.jpg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash-logo.png",

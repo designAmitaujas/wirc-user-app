@@ -101,7 +101,7 @@ const MobileLogin = () => {
                   h={"32"}
                   resizeMode="contain"
                   alt="Image not found"
-                  source={require("../../../assets/logo.jpg")}
+                  source={require("../../../assets/wirclogo.jpg")}
                 />
                 <Text
                   fontSize={"lg"}

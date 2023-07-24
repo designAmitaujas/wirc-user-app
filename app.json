@@ -17,12 +17,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/wirc-logo.png",
+        "foregroundImage": "./assets/wirclogo.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/wirc-logo.png"
+      "favicon": "./assets/wirclogo.png"
     }
   }
 }

@@ -22,7 +22,7 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const logo = require("../../assets/wirc-logo.png");
+const logo = require("../../assets/wirclogo.png");
 import moment from "moment";
 
 import * as Calendar from "expo-calendar";

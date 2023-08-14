@@ -4,6 +4,7 @@ import {
   Box,
   HStack,
   Icon,
+  IconButton,
   Image,
   Link,
   ScrollView,
@@ -31,6 +32,8 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
   const { navigate } = useNavigation();
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
 
   const handleSubmit = () => {
     // @ts-ignore
@@ -129,7 +132,7 @@ const Login = () => {
                       bgColor="white"
                     />
                     <CustomInput
-                      secureTextEntry={true}
+                      // secureTextEntry={true}
                       isRequired={true}
                       borderColor={"#0f045d"}
                       w={"72"}
@@ -141,6 +144,7 @@ const Login = () => {
                       setFieldValue={setFieldValue}
                       bgColor="white"
                       isInvalid={!!touched.password && !!errors.password}
+                      type={show ? "text" : "password"}
                       leftElement={
                         <Icon
                           as={Ionicons}
@@ -148,6 +152,30 @@ const Login = () => {
                           size={5}
                           ml="3"
                           color="#0f045d"
+                        />
+                      }
+                      rightElement={
+                        <IconButton
+                          mr={0.5}
+                          borderRadius={10}
+                          onPress={handleClick}
+                          icon={
+                            show ? (
+                              <Icon
+                                as={Ionicons}
+                                name="eye"
+                                size={5}
+                                color="#0f045d"
+                              />
+                            ) : (
+                              <Icon
+                                as={Ionicons}
+                                name="eye-off"
+                                size={5}
+                                color="#0f045d"
+                              />
+                            )
+                          }
                         />
                       }
                     />

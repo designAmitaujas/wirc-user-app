@@ -62,6 +62,7 @@ export const CustomInput: React.FC<ICustomInput> = memo((props) => {
     isRequired,
     isInvalid,
     keyboardType,
+    type,
   } = props;
 
   const handleChangeText = (val: string) => {
@@ -80,6 +81,7 @@ export const CustomInput: React.FC<ICustomInput> = memo((props) => {
         value={toString(currentValue)}
         onChangeText={handleChangeText}
         borderRadius="12"
+        type={type}
       />
       <FormControl.ErrorMessage mt={0.5}>
         {capitalize(errMsg)}

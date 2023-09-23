@@ -65,24 +65,14 @@ function QRScreen() {
   if (!scanned) {
     return (
       <>
-        <View
-          flex={1}
-          justifyContent={"center"}
-          alignItems={"center"}
-          bg={"gray.900"}
-        >
-          <Box alignItems={"center"} justifyContent={"center"}>
-            <Text fontSize={"4xl"} color={"white"} fontWeight={"semibold"}>
-              Scanned QR
-            </Text>
-            <Text fontSize={"4xl"} color={"white"} fontWeight={"semibold"}>
-              For Attendance
-            </Text>
-          </Box>
+        <View flex={1} justifyContent={"center"} alignItems={"center"}>
+          <Text fontSize={"2xl"} fontWeight={"semibold"} textAlign={"center"}>
+            Scanned QR{"\n"}For Attendance
+          </Text>
 
           <BarCodeScanner
             style={{
-              width: "60%",
+              width: "80%",
               height: "60%",
             }}
             onBarCodeScanned={handleBarCodeScanned}
@@ -95,7 +85,7 @@ function QRScreen() {
   return (
     <>
       <View bg={"white"} flex={1}>
-        <Box h={"48"} w={"48"} alignSelf={"center"} mt={"32"}>
+        <Box h={"32"} w={"48"} alignSelf={"center"} mt={"10"}>
           <Lottie
             source={require("../../assets/91068-message-sent-successfully-plane.json")}
             autoPlay
@@ -113,7 +103,9 @@ function QRScreen() {
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <Text fontSize={"2xl"}>Attendance Marked For</Text>
+          <Text fontSize={"xl"} fontWeight={"semibold"}>
+            Attendance Marked For
+          </Text>
 
           <HStack mx={5} w={"100%"}>
             <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
@@ -124,7 +116,7 @@ function QRScreen() {
               {info}
             </Text>
           </HStack>
-          {/* <HStack w={"100%"}>
+          <HStack w={"100%"}>
             <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
               Name
             </Text>
@@ -132,7 +124,7 @@ function QRScreen() {
             <Text w={"60%"} fontSize={"md"}>
               Anomynous Shah
             </Text>
-          </HStack> */}
+          </HStack>
           <HStack w={"100%"}>
             <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
               Seminar
@@ -147,13 +139,13 @@ function QRScreen() {
           position={"relative"}
           justifyContent={"flex-end"}
           alignItems={"center"}
-          mb={50}
+          mb={30}
           flex={1}
         >
           <Button
             borderRadius={10}
             position={"absolute"}
-            bg={"lightBlue.400"}
+            bg={"#0f045d"}
             onPress={() => setScanned(false)}
           >
             Scan Again

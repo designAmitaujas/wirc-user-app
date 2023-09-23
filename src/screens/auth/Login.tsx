@@ -105,7 +105,7 @@ const Login = () => {
                     color={"gray.500"}
                     alignSelf={"center"}
                   >
-                    Log In
+                    Login
                   </Text>
 
                   <VStack space={2} alignSelf={"center"} mt={"5"}>
@@ -179,10 +179,7 @@ const Login = () => {
                         />
                       }
                     />
-                    {/* <HStack alignItems={"center"} marginLeft={-4}>
-                        <Switch size="sm" colorScheme={"coolGray"}></Switch>
-                        <Text>Remember Me</Text>
-                      </HStack> */}
+
                     {/* <Link
                         alignSelf={"flex-end"}
                         onPress={Forgot}
@@ -195,22 +192,6 @@ const Login = () => {
                       >
                         Forgot Password ?
                       </Link> */}
-
-                    {/* <Button
-                        mt="6"
-                        borderRadius={25}
-                        w={"48"}
-                        h={12}
-                        alignSelf={"center"}
-                        bgColor={"#313031"}
-                        shadow={"2"}
-                        //@ts-ignore
-                        onPress={handleSubmit}
-                        leftIcon={isSubmitting === true ? <Spinner /> : null}
-                        isSubmitting={isSubmitting}
-                      >
-                        Log In
-                      </Button> */}
 
                     <CustomButton
                       name="Login"
@@ -229,7 +210,7 @@ const Login = () => {
                       onSubmit={handleSubmit}
                     />
 
-                    <HStack justifyContent={"center"} mt={2} space={2}>
+                    {/* <HStack justifyContent={"center"} mt={2} space={2}>
                       <Text fontSize={16} color={"gray.500"}>
                         Login with
                       </Text>
@@ -244,7 +225,7 @@ const Login = () => {
                       >
                         Mobile Number
                       </Link>
-                    </HStack>
+                    </HStack> */}
                     {/* <HStack justifyContent="center" mt={"5"} mb={"3"}>
                         <Text
                           fontSize="sm"

@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as Font from "expo-font";
 import "react-native-gesture-handler";
 SplashScreen.preventAutoHideAsync();
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 import {
   Quicksand_300Light,
@@ -84,6 +85,10 @@ const App = () => {
     prepare();
   }, []);
 
+  const client = new ApolloClient({
+    uri: "https://vmpzkj-4000.csb.app/",
+    cache: new InMemoryCache(),
+  });
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
@@ -99,14 +104,16 @@ const App = () => {
   } else {
     return (
       <>
-        <NativeBaseProvider theme={theme}>
-          <NavigationContainer onReady={onLayoutRootView}>
-            <SafeAreaView style={{ flex: 1 }}>
-              <StatusBar hidden={false} />
-              <Routes />
-            </SafeAreaView>
-          </NavigationContainer>
-        </NativeBaseProvider>
+        <ApolloProvider client={client}>
+          <NativeBaseProvider theme={theme}>
+            <NavigationContainer onReady={onLayoutRootView}>
+              <SafeAreaView style={{ flex: 1 }}>
+                <StatusBar hidden={false} />
+                <Routes />
+              </SafeAreaView>
+            </NavigationContainer>
+          </NativeBaseProvider>
+        </ApolloProvider>
       </>
     );
   }

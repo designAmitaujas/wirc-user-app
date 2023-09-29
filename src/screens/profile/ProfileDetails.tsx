@@ -1,16 +1,11 @@
-import { FontAwesome5, Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Formik, FormikHelpers } from "formik";
+import { Formik } from "formik";
 import {
   Avatar,
-  Box,
   Button,
   FormControl,
   HStack,
-  Heading,
-  Icon,
-  IconButton,
-  Input,
   ScrollView,
   Select,
   Text,
@@ -18,9 +13,9 @@ import {
   View,
 } from "native-base";
 import React from "react";
-import * as Yup from "yup";
-import { CustomButton, CustomInput } from "../../components/CustomForm";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import * as Yup from "yup";
+import { CustomInput } from "../../components/CustomForm";
 
 const initialValue = {
   fullname: "",

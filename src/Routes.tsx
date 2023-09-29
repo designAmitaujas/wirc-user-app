@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import Login from "./screens/auth/Login";
-import BottomTab from "./screens/BottomTab";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as SplashScreen from "expo-splash-screen";
-import ProfileScreen from "./screens/profile/ProfileDetails";
+import React from "react";
+import BottomTab from "./screens/BottomTab";
+import UpcomingEvents from "./screens/UpcomingEvents";
+import Login from "./screens/auth/Login";
 import MobileLogin from "./screens/auth/NumberLogin";
-import Qrcode from "./screens/profile/Qrcode";
-import VisitingCard from "./screens/profile/VisitingCrad";
 import Attendancesheet from "./screens/feedbackform/Attendancesheet";
 import FeedbackForm from "./screens/feedbackform/FeedbackForm";
-import UpcomingEvents from "./screens/UpcomingEvents";
 import NetworkingScreen from "./screens/networking/Networking";
+import ProfileScreen from "./screens/profile/ProfileDetails";
+import Qrcode from "./screens/profile/Qrcode";
+import VisitingCard from "./screens/profile/VisitingCrad";
 
 SplashScreen.preventAutoHideAsync();
 

@@ -1,19 +1,14 @@
+import {
+  Feather,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
 import {
-  FontAwesome5,
-  Feather,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-
-import {
-  Box,
-  Button,
-  FormControl,
   HStack,
   Icon,
   Image,
-  Input,
   Link,
   ScrollView,
   Text,
@@ -22,9 +17,8 @@ import {
 } from "native-base";
 import React, { useState } from "react";
 import * as Yup from "yup";
-
-import BottomTab from "../BottomTab";
 import { CustomButton, CustomInput } from "../../components/CustomForm";
+import BottomTab from "../BottomTab";
 
 const initialValues = {
   mobileNo: "",

@@ -1,20 +1,19 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
-  View,
-  Text,
-  HStack,
   Button,
-  Icon,
-  ScrollView,
-  VStack,
-  Divider,
   Checkbox,
+  Divider,
+  HStack,
+  Icon,
   Radio,
+  ScrollView,
+  Text,
   TextArea,
+  VStack,
+  View,
 } from "native-base";
 import React from "react";
-import { CustomTextArea } from "../../components/CustomForm";
 
 const RestHeader = () => {
   const { goBack } = useNavigation();

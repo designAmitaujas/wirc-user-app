@@ -1,12 +1,12 @@
+import { AntDesign } from "@expo/vector-icons";
 import React, { useRef, useState } from "react";
 import {
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
   Animated,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 
 const AnimatedSearchBar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);

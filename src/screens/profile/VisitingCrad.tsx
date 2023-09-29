@@ -1,46 +1,36 @@
 import {
-  Entypo,
-  Feather,
-  FontAwesome,
   FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import {
-  View,
-  Text,
-  HStack,
-  Button,
-  Icon,
-  Box,
-  Pressable,
-  useColorModeValue,
-  Center,
-  Heading,
-  Image,
-  VStack,
-  ScrollView,
-  Divider,
-  Modal,
-  Input,
-  FormControl,
-} from "native-base";
-import React, { useCallback, useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { useWindowDimensions, Dimensions } from "react-native";
-import { TabView, SceneMap } from "react-native-tab-view";
-import LinearGradient from "react-native-linear-gradient";
-import { QRCode } from "react-native-custom-qr-codes-expo";
-import * as Yup from "yup";
+import * as DocumentPicker from "expo-document-picker";
 import { Formik } from "formik";
 import {
-  CustomButton,
-  CustomInput,
-  CustomTextArea,
-} from "../../components/CustomForm";
-import * as DocumentPicker from "expo-document-picker";
-<QRCode content="https://reactnative.com" />;
+  Box,
+  Button,
+  Center,
+  Divider,
+  FormControl,
+  HStack,
+  Heading,
+  Icon,
+  Image,
+  Modal,
+  Pressable,
+  ScrollView,
+  Text,
+  VStack,
+  View,
+  useColorModeValue,
+} from "native-base";
+import React from "react";
+import { Dimensions } from "react-native";
+import { QRCode } from "react-native-custom-qr-codes-expo";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { SceneMap, TabView } from "react-native-tab-view";
+import * as Yup from "yup";
+import { CustomInput, CustomTextArea } from "../../components/CustomForm";
 
 const RestHeader = () => {
   // const { goBack } = useNavigation();

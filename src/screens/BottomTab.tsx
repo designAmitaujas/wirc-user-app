@@ -1,12 +1,10 @@
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import capitalize from "lodash/capitalize";
 import { Center, HStack, Icon, Pressable, Text, View } from "native-base";
 import React, { FC, memo, useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
-import HomeScreen from "./Home";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import Home from "./Home";
 import QRScanner from "./QrScanner";
 import ProfileScreen from "./profile/ProfileDetails";

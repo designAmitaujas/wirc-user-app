@@ -1,34 +1,22 @@
+import { Ionicons } from "@expo/vector-icons";
 import {
-  View,
-  Text,
   Box,
+  Button,
   HStack,
   Image,
-  Icon,
   ScrollView,
-  Button,
-  Alert,
-  IconButton,
-  CloseIcon,
+  Text,
+  VStack,
   useToast,
-  Pressable,
 } from "native-base";
-import React, { useEffect, useState } from "react";
-import { VStack } from "native-base";
-
-import {
-  FontAwesome5,
-  MaterialCommunityIcons,
-  Ionicons,
-} from "@expo/vector-icons";
+import React, { useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const logo = require("../../assets/wirclogo.png");
-import moment from "moment";
 
-import * as Calendar from "expo-calendar";
-import { Platform, TextInput, ToastAndroid } from "react-native";
+
+
+const logo = require("../../assets/wirclogo.png");
+
 import { useNavigation } from "@react-navigation/native";
-import RegisteredEvents from "./UpcomingEvents";
 
 const Home = () => {
   const { navigate } = useNavigation();

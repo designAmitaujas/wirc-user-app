@@ -1,12 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
-import * as SplashScreen from "expo-splash-screen";
-import { NativeBaseProvider, StatusBar, extendTheme } from "native-base";
-import React, { useCallback, useEffect, useState } from "react";
-import * as Font from "expo-font";
-import "react-native-gesture-handler";
-SplashScreen.preventAutoHideAsync();
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-
 import {
   Quicksand_300Light,
   Quicksand_400Regular,
@@ -15,10 +7,18 @@ import {
   Quicksand_700Bold,
   useFonts,
 } from "@expo-google-fonts/quicksand";
-import AppLoading from "expo-app-loading";
-import Routes from "./src/Routes";
-import { SafeAreaView } from "react-native";
 import { Entypo } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { NativeBaseProvider, StatusBar, extendTheme } from "native-base";
+import React, { useCallback, useEffect, useState } from "react";
+import { SafeAreaView } from "react-native";
+import "react-native-gesture-handler";
+import Routes from "./src/Routes";
+
+SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -69,7 +69,9 @@ const App = () => {
       },
     },
   });
+
   const [appIsReady, setAppIsReady] = useState(false);
+
   useEffect(() => {
     async function prepare() {
       try {
@@ -89,6 +91,7 @@ const App = () => {
     uri: "https://vmpzkj-4000.csb.app/",
     cache: new InMemoryCache(),
   });
+
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();

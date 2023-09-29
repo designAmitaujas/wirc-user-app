@@ -1,9 +1,9 @@
-import { View, Text } from "native-base";
-import React, { useEffect, useState } from "react";
+import { Box, View } from "native-base";
+import React, { useState } from "react";
 import QRCode from "react-native-qrcode-svg";
-import { Box } from "native-base";
 
 const logo = require("../../../assets/wirclogo.png");
+
 const Qrcodes = () => {
   const variables = 1234567890;
   const [data, setData] = useState(variables);

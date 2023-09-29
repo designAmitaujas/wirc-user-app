@@ -1,10 +1,3 @@
-import { NavigationContainer } from "@react-navigation/native";
-import * as SplashScreen from "expo-splash-screen";
-import { NativeBaseProvider, extendTheme } from "native-base";
-import React from "react";
-
-SplashScreen.preventAutoHideAsync();
-
 import {
   Quicksand_300Light,
   Quicksand_400Regular,
@@ -14,8 +7,14 @@ import {
   useFonts,
 } from "@expo-google-fonts/quicksand";
 import { useNetInfo } from "@react-native-community/netinfo";
+import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
+import { NativeBaseProvider, extendTheme } from "native-base";
+import React from "react";
 import { NoInternet } from "./AppLoader";
+
+SplashScreen.preventAutoHideAsync();
 
 const AppProvider = ({ children }) => {
   const { isConnected } = useNetInfo();

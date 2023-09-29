@@ -1,24 +1,19 @@
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import {
-  Box,
-  HStack,
   Icon,
   IconButton,
   Image,
-  Link,
   ScrollView,
-  Spinner,
   Text,
   VStack,
   View,
 } from "native-base";
-
 import React, { useState } from "react";
 import * as Yup from "yup";
-import BottomTab from "../BottomTab";
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { CustomButton, CustomInput } from "../../components/CustomForm";
+import BottomTab from "../BottomTab";
 
 const initialValue = {
   email: "xyz@gmail.com",

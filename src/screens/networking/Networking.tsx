@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  Button,
-  HStack,
-  Icon,
-  ScrollView,
-  VStack,
-  Image,
-  Divider,
-  Modal,
-  FlatList,
-  Badge,
-  Box,
-  Pressable,
-  Input,
-  Select,
-} from "native-base";
-import {
+  Feather,
   FontAwesome5,
   Ionicons,
   MaterialIcons,
-  Feather,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Linking, Platform } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import LottieView from "lottie-react-native";
 import moment from "moment";
+import {
+  Badge,
+  Box,
+  Button,
+  Divider,
+  FlatList,
+  HStack,
+  Icon,
+  Image,
+  Input,
+  Modal,
+  Pressable,
+  ScrollView,
+  Select,
+  Text,
+  VStack,
+  View,
+} from "native-base";
+import React, { useEffect, useState } from "react";
+import { Linking, Platform } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AnimatedSearchBar from "./Search";
 

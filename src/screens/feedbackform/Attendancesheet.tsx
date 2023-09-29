@@ -2,17 +2,14 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import {
-  View,
-  Text,
-  HStack,
+  Badge,
   Button,
+  HStack,
   Icon,
   ScrollView,
+  Text,
   VStack,
-  TextArea,
-  FormControl,
-  Box,
-  Badge,
+  View,
 } from "native-base";
 import React from "react";
 import * as Yup from "yup";

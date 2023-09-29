@@ -1,29 +1,21 @@
-import { Platform } from "react-native";
-import React, { useEffect, useState } from "react";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import * as Calendar from "expo-calendar";
+import moment from "moment";
 import {
   Alert,
   Box,
   Button,
-  CheckIcon,
   HStack,
-  Image,
-  Input,
-  Modal,
-  ScrollView,
-  Select,
   Text,
-  TextArea,
   VStack,
   View,
   useToast,
 } from "native-base";
-import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
-import { CustomInput } from "../components/CustomForm";
+import React, { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import { FlatListSlider } from "react-native-flatlist-slider";
-import * as Calendar from "expo-calendar";
-import moment from "moment";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const UpcomingCard: React.FC<{
   name: string;

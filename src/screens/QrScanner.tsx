@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, Button, HStack, VStack } from "native-base";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import { Box } from "native-base";
-import { StyleSheet } from "react-native";
-import Lottie from "lottie-react-native";
-import Qrcodes from "./profile/Qrcode";
 import { useIsFocused } from "@react-navigation/native";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import Lottie from "lottie-react-native";
+import { Box, Button, HStack, Text, VStack, View } from "native-base";
+import React, { useEffect, useState } from "react";
 
 const QRScanner = () => {
   const isFocused = useIsFocused();

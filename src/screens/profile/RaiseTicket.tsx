@@ -1,19 +1,18 @@
-import {} from "react-native";
-import React, { memo } from "react";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import {
   Box,
-  Heading,
-  Input,
-  ScrollView,
-  View,
-  Text,
-  TextArea,
   Button,
   HStack,
+  Heading,
   Icon,
+  Input,
+  ScrollView,
+  Text,
+  TextArea,
 } from "native-base";
-import { useNavigation } from "@react-navigation/native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import React from "react";
+import {} from "react-native";
 
 const RestHeader = () => {
   const { goBack } = useNavigation();

@@ -3,7 +3,9 @@ import toString from "lodash/toString";
 import {
   Button,
   FormControl,
+  IButtonProps,
   ICheckboxProps,
+  IInputProps,
   Input,
   ISelectProps,
   Select,
@@ -11,8 +13,6 @@ import {
   Text,
   TextArea,
 } from "native-base";
-import { IButtonProps } from "native-base/lib/typescript/components/primitives/Button/types";
-import { IInputProps } from "native-base/lib/typescript/components/primitives/Input/types";
 import React, { memo, useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
 

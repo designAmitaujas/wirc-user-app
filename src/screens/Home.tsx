@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import {
   Box,
   Button,
@@ -12,11 +13,7 @@ import {
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-
-
 const logo = require("../../assets/wirclogo.png");
-
-import { useNavigation } from "@react-navigation/native";
 
 const Home = () => {
   const { navigate } = useNavigation();

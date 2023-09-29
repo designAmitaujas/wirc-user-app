@@ -12,7 +12,6 @@ import {
   TextArea,
 } from "native-base";
 import React from "react";
-import {} from "react-native";
 
 const RestHeader = () => {
   const { goBack } = useNavigation();

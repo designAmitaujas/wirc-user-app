@@ -64,7 +64,8 @@
     "react-native-tab-view": "^3.5.1",
     "rn-fetch-blob": "^0.12.0",
     "typescript": "^4.9.4",
-    "yup": "^1.1.1"
+    "yup": "^1.1.1",
+    "@expo/vector-icons": "^13.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

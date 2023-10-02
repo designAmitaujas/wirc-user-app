@@ -1290,6 +1290,7 @@ export type ICreatePresidentFromWesternRegion = {
 export type ICreateProfessionalTool = {
   _id?: InputMaybe<Scalars['String']['input']>;
   isActive: Scalars['Boolean']['input'];
+  link: Scalars['String']['input'];
   name: Scalars['String']['input'];
   professionalToolCategory: Scalars['String']['input'];
   uri: Scalars['String']['input'];
@@ -1362,6 +1363,7 @@ export type ICreatePublicationUserType = {
   couriersgst: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
   name: Scalars['String']['input'];
+  publication: Scalars['String']['input'];
 };
 
 export type ICreateRedirectLinks = {
@@ -1972,6 +1974,7 @@ export type Mutation = {
   createOrUpdateMentorshipZone: IStatusResponse;
   createOrUpdateNetworkingZone: IStatusResponse;
   createOrUpdatePastChairperson: IStatusResponse;
+  createOrUpdatePastCpeEvent: IStatusResponse;
   createOrUpdatePodcast: IStatusResponse;
   createOrUpdatePrerna: IStatusResponse;
   createOrUpdatePresidentFromWesternRegion: IStatusResponse;
@@ -2061,6 +2064,7 @@ export type Mutation = {
   deleteMentorshipZone: IStatusResponse;
   deleteNetworkingZone: IStatusResponse;
   deletePastChairperson: IStatusResponse;
+  deletePastCpeEvent: IStatusResponse;
   deletePodcast: IStatusResponse;
   deletePrerna: IStatusResponse;
   deletePresidentFromWesternRegion: IStatusResponse;
@@ -2454,6 +2458,11 @@ export type MutationCreateOrUpdateNetworkingZoneArgs = {
 
 export type MutationCreateOrUpdatePastChairpersonArgs = {
   options: ICreatePastChairperson;
+};
+
+
+export type MutationCreateOrUpdatePastCpeEventArgs = {
+  options: ICreateCpeEvent;
 };
 
 
@@ -2902,6 +2911,11 @@ export type MutationDeletePastChairpersonArgs = {
 };
 
 
+export type MutationDeletePastCpeEventArgs = {
+  options: IGetById;
+};
+
+
 export type MutationDeletePodcastArgs = {
   options: IGetById;
 };
@@ -3292,6 +3306,7 @@ export type ProfessionalTool = {
   __typename?: 'ProfessionalTool';
   _id: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
+  link: Scalars['String']['output'];
   name: Scalars['String']['output'];
   professionalToolCategory?: Maybe<ProfessionalToolCategory>;
   uri: Scalars['String']['output'];
@@ -3430,6 +3445,7 @@ export type Query = {
   getAllCoworkingZoneFront: Array<CoworkingZone>;
   getAllCpeEvent: Array<CpeEvent>;
   getAllCpeEventRange: Array<CpeEventRange>;
+  getAllCpePastEvent: Array<CpeEvent>;
   getAllCpeResource: Array<CpeResource>;
   getAllCpeResourceCategory: Array<CpeResourceCategory>;
   getAllCpeStudyChapterCategory: Array<CpeStudyChapterCategory>;
@@ -3527,6 +3543,7 @@ export type Query = {
   getCountryById: Country;
   getCoworkingZoneById: CoworkingZone;
   getCpeEventById: CpeEvent;
+  getCpeEventPastById: CpeEvent;
   getCpeEventRangeByCpeId: Array<CpeEventRange>;
   getCpeEventRangeById: CpeEventRange;
   getCpeResourceById: CpeResource;
@@ -3726,6 +3743,11 @@ export type QueryGetCoworkingZoneByIdArgs = {
 
 
 export type QueryGetCpeEventByIdArgs = {
+  options: IGetById;
+};
+
+
+export type QueryGetCpeEventPastByIdArgs = {
   options: IGetById;
 };
 
@@ -4456,6 +4478,13 @@ export type GetCpeEventByIdQueryVariables = Exact<{
 
 export type GetCpeEventByIdQuery = { __typename?: 'Query', getCpeEventById: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null } };
 
+export type GetCpeEventRangeByCpeIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetCpeEventRangeByCpeIdQuery = { __typename?: 'Query', getCpeEventRangeByCpeId: Array<{ __typename?: 'CpeEventRange', _id: string, name: string, description: string, price: string, isForMember: boolean, isForNonMember: boolean, isForstudent: boolean, isActive: boolean }> };
+
 
 export const UpdateMyProfileDocument = gql`
     mutation UpdateMyProfile($options: ICreateMemberRegistration!) {
@@ -4995,3 +5024,45 @@ export function useGetCpeEventByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetCpeEventByIdQueryHookResult = ReturnType<typeof useGetCpeEventByIdQuery>;
 export type GetCpeEventByIdLazyQueryHookResult = ReturnType<typeof useGetCpeEventByIdLazyQuery>;
 export type GetCpeEventByIdQueryResult = Apollo.QueryResult<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>;
+export const GetCpeEventRangeByCpeIdDocument = gql`
+    query GetCpeEventRangeByCpeId($options: IGetByID!) {
+  getCpeEventRangeByCpeId(options: $options) {
+    _id
+    name
+    description
+    price
+    isForMember
+    isForNonMember
+    isForstudent
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetCpeEventRangeByCpeIdQuery__
+ *
+ * To run a query within a React component, call `useGetCpeEventRangeByCpeIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCpeEventRangeByCpeIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCpeEventRangeByCpeIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetCpeEventRangeByCpeIdQuery(baseOptions: Apollo.QueryHookOptions<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>(GetCpeEventRangeByCpeIdDocument, options);
+      }
+export function useGetCpeEventRangeByCpeIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>(GetCpeEventRangeByCpeIdDocument, options);
+        }
+export type GetCpeEventRangeByCpeIdQueryHookResult = ReturnType<typeof useGetCpeEventRangeByCpeIdQuery>;
+export type GetCpeEventRangeByCpeIdLazyQueryHookResult = ReturnType<typeof useGetCpeEventRangeByCpeIdLazyQuery>;
+export type GetCpeEventRangeByCpeIdQueryResult = Apollo.QueryResult<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>;

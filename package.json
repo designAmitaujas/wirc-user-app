@@ -7,13 +7,13 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.8.1",
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo-google-fonts/quicksand": "^0.2.3",
-    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
+    "@expo/vector-icons": "^13.0.0",
     "@react-native-community/datetimepicker": "^6.7.3",
     "@react-native-community/netinfo": "9.3.7",
     "@react-native-picker/picker": "2.4.8",
@@ -33,7 +33,7 @@
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
     "formik": "^2.2.9",
-    "graphql": "^16.7.1",
+    "graphql": "^16.8.1",
     "link": "^1.5.1",
     "lodash.isequal": "^4.5.0",
     "lodash.uniqwith": "^4.5.0",
@@ -63,15 +63,15 @@
     "react-native-svg": "13.4.0",
     "react-native-tab-view": "^3.5.1",
     "rn-fetch-blob": "^0.12.0",
-    "typescript": "^4.9.4",
-    "yup": "^1.1.1",
-    "@expo/vector-icons": "^13.0.0"
+    "yup": "^1.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/client-preset": "4.1.0",
-    "@types/lodash": "^4.14.199"
+    "@graphql-codegen/typescript-react-apollo": "^4.0.0",
+    "@types/lodash": "^4.14.199",
+    "typescript": "^5.2.2"
   },
   "private": true
 }

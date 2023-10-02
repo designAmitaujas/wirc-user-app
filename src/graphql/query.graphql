@@ -1,9 +1,118 @@
-mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
-  memberRegistrationAuthResolver(options: $options) {
-    success
-    msg
-    jwt
-    email
+query GetAllState {
+  getAllState {
+    _id
     name
+    country {
+      _id
+      name
+      isActive
+    }
+    isActive
+  }
+}
+
+query GetAllCountry {
+  getAllCountry {
+    _id
+    name
+    isActive
+  }
+}
+query GetAllCity {
+  getAllCity {
+    _id
+    name
+    country {
+      _id
+      name
+      isActive
+    }
+    state {
+      _id
+      name
+      isActive
+    }
+    isActive
+  }
+}
+
+query GetTitleById($options: IGetByID!) {
+  getTitleById(options: $options) {
+    _id
+    name
+    isActive
+  }
+}
+query GetRegionById($options: IGetByID!) {
+  getRegionById(options: $options) {
+    _id
+    name
+    isActive
+  }
+}
+query GetAllRegion {
+  getAllRegion {
+    _id
+    name
+    isActive
+  }
+}
+query GetAllTitle {
+  getAllTitle {
+    _id
+    name
+    isActive
+  }
+}
+
+query MyProfileInformation {
+  myProfileInformation {
+    _id
+    firstName
+    lastName
+    middleName
+    hash
+    email
+    userType
+    regionType {
+      _id
+      name
+      isActive
+    }
+    title {
+      _id
+      name
+      isActive
+    }
+    membershipNo
+    username
+    gstNo
+    tradeName
+    address1
+    address2
+    country {
+      _id
+      name
+      isActive
+    }
+    state {
+      _id
+      name
+      isActive
+    }
+    city {
+      _id
+      name
+      isActive
+    }
+    pinCode
+    phone
+    isApproved
+    approvedBy {
+      _id
+      name
+      isActive
+    }
+    isActive
   }
 }

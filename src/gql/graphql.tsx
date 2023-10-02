@@ -4386,6 +4386,13 @@ export type YoutubeLinks = {
   redirectlink: Scalars['String']['output'];
 };
 
+export type UpdateMyProfileMutationVariables = Exact<{
+  options: ICreateMemberRegistration;
+}>;
+
+
+export type UpdateMyProfileMutation = { __typename?: 'Mutation', updateMyProfile: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
+
 export type MemberRegistrationAuthResolverMutationVariables = Exact<{
   options: IAuthMember;
 }>;
@@ -4393,7 +4400,86 @@ export type MemberRegistrationAuthResolverMutationVariables = Exact<{
 
 export type MemberRegistrationAuthResolverMutation = { __typename?: 'Mutation', memberRegistrationAuthResolver: { __typename?: 'IAuthResoverResponse', success: boolean, msg: string, jwt: string, email: string, name: string } };
 
+export type GetAllStateQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type GetAllStateQuery = { __typename?: 'Query', getAllState: Array<{ __typename?: 'State', _id: string, name: string, isActive: boolean, country?: { __typename?: 'Country', _id: string, name: string, isActive: boolean } | null }> };
+
+export type GetAllCountryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCountryQuery = { __typename?: 'Query', getAllCountry: Array<{ __typename?: 'Country', _id: string, name: string, isActive: boolean }> };
+
+export type GetAllCityQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCityQuery = { __typename?: 'Query', getAllCity: Array<{ __typename?: 'City', _id: string, name: string, isActive: boolean, country?: { __typename?: 'Country', _id: string, name: string, isActive: boolean } | null, state?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null }> };
+
+export type GetTitleByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetTitleByIdQuery = { __typename?: 'Query', getTitleById: { __typename?: 'Title', _id: string, name: string, isActive: boolean } };
+
+export type GetRegionByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetRegionByIdQuery = { __typename?: 'Query', getRegionById: { __typename?: 'Region', _id: string, name: string, isActive: boolean } };
+
+export type GetAllRegionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllRegionQuery = { __typename?: 'Query', getAllRegion: Array<{ __typename?: 'Region', _id: string, name: string, isActive: boolean }> };
+
+export type GetAllTitleQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllTitleQuery = { __typename?: 'Query', getAllTitle: Array<{ __typename?: 'Title', _id: string, name: string, isActive: boolean }> };
+
+export type MyProfileInformationQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyProfileInformationQuery = { __typename?: 'Query', myProfileInformation?: { __typename?: 'MemberRegistration', _id: string, firstName: string, lastName: string, middleName: string, hash: string, email: string, userType: string, membershipNo: string, username: string, gstNo: string, tradeName: string, address1: string, address2: string, pinCode: string, phone: string, isApproved: boolean, isActive: boolean, regionType?: { __typename?: 'Region', _id: string, name: string, isActive: boolean } | null, title?: { __typename?: 'Title', _id: string, name: string, isActive: boolean } | null, country?: { __typename?: 'Country', _id: string, name: string, isActive: boolean } | null, state?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null, city?: { __typename?: 'City', _id: string, name: string, isActive: boolean } | null, approvedBy?: { __typename?: 'User', _id: string, name: string, isActive: boolean } | null } | null };
+
+
+export const UpdateMyProfileDocument = gql`
+    mutation UpdateMyProfile($options: ICreateMemberRegistration!) {
+  updateMyProfile(options: $options) {
+    success
+    msg
+    data
+  }
+}
+    `;
+export type UpdateMyProfileMutationFn = Apollo.MutationFunction<UpdateMyProfileMutation, UpdateMyProfileMutationVariables>;
+
+/**
+ * __useUpdateMyProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateMyProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMyProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMyProfileMutation, { data, loading, error }] = useUpdateMyProfileMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useUpdateMyProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMyProfileMutation, UpdateMyProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMyProfileMutation, UpdateMyProfileMutationVariables>(UpdateMyProfileDocument, options);
+      }
+export type UpdateMyProfileMutationHookResult = ReturnType<typeof useUpdateMyProfileMutation>;
+export type UpdateMyProfileMutationResult = Apollo.MutationResult<UpdateMyProfileMutation>;
+export type UpdateMyProfileMutationOptions = Apollo.BaseMutationOptions<UpdateMyProfileMutation, UpdateMyProfileMutationVariables>;
 export const MemberRegistrationAuthResolverDocument = gql`
     mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
   memberRegistrationAuthResolver(options: $options) {
@@ -4431,3 +4517,352 @@ export function useMemberRegistrationAuthResolverMutation(baseOptions?: Apollo.M
 export type MemberRegistrationAuthResolverMutationHookResult = ReturnType<typeof useMemberRegistrationAuthResolverMutation>;
 export type MemberRegistrationAuthResolverMutationResult = Apollo.MutationResult<MemberRegistrationAuthResolverMutation>;
 export type MemberRegistrationAuthResolverMutationOptions = Apollo.BaseMutationOptions<MemberRegistrationAuthResolverMutation, MemberRegistrationAuthResolverMutationVariables>;
+export const GetAllStateDocument = gql`
+    query GetAllState {
+  getAllState {
+    _id
+    name
+    country {
+      _id
+      name
+      isActive
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllStateQuery__
+ *
+ * To run a query within a React component, call `useGetAllStateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllStateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllStateQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllStateQuery(baseOptions?: Apollo.QueryHookOptions<GetAllStateQuery, GetAllStateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllStateQuery, GetAllStateQueryVariables>(GetAllStateDocument, options);
+      }
+export function useGetAllStateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllStateQuery, GetAllStateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllStateQuery, GetAllStateQueryVariables>(GetAllStateDocument, options);
+        }
+export type GetAllStateQueryHookResult = ReturnType<typeof useGetAllStateQuery>;
+export type GetAllStateLazyQueryHookResult = ReturnType<typeof useGetAllStateLazyQuery>;
+export type GetAllStateQueryResult = Apollo.QueryResult<GetAllStateQuery, GetAllStateQueryVariables>;
+export const GetAllCountryDocument = gql`
+    query GetAllCountry {
+  getAllCountry {
+    _id
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllCountryQuery__
+ *
+ * To run a query within a React component, call `useGetAllCountryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCountryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCountryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCountryQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCountryQuery, GetAllCountryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCountryQuery, GetAllCountryQueryVariables>(GetAllCountryDocument, options);
+      }
+export function useGetAllCountryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCountryQuery, GetAllCountryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCountryQuery, GetAllCountryQueryVariables>(GetAllCountryDocument, options);
+        }
+export type GetAllCountryQueryHookResult = ReturnType<typeof useGetAllCountryQuery>;
+export type GetAllCountryLazyQueryHookResult = ReturnType<typeof useGetAllCountryLazyQuery>;
+export type GetAllCountryQueryResult = Apollo.QueryResult<GetAllCountryQuery, GetAllCountryQueryVariables>;
+export const GetAllCityDocument = gql`
+    query GetAllCity {
+  getAllCity {
+    _id
+    name
+    country {
+      _id
+      name
+      isActive
+    }
+    state {
+      _id
+      name
+      isActive
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllCityQuery__
+ *
+ * To run a query within a React component, call `useGetAllCityQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCityQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCityQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCityQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCityQuery, GetAllCityQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCityQuery, GetAllCityQueryVariables>(GetAllCityDocument, options);
+      }
+export function useGetAllCityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCityQuery, GetAllCityQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCityQuery, GetAllCityQueryVariables>(GetAllCityDocument, options);
+        }
+export type GetAllCityQueryHookResult = ReturnType<typeof useGetAllCityQuery>;
+export type GetAllCityLazyQueryHookResult = ReturnType<typeof useGetAllCityLazyQuery>;
+export type GetAllCityQueryResult = Apollo.QueryResult<GetAllCityQuery, GetAllCityQueryVariables>;
+export const GetTitleByIdDocument = gql`
+    query GetTitleById($options: IGetByID!) {
+  getTitleById(options: $options) {
+    _id
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetTitleByIdQuery__
+ *
+ * To run a query within a React component, call `useGetTitleByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTitleByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTitleByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetTitleByIdQuery(baseOptions: Apollo.QueryHookOptions<GetTitleByIdQuery, GetTitleByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTitleByIdQuery, GetTitleByIdQueryVariables>(GetTitleByIdDocument, options);
+      }
+export function useGetTitleByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTitleByIdQuery, GetTitleByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTitleByIdQuery, GetTitleByIdQueryVariables>(GetTitleByIdDocument, options);
+        }
+export type GetTitleByIdQueryHookResult = ReturnType<typeof useGetTitleByIdQuery>;
+export type GetTitleByIdLazyQueryHookResult = ReturnType<typeof useGetTitleByIdLazyQuery>;
+export type GetTitleByIdQueryResult = Apollo.QueryResult<GetTitleByIdQuery, GetTitleByIdQueryVariables>;
+export const GetRegionByIdDocument = gql`
+    query GetRegionById($options: IGetByID!) {
+  getRegionById(options: $options) {
+    _id
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetRegionByIdQuery__
+ *
+ * To run a query within a React component, call `useGetRegionByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRegionByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRegionByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetRegionByIdQuery(baseOptions: Apollo.QueryHookOptions<GetRegionByIdQuery, GetRegionByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRegionByIdQuery, GetRegionByIdQueryVariables>(GetRegionByIdDocument, options);
+      }
+export function useGetRegionByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRegionByIdQuery, GetRegionByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRegionByIdQuery, GetRegionByIdQueryVariables>(GetRegionByIdDocument, options);
+        }
+export type GetRegionByIdQueryHookResult = ReturnType<typeof useGetRegionByIdQuery>;
+export type GetRegionByIdLazyQueryHookResult = ReturnType<typeof useGetRegionByIdLazyQuery>;
+export type GetRegionByIdQueryResult = Apollo.QueryResult<GetRegionByIdQuery, GetRegionByIdQueryVariables>;
+export const GetAllRegionDocument = gql`
+    query GetAllRegion {
+  getAllRegion {
+    _id
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllRegionQuery__
+ *
+ * To run a query within a React component, call `useGetAllRegionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllRegionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllRegionQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllRegionQuery(baseOptions?: Apollo.QueryHookOptions<GetAllRegionQuery, GetAllRegionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllRegionQuery, GetAllRegionQueryVariables>(GetAllRegionDocument, options);
+      }
+export function useGetAllRegionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllRegionQuery, GetAllRegionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllRegionQuery, GetAllRegionQueryVariables>(GetAllRegionDocument, options);
+        }
+export type GetAllRegionQueryHookResult = ReturnType<typeof useGetAllRegionQuery>;
+export type GetAllRegionLazyQueryHookResult = ReturnType<typeof useGetAllRegionLazyQuery>;
+export type GetAllRegionQueryResult = Apollo.QueryResult<GetAllRegionQuery, GetAllRegionQueryVariables>;
+export const GetAllTitleDocument = gql`
+    query GetAllTitle {
+  getAllTitle {
+    _id
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllTitleQuery__
+ *
+ * To run a query within a React component, call `useGetAllTitleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllTitleQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllTitleQuery(baseOptions?: Apollo.QueryHookOptions<GetAllTitleQuery, GetAllTitleQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllTitleQuery, GetAllTitleQueryVariables>(GetAllTitleDocument, options);
+      }
+export function useGetAllTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTitleQuery, GetAllTitleQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllTitleQuery, GetAllTitleQueryVariables>(GetAllTitleDocument, options);
+        }
+export type GetAllTitleQueryHookResult = ReturnType<typeof useGetAllTitleQuery>;
+export type GetAllTitleLazyQueryHookResult = ReturnType<typeof useGetAllTitleLazyQuery>;
+export type GetAllTitleQueryResult = Apollo.QueryResult<GetAllTitleQuery, GetAllTitleQueryVariables>;
+export const MyProfileInformationDocument = gql`
+    query MyProfileInformation {
+  myProfileInformation {
+    _id
+    firstName
+    lastName
+    middleName
+    hash
+    email
+    userType
+    regionType {
+      _id
+      name
+      isActive
+    }
+    title {
+      _id
+      name
+      isActive
+    }
+    membershipNo
+    username
+    gstNo
+    tradeName
+    address1
+    address2
+    country {
+      _id
+      name
+      isActive
+    }
+    state {
+      _id
+      name
+      isActive
+    }
+    city {
+      _id
+      name
+      isActive
+    }
+    pinCode
+    phone
+    isApproved
+    approvedBy {
+      _id
+      name
+      isActive
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useMyProfileInformationQuery__
+ *
+ * To run a query within a React component, call `useMyProfileInformationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProfileInformationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyProfileInformationQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyProfileInformationQuery(baseOptions?: Apollo.QueryHookOptions<MyProfileInformationQuery, MyProfileInformationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyProfileInformationQuery, MyProfileInformationQueryVariables>(MyProfileInformationDocument, options);
+      }
+export function useMyProfileInformationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProfileInformationQuery, MyProfileInformationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyProfileInformationQuery, MyProfileInformationQueryVariables>(MyProfileInformationDocument, options);
+        }
+export type MyProfileInformationQueryHookResult = ReturnType<typeof useMyProfileInformationQuery>;
+export type MyProfileInformationLazyQueryHookResult = ReturnType<typeof useMyProfileInformationLazyQuery>;
+export type MyProfileInformationQueryResult = Apollo.QueryResult<MyProfileInformationQuery, MyProfileInformationQueryVariables>;

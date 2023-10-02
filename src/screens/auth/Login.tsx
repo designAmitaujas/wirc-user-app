@@ -29,7 +29,7 @@ const initialValue: IAuthMember = {
 };
 
 const validationSchema = Yup.object().shape({
-  email: Yup.number().required(),
+  email: Yup.number().required("Membership Number is required"),
   password: Yup.string().min(6).max(18).required(),
 });
 
@@ -134,10 +134,10 @@ const Login = () => {
                       w={"72"}
                       borderColor={"#0f045d"}
                       name="email"
-                      label="Email Address"
+                      label="MemberShip Number"
                       currentValue={values.email}
                       errMsg={errors.email}
-                      placeholder="Your Email Address"
+                      placeholder="Your MemberShip Number"
                       setFieldValue={setFieldValue}
                       isRequired={true}
                       isInvalid={!!touched.email && !!errors.email}

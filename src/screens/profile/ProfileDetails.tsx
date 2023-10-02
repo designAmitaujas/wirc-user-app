@@ -1,39 +1,83 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Formik } from "formik";
+
+import { Formik, FormikHelpers } from "formik";
 import {
   Avatar,
   Button,
-  FormControl,
   HStack,
   ScrollView,
-  Select,
   Text,
   VStack,
   View,
 } from "native-base";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Alert } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Yup from "yup";
-import { CustomInput } from "../../components/CustomForm";
+import { CustomInput, CustomSelect } from "../../components/CustomForm";
+import {
+  ICreateMemberRegistration,
+  useGetAllCityQuery,
+  useGetAllCountryQuery,
+  useGetAllRegionQuery,
+  useGetAllStateQuery,
+  useGetAllTitleQuery,
+  useMyProfileInformationQuery,
+  useUpdateMyProfileMutation,
+} from "../../gql/graphql";
 import { useAppAuthState } from "../../store";
 
-const initialValue = {
-  fullname: "",
-  email: "",
-  state: "",
+const male = require("../../../assets/male.png");
+const female = require("../../../assets/female.png");
+
+const initialvalues: ICreateMemberRegistration = {
+  address1: "",
+  address2: "",
   city: "",
-  mobilenumber: "",
+  country: "",
+  email: "",
+  firstName: "",
+  gstNo: "",
+  hash: "",
+  isActive: true,
+  isApproved: true,
+  lastName: "",
+  membershipNo: "",
+  middleName: "",
+  phone: "",
+  pinCode: "",
+  regionType: "",
+  state: "",
+  title: "",
+  tradeName: "",
+  username: "",
+  userType: "member",
 };
 
 const validationSchema = Yup.object().shape({
-  fullname: Yup.string().required("Name is Required"),
-  email: Yup.string().email().required(),
-  state: Yup.string().required("State is required field"),
-  city: Yup.string().required("City is required field"),
-  mobilenumber: Yup.string().min(10).max(10).required(),
+  isActive: Yup.boolean().oneOf([true, false]),
+  address1: Yup.string(),
+  address2: Yup.string(),
+  city: Yup.string(),
+  country: Yup.string(),
+  email: Yup.string(),
+  firstName: Yup.string(),
+  gstNo: Yup.string(),
+  hash: Yup.string(),
+  isApproved: Yup.boolean().oneOf([true, false]),
+  lastName: Yup.string(),
+  membershipNo: Yup.string(),
+  middleName: Yup.string(),
+  phone: Yup.string(),
+  pinCode: Yup.string(),
+  regionType: Yup.string(),
+  state: Yup.string(),
+  title: Yup.string(),
+  tradeName: Yup.string(),
+  username: Yup.string(),
+  userType: Yup.string().oneOf(["member", "none-member", "student"]).required(),
 });
-
 const RestHeader = () => {
   // const { goBack } = useNavigation();
   const { removeAuth } = useAppAuthState();
@@ -98,7 +142,102 @@ const RestHeader = () => {
 };
 
 const ProfileScreen = () => {
-  const handleSubmit = () => {};
+  const [key, setKey] = React.useState(Math.random());
+
+  const [initValue, setInitValue] =
+    useState<ICreateMemberRegistration>(initialvalues);
+
+  const { data: profile } = useMyProfileInformationQuery();
+
+  useEffect(() => {
+    if (profile?.myProfileInformation) {
+      setInitValue({
+        address1: profile?.myProfileInformation.address1 || "",
+        address2: profile?.myProfileInformation.address2 || "",
+        city: profile?.myProfileInformation.city?._id || "",
+        country: profile?.myProfileInformation.country?._id || "",
+        email: profile?.myProfileInformation.email,
+        firstName: profile?.myProfileInformation.firstName,
+        gstNo: profile?.myProfileInformation.gstNo || "",
+        hash: profile?.myProfileInformation.hash,
+        lastName: profile?.myProfileInformation.lastName,
+        membershipNo: profile?.myProfileInformation.membershipNo,
+        middleName: profile?.myProfileInformation.middleName,
+        phone: profile?.myProfileInformation.phone || "",
+        pinCode: profile?.myProfileInformation.pinCode || "",
+        regionType: profile?.myProfileInformation.regionType?._id || "",
+        state: profile?.myProfileInformation.state?._id || "",
+        title: profile?.myProfileInformation.title?._id || "",
+        tradeName: profile?.myProfileInformation.tradeName,
+        username: profile?.myProfileInformation.username || "",
+        userType: profile?.myProfileInformation.userType || "",
+        isActive: true,
+        isApproved: true,
+      });
+    }
+  }, [profile]);
+
+  const [createLangauge] = useUpdateMyProfileMutation();
+  const { data: region } = useGetAllRegionQuery();
+  const { data: title } = useGetAllTitleQuery();
+  const { data: city } = useGetAllCityQuery();
+  const { data: state } = useGetAllStateQuery();
+  const { data: country } = useGetAllCountryQuery();
+
+  const handleSubmit = async (
+    val: ICreateMemberRegistration,
+    actions: FormikHelpers<ICreateMemberRegistration>
+  ) => {
+    actions.setSubmitting(true);
+
+    const response = await createLangauge({
+      variables: {
+        options: {
+          address1: val.address1 || "",
+          address2: val.address2 || "",
+          city: val.city,
+          country: val.country,
+          email: val.email,
+          firstName: val.firstName,
+          gstNo: val.gstNo || "",
+          hash: val.hash,
+          lastName: val.lastName,
+          membershipNo: val.membershipNo,
+          middleName: val.middleName,
+          phone: val.phone || "",
+          pinCode: val.pinCode || "",
+          regionType: val.regionType || "",
+          state: val.state,
+          title: val.title || "",
+          tradeName: val.tradeName,
+          username: val.username || "",
+          userType: val.userType || "",
+          isActive: true,
+          isApproved: true,
+        },
+      },
+    });
+
+    if (response.data?.updateMyProfile.success === true) {
+      Alert.alert("Profile data updated successfully");
+    } else {
+      Alert.alert(
+        response.data?.updateMyProfile.msg || "Something went wrong on server"
+      );
+    }
+
+    actions.setSubmitting(false);
+  };
+
+  if (
+    !region?.getAllRegion ||
+    !title?.getAllTitle ||
+    !city?.getAllCity ||
+    !country?.getAllCountry ||
+    !state?.getAllState
+  ) {
+    return <></>;
+  }
 
   return (
     <>
@@ -111,7 +250,7 @@ const ProfileScreen = () => {
         >
           <VStack>
             <Formik
-              initialValues={initialValue}
+              initialValues={initValue}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
@@ -126,25 +265,6 @@ const ProfileScreen = () => {
               }) => {
                 return (
                   <>
-                    {/* <Button
-                      mt="5"
-                      mb="2"
-                      borderRadius={25}
-                      size={"lg"}
-                      w={"40"}
-                      alignSelf={"center"}
-                      bgColor={"amber.600"}
-                      //@ts-ignore
-                      onPress={visitingcard}
-                    >
-                      <Text
-                        color={"white"}
-                        fontSize={"sm"}
-                        fontWeight={"medium"}
-                      >
-                        Virtual Visiting Card
-                      </Text>
-                    </Button> */}
                     <ScrollView p={4}>
                       <VStack space={1} mt={5} mb={3} alignSelf={"center"}>
                         <Avatar
@@ -154,23 +274,51 @@ const ProfileScreen = () => {
                           alignSelf={"center"}
                           mb={3}
                           size={"xl"}
-                          source={{
-                            uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                          }}
+                          source={male}
                         />
                         <CustomInput
                           w={"72"}
                           borderColor={"#0f045d"}
                           bgColor={"white"}
-                          currentValue={values.fullname}
-                          errMsg={errors.fullname}
-                          isInvalid={!!touched.fullname && !!errors.fullname}
-                          label="Full Name"
-                          name="fullname"
-                          placeholder="Enter fullname Address"
+                          currentValue={values.firstName}
+                          errMsg={errors.firstName}
+                          isInvalid={!!touched.firstName && !!errors.firstName}
+                          label="First Name"
+                          name="firstName"
+                          placeholder="Enter First Name "
                           setFieldValue={setFieldValue}
                           isRequired={true}
-                          value={values.fullname}
+                          value={values.firstName}
+                        />
+                        <CustomInput
+                          w={"72"}
+                          borderColor={"#0f045d"}
+                          bgColor={"white"}
+                          currentValue={values.middleName}
+                          errMsg={errors.middleName}
+                          isInvalid={
+                            !!touched.middleName && !!errors.middleName
+                          }
+                          label="Middle Name"
+                          name="middleName"
+                          placeholder="Enter Middle Name "
+                          setFieldValue={setFieldValue}
+                          isRequired={true}
+                          value={values.middleName}
+                        />
+                        <CustomInput
+                          w={"72"}
+                          borderColor={"#0f045d"}
+                          bgColor={"white"}
+                          currentValue={values.lastName}
+                          errMsg={errors.lastName}
+                          isInvalid={!!touched.lastName && !!errors.lastName}
+                          label="Last Name"
+                          name="lastName"
+                          placeholder="Enter last Name "
+                          setFieldValue={setFieldValue}
+                          isRequired={true}
+                          value={values.lastName}
                         />
 
                         <CustomInput
@@ -192,76 +340,67 @@ const ProfileScreen = () => {
                           w={"72"}
                           borderColor={"#0f045d"}
                           bgColor={"white"}
-                          currentValue={values.mobilenumber}
-                          errMsg={errors.mobilenumber}
-                          isInvalid={
-                            !!touched.mobilenumber && !!errors.mobilenumber
-                          }
+                          currentValue={values.phone}
+                          errMsg={errors.phone}
+                          isInvalid={!!touched.phone && !!errors.phone}
                           label="Mobile Number"
-                          name="mobilenumber"
+                          name="phone"
                           placeholder="Enter Mobile Number"
                           setFieldValue={setFieldValue}
                           isRequired={true}
                           keyboardAppearance="light"
                           keyboardType="number-pad"
-                          value={values.mobilenumber}
+                          value={values.phone}
                         />
 
-                        <FormControl.Label isRequired mt={1}>
-                          State
-                        </FormControl.Label>
-                        <Select
-                          // @ts-ignore
-                          name="State"
+                        <CustomSelect
+                          options={country.getAllCountry
+                            .filter((item) => item.isActive === true)
+                            .map((item) => ({
+                              value: item._id,
+                              label: item.name,
+                            }))}
+                          errMsg={errors.country}
+                          isInvalid={!!touched.country && !!errors.country}
+                          label={"country"}
+                          name="country"
+                          placeholder="Select country"
+                          initValue={values.country}
+                          isRequired={false}
+                          setFieldValue={setFieldValue}
+                        />
+                        <CustomSelect
+                          options={state?.getAllState
+                            .filter((item) => item.isActive === true)
+                            .map((item) => ({
+                              value: item._id,
+                              label: item.name,
+                            }))}
                           errMsg={errors.state}
-                          w={"72"}
-                          mt={-1}
-                          alignSelf={"center"}
-                          placeholder="Select State"
-                          borderRadius={12}
-                          borderColor={"#0f045d"}
-                          value={values.state}
                           isInvalid={!!touched.state && !!errors.state}
-                          onValueChange={handleChange("state")}
-                        >
-                          <Select.Item label="Gujrat" value="gujrat" />
-                          <Select.Item label="Hariyana" value="hariyana" />
-                          <Select.Item label="Bihar" value="bihar" />
-                          <Select.Item label="Punjab" value="punjab" />
-                        </Select>
-                        {errors.state && touched.state && (
-                          <Text color={"red.600"} fontSize={"xs"}>
-                            {errors.state}
-                          </Text>
-                        )}
-
-                        <FormControl.Label isRequired>City</FormControl.Label>
-                        <Select
-                          // @ts-ignore
-                          name="City"
-                          mt={-1}
+                          label={"state"}
+                          name="state"
+                          placeholder="Select state"
+                          initValue={values.state}
+                          isRequired={false}
+                          setFieldValue={setFieldValue}
+                        />
+                        <CustomSelect
+                          options={city?.getAllCity
+                            .filter((item) => item.isActive === true)
+                            .map((item) => ({
+                              value: item._id,
+                              label: item.name,
+                            }))}
                           errMsg={errors.city}
-                          w={"72"}
-                          alignSelf={"center"}
-                          placeholder="Select City"
-                          borderRadius={12}
-                          borderColor={"#0f045d"}
-                          value={values.city}
                           isInvalid={!!touched.city && !!errors.city}
-                          onValueChange={handleChange("city")}
-                        >
-                          <Select.Item label="Mumbai" value="mumbai" />
-                          <Select.Item label="Bangalore" value="bangalore" />
-                          <Select.Item label="Delhi" value="delhi" />
-                          <Select.Item label="Vadodara" value="vadodara" />
-                          <Select.Item label="Ahmedabad" value="ahmedabad" />
-                        </Select>
-                        {errors.city && touched.city && (
-                          <Text color={"red.600"} fontSize={"xs"}>
-                            {errors.city}
-                          </Text>
-                        )}
-
+                          label={"city"}
+                          name="city"
+                          placeholder="Select city"
+                          initValue={values.city}
+                          isRequired={false}
+                          setFieldValue={setFieldValue}
+                        />
                         <Button
                           mt="10"
                           mb="2"

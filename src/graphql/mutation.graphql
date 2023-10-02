@@ -1,3 +1,11 @@
+mutation UpdateMyProfile($options: ICreateMemberRegistration!) {
+  updateMyProfile(options: $options) {
+    success
+    msg
+    data
+  }
+}
+
 mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
   memberRegistrationAuthResolver(options: $options) {
     success

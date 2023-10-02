@@ -1,4 +1,11 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  from,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
 import {
   Quicksand_300Light,
   Quicksand_400Regular,
@@ -9,15 +16,22 @@ import {
 } from "@expo-google-fonts/quicksand";
 import { Entypo } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
+import { createUploadLink } from "apollo-upload-client";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { NativeBaseProvider, StatusBar, extendTheme } from "native-base";
-import React, { useCallback, useEffect, useState } from "react";
+import {
+  NativeBaseProvider,
+  StatusBar,
+  extendTheme,
+  useToast,
+} from "native-base";
+import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native";
 import "react-native-gesture-handler";
 import Routes from "./src/Routes";
 import { GQL_API_URL } from "./src/constant";
+import { useAppAuthState } from "./src/store";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -71,7 +85,27 @@ const App = () => {
     Quicksand_700Bold,
   });
 
+  const { jwt } = useAppAuthState();
+
+  const { show } = useToast();
+
   const [appIsReady, setAppIsReady] = useState(false);
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.forEach(({ message }) => {
+        if (message === "AUTH_ERROR") {
+          show({ title: "AUTH_ERROR", placement: "top" });
+        } else {
+          show({ title: "SOMETHING WENT WRONG ON SERVER", placement: "top" });
+        }
+      });
+    }
+
+    if (networkError) {
+      show({ title: "INTERNET ERROR", placement: "top" });
+    }
+  });
 
   useEffect(() => {
     (async () => {
@@ -86,9 +120,36 @@ const App = () => {
     })();
   }, []);
 
+  const authLink = setContext((_, { headers }) => {
+    return {
+      headers: {
+        ...headers,
+        authorization: jwt || "",
+      },
+    };
+  });
+
   const client = new ApolloClient({
     uri: GQL_API_URL,
     cache: new InMemoryCache(),
+    link: from([
+      errorLink,
+      authLink.concat(
+        createUploadLink({
+          uri: "https://admin.wirc-icai.org/graphql",
+        })
+      ),
+    ]),
+
+    headers: {
+      authorization: jwt || "",
+    },
+
+    defaultOptions: {
+      query: { fetchPolicy: "no-cache" },
+      mutate: { fetchPolicy: "no-cache" },
+      watchQuery: { fetchPolicy: "no-cache" },
+    },
   });
 
   const onLayoutRootView = useCallback(async () => {

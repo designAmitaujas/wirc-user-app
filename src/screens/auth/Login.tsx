@@ -36,14 +36,13 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   const { navigate } = useNavigation();
   const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
 
   const { setAuth } = useAppAuthState();
 
   const [setAuthUp] = useMemberRegistrationAuthResolverMutation();
 
   const toast = useToast();
-
-  const handleClick = () => setShow(!show);
 
   const handleSubmit = async (
     val: IAuthMember,
@@ -61,23 +60,16 @@ const Login = () => {
       },
     });
 
-    if (response.data?.memberRegistrationAuthResolver.success === true) {
+    if (response.data.memberRegistrationAuthResolver.success === true) {
       setAuth({
         jwt: response.data.memberRegistrationAuthResolver.jwt,
         name: response.data.memberRegistrationAuthResolver.name,
       });
-      toast.show({
-        title: _.capitalize("authenticated successfully"),
-        placement: "top",
-      });
-      await new Promise((r) => setTimeout(r, 2000));
+      toast.show({ title: _.capitalize("authenticated successfully") });
       // @ts-ignore
       navigate("BottomTab");
     } else {
-      toast.show({
-        title: _.capitalize("authentication error"),
-        placement: "top",
-      });
+      toast.show({ title: _.capitalize("authentication error") });
     }
 
     actions.setSubmitting(false);
@@ -142,10 +134,10 @@ const Login = () => {
                       w={"72"}
                       borderColor={"#0f045d"}
                       name="email"
-                      label="Email Address"
+                      label="MemberShip Number"
                       currentValue={values.email}
-                      errMsg={errors.email || ""}
-                      placeholder="Your Email Address"
+                      errMsg={errors.email}
+                      placeholder="Your MemberShip Number"
                       setFieldValue={setFieldValue}
                       isRequired={true}
                       isInvalid={!!touched.email && !!errors.email}
@@ -167,7 +159,7 @@ const Login = () => {
                       name="password"
                       label="Password"
                       currentValue={values.password}
-                      errMsg={errors.password || ""}
+                      errMsg={errors.password}
                       placeholder="Your password"
                       setFieldValue={setFieldValue}
                       bgColor="white"

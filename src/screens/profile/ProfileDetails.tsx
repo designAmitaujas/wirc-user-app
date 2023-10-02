@@ -10,12 +10,12 @@ import {
   Text,
   VStack,
   View,
+  useToast,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Yup from "yup";
-import { CustomInput, CustomSelect } from "../../components/CustomForm";
+import { CustomInput } from "../../components/CustomForm";
 import {
   ICreateMemberRegistration,
   useGetAllCityQuery,
@@ -184,6 +184,8 @@ const ProfileScreen = () => {
   const { data: state } = useGetAllStateQuery();
   const { data: country } = useGetAllCountryQuery();
 
+  const toast = useToast();
+
   const handleSubmit = async (
     val: ICreateMemberRegistration,
     actions: FormikHelpers<ICreateMemberRegistration>
@@ -219,11 +221,13 @@ const ProfileScreen = () => {
     });
 
     if (response.data?.updateMyProfile.success === true) {
-      Alert.alert("Profile data updated successfully");
+      toast.show({ title: "Profile data updated successfully" });
     } else {
-      Alert.alert(
-        response.data?.updateMyProfile.msg || "Something went wrong on server"
-      );
+      toast.show({
+        title:
+          response.data?.updateMyProfile.msg ||
+          "Something went wrong on server",
+      });
     }
 
     actions.setSubmitting(false);
@@ -353,7 +357,7 @@ const ProfileScreen = () => {
                           value={values.phone}
                         />
 
-                        <CustomSelect
+                        {/* <CustomSelect
                           options={country.getAllCountry
                             .filter((item) => item.isActive === true)
                             .map((item) => ({
@@ -400,7 +404,7 @@ const ProfileScreen = () => {
                           initValue={values.city}
                           isRequired={false}
                           setFieldValue={setFieldValue}
-                        />
+                        /> */}
                         <Button
                           mt="10"
                           mb="2"

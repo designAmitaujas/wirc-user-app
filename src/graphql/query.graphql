@@ -48,6 +48,7 @@ query GetAllCountry {
     isActive
   }
 }
+
 query GetAllCity {
   getAllCity {
     _id
@@ -73,6 +74,7 @@ query GetTitleById($options: IGetByID!) {
     isActive
   }
 }
+
 query GetRegionById($options: IGetByID!) {
   getRegionById(options: $options) {
     _id
@@ -80,6 +82,7 @@ query GetRegionById($options: IGetByID!) {
     isActive
   }
 }
+
 query GetAllRegion {
   getAllRegion {
     _id
@@ -87,6 +90,7 @@ query GetAllRegion {
     isActive
   }
 }
+
 query GetAllTitle {
   getAllTitle {
     _id
@@ -173,6 +177,19 @@ query GetCpeEventById($options: IGetByID!) {
     sgst
     isForStudent
     isArchived
+    isActive
+  }
+}
+
+query GetCpeEventRangeByCpeId($options: IGetByID!) {
+  getCpeEventRangeByCpeId(options: $options) {
+    _id
+    name
+    description
+    price
+    isForMember
+    isForNonMember
+    isForstudent
     isActive
   }
 }

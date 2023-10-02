@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 import {
   Box,
   Button,
@@ -8,10 +9,10 @@ import {
   ScrollView,
   Text,
   VStack,
-  useToast,
 } from "native-base";
-import React, { useState } from "react";
+import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useGetAllCpeEventQuery } from "../gql/graphql";
 
 const logo = require("../../assets/wirclogo.png");
 
@@ -167,94 +168,16 @@ export const Seminar = () => {
 
 const UpcomingCard: React.FC<{
   name: string;
-  // duration: string;
   startdatetime: string;
   enddatetime: string;
-  // vanue: string;
-}> = ({ name, startdatetime, enddatetime }) => {
-  const toast = useToast();
-  const [calendar, setCalendar] = useState(1);
+  eventId: string;
+}> = ({ name, startdatetime, enddatetime, eventId }) => {
   const { navigate } = useNavigation();
+
   const RegisteredEvents = () => {
     //@ts-ignore
-    navigate("RegisteredEvents");
+    navigate("RegisteredEvents", { eventId });
   };
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Calendar.requestCalendarPermissionsAsync();
-  //     if (status === "granted") {
-  //       const calendars = await Calendar.getCalendarsAsync(
-  //         Calendar.EntityTypes.EVENT
-  //       );
-  //     }
-  //   })();
-  // }, []);
-
-  // async function getDefaultCalendarSource() {
-  //   const defaultCalendar = await Calendar.getDefaultCalendarAsync();
-  //   return defaultCalendar.source;
-  // }
-
-  // const addEventToCalender = async () => {
-  //   if (calendar === 1) {
-  //     toast.show({
-  //       render: () => (
-  //         <Alert status="success">
-  //           <HStack space={2} alignItems={"center"} justifyContent={"center"}>
-  //             <Alert.Icon />
-  //             <Text>ADDED TO CALENDAR</Text>
-  //           </HStack>
-  //         </Alert>
-  //       ),
-  //       placement: "top",
-  //     });
-  //     setCalendar(0);
-
-  //     console.log("???");
-
-  //     const defaultCalendarSource =
-  //       Platform.OS === "ios"
-  //         ? await getDefaultCalendarSource()
-  //         : { isLocalAccount: true, name: "WIRC" };
-
-  //     const newCalendarID = await Calendar.createCalendarAsync({
-  //       title: name,
-
-  //       color: "green",
-  //       entityType: Calendar.EntityTypes.REMINDER,
-  //       //@ts-ignore
-  //       sourceId: defaultCalendarSource.id,
-  //       //@ts-ignore
-  //       source: defaultCalendarSource,
-  //       name: "internalCalendarName",
-  //       ownerAccount: "personal",
-  //       accessLevel: Calendar.CalendarAccessLevel.OWNER,
-  //     });
-
-  //     await Calendar.createEventAsync(newCalendarID, {
-  //       startDate: moment().toISOString(),
-  //       endDate: moment().toISOString(),
-  //       // "2023-06-24 17:00:00"
-  //       title: name,
-  //       location: vanue,
-
-  //       alarms: [{ relativeOffset: -60, method: Calendar.AlarmMethod.ALERT }],
-  //     });
-  //   } else {
-  //     toast.show({
-  //       render: () => (
-  //         <Alert status="info">
-  //           <HStack space={2} alignItems={"center"} justifyContent={"center"}>
-  //             <Alert.Icon />
-  //             <Text>ALREADY ADDED TO CALENDAR</Text>
-  //           </HStack>
-  //         </Alert>
-  //       ),
-  //       placement: "top",
-  //     });
-  //   }
-  // };
 
   return (
     <>
@@ -277,33 +200,7 @@ const UpcomingCard: React.FC<{
         >
           {name}
         </Text>
-        {/* <TouchableOpacity onPress={addEventToCalender}>
-            {calendar === 1 ? (
-              <>
-                <MaterialCommunityIcons
-                  name="calendar-plus"
-                  size={24}
-                  color="black"
-                />
-              </>
-            ) : (
-              <>
-                <MaterialCommunityIcons
-                  name="calendar-check"
-                  size={24}
-                  color="green"
-                />
-              </>
-            )}
-          </TouchableOpacity> */}
 
-        {/* <HStack w={"100%"}>
-          <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-            Duration
-          </Text>
-          <Text w={"5%"}>:</Text>
-          <Text w={"65%"}>{duration}</Text>
-        </HStack> */}
         <HStack w={"100%"}>
           <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"} ml={3}>
             Date & Time
@@ -319,13 +216,7 @@ const UpcomingCard: React.FC<{
             <Text>{enddatetime}</Text>
           </VStack>
         </HStack>
-        {/* <HStack w={"100%"}>
-          <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-            Venue
-          </Text>
-          <Text w={"5%"}>:</Text>
-          <Text w={"60%"}>{vanue}</Text>
-        </HStack> */}
+
         <Button
           bg={"#0f045d"}
           onPress={RegisteredEvents}
@@ -341,38 +232,41 @@ const UpcomingCard: React.FC<{
 };
 
 export const UpcomingEvent = () => {
+  const { data } = useGetAllCpeEventQuery();
+
   return (
     <>
       <VStack space={4} p={4} mb={5}>
         <HStack alignItems={"center"} space={3}>
           <Text fontWeight={"semibold"} fontSize={"xl"} color={"gray.400"}>
-            Upcoming Events
+            Upcoming CPE Events (Members)
           </Text>
         </HStack>
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space={5}>
-            <UpcomingCard
-              name="Direct Tax Refresher Course (Physical)"
-              // duration="40 Minute"
-              startdatetime="20-06-2023, 7:30 AM"
-              enddatetime="22-06-2023, 9:30 AM"
-              // vanue="Nakshtra Party Ploat Harni, Vadodara - 360002"
-            />
-            <UpcomingCard
-              name="Two days Workshop on Excel Skills for Real World Business
-                  Operations"
-              // duration="40 Minute"
-              startdatetime="22-06-2023, 7:30 AM"
-              enddatetime="24-06-2023, 10:30 AM"
-              // vanue="Nakshtra Party Ploat Harni, Vadodara - 360002"
-            />
-            <UpcomingCard
-              name="Tech Edge Series (Virtual)"
-              // duration="40 Minute"
-              startdatetime="24-06-2023, 7:30 AM"
-              enddatetime="26-06-2023, 7:30 AM"
-              // vanue="Nakshtra Party Ploat Harni, Vadodara - 360002"
-            />
+            {data?.getAllCpeEvent
+              .filter((item) => item.isActive === true)
+              .filter((item) => item.isForStudent === false)
+              .filter((item) =>
+                moment().isBefore(moment(item.date1).startOf("D").add(1, "d"))
+              )
+              .sort((a, b) => {
+                return (
+                  moment(a.date1).toDate().getTime() -
+                  moment(b.date1).toDate().getTime()
+                );
+              })
+              .map((item) => {
+                return (
+                  <UpcomingCard
+                    key={item._id}
+                    eventId={item._id}
+                    name={item.name}
+                    startdatetime={moment(item.date1).format("DD-MM-YYYY")}
+                    enddatetime={moment(item.date2).format("DD-MM-YYYY")}
+                  />
+                );
+              })}
           </VStack>
         </ScrollView>
       </VStack>

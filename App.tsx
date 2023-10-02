@@ -26,10 +26,11 @@ import {
   extendTheme,
   useToast,
 } from "native-base";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native";
 import "react-native-gesture-handler";
 import Routes from "./src/Routes";
+import { GQL_API_URL } from "./src/constant";
 import { useAppAuthState } from "./src/store";
 
 SplashScreen.preventAutoHideAsync();
@@ -129,7 +130,7 @@ const App = () => {
   });
 
   const client = new ApolloClient({
-    uri: "https://admin.wirc-icai.org/graphql",
+    uri: GQL_API_URL,
     cache: new InMemoryCache(),
     link: from([
       errorLink,

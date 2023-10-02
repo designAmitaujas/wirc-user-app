@@ -1,3 +1,33 @@
+query GetAllCpeEvent {
+  getAllCpeEvent {
+    _id
+    name
+    img
+    date1
+    cpehrs
+    date2
+    time1
+    time2
+    location
+    flyer
+    capacity
+    cutoffDate
+    cms
+    price
+    igstState {
+      _id
+      name
+      isActive
+    }
+    igst
+    cgst
+    sgst
+    isForStudent
+    isArchived
+    isActive
+  }
+}
+
 query GetAllState {
   getAllState {
     _id
@@ -113,6 +143,36 @@ query MyProfileInformation {
       name
       isActive
     }
+    isActive
+  }
+}
+
+query GetCpeEventById($options: IGetByID!) {
+  getCpeEventById(options: $options) {
+    _id
+    name
+    img
+    date1
+    cpehrs
+    date2
+    time1
+    time2
+    location
+    flyer
+    capacity
+    cutoffDate
+    cms
+    price
+    igstState {
+      _id
+      name
+      isActive
+    }
+    igst
+    cgst
+    sgst
+    isForStudent
+    isArchived
     isActive
   }
 }

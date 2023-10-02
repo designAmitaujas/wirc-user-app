@@ -1,6 +1,7 @@
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Calendar from "expo-calendar";
+import _ from "lodash";
 import moment from "moment";
 import {
   Alert,
@@ -13,39 +14,40 @@ import {
   useToast,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { Platform } from "react-native";
-import { FlatListSlider } from "react-native-flatlist-slider";
+import { Platform, ScrollView } from "react-native";
+import AutoHeightImage from "react-native-auto-height-image";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import RenderHtml from "react-native-render-html";
+import { downloadPath, windowWidth } from "../constant";
+import {
+  GetCpeEventByIdQuery,
+  useGetCpeEventByIdLazyQuery,
+} from "../gql/graphql";
 
 const UpcomingCard: React.FC<{
   name: string;
-  duration: string;
   startdatetime: string;
   enddatetime: string;
   vanue: string;
-}> = ({ name, duration, startdatetime, enddatetime, vanue }) => {
+}> = ({ name, startdatetime, enddatetime, vanue }) => {
   const toast = useToast();
   const [calendar, setCalendar] = useState(1);
-  const { navigate } = useNavigation();
-  const RegisteredEvents = () => {
-    //@ts-ignore
-    navigate("RegisteredEvents");
-  };
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Calendar.requestCalendarPermissionsAsync();
-      if (status === "granted") {
-        const calendars = await Calendar.getCalendarsAsync(
-          Calendar.EntityTypes.EVENT
-        );
-      }
-    })();
-  }, []);
+  const { show } = useToast();
 
   async function getDefaultCalendarSource() {
-    const defaultCalendar = await Calendar.getDefaultCalendarAsync();
-    return defaultCalendar.source;
+    const { status } = await Calendar.requestCalendarPermissionsAsync();
+    if (status === "granted") {
+      const defaultCalendar = await Calendar.getDefaultCalendarAsync();
+      return defaultCalendar.source;
+    } else {
+      show({
+        title: _.capitalize(
+          "Please allow calendar access to add events to the calendar."
+        ),
+        placement: "top",
+      });
+    }
   }
 
   const addEventToCalender = async () => {
@@ -153,13 +155,6 @@ const UpcomingCard: React.FC<{
 
         <HStack w={"100%"}>
           <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-            Duration
-          </Text>
-          <Text w={"5%"}>:</Text>
-          <Text w={"65%"}>{duration}</Text>
-        </HStack>
-        <HStack w={"100%"}>
-          <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
             Date & Time
           </Text>
           <Text w={"5%"}>:</Text>
@@ -185,18 +180,31 @@ const UpcomingCard: React.FC<{
 
 const UpcomingEvents = () => {
   const { goBack } = useNavigation();
-  // const [service, setService] = React.useState("");
-  const images = [
-    {
-      banner: require("../../assets/banner.jpg"),
-    },
-    {
-      banner: require("../../assets/banner2.jpg"),
-    },
-    {
-      banner: require("../../assets/banner3.jpg"),
-    },
-  ];
+  const { params } = useRoute();
+
+  const [getEventInformation] = useGetCpeEventByIdLazyQuery();
+
+  const [eventInformation, setEventInformation] = useState<
+    GetCpeEventByIdQuery["getCpeEventById"] | null | undefined
+  >();
+
+  useEffect(() => {
+    const { eventId } = params as { eventId?: string };
+
+    if (eventId) {
+      (async () => {
+        const response = await getEventInformation({
+          variables: { options: { id: eventId } },
+        });
+
+        if (response.data?.getCpeEventById) {
+          setEventInformation(response.data.getCpeEventById);
+        }
+      })();
+    }
+  }, [params]);
+
+  if (!eventInformation) return <></>;
 
   return (
     <>
@@ -218,50 +226,42 @@ const UpcomingEvents = () => {
               fontWeight={"semibold"}
               ml={16}
             >
-              Upcoming Event
+              {eventInformation?.name}
             </Text>
           </HStack>
         </Box>
-        <VStack
-          w={"100%"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          my={5}
-          p={3}
-          space={5}
-          bg={"white"}
+        <ScrollView
+          style={{
+            marginTop: 20,
+            paddingLeft: 20,
+            paddingRight: 20,
+          }}
         >
-          {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}> */}
-          <HStack>
-            <FlatListSlider
-              data={images}
-              imageKey={"banner"}
-              local
-              loop={true}
-              timer={3000}
-            />
-
-            {/* <Image
-                borderRadius={10}
-                w={"72"}
-                h={"40"}
-                // resizeMode="contain"
-                alt="Image not found"
-                source={require("../../assets/banner2.jpg")}
-              /> */}
-          </HStack>
-          {/* </ScrollView> */}
           <UpcomingCard
-            name="Direct Tax Refresher Course (Physical)"
-            duration="40 Minute"
-            startdatetime="20-06-2023, 7:30 AM"
-            enddatetime="22-06-2023, 9:30 AM"
-            vanue="Nakshtra Party Ploat Harni, Vadodara - 360002"
+            name={eventInformation.name}
+            startdatetime={moment(eventInformation.date1).format("DD-MM-YYYY")}
+            enddatetime={moment(eventInformation.date2).format("DD-MM-YYYY")}
+            vanue={eventInformation.location}
           />
-          <Button bg={"#0f045d"} mt={5} borderRadius={10}>
+          {eventInformation.flyer && (
+            <AutoHeightImage
+              width={windowWidth - 40}
+              style={{ marginTop: 20 }}
+              source={{ uri: downloadPath(eventInformation.flyer) }}
+            />
+          )}
+
+          {eventInformation?.cms && (
+            <RenderHtml
+              contentWidth={windowWidth - 40}
+              source={{ html: eventInformation.cms }}
+            />
+          )}
+
+          <Button bg={"#0f045d"} mt={5} borderRadius={10} mb="30">
             Registration
           </Button>
-        </VStack>
+        </ScrollView>
       </View>
     </>
   );

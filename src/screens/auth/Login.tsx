@@ -12,7 +12,7 @@ import {
   View,
   useToast,
 } from "native-base";
-import React, { useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 import { CustomButton, CustomInput } from "../../components/CustomForm";
 import {
@@ -29,7 +29,7 @@ const initialValue: IAuthMember = {
 };
 
 const validationSchema = Yup.object().shape({
-  email: Yup.number().required("Membership Number is required"),
+  email: Yup.number().required(),
   password: Yup.string().min(6).max(18).required(),
 });
 

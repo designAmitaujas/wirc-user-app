@@ -26,6 +26,7 @@ import {
   useMyProfileInformationQuery,
   useUpdateMyProfileMutation,
 } from "../../gql/graphql";
+import { useAppAuthState } from "../../store";
 
 const male = require("../../../assets/male.png");
 const female = require("../../../assets/female.png");
@@ -79,6 +80,7 @@ const validationSchema = Yup.object().shape({
 });
 const RestHeader = () => {
   // const { goBack } = useNavigation();
+  const { removeAuth } = useAppAuthState();
 
   const { navigate } = useNavigation();
 
@@ -87,10 +89,13 @@ const RestHeader = () => {
     navigate("VisitingCard");
   };
 
-  const logout = () => {
+  const logout = async () => {
+    removeAuth();
+    await new Promise((r) => setTimeout(r, 2000));
     // @ts-ignore
     navigate("Login");
   };
+
   return (
     <HStack
       backgroundColor="#0f045d"

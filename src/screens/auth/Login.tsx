@@ -60,7 +60,7 @@ const Login = () => {
       },
     });
 
-    if (response.data.memberRegistrationAuthResolver.success === true) {
+    if (response.data?.memberRegistrationAuthResolver.success === true) {
       setAuth({
         jwt: response.data.memberRegistrationAuthResolver.jwt,
         name: response.data.memberRegistrationAuthResolver.name,
@@ -136,7 +136,7 @@ const Login = () => {
                       name="email"
                       label="MemberShip Number"
                       currentValue={values.email}
-                      errMsg={errors.email}
+                      errMsg={errors.email || ""}
                       placeholder="Your MemberShip Number"
                       setFieldValue={setFieldValue}
                       isRequired={true}
@@ -159,7 +159,7 @@ const Login = () => {
                       name="password"
                       label="Password"
                       currentValue={values.password}
-                      errMsg={errors.password}
+                      errMsg={errors.password || ""}
                       placeholder="Your password"
                       setFieldValue={setFieldValue}
                       bgColor="white"

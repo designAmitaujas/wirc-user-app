@@ -179,7 +179,7 @@ const UpcomingCard: React.FC<{
 };
 
 const UpcomingEvents = () => {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const { params } = useRoute();
 
   const [getEventInformation] = useGetCpeEventByIdLazyQuery();
@@ -203,6 +203,12 @@ const UpcomingEvents = () => {
       })();
     }
   }, [params]);
+
+  const handleRedirect = () => {
+    const { eventId } = params as { eventId?: string };
+    // @ts-ignore
+    navigate("EventRegistration", { eventId });
+  };
 
   if (!eventInformation) return <></>;
 
@@ -258,7 +264,13 @@ const UpcomingEvents = () => {
             />
           )}
 
-          <Button bg={"#0f045d"} mt={5} borderRadius={10} mb="30">
+          <Button
+            onPress={handleRedirect}
+            bg={"#0f045d"}
+            mt={5}
+            borderRadius={10}
+            mb="30"
+          >
             Registration
           </Button>
         </ScrollView>

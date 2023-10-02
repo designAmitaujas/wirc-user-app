@@ -136,7 +136,7 @@ const App = () => {
       errorLink,
       authLink.concat(
         createUploadLink({
-          uri: "https://admin.wirc-icai.org/graphql",
+          uri: GQL_API_URL,
         })
       ),
     ]),

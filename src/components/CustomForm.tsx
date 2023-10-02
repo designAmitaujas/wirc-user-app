@@ -80,7 +80,7 @@ export const CustomInput: React.FC<ICustomInput> = memo((props) => {
       <Input
         {...props}
         keyboardType={keyboardType}
-        placeholder={placeholder}
+        placeholder={capitalize(placeholder)}
         value={toString(currentValue)}
         onChangeText={handleChangeText}
         borderRadius="12"

@@ -121,7 +121,7 @@ const MobileLogin = () => {
                 <VStack space={2} alignSelf={"center"} mt={"5"}>
                   <CustomInput
                     currentValue={values.mobileNo}
-                    errMsg={errors.mobileNo}
+                    errMsg={errors.mobileNo || ""}
                     isInvalid={!!touched.mobileNo && !!errors.mobileNo}
                     isRequired={true}
                     w={"72"}
@@ -145,7 +145,7 @@ const MobileLogin = () => {
                     <>
                       <CustomInput
                         keyboardType="numeric"
-                        errMsg={errors.otp}
+                        errMsg={errors.otp || ""}
                         isInvalid={!!touched.otp && !!errors.otp}
                         label="Otp"
                         name="otp"

@@ -1,17 +1,22 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Formik } from "formik";
-import { Box, HStack, ScrollView, Text, VStack, View } from "native-base";
+import { Formik, FormikHelpers } from "formik";
+import { Box, HStack, Icon, ScrollView, Text, VStack, View } from "native-base";
 import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Yup from "yup";
-import { CustomInput, CustomSelect } from "../components/CustomForm";
+import {
+  CustomButton,
+  CustomInput,
+  CustomSelect,
+} from "../components/CustomForm";
 import {
   GetCpeEventByIdQuery,
   useGetAllCityQuery,
   useGetAllCountryQuery,
   useGetAllStateQuery,
   useGetCpeEventByIdLazyQuery,
+  useGetCpeEventRangeByCpeIdQuery,
 } from "../gql/graphql";
 
 const initalValue = {
@@ -26,6 +31,7 @@ const initalValue = {
   state: "",
   city: "",
   pincode: "",
+  userType: "",
   billingEmail: "",
   billingGst: "",
   billingName: "",
@@ -61,6 +67,10 @@ const EventRegistration = () => {
   const { data: countryList } = useGetAllCountryQuery();
   const { data: stateList } = useGetAllStateQuery();
   const { data: cityList } = useGetAllCityQuery();
+  const { data: eventRenge, refetch } = useGetCpeEventRangeByCpeIdQuery({
+    // @ts-ignore
+    variables: { options: { id: params?.eventId || "" } },
+  });
 
   const [getEventInformation] = useGetCpeEventByIdLazyQuery();
 
@@ -73,6 +83,8 @@ const EventRegistration = () => {
           variables: { options: { id: eventId } },
         });
 
+        await refetch();
+
         if (response.data?.getCpeEventById) {
           setEventInformation(response.data.getCpeEventById);
         }
@@ -80,7 +92,12 @@ const EventRegistration = () => {
     }
   }, [params]);
 
-  const handleSubmit = () => {};
+  const handleSubmit = (
+    val: IFormikInputType,
+    action: FormikHelpers<IFormikInputType>
+  ) => {
+    console.log(val);
+  };
 
   return (
     <View bg={"white"} flex={1}>
@@ -106,9 +123,9 @@ const EventRegistration = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, setFieldValue }) => {
+          {({ values, errors, touched, setFieldValue, isSubmitting }) => {
             return (
-              <VStack alignSelf={"center"} mt={"5"}>
+              <VStack alignSelf={"center"} mt={"5"} mb={"10"}>
                 <CustomInput
                   w={"72"}
                   borderColor={"#0f045d"}
@@ -256,8 +273,8 @@ const EventRegistration = () => {
                   <CustomSelect
                     w={"72"}
                     borderColor={"#0f045d"}
-                    name="state"
-                    label="state"
+                    name="city"
+                    label="city"
                     options={cityList.getAllCity
                       .filter((item) => item.isActive === true)
                       .filter((item) => item.state?._id === values.state)
@@ -265,11 +282,11 @@ const EventRegistration = () => {
                         value: item._id,
                         label: item.name,
                       }))}
-                    errMsg={errors.state || ""}
+                    errMsg={errors.city || ""}
                     placeholder="Select state"
                     setFieldValue={setFieldValue}
                     isRequired={true}
-                    isInvalid={!!touched.state && !!errors.state}
+                    isInvalid={!!touched.city && !!errors.city}
                     bgColor="white"
                   />
                 )}
@@ -286,6 +303,103 @@ const EventRegistration = () => {
                   isRequired={true}
                   isInvalid={!!touched.pincode && !!errors.pincode}
                   bgColor="white"
+                />
+
+                {eventRenge?.getCpeEventRangeByCpeId && (
+                  <CustomSelect
+                    w={"72"}
+                    borderColor={"#0f045d"}
+                    name="userType"
+                    label="User Type"
+                    options={eventRenge.getCpeEventRangeByCpeId
+                      .filter((item) => item.isActive === true)
+                      .filter((item) => item.isForMember === true)
+                      .map((item) => ({
+                        value: item._id,
+                        label: item.name + "- ₹" + item.price,
+                      }))}
+                    errMsg={errors.userType || ""}
+                    placeholder="Select user Type"
+                    setFieldValue={setFieldValue}
+                    isRequired={true}
+                    isInvalid={!!touched.userType && !!errors.userType}
+                    bgColor="white"
+                  />
+                )}
+
+                <CustomInput
+                  w={"72"}
+                  borderColor={"#0f045d"}
+                  name="billingEmail"
+                  label="billing Email"
+                  currentValue={values.billingEmail}
+                  errMsg={errors.billingEmail || ""}
+                  placeholder="Your billing Email"
+                  setFieldValue={setFieldValue}
+                  isRequired={true}
+                  isInvalid={!!touched.billingEmail && !!errors.billingEmail}
+                  bgColor="white"
+                />
+
+                <CustomInput
+                  w={"72"}
+                  borderColor={"#0f045d"}
+                  name="billingEmail"
+                  label="billing Email"
+                  currentValue={values.billingEmail}
+                  errMsg={errors.billingEmail || ""}
+                  placeholder="Your billing Email"
+                  setFieldValue={setFieldValue}
+                  isRequired={true}
+                  isInvalid={!!touched.billingEmail && !!errors.billingEmail}
+                  bgColor="white"
+                />
+
+                <CustomInput
+                  w={"72"}
+                  borderColor={"#0f045d"}
+                  name="billingGst"
+                  label="billing Gst"
+                  currentValue={values.billingGst}
+                  errMsg={errors.billingGst || ""}
+                  placeholder="Your billing Gst"
+                  setFieldValue={setFieldValue}
+                  isRequired={true}
+                  isInvalid={!!touched.billingGst && !!errors.billingGst}
+                  bgColor="white"
+                />
+
+                <CustomInput
+                  w={"72"}
+                  borderColor={"#0f045d"}
+                  name="billingName"
+                  label="billing Name"
+                  currentValue={values.billingName}
+                  errMsg={errors.billingName || ""}
+                  placeholder="Your billing Gst"
+                  setFieldValue={setFieldValue}
+                  isRequired={true}
+                  isInvalid={!!touched.billingName && !!errors.billingName}
+                  bgColor="white"
+                />
+
+                <CustomButton
+                  name="Submit"
+                  mt="8"
+                  borderRadius={25}
+                  w={"48"}
+                  h={12}
+                  alignSelf={"center"}
+                  bg={"#0f045d"}
+                  colorScheme={"white"}
+                  leftIcon={
+                    <Icon as={FontAwesome5} name="lock" mr="1" size="sm" />
+                  }
+                  isSubmitting={isSubmitting}
+                  // @ts-ignore
+                  onPress={handleSubmit}
+                  // @ts-ignore
+                  onSubmit={handleSubmit}
                 />
               </VStack>
             );

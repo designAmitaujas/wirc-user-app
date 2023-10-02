@@ -12,7 +12,7 @@ import {
   View,
   useToast,
 } from "native-base";
-import React, { useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 import { CustomButton, CustomInput } from "../../components/CustomForm";
 import {
@@ -36,13 +36,14 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   const { navigate } = useNavigation();
   const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
 
   const { setAuth } = useAppAuthState();
 
   const [setAuthUp] = useMemberRegistrationAuthResolverMutation();
 
   const toast = useToast();
+
+  const handleClick = () => setShow(!show);
 
   const handleSubmit = async (
     val: IAuthMember,
@@ -60,16 +61,23 @@ const Login = () => {
       },
     });
 
-    if (response.data.memberRegistrationAuthResolver.success === true) {
+    if (response.data?.memberRegistrationAuthResolver.success === true) {
       setAuth({
         jwt: response.data.memberRegistrationAuthResolver.jwt,
         name: response.data.memberRegistrationAuthResolver.name,
       });
-      toast.show({ title: _.capitalize("authenticated successfully") });
+      toast.show({
+        title: _.capitalize("authenticated successfully"),
+        placement: "top",
+      });
+      await new Promise((r) => setTimeout(r, 2000));
       // @ts-ignore
       navigate("BottomTab");
     } else {
-      toast.show({ title: _.capitalize("authentication error") });
+      toast.show({
+        title: _.capitalize("authentication error"),
+        placement: "top",
+      });
     }
 
     actions.setSubmitting(false);
@@ -136,7 +144,7 @@ const Login = () => {
                       name="email"
                       label="Email Address"
                       currentValue={values.email}
-                      errMsg={errors.email}
+                      errMsg={errors.email || ""}
                       placeholder="Your Email Address"
                       setFieldValue={setFieldValue}
                       isRequired={true}
@@ -159,7 +167,7 @@ const Login = () => {
                       name="password"
                       label="Password"
                       currentValue={values.password}
-                      errMsg={errors.password}
+                      errMsg={errors.password || ""}
                       placeholder="Your password"
                       setFieldValue={setFieldValue}
                       bgColor="white"

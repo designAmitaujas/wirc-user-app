@@ -16,6 +16,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Yup from "yup";
 import { CustomInput } from "../../components/CustomForm";
+import { useAppAuthState } from "../../store";
 
 const initialValue = {
   fullname: "",
@@ -35,6 +36,7 @@ const validationSchema = Yup.object().shape({
 
 const RestHeader = () => {
   // const { goBack } = useNavigation();
+  const { removeAuth } = useAppAuthState();
 
   const { navigate } = useNavigation();
 
@@ -43,10 +45,13 @@ const RestHeader = () => {
     navigate("VisitingCard");
   };
 
-  const logout = () => {
+  const logout = async () => {
+    removeAuth();
+    await new Promise((r) => setTimeout(r, 2000));
     // @ts-ignore
     navigate("Login");
   };
+
   return (
     <HStack
       backgroundColor="#0f045d"
@@ -93,8 +98,6 @@ const RestHeader = () => {
 };
 
 const ProfileScreen = () => {
-  const [key, setKey] = React.useState(Math.random());
-
   const handleSubmit = () => {};
 
   return (

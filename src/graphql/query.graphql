@@ -1,9 +1,59 @@
-mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
-  memberRegistrationAuthResolver(options: $options) {
-    success
-    msg
-    jwt
-    email
+query GetAllCpeEvent {
+  getAllCpeEvent {
+    _id
     name
+    img
+    date1
+    cpehrs
+    date2
+    time1
+    time2
+    location
+    flyer
+    capacity
+    cutoffDate
+    cms
+    price
+    igstState {
+      _id
+      name
+      isActive
+    }
+    igst
+    cgst
+    sgst
+    isForStudent
+    isArchived
+    isActive
+  }
+}
+
+query GetCpeEventById($options: IGetByID!) {
+  getCpeEventById(options: $options) {
+    _id
+    name
+    img
+    date1
+    cpehrs
+    date2
+    time1
+    time2
+    location
+    flyer
+    capacity
+    cutoffDate
+    cms
+    price
+    igstState {
+      _id
+      name
+      isActive
+    }
+    igst
+    cgst
+    sgst
+    isForStudent
+    isArchived
+    isActive
   }
 }

@@ -1,8 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import _ from "lodash";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { expo } from "../app.json";
 
 interface AppAuthState {
   jwt: string;
@@ -11,8 +9,6 @@ interface AppAuthState {
   setAuth: (arg0: { jwt: string; name: string }) => void;
   removeAuth: () => void;
 }
-
-console.log("current version : %d", _.round(_.toNumber(expo.version), 2));
 
 export const useAppAuthState = create<AppAuthState>()(
   persist(
@@ -38,7 +34,7 @@ export const useAppAuthState = create<AppAuthState>()(
     {
       name: "app-state",
       storage: createJSONStorage(() => AsyncStorage),
-      version: _.round(_.toNumber(expo.version), 2),
+      version: 0.1,
     }
   )
 );

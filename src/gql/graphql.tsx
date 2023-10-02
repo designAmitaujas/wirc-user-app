@@ -1362,6 +1362,7 @@ export type ICreatePublicationUserType = {
   couriersgst: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
   name: Scalars['String']['input'];
+  publication: Scalars['String']['input'];
 };
 
 export type ICreateRedirectLinks = {
@@ -1972,6 +1973,7 @@ export type Mutation = {
   createOrUpdateMentorshipZone: IStatusResponse;
   createOrUpdateNetworkingZone: IStatusResponse;
   createOrUpdatePastChairperson: IStatusResponse;
+  createOrUpdatePastCpeEvent: IStatusResponse;
   createOrUpdatePodcast: IStatusResponse;
   createOrUpdatePrerna: IStatusResponse;
   createOrUpdatePresidentFromWesternRegion: IStatusResponse;
@@ -2061,6 +2063,7 @@ export type Mutation = {
   deleteMentorshipZone: IStatusResponse;
   deleteNetworkingZone: IStatusResponse;
   deletePastChairperson: IStatusResponse;
+  deletePastCpeEvent: IStatusResponse;
   deletePodcast: IStatusResponse;
   deletePrerna: IStatusResponse;
   deletePresidentFromWesternRegion: IStatusResponse;
@@ -2454,6 +2457,11 @@ export type MutationCreateOrUpdateNetworkingZoneArgs = {
 
 export type MutationCreateOrUpdatePastChairpersonArgs = {
   options: ICreatePastChairperson;
+};
+
+
+export type MutationCreateOrUpdatePastCpeEventArgs = {
+  options: ICreateCpeEvent;
 };
 
 
@@ -2898,6 +2906,11 @@ export type MutationDeleteNetworkingZoneArgs = {
 
 
 export type MutationDeletePastChairpersonArgs = {
+  options: IGetById;
+};
+
+
+export type MutationDeletePastCpeEventArgs = {
   options: IGetById;
 };
 
@@ -3430,6 +3443,7 @@ export type Query = {
   getAllCoworkingZoneFront: Array<CoworkingZone>;
   getAllCpeEvent: Array<CpeEvent>;
   getAllCpeEventRange: Array<CpeEventRange>;
+  getAllCpePastEvent: Array<CpeEvent>;
   getAllCpeResource: Array<CpeResource>;
   getAllCpeResourceCategory: Array<CpeResourceCategory>;
   getAllCpeStudyChapterCategory: Array<CpeStudyChapterCategory>;
@@ -3527,6 +3541,7 @@ export type Query = {
   getCountryById: Country;
   getCoworkingZoneById: CoworkingZone;
   getCpeEventById: CpeEvent;
+  getCpeEventPastById: CpeEvent;
   getCpeEventRangeByCpeId: Array<CpeEventRange>;
   getCpeEventRangeById: CpeEventRange;
   getCpeResourceById: CpeResource;
@@ -3726,6 +3741,11 @@ export type QueryGetCoworkingZoneByIdArgs = {
 
 
 export type QueryGetCpeEventByIdArgs = {
+  options: IGetById;
+};
+
+
+export type QueryGetCpeEventPastByIdArgs = {
   options: IGetById;
 };
 
@@ -4393,6 +4413,18 @@ export type MemberRegistrationAuthResolverMutationVariables = Exact<{
 
 export type MemberRegistrationAuthResolverMutation = { __typename?: 'Mutation', memberRegistrationAuthResolver: { __typename?: 'IAuthResoverResponse', success: boolean, msg: string, jwt: string, email: string, name: string } };
 
+export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCpeEventQuery = { __typename?: 'Query', getAllCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null }> };
+
+export type GetCpeEventByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetCpeEventByIdQuery = { __typename?: 'Query', getCpeEventById: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null } };
+
 
 export const MemberRegistrationAuthResolverDocument = gql`
     mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
@@ -4431,3 +4463,120 @@ export function useMemberRegistrationAuthResolverMutation(baseOptions?: Apollo.M
 export type MemberRegistrationAuthResolverMutationHookResult = ReturnType<typeof useMemberRegistrationAuthResolverMutation>;
 export type MemberRegistrationAuthResolverMutationResult = Apollo.MutationResult<MemberRegistrationAuthResolverMutation>;
 export type MemberRegistrationAuthResolverMutationOptions = Apollo.BaseMutationOptions<MemberRegistrationAuthResolverMutation, MemberRegistrationAuthResolverMutationVariables>;
+export const GetAllCpeEventDocument = gql`
+    query GetAllCpeEvent {
+  getAllCpeEvent {
+    _id
+    name
+    img
+    date1
+    cpehrs
+    date2
+    time1
+    time2
+    location
+    flyer
+    capacity
+    cutoffDate
+    cms
+    price
+    igstState {
+      _id
+      name
+      isActive
+    }
+    igst
+    cgst
+    sgst
+    isForStudent
+    isArchived
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllCpeEventQuery__
+ *
+ * To run a query within a React component, call `useGetAllCpeEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCpeEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCpeEventQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCpeEventQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCpeEventQuery, GetAllCpeEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCpeEventQuery, GetAllCpeEventQueryVariables>(GetAllCpeEventDocument, options);
+      }
+export function useGetAllCpeEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCpeEventQuery, GetAllCpeEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCpeEventQuery, GetAllCpeEventQueryVariables>(GetAllCpeEventDocument, options);
+        }
+export type GetAllCpeEventQueryHookResult = ReturnType<typeof useGetAllCpeEventQuery>;
+export type GetAllCpeEventLazyQueryHookResult = ReturnType<typeof useGetAllCpeEventLazyQuery>;
+export type GetAllCpeEventQueryResult = Apollo.QueryResult<GetAllCpeEventQuery, GetAllCpeEventQueryVariables>;
+export const GetCpeEventByIdDocument = gql`
+    query GetCpeEventById($options: IGetByID!) {
+  getCpeEventById(options: $options) {
+    _id
+    name
+    img
+    date1
+    cpehrs
+    date2
+    time1
+    time2
+    location
+    flyer
+    capacity
+    cutoffDate
+    cms
+    price
+    igstState {
+      _id
+      name
+      isActive
+    }
+    igst
+    cgst
+    sgst
+    isForStudent
+    isArchived
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetCpeEventByIdQuery__
+ *
+ * To run a query within a React component, call `useGetCpeEventByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCpeEventByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCpeEventByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetCpeEventByIdQuery(baseOptions: Apollo.QueryHookOptions<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>(GetCpeEventByIdDocument, options);
+      }
+export function useGetCpeEventByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>(GetCpeEventByIdDocument, options);
+        }
+export type GetCpeEventByIdQueryHookResult = ReturnType<typeof useGetCpeEventByIdQuery>;
+export type GetCpeEventByIdLazyQueryHookResult = ReturnType<typeof useGetCpeEventByIdLazyQuery>;
+export type GetCpeEventByIdQueryResult = Apollo.QueryResult<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>;

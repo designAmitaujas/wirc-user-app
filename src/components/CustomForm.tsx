@@ -1,3 +1,4 @@
+import _ from "lodash";
 import capitalize from "lodash/capitalize";
 import toString from "lodash/toString";
 import {
@@ -72,7 +73,9 @@ export const CustomInput: React.FC<ICustomInput> = memo((props) => {
   return (
     <FormControl isRequired={isRequired} isInvalid={isInvalid}>
       {label && (
-        <FormControl.Label fontWeight={"bold"}>{label}</FormControl.Label>
+        <FormControl.Label fontWeight={"bold"}>
+          {_.capitalize(label)}
+        </FormControl.Label>
       )}
       <Input
         {...props}
@@ -204,6 +207,7 @@ export const CustomButton: React.FC<ICustomButton> = memo((props) => {
     <Button
       {...props}
       onPress={onSubmit}
+      // @ts-ignore
       leftIcon={isSubmitting === true ? <Spinner /> : props.leftIcon || null}
     >
       {capitalize(name)}

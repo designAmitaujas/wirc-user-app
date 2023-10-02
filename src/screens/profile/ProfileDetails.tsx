@@ -281,7 +281,7 @@ const ProfileScreen = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.firstName}
-                          errMsg={errors.firstName}
+                          errMsg={errors.firstName || ""}
                           isInvalid={!!touched.firstName && !!errors.firstName}
                           label="First Name"
                           name="firstName"
@@ -295,7 +295,7 @@ const ProfileScreen = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.middleName}
-                          errMsg={errors.middleName}
+                          errMsg={errors.middleName || ""}
                           isInvalid={
                             !!touched.middleName && !!errors.middleName
                           }
@@ -311,7 +311,7 @@ const ProfileScreen = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.lastName}
-                          errMsg={errors.lastName}
+                          errMsg={errors.lastName || ""}
                           isInvalid={!!touched.lastName && !!errors.lastName}
                           label="Last Name"
                           name="lastName"
@@ -326,7 +326,7 @@ const ProfileScreen = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.email}
-                          errMsg={errors.email}
+                          errMsg={errors.email || ""}
                           isInvalid={!!touched.email && !!errors.email}
                           label="Email Address"
                           keyboardType="email-address"
@@ -341,7 +341,7 @@ const ProfileScreen = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.phone}
-                          errMsg={errors.phone}
+                          errMsg={errors.phone || ""}
                           isInvalid={!!touched.phone && !!errors.phone}
                           label="Mobile Number"
                           name="phone"
@@ -360,7 +360,7 @@ const ProfileScreen = () => {
                               value: item._id,
                               label: item.name,
                             }))}
-                          errMsg={errors.country}
+                          errMsg={errors.country || ""}
                           isInvalid={!!touched.country && !!errors.country}
                           label={"country"}
                           name="country"
@@ -376,7 +376,7 @@ const ProfileScreen = () => {
                               value: item._id,
                               label: item.name,
                             }))}
-                          errMsg={errors.state}
+                          errMsg={errors.state || ""}
                           isInvalid={!!touched.state && !!errors.state}
                           label={"state"}
                           name="state"
@@ -392,7 +392,7 @@ const ProfileScreen = () => {
                               value: item._id,
                               label: item.name,
                             }))}
-                          errMsg={errors.city}
+                          errMsg={errors.city || ""}
                           isInvalid={!!touched.city && !!errors.city}
                           label={"city"}
                           name="city"

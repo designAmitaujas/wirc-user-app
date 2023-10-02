@@ -1,6 +1,7 @@
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
+import _ from "lodash";
 import {
   Icon,
   IconButton,
@@ -9,19 +10,26 @@ import {
   Text,
   VStack,
   View,
+  useToast,
 } from "native-base";
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { CustomButton, CustomInput } from "../../components/CustomForm";
+import {
+  IAuthMember,
+  useMemberRegistrationAuthResolverMutation,
+} from "../../gql/graphql";
+import { useAppAuthState } from "../../store";
 import BottomTab from "../BottomTab";
 
-const initialValue = {
-  email: "xyz@gmail.com",
-  password: "1234567890",
+const initialValue: IAuthMember = {
+  email: "",
+  memberType: "",
+  password: "",
 };
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email().required(),
+  email: Yup.number().required(),
   password: Yup.string().min(6).max(18).required(),
 });
 
@@ -30,27 +38,46 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
-  const handleSubmit = () => {
-    // @ts-ignore
-    navigate(BottomTab);
+  const { setAuth } = useAppAuthState();
+
+  const [setAuthUp] = useMemberRegistrationAuthResolverMutation();
+
+  const toast = useToast();
+
+  const handleSubmit = async (
+    val: IAuthMember,
+    actions: FormikHelpers<IAuthMember>
+  ) => {
+    actions.setSubmitting(true);
+
+    const response = await setAuthUp({
+      variables: {
+        options: {
+          email: val.email.padStart(6, "0"),
+          memberType: "member",
+          password: val.password,
+        },
+      },
+    });
+
+    if (response.data.memberRegistrationAuthResolver.success === true) {
+      setAuth({
+        jwt: response.data.memberRegistrationAuthResolver.jwt,
+        name: response.data.memberRegistrationAuthResolver.name,
+      });
+      toast.show({ title: _.capitalize("authenticated successfully") });
+      // @ts-ignore
+      navigate("BottomTab");
+    } else {
+      toast.show({ title: _.capitalize("authentication error") });
+    }
+
+    actions.setSubmitting(false);
   };
+
   const handleLogin = () => {
     // @ts-ignore
     navigate(BottomTab);
-  };
-
-  const Register = () => {
-    //@ts-ignore
-    navigate("Signup");
-  };
-
-  const Mobile = () => {
-    //@ts-ignore
-    navigate("mobile");
-  };
-  const Forgot = () => {
-    //@ts-ignore
-    navigate("Forgot");
   };
 
   return (
@@ -66,7 +93,6 @@ const Login = () => {
             values,
             touched,
             errors,
-            handleChange,
             setFieldValue,
             isSubmitting,
           }) => {
@@ -127,7 +153,6 @@ const Login = () => {
                       bgColor="white"
                     />
                     <CustomInput
-                      // secureTextEntry={true}
                       isRequired={true}
                       borderColor={"#0f045d"}
                       w={"72"}
@@ -175,19 +200,6 @@ const Login = () => {
                       }
                     />
 
-                    {/* <Link
-                        alignSelf={"flex-end"}
-                        onPress={Forgot}
-                        _text={{
-                          color: "#313031",
-                          fontWeight: "medium",
-                          fontSize: "sm",
-                          textDecoration: "none",
-                        }}
-                      >
-                        Forgot Password ?
-                      </Link> */}
-
                     <CustomButton
                       name="Login"
                       mt="8"
@@ -204,45 +216,6 @@ const Login = () => {
                       isSubmitting={isSubmitting}
                       onSubmit={handleSubmit}
                     />
-
-                    {/* <HStack justifyContent={"center"} mt={2} space={2}>
-                      <Text fontSize={16} color={"gray.500"}>
-                        Login with
-                      </Text>
-                      <Link
-                        onPress={Mobile}
-                        _text={{
-                          color: "#0f045d",
-                          fontWeight: "semibold",
-                          fontSize: "16",
-                          textDecoration: "none",
-                        }}
-                      >
-                        Mobile Number
-                      </Link>
-                    </HStack> */}
-                    {/* <HStack justifyContent="center" mt={"5"} mb={"3"}>
-                        <Text
-                          fontSize="sm"
-                          color="coolGray.600"
-                          _dark={{
-                            color: "warmGray.200",
-                          }}
-                        >
-                          Don't Have An Account?{" "}
-                        </Text>
-                        <Link
-                          onPress={Register}
-                          _text={{
-                            color: "#313031",
-                            fontWeight: "medium",
-                            fontSize: "sm",
-                            textDecoration: "none",
-                          }}
-                        >
-                          Sign Up
-                        </Link>
-                      </HStack> */}
                   </VStack>
                 </ScrollView>
               </>

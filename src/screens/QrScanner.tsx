@@ -1,8 +1,8 @@
 import { useIsFocused } from "@react-navigation/native";
-import { BarCodeScanner } from "expo-barcode-scanner";
+import { BarCodeScanner, PermissionStatus } from "expo-barcode-scanner";
 import Lottie from "lottie-react-native";
 import { Box, Button, HStack, Text, VStack, View } from "native-base";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const QRScanner = () => {
   const isFocused = useIsFocused();
@@ -13,7 +13,7 @@ const QRScanner = () => {
 };
 
 function QRScreen() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
   const [scanned, setScanned] = useState(false);
   const [info, setInfo] = useState(null);
   const [info1, setInfo1] = useState(null);
@@ -22,11 +22,11 @@ function QRScreen() {
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
+      setHasPermission(status === PermissionStatus.GRANTED);
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ data }) => {
+  const handleBarCodeScanned = ({ data }: { data: any }) => {
     setScanned(true);
 
     setInfo(data);

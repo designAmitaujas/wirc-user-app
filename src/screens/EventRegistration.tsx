@@ -123,7 +123,14 @@ const EventRegistration = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, setFieldValue, isSubmitting }) => {
+          {({
+            values,
+            errors,
+            touched,
+            setFieldValue,
+            isSubmitting,
+            handleSubmit,
+          }) => {
             return (
               <VStack alignSelf={"center"} mt={"5"} mb={"10"}>
                 <CustomInput
@@ -395,7 +402,6 @@ const EventRegistration = () => {
                     <Icon as={FontAwesome5} name="lock" mr="1" size="sm" />
                   }
                   isSubmitting={isSubmitting}
-                  //@ts-ignore
                   onSubmit={handleSubmit}
                 />
               </VStack>

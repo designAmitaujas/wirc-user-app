@@ -11,12 +11,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 import * as SplashScreen from "expo-splash-screen";
 import { NativeBaseProvider, extendTheme } from "native-base";
-import React from "react";
+import { FC, ReactNode } from "react";
 import { NoInternet } from "./AppLoader";
 
 SplashScreen.preventAutoHideAsync();
 
-const AppProvider = ({ children }) => {
+const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { isConnected } = useNetInfo();
 
   const [fontsLoaded] = useFonts({

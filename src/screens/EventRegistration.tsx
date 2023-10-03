@@ -96,7 +96,7 @@ const EventRegistration = () => {
     val: IFormikInputType,
     action: FormikHelpers<IFormikInputType>
   ) => {
-    console.log(val);
+    console.log("hello");
   };
 
   return (
@@ -382,9 +382,8 @@ const EventRegistration = () => {
                   isInvalid={!!touched.billingName && !!errors.billingName}
                   bgColor="white"
                 />
-
                 <CustomButton
-                  name="Submit"
+                  name="Login"
                   mt="8"
                   borderRadius={25}
                   w={"48"}
@@ -396,9 +395,7 @@ const EventRegistration = () => {
                     <Icon as={FontAwesome5} name="lock" mr="1" size="sm" />
                   }
                   isSubmitting={isSubmitting}
-                  // @ts-ignore
-                  onPress={handleSubmit}
-                  // @ts-ignore
+                  //@ts-ignore
                   onSubmit={handleSubmit}
                 />
               </VStack>

@@ -206,7 +206,6 @@ const Login = () => {
                       borderRadius={25}
                       w={"48"}
                       h={12}
-                      onPress={handleLogin}
                       alignSelf={"center"}
                       bg={"#0f045d"}
                       colorScheme={"white"}

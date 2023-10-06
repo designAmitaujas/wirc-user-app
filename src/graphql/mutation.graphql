@@ -15,3 +15,46 @@ mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
     name
   }
 }
+
+mutation GetMemberInfoByMembershipNumber($options: IGetByID!) {
+  getMemberInfoByMembershipNumber(options: $options) {
+    isData
+    name
+    organization
+    email
+    contactInfo
+    gst
+    address
+    country
+    state
+    city
+    pincode
+  }
+}
+
+mutation GenEventPaymnet($options: IEventRegistrationInput!) {
+  genEventPaymnet(options: $options) {
+    success
+    msg
+    data {
+      MID
+      WEBSITE
+      CHANNEL_ID
+      CUST_ID
+      ORDER_ID
+      TXN_AMOUNT
+      CALLBACK_URL
+      EMAIL
+      CHECKSUMHASH
+      TOKEN
+    }
+  }
+}
+
+mutation AddAttendence($options: IAddAttendenceInput!) {
+  addAttendence(options: $options) {
+    success
+    msg
+    data
+  }
+}

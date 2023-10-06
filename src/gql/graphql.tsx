@@ -43,6 +43,7 @@ export type ActivityReport = {
   isActive: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   uri: Scalars['String']['output'];
+  year: Scalars['String']['output'];
 };
 
 export type ArticlesPlacement = {
@@ -434,6 +435,7 @@ export type EventTransactionHistory = {
   billingName: Scalars['String']['output'];
   cpeEvnet?: Maybe<CpeEvent>;
   createdAt: Scalars['DateTime']['output'];
+  customId: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
   isPaymnetPaid: Scalars['Boolean']['output'];
   isSameCity: Scalars['Boolean']['output'];
@@ -557,6 +559,11 @@ export type HomePortalCategory = {
   name: Scalars['String']['output'];
 };
 
+export type IAddAttendenceInput = {
+  eventId: Scalars['String']['input'];
+  memberId: Scalars['String']['input'];
+};
+
 export type IArticleVacancies = {
   area: Scalars['String']['input'];
   city: Scalars['String']['input'];
@@ -619,6 +626,7 @@ export type ICreateActivityReport = {
   isActive: Scalars['Boolean']['input'];
   name: Scalars['String']['input'];
   uri: Scalars['String']['input'];
+  year: Scalars['String']['input'];
 };
 
 export type ICreateArticlesPlacement = {
@@ -1463,8 +1471,14 @@ export type ICreateStudyGroup = {
 
 export type ICreateStudyGroupCategory = {
   _id?: InputMaybe<Scalars['String']['input']>;
+  capacity: Scalars['String']['input'];
+  cgst: Scalars['Float']['input'];
+  igst: Scalars['Float']['input'];
+  igstCity: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
   name: Scalars['String']['input'];
+  price: Scalars['Float']['input'];
+  sgst: Scalars['Float']['input'];
 };
 
 export type ICreateTax = {
@@ -1550,6 +1564,7 @@ export type ICreateWircDirectory = {
   isActive: Scalars['Boolean']['input'];
   name: Scalars['String']['input'];
   uri: Scalars['String']['input'];
+  year: Scalars['String']['input'];
 };
 
 export type ICreateWorkType = {
@@ -1907,8 +1922,10 @@ export type MentorshipZone = {
 export type Mutation = {
   __typename?: 'Mutation';
   GetAllPaymentDetailsByDateRange: Array<EventRegistrationMember>;
+  GetAllPublicationPaymentDetailsByDateRange: Array<PublicationBilling>;
   GetPaymentDetails: Array<EventRegistrationMember>;
   GetPaymentDetailsByStudyGroup: Array<EventRegistrationMember>;
+  addAttendence: IStatusResponse;
   addHelpDeskQA: IStatusResponse;
   articleVacancySearch: Array<ArticlesPlacement>;
   authPublicationLoginResolver: IAuthResoverResponse;
@@ -2126,6 +2143,11 @@ export type MutationGetAllPaymentDetailsByDateRangeArgs = {
 };
 
 
+export type MutationGetAllPublicationPaymentDetailsByDateRangeArgs = {
+  options: IGetPaymentDetails;
+};
+
+
 export type MutationGetPaymentDetailsArgs = {
   options: IGetPaymentDetails;
 };
@@ -2133,6 +2155,11 @@ export type MutationGetPaymentDetailsArgs = {
 
 export type MutationGetPaymentDetailsByStudyGroupArgs = {
   options: IGetPaymentDetails;
+};
+
+
+export type MutationAddAttendenceArgs = {
+  options: IAddAttendenceInput;
 };
 
 
@@ -3357,7 +3384,7 @@ export type PublicationBilling = {
   _id: Scalars['String']['output'];
   address: Scalars['String']['output'];
   altPhone: Scalars['String']['output'];
-  associatedUser: User;
+  associatedUser?: Maybe<User>;
   city?: Maybe<City>;
   comment: Scalars['String']['output'];
   country?: Maybe<Country>;
@@ -4271,8 +4298,14 @@ export type StudyGroup = {
 export type StudyGroupCategory = {
   __typename?: 'StudyGroupCategory';
   _id: Scalars['String']['output'];
+  capacity: Scalars['String']['output'];
+  cgst: Scalars['Float']['output'];
+  igst: Scalars['Float']['output'];
+  igstState?: Maybe<State>;
   isActive: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
+  sgst: Scalars['Float']['output'];
 };
 
 export type Tax = {
@@ -4319,6 +4352,7 @@ export type TransactionHistory = {
   TXN_AMOUNT: Scalars['String']['output'];
   WEBSITE: Scalars['String']['output'];
   _id: Scalars['String']['output'];
+  customId: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
   publication?: Maybe<Publication>;
 };
@@ -4386,10 +4420,12 @@ export type WicasaNewsLatter = {
 export type WircDirectory = {
   __typename?: 'WircDirectory';
   _id: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
   img: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   uri: Scalars['String']['output'];
+  year: Scalars['String']['output'];
 };
 
 export type WorkType = {
@@ -4421,6 +4457,27 @@ export type MemberRegistrationAuthResolverMutationVariables = Exact<{
 
 
 export type MemberRegistrationAuthResolverMutation = { __typename?: 'Mutation', memberRegistrationAuthResolver: { __typename?: 'IAuthResoverResponse', success: boolean, msg: string, jwt: string, email: string, name: string } };
+
+export type GetMemberInfoByMembershipNumberMutationVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetMemberInfoByMembershipNumberMutation = { __typename?: 'Mutation', getMemberInfoByMembershipNumber?: { __typename?: 'IUserInfoByMembershipNumber', isData: boolean, name: string, organization: string, email: string, contactInfo: string, gst: string, address: string, country: string, state: string, city: string, pincode: string } | null };
+
+export type GenEventPaymnetMutationVariables = Exact<{
+  options: IEventRegistrationInput;
+}>;
+
+
+export type GenEventPaymnetMutation = { __typename?: 'Mutation', genEventPaymnet: { __typename?: 'IPaymentResponse', success: boolean, msg: string, data?: { __typename?: 'IPaymentField', MID: string, WEBSITE: string, CHANNEL_ID: string, CUST_ID: string, ORDER_ID: string, TXN_AMOUNT: string, CALLBACK_URL: string, EMAIL: string, CHECKSUMHASH: string, TOKEN: string } | null } };
+
+export type AddAttendenceMutationVariables = Exact<{
+  options: IAddAttendenceInput;
+}>;
+
+
+export type AddAttendenceMutation = { __typename?: 'Mutation', addAttendence: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
 
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4484,6 +4541,13 @@ export type GetCpeEventRangeByCpeIdQueryVariables = Exact<{
 
 
 export type GetCpeEventRangeByCpeIdQuery = { __typename?: 'Query', getCpeEventRangeByCpeId: Array<{ __typename?: 'CpeEventRange', _id: string, name: string, description: string, price: string, isForMember: boolean, isForNonMember: boolean, isForstudent: boolean, isActive: boolean }> };
+
+export type GetCountByCpeEventQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetCountByCpeEventQuery = { __typename?: 'Query', getCountByCpeEvent: { __typename?: 'IEventRegistrationCount', eventId: string, occupied: string } };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -4558,6 +4622,130 @@ export function useMemberRegistrationAuthResolverMutation(baseOptions?: Apollo.M
 export type MemberRegistrationAuthResolverMutationHookResult = ReturnType<typeof useMemberRegistrationAuthResolverMutation>;
 export type MemberRegistrationAuthResolverMutationResult = Apollo.MutationResult<MemberRegistrationAuthResolverMutation>;
 export type MemberRegistrationAuthResolverMutationOptions = Apollo.BaseMutationOptions<MemberRegistrationAuthResolverMutation, MemberRegistrationAuthResolverMutationVariables>;
+export const GetMemberInfoByMembershipNumberDocument = gql`
+    mutation GetMemberInfoByMembershipNumber($options: IGetByID!) {
+  getMemberInfoByMembershipNumber(options: $options) {
+    isData
+    name
+    organization
+    email
+    contactInfo
+    gst
+    address
+    country
+    state
+    city
+    pincode
+  }
+}
+    `;
+export type GetMemberInfoByMembershipNumberMutationFn = Apollo.MutationFunction<GetMemberInfoByMembershipNumberMutation, GetMemberInfoByMembershipNumberMutationVariables>;
+
+/**
+ * __useGetMemberInfoByMembershipNumberMutation__
+ *
+ * To run a mutation, you first call `useGetMemberInfoByMembershipNumberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetMemberInfoByMembershipNumberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getMemberInfoByMembershipNumberMutation, { data, loading, error }] = useGetMemberInfoByMembershipNumberMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetMemberInfoByMembershipNumberMutation(baseOptions?: Apollo.MutationHookOptions<GetMemberInfoByMembershipNumberMutation, GetMemberInfoByMembershipNumberMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GetMemberInfoByMembershipNumberMutation, GetMemberInfoByMembershipNumberMutationVariables>(GetMemberInfoByMembershipNumberDocument, options);
+      }
+export type GetMemberInfoByMembershipNumberMutationHookResult = ReturnType<typeof useGetMemberInfoByMembershipNumberMutation>;
+export type GetMemberInfoByMembershipNumberMutationResult = Apollo.MutationResult<GetMemberInfoByMembershipNumberMutation>;
+export type GetMemberInfoByMembershipNumberMutationOptions = Apollo.BaseMutationOptions<GetMemberInfoByMembershipNumberMutation, GetMemberInfoByMembershipNumberMutationVariables>;
+export const GenEventPaymnetDocument = gql`
+    mutation GenEventPaymnet($options: IEventRegistrationInput!) {
+  genEventPaymnet(options: $options) {
+    success
+    msg
+    data {
+      MID
+      WEBSITE
+      CHANNEL_ID
+      CUST_ID
+      ORDER_ID
+      TXN_AMOUNT
+      CALLBACK_URL
+      EMAIL
+      CHECKSUMHASH
+      TOKEN
+    }
+  }
+}
+    `;
+export type GenEventPaymnetMutationFn = Apollo.MutationFunction<GenEventPaymnetMutation, GenEventPaymnetMutationVariables>;
+
+/**
+ * __useGenEventPaymnetMutation__
+ *
+ * To run a mutation, you first call `useGenEventPaymnetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenEventPaymnetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [genEventPaymnetMutation, { data, loading, error }] = useGenEventPaymnetMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGenEventPaymnetMutation(baseOptions?: Apollo.MutationHookOptions<GenEventPaymnetMutation, GenEventPaymnetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenEventPaymnetMutation, GenEventPaymnetMutationVariables>(GenEventPaymnetDocument, options);
+      }
+export type GenEventPaymnetMutationHookResult = ReturnType<typeof useGenEventPaymnetMutation>;
+export type GenEventPaymnetMutationResult = Apollo.MutationResult<GenEventPaymnetMutation>;
+export type GenEventPaymnetMutationOptions = Apollo.BaseMutationOptions<GenEventPaymnetMutation, GenEventPaymnetMutationVariables>;
+export const AddAttendenceDocument = gql`
+    mutation AddAttendence($options: IAddAttendenceInput!) {
+  addAttendence(options: $options) {
+    success
+    msg
+    data
+  }
+}
+    `;
+export type AddAttendenceMutationFn = Apollo.MutationFunction<AddAttendenceMutation, AddAttendenceMutationVariables>;
+
+/**
+ * __useAddAttendenceMutation__
+ *
+ * To run a mutation, you first call `useAddAttendenceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddAttendenceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addAttendenceMutation, { data, loading, error }] = useAddAttendenceMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useAddAttendenceMutation(baseOptions?: Apollo.MutationHookOptions<AddAttendenceMutation, AddAttendenceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddAttendenceMutation, AddAttendenceMutationVariables>(AddAttendenceDocument, options);
+      }
+export type AddAttendenceMutationHookResult = ReturnType<typeof useAddAttendenceMutation>;
+export type AddAttendenceMutationResult = Apollo.MutationResult<AddAttendenceMutation>;
+export type AddAttendenceMutationOptions = Apollo.BaseMutationOptions<AddAttendenceMutation, AddAttendenceMutationVariables>;
 export const GetAllCpeEventDocument = gql`
     query GetAllCpeEvent {
   getAllCpeEvent {
@@ -5066,3 +5254,39 @@ export function useGetCpeEventRangeByCpeIdLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetCpeEventRangeByCpeIdQueryHookResult = ReturnType<typeof useGetCpeEventRangeByCpeIdQuery>;
 export type GetCpeEventRangeByCpeIdLazyQueryHookResult = ReturnType<typeof useGetCpeEventRangeByCpeIdLazyQuery>;
 export type GetCpeEventRangeByCpeIdQueryResult = Apollo.QueryResult<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>;
+export const GetCountByCpeEventDocument = gql`
+    query GetCountByCpeEvent($options: IGetByID!) {
+  getCountByCpeEvent(options: $options) {
+    eventId
+    occupied
+  }
+}
+    `;
+
+/**
+ * __useGetCountByCpeEventQuery__
+ *
+ * To run a query within a React component, call `useGetCountByCpeEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCountByCpeEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCountByCpeEventQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetCountByCpeEventQuery(baseOptions: Apollo.QueryHookOptions<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>(GetCountByCpeEventDocument, options);
+      }
+export function useGetCountByCpeEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>(GetCountByCpeEventDocument, options);
+        }
+export type GetCountByCpeEventQueryHookResult = ReturnType<typeof useGetCountByCpeEventQuery>;
+export type GetCountByCpeEventLazyQueryHookResult = ReturnType<typeof useGetCountByCpeEventLazyQuery>;
+export type GetCountByCpeEventQueryResult = Apollo.QueryResult<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>;

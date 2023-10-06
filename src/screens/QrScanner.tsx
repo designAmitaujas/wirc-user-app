@@ -16,8 +16,6 @@ function QRScreen() {
   const [hasPermission, setHasPermission] = useState<boolean>(false);
   const [scanned, setScanned] = useState(false);
   const [info, setInfo] = useState(null);
-  const [info1, setInfo1] = useState(null);
-  const [info2, setInfo2] = useState(null);
 
   useEffect(() => {
     (async () => {

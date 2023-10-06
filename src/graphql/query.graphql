@@ -193,3 +193,10 @@ query GetCpeEventRangeByCpeId($options: IGetByID!) {
     isActive
   }
 }
+
+query GetCountByCpeEvent($options: IGetByID!) {
+  getCountByCpeEvent(options: $options) {
+    eventId
+    occupied
+  }
+}

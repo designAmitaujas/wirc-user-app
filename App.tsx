@@ -27,7 +27,7 @@ import {
   useToast,
 } from "native-base";
 import { useCallback, useEffect, useState } from "react";
-import { SafeAreaView } from "react-native";
+import { LogBox, SafeAreaView } from "react-native";
 import "react-native-gesture-handler";
 import Routes from "./src/Routes";
 import { GQL_API_URL } from "./src/constant";
@@ -106,6 +106,12 @@ const App = () => {
       show({ title: "INTERNET ERROR", placement: "top" });
     }
   });
+
+  useEffect(() => {
+    LogBox.ignoreLogs([
+      "In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.",
+    ]);
+  }, []);
 
   useEffect(() => {
     (async () => {

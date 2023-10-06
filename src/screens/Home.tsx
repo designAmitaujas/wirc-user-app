@@ -25,30 +25,38 @@ const Home = () => {
   };
 
   return (
-    <VStack bg={"white"} flex={1}>
-      <Box
-        bg={"#0f045d"}
-        h={"16"}
-        // py={1.5}
-        w={"full"}
-        borderBottomRadius={40}
-        justifyContent={"center"}
-      >
-        <HStack mx={8} justifyContent={"space-between"} alignItems={"center"}>
-          <Image source={logo} alt="logo" resizeMode="contain" h={12} w={12} />
-          <TouchableOpacity onPress={networking}>
-            <Ionicons name="earth" size={32} color="white" />
-          </TouchableOpacity>
-        </HStack>
-      </Box>
-      <ScrollView pt={5} pb={5}>
-        {/* Seminar */}
-        <Seminar />
+    <>
+      <VStack bg={"white"} flex={1}>
+        <Box
+          bg={"#0f045d"}
+          h={"16"}
+          // py={1.5}
+          w={"full"}
+          borderBottomRadius={40}
+          justifyContent={"center"}
+        >
+          <HStack mx={8} justifyContent={"space-between"} alignItems={"center"}>
+            <Image
+              source={logo}
+              alt="logo"
+              resizeMode="contain"
+              h={12}
+              w={12}
+            />
+            <TouchableOpacity onPress={networking}>
+              <Ionicons name="earth" size={32} color="white" />
+            </TouchableOpacity>
+          </HStack>
+        </Box>
+        <ScrollView pt={5} pb={5}>
+          {/* Seminar */}
+          <Seminar />
 
-        {/* Upcoming Event */}
-        <UpcomingEvent />
-      </ScrollView>
-    </VStack>
+          {/* Upcoming Event */}
+          <UpcomingEvent />
+        </ScrollView>
+      </VStack>
+    </>
   );
 };
 

@@ -3569,6 +3569,7 @@ export type Query = {
   getCountByStudyEvent: IEventRegistrationCount;
   getCountryById: Country;
   getCoworkingZoneById: CoworkingZone;
+  getCpeByPaymentReciptById: EventRegistrationMember;
   getCpeEventById: CpeEvent;
   getCpeEventPastById: CpeEvent;
   getCpeEventRangeByCpeId: Array<CpeEventRange>;
@@ -3765,6 +3766,11 @@ export type QueryGetCountryByIdArgs = {
 
 
 export type QueryGetCoworkingZoneByIdArgs = {
+  options: IGetById;
+};
+
+
+export type QueryGetCpeByPaymentReciptByIdArgs = {
   options: IGetById;
 };
 
@@ -4542,6 +4548,13 @@ export type GetCpeEventRangeByCpeIdQueryVariables = Exact<{
 
 export type GetCpeEventRangeByCpeIdQuery = { __typename?: 'Query', getCpeEventRangeByCpeId: Array<{ __typename?: 'CpeEventRange', _id: string, name: string, description: string, price: string, isForMember: boolean, isForNonMember: boolean, isForstudent: boolean, isActive: boolean }> };
 
+export type GetPaymentReciptByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetPaymentReciptByIdQuery = { __typename?: 'Query', getPaymentReciptById: { __typename?: 'EventTransactionHistory', _id: string, customId: string, billingEmail: string, billingGst: string, billingName: string, isSameCity: boolean, CALLBACK_URL: string, CHANNEL_ID: string, CHECKSUMHASH: string, CUST_ID: string, EMAIL: string, MID: string, ORDER_ID: string, TXN_AMOUNT: string, WEBSITE: string, isPaymnetPaid: boolean, isActive: boolean, createdAt: any, cpeEvnet?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, isActive: boolean, name: string } | null } | null } };
+
 export type GetCountByCpeEventQueryVariables = Exact<{
   options: IGetById;
 }>;
@@ -5254,6 +5267,85 @@ export function useGetCpeEventRangeByCpeIdLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetCpeEventRangeByCpeIdQueryHookResult = ReturnType<typeof useGetCpeEventRangeByCpeIdQuery>;
 export type GetCpeEventRangeByCpeIdLazyQueryHookResult = ReturnType<typeof useGetCpeEventRangeByCpeIdLazyQuery>;
 export type GetCpeEventRangeByCpeIdQueryResult = Apollo.QueryResult<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>;
+export const GetPaymentReciptByIdDocument = gql`
+    query GetPaymentReciptById($options: IGetByID!) {
+  getPaymentReciptById(options: $options) {
+    _id
+    customId
+    billingEmail
+    billingGst
+    billingName
+    cpeEvnet {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      capacity
+      cutoffDate
+      cms
+      price
+      igstState {
+        _id
+        isActive
+        name
+      }
+      igst
+      cgst
+      sgst
+      isForStudent
+      isArchived
+      isActive
+    }
+    isSameCity
+    CALLBACK_URL
+    CHANNEL_ID
+    CHECKSUMHASH
+    CUST_ID
+    EMAIL
+    MID
+    ORDER_ID
+    TXN_AMOUNT
+    WEBSITE
+    isPaymnetPaid
+    isActive
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetPaymentReciptByIdQuery__
+ *
+ * To run a query within a React component, call `useGetPaymentReciptByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaymentReciptByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPaymentReciptByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetPaymentReciptByIdQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentReciptByIdQuery, GetPaymentReciptByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPaymentReciptByIdQuery, GetPaymentReciptByIdQueryVariables>(GetPaymentReciptByIdDocument, options);
+      }
+export function useGetPaymentReciptByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentReciptByIdQuery, GetPaymentReciptByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPaymentReciptByIdQuery, GetPaymentReciptByIdQueryVariables>(GetPaymentReciptByIdDocument, options);
+        }
+export type GetPaymentReciptByIdQueryHookResult = ReturnType<typeof useGetPaymentReciptByIdQuery>;
+export type GetPaymentReciptByIdLazyQueryHookResult = ReturnType<typeof useGetPaymentReciptByIdLazyQuery>;
+export type GetPaymentReciptByIdQueryResult = Apollo.QueryResult<GetPaymentReciptByIdQuery, GetPaymentReciptByIdQueryVariables>;
 export const GetCountByCpeEventDocument = gql`
     query GetCountByCpeEvent($options: IGetByID!) {
   getCountByCpeEvent(options: $options) {

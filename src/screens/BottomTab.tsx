@@ -6,7 +6,6 @@ import { Center, HStack, Icon, Pressable, Text, View } from "native-base";
 import React, { FC, memo, useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
 import Home from "./Home";
-import Success from "./Payment.tsx/Success";
 import QRScanner from "./QrScanner";
 import ProfileScreen from "./profile/ProfileDetails";
 
@@ -67,16 +66,16 @@ const BottomNavigation = memo((props: any) => {
       navigate("Qr Scanner");
       setSelected(1);
     }
+    // if (selected === 1 && props.state.index !== 1) {
+    //   // @ts-ignore
+    //   navigate("Report");
+    //   setSelected(1);
+    // }
+
     if (selected === 2 && props.state.index !== 2) {
       // @ts-ignore
-      navigate("Success");
-      setSelected(2);
-    }
-
-    if (selected === 3 && props.state.index !== 3) {
-      // @ts-ignore
       navigate("Profile");
-      setSelected(3);
+      setSelected(2);
     }
   }, [selected, props.state, isFocused]);
 
@@ -98,14 +97,14 @@ const BottomNavigation = memo((props: any) => {
             indexNumber={0}
             name="Home"
           />
-          <PressableIcons
+          {/* <PressableIcons
             selected={selected}
             setSelected={setSelected}
             defaultName="document-text"
             outlineName="document-text-outline"
-            indexNumber={2}
-            name="Success"
-          />
+            indexNumber={1}
+            name="Report"
+          /> */}
           <PressableIcons
             selected={selected}
             setSelected={setSelected}
@@ -120,7 +119,7 @@ const BottomNavigation = memo((props: any) => {
             setSelected={setSelected}
             defaultName="person-circle"
             outlineName="person-circle-outline"
-            indexNumber={3}
+            indexNumber={2}
             name="Profile"
           />
         </HStack>
@@ -138,7 +137,7 @@ const BottomTab = () => {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Qr Scanner" component={QRScanner} />
-      <Tab.Screen name="Success" component={Success} />
+      {/* <Tab.Screen name="Report" component={ReportScreen} /> */}
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

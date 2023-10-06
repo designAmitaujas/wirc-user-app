@@ -452,6 +452,8 @@ const EventRegistration = () => {
 
   const [generatePayment] = useGenEventPaymnetMutation();
 
+  const { navigate } = useNavigation();
+
   const { refetch: refetchCpeEventCount } = useGetCountByCpeEventQuery({
     // @ts-ignore
     variables: { options: { id: params?.eventId || "" } },
@@ -528,12 +530,17 @@ const EventRegistration = () => {
           ""
         )
           .then((result) => {
+            console.log(result);
+            //@ts-ignore
+            navigate("TransactionDetails");
             show({
               title: _.capitalize("your payment done successfully"),
               placement: "top",
             });
           })
           .catch((err) => {
+            //@ts-ignore
+            navigate("TransactionDetails");
             show({
               title: _.capitalize("trouble processing your payment "),
               placement: "top",

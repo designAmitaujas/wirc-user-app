@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as SplashScreen from "expo-splash-screen";
 import BottomTab from "./screens/BottomTab";
 import EventRegistration from "./screens/EventRegistration";
+import Transactiondetail from "./screens/Payment.tsx/Transactiondetail";
 import UpcomingEvents from "./screens/UpcomingEvents";
 import Login from "./screens/auth/Login";
 import MobileLogin from "./screens/auth/NumberLogin";
@@ -36,6 +37,10 @@ const Routes = () => {
           <Stack.Screen name="Attendancesheet" component={Attendancesheet} />
           <Stack.Screen name="VisitingCard" component={VisitingCard} />
           <Stack.Screen name="Networking" component={NetworkingScreen} />
+          <Stack.Screen
+            name="TransactionDetails"
+            component={Transactiondetail}
+          />
           <Stack.Screen
             name="EventRegistration"
             component={EventRegistration}

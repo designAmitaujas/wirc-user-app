@@ -459,12 +459,12 @@ const NetworkingScreen = () => {
     setDatePickerVisibility(false);
   };
 
-  const handleDateSelect = (date) => {
+  const handleDateSelect = (date: React.SetStateAction<Date>) => {
     setDatePickerVisibility(false);
     setSelectedDate(date);
   };
 
-  const handleConfirm = (date) => {
+  const handleConfirm = (date: any) => {
     console.warn("A date has been picked: ", date);
     hideDatePicker();
   };

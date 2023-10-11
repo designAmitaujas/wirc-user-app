@@ -2,7 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as SplashScreen from "expo-splash-screen";
 import BottomTab from "./screens/BottomTab";
 import EventRegistration from "./screens/EventRegistration";
-import Transactiondetail from "./screens/Payment.tsx/Transactiondetail";
+import Transactiondetail from "./screens/Payment/Transactiondetail";
 import UpcomingEvents from "./screens/UpcomingEvents";
 import Login from "./screens/auth/Login";
 import MobileLogin from "./screens/auth/NumberLogin";

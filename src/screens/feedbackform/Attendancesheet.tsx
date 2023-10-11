@@ -11,7 +11,6 @@ import {
   VStack,
   View,
 } from "native-base";
-import React from "react";
 import * as Yup from "yup";
 import { CustomInput, CustomTextArea } from "../../components/CustomForm";
 
@@ -155,7 +154,7 @@ const Attendancesheet = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.name}
-                          errMsg={errors.name}
+                          errMsg={errors.name || ""}
                           isInvalid={!!touched.name && !!errors.name}
                           label="Name"
                           name="name"
@@ -171,7 +170,7 @@ const Attendancesheet = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.icaimembershipno}
-                          errMsg={errors.icaimembershipno}
+                          errMsg={errors.icaimembershipno || ""}
                           isInvalid={
                             !!touched.icaimembershipno &&
                             !!errors.icaimembershipno
@@ -191,7 +190,7 @@ const Attendancesheet = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.address}
-                          errMsg={errors.address}
+                          errMsg={errors.address || ""}
                           isInvalid={!!touched.mobilenumber && !!errors.address}
                           label="Address"
                           name="address"
@@ -208,7 +207,7 @@ const Attendancesheet = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.mobilenumber}
-                          errMsg={errors.mobilenumber}
+                          errMsg={errors.mobilenumber || ""}
                           isInvalid={
                             !!touched.mobilenumber && !!errors.mobilenumber
                           }
@@ -247,7 +246,7 @@ const Attendancesheet = () => {
                           borderColor={"#0f045d"}
                           bgColor={"white"}
                           currentValue={values.email}
-                          errMsg={errors.email}
+                          errMsg={errors.email || ""}
                           isInvalid={!!touched.email && !!errors.email}
                           label="Email Address"
                           keyboardType="email-address"

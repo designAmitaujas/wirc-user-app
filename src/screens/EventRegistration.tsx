@@ -119,61 +119,60 @@ const RenderForm: FC<{
 
   useEffect(() => {
     (async () => {
-      return;
       if (values.membershipNumber) {
         const response = await getData({
           variables: { options: { id: values.membershipNumber } },
         });
 
-        if (response.data?.getMemberInfoByMembershipNumber) {
+        if (false && response.data?.getMemberInfoByMembershipNumber) {
           setFieldValue(
             "name",
-            response.data.getMemberInfoByMembershipNumber.name
+            response.data?.getMemberInfoByMembershipNumber?.name
           );
 
           setFieldValue(
             "organization",
-            response.data.getMemberInfoByMembershipNumber.organization
+            response.data?.getMemberInfoByMembershipNumber?.organization
           );
 
           setFieldValue(
             "email",
-            response.data.getMemberInfoByMembershipNumber.email
+            response.data?.getMemberInfoByMembershipNumber?.email
           );
 
           setFieldValue(
             "contactNo",
-            response.data.getMemberInfoByMembershipNumber.contactInfo
+            response.data?.getMemberInfoByMembershipNumber?.contactInfo
           );
 
           setFieldValue(
             "gstNo",
-            response.data.getMemberInfoByMembershipNumber.gst
+            response.data?.getMemberInfoByMembershipNumber?.gst
           );
 
           setFieldValue(
             "address",
-            response.data.getMemberInfoByMembershipNumber.address
+            response.data?.getMemberInfoByMembershipNumber?.address
           );
 
           setFieldValue(
             "country",
-            response.data.getMemberInfoByMembershipNumber.country
+            response.data?.getMemberInfoByMembershipNumber?.country
           );
 
           setFieldValue(
             "state",
-            response.data.getMemberInfoByMembershipNumber.state
+            response.data?.getMemberInfoByMembershipNumber?.state
           );
 
           setFieldValue(
             "city",
-            response.data.getMemberInfoByMembershipNumber.city
+            response.data?.getMemberInfoByMembershipNumber?.city
           );
 
           setFieldValue(
             "pincode",
-            response.data.getMemberInfoByMembershipNumber.pincode
+            response.data?.getMemberInfoByMembershipNumber?.pincode
           );
         }
       }

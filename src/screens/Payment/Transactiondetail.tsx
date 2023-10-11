@@ -86,101 +86,21 @@ const Success: FC<{ id: string }> = ({ id }) => {
         >
           {data.getPaymentReciptById.isPaymnetPaid === true ? (
             <>
-              <Box
-                width={"100%"}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <Box
-                  backgroundColor={"green.100"}
-                  width={180}
-                  height={180}
-                  borderRadius={"full"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  <Box
-                    backgroundColor={"green.200"}
-                    width={150}
-                    height={150}
-                    borderRadius={"full"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                  >
-                    <Box
-                      backgroundColor={"green.300"}
-                      width={120}
-                      height={120}
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      borderRadius={"full"}
-                    >
-                      <Box
-                        backgroundColor={"green.400"}
-                        width={90}
-                        height={90}
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                        borderRadius={"full"}
-                      >
-                        <LottieView
-                          autoPlay
-                          source={require("../../../assets/Animation - 1696582972947.json")}
-                        />
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
+              <LottieView
+                style={{ width: 64 }}
+                autoPlay
+                source={require("../../../assets/Animation - 1696582972947.json")}
+              />
+              <Text>Success</Text>
             </>
           ) : (
             <>
-              <Box
-                width={"100%"}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <Box
-                  backgroundColor={"red.100"}
-                  width={180}
-                  height={180}
-                  borderRadius={"full"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  <Box
-                    backgroundColor={"red.200"}
-                    width={150}
-                    height={150}
-                    borderRadius={"full"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                  >
-                    <Box
-                      backgroundColor={"red.300"}
-                      width={120}
-                      height={120}
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      borderRadius={"full"}
-                    >
-                      <Box
-                        backgroundColor={"red.400"}
-                        width={90}
-                        height={90}
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                        borderRadius={"full"}
-                      >
-                        <LottieView
-                          autoPlay
-                          source={require("../../../assets/Animation - 1696583921849.json")}
-                        />
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
+              <LottieView
+                style={{ width: 64 }}
+                autoPlay
+                source={require("../../../assets/Animation - 1696583921849.json")}
+              />
+              <Text>Failure</Text>
             </>
           )}
           <Box width={"100%"} justifyContent={"center"} alignItems={"center"}>

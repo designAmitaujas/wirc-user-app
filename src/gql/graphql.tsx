@@ -3670,7 +3670,7 @@ export type Query = {
   getMemberRegistrationById: MemberRegistration;
   getMemberSkillsById: MemberSkills;
   getMentorshipZoneById: MentorshipZone;
-  getMyAttendedEvent: EventAttendence;
+  getMyAttendedEvent: Array<EventAttendence>;
   getMyEventList: Array<RegistrationList>;
   getMyEventList2: Array<RegistrationList>;
   getNetworkingZoneById: NetworkingZone;
@@ -4599,6 +4599,11 @@ export type MyProfileInformationQueryVariables = Exact<{ [key: string]: never; }
 
 export type MyProfileInformationQuery = { __typename?: 'Query', myProfileInformation?: { __typename?: 'MemberRegistration', _id: string, firstName: string, lastName: string, middleName: string, hash: string, email: string, userType: string, membershipNo: string, username: string, gstNo: string, tradeName: string, address1: string, address2: string, pinCode: string, phone: string, isApproved: boolean, isActive: boolean, regionType?: { __typename?: 'Region', _id: string, name: string, isActive: boolean } | null, title?: { __typename?: 'Title', _id: string, name: string, isActive: boolean } | null, country?: { __typename?: 'Country', _id: string, name: string, isActive: boolean } | null, state?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null, city?: { __typename?: 'City', _id: string, name: string, isActive: boolean } | null, approvedBy?: { __typename?: 'User', _id: string, name: string, isActive: boolean } | null } | null };
 
+export type GetMyAttendedEventQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+
 export type GetCpeEventByIdQueryVariables = Exact<{
   options: IGetById;
 }>;
@@ -5232,6 +5237,64 @@ export function useMyProfileInformationLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type MyProfileInformationQueryHookResult = ReturnType<typeof useMyProfileInformationQuery>;
 export type MyProfileInformationLazyQueryHookResult = ReturnType<typeof useMyProfileInformationLazyQuery>;
 export type MyProfileInformationQueryResult = Apollo.QueryResult<MyProfileInformationQuery, MyProfileInformationQueryVariables>;
+export const GetMyAttendedEventDocument = gql`
+    query GetMyAttendedEvent {
+  getMyAttendedEvent {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      capacity
+      cutoffDate
+      cms
+      price
+      igst
+      cgst
+      sgst
+      isForStudent
+      isArchived
+      isActive
+    }
+    membershipId
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetMyAttendedEventQuery__
+ *
+ * To run a query within a React component, call `useGetMyAttendedEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyAttendedEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyAttendedEventQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyAttendedEventQuery(baseOptions?: Apollo.QueryHookOptions<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>(GetMyAttendedEventDocument, options);
+      }
+export function useGetMyAttendedEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>(GetMyAttendedEventDocument, options);
+        }
+export type GetMyAttendedEventQueryHookResult = ReturnType<typeof useGetMyAttendedEventQuery>;
+export type GetMyAttendedEventLazyQueryHookResult = ReturnType<typeof useGetMyAttendedEventLazyQuery>;
+export type GetMyAttendedEventQueryResult = Apollo.QueryResult<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>;
 export const GetCpeEventByIdDocument = gql`
     query GetCpeEventById($options: IGetByID!) {
   getCpeEventById(options: $options) {

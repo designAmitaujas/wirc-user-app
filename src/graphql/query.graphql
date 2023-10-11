@@ -151,6 +151,38 @@ query MyProfileInformation {
   }
 }
 
+query GetMyAttendedEvent {
+  getMyAttendedEvent {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      capacity
+      cutoffDate
+      cms
+      price
+
+      igst
+      cgst
+      sgst
+      isForStudent
+      isArchived
+
+      isActive
+    }
+    membershipId
+    isActive
+  }
+}
+
 query GetCpeEventById($options: IGetByID!) {
   getCpeEventById(options: $options) {
     _id

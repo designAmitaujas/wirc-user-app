@@ -1,7 +1,8 @@
 import { useIsFocused } from "@react-navigation/native";
 import { BarCodeScanner, PermissionStatus } from "expo-barcode-scanner";
+import _ from "lodash";
 import Lottie from "lottie-react-native";
-import { Box, Button, HStack, Text, VStack, View } from "native-base";
+import { Box, Button, HStack, Text, VStack, View, useToast } from "native-base";
 import { useEffect, useState } from "react";
 import {
   useAddAttendenceMutation,
@@ -24,6 +25,8 @@ function QRScreen() {
   const { data: profile } = useMyProfileInformationQuery();
   const [addAttendence] = useAddAttendenceMutation();
 
+  const { show } = useToast();
+
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -32,12 +35,6 @@ function QRScreen() {
   }, []);
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
-    setScanned(true);
-
-    // setInfo(data);
-
-    console.log(data);
-
     const response = await addAttendence({
       variables: {
         options: {
@@ -47,10 +44,19 @@ function QRScreen() {
       },
     });
 
-    // {"data": {"addAttendence": {"__typename": "IStatusResponse", "data": "", "msg": "Your attendee was added successfully.", "success": true}}}
-    console.log(response);
+    if (response.data?.addAttendence.success) {
+      show({
+        title: _.capitalize(response.data.addAttendence.msg),
+        placement: "top",
+      });
 
-    // Handle scanned QR code here
+      setScanned(true);
+    } else {
+      show({
+        title: _.capitalize(response.data?.addAttendence.msg || ""),
+        placement: "top",
+      });
+    }
   };
 
   const handleScanAgain = () => {

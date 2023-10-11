@@ -137,7 +137,6 @@ const BottomTab = () => {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Qr Scanner" component={QRScanner} />
-      {/* <Tab.Screen name="Report" component={ReportScreen} /> */}
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

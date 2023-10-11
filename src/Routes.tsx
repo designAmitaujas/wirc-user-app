@@ -1,4 +1,4 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import BottomTab from "./screens/BottomTab";
 import EventRegistration from "./screens/EventRegistration";
@@ -16,7 +16,7 @@ import { useAppAuthState } from "./store";
 
 SplashScreen.preventAutoHideAsync();
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const Routes = () => {
   const { isAuth } = useAppAuthState();

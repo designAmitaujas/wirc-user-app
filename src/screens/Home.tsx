@@ -153,13 +153,23 @@ export const Seminar = () => {
         </HStack>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
-            <AttendedCard
-              name="Direct Tax Refresher Course (Physical)"
-              duration="40 Minute"
-              startdatetime="20-06-2023, 7:30 AM"
-              enddatetime="22-06-2023, 9:30 AM"
-              vanue="Nakshtra Party Ploat Harni, Vadodara - 360002"
-            />
+            {data?.getMyAttendedEvent.map((item) => {
+              return (
+                <>
+                  <AttendedCard
+                    name={item.cpeEvent?.name || ""}
+                    duration={item.cpeEvent?.cpehrs || ""}
+                    startdatetime={
+                      moment(item.cpeEvent?.date1).format("DD-MM-YYYY") || ""
+                    }
+                    enddatetime={
+                      moment(item.cpeEvent?.date2).format("DD-MM-YYYY") || ""
+                    }
+                    vanue={item.cpeEvent?.location || ""}
+                  />
+                </>
+              );
+            })}
           </HStack>
         </ScrollView>
       </VStack>

@@ -6,6 +6,7 @@ import { Box, Button, HStack, Text, VStack, View, useToast } from "native-base";
 import { useEffect, useState } from "react";
 import {
   useAddAttendenceMutation,
+  useGetCpeEventByIdQuery,
   useMyProfileInformationQuery,
 } from "../gql/graphql";
 
@@ -20,7 +21,7 @@ const QRScanner = () => {
 function QRScreen() {
   const [hasPermission, setHasPermission] = useState<boolean>(false);
   const [scanned, setScanned] = useState(false);
-  const [info, setInfo] = useState(null);
+  const [info, setInfo] = useState("");
 
   const { data: profile } = useMyProfileInformationQuery();
   const [addAttendence] = useAddAttendenceMutation();
@@ -35,6 +36,12 @@ function QRScreen() {
   }, []);
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
+    setScanned(true);
+
+    setInfo(data);
+
+    console.log(data);
+
     const response = await addAttendence({
       variables: {
         options: {
@@ -56,24 +63,6 @@ function QRScreen() {
         title: _.capitalize(response.data?.addAttendence.msg || ""),
         placement: "top",
       });
-    }
-  };
-
-  const handleScanAgain = () => {
-    console.log("Handle Scan ???");
-    setScanned(false);
-  };
-
-  const renderScanner = () => {
-    if (!scanned) {
-      return <BarCodeScanner onBarCodeScanned={handleBarCodeScanned} />;
-    } else {
-      return (
-        <View>
-          <Text>QR Code scanned!</Text>
-          <Button onPress={() => console.log("Scannned")}>Scan Again</Button>
-        </View>
-      );
     }
   };
 
@@ -103,6 +92,10 @@ function QRScreen() {
       </>
     );
   }
+
+  const { data: events } = useGetCpeEventByIdQuery({
+    variables: { options: { id: info || "" } },
+  });
 
   return (
     <>
@@ -135,7 +128,7 @@ function QRScreen() {
             </Text>
             <Text w={"10%"}>:</Text>
             <Text w={"60%"} fontSize={"md"}>
-              {info}
+              {events?.getCpeEventById._id}
             </Text>
           </HStack>
           <HStack w={"100%"}>
@@ -144,7 +137,9 @@ function QRScreen() {
             </Text>
             <Text w={"10%"}>:</Text>
             <Text w={"60%"} fontSize={"md"}>
-              Anomynous Shah
+              {profile?.myProfileInformation?.firstName}{" "}
+              {profile?.myProfileInformation?.middleName}{" "}
+              {profile?.myProfileInformation?.lastName}
             </Text>
           </HStack>
           <HStack w={"100%"}>
@@ -153,7 +148,7 @@ function QRScreen() {
             </Text>
             <Text w={"10%"}>:</Text>
             <Text w={"60%"} fontSize={"md"}>
-              Tech Edge Series (Virtual)
+              {events?.getCpeEventById.name}
             </Text>
           </HStack>
         </VStack>

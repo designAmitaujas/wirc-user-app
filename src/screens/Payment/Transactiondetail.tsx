@@ -1,7 +1,7 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
-import { Box, Button, HStack, Text, VStack, View } from "native-base";
+import { Box, Button, HStack, Stack, Text, VStack, View } from "native-base";
 import { FC } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useGetPaymentReciptByIdQuery } from "../../gql/graphql";
@@ -37,19 +37,6 @@ const RestHeader = () => {
       alignSelf={"center"}
       w={"100%"}
     >
-      {/* <Button
-        bg="transparent"
-        colorScheme={"#0f045d"}
-        w="14%"
-        ml={2}
-        leftIcon={
-          <Icon
-            size="md"
-            as={<FontAwesome5 name="arrow-left" />}
-            color="white"
-          />
-        }
-      /> */}
       <TouchableOpacity onPress={visitingcard}>
         <FontAwesome name="id-card" size={24} color="white" />
       </TouchableOpacity>
@@ -61,7 +48,7 @@ const RestHeader = () => {
         // mb={1}
         // w={"40%"}
       >
-        Profile
+        Payment Status
       </Text>
       <TouchableOpacity onPress={logout}>
         <Feather name="power" size={24} color="white" />
@@ -90,57 +77,175 @@ const Success: FC<{ id: string }> = ({ id }) => {
     <>
       <RestHeader />
       <View flex={1} bg="white">
-        <Box h={"32"} alignSelf={"center"} mt={"10"}>
+        <VStack
+          flex={1}
+          // justifyContent={"center"}
+          alignItems={"center"}
+          space={5}
+          mt={5}
+        >
           {data.getPaymentReciptById.isPaymnetPaid === true ? (
             <>
-              <LottieView
-                style={{ width: "64" }}
-                autoPlay
-                source={require("../../../assets/Animation - 1696582972947.json")}
-              />
-              <Text>Success</Text>
+              <Box
+                width={"100%"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Box
+                  backgroundColor={"green.100"}
+                  width={180}
+                  height={180}
+                  borderRadius={"full"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Box
+                    backgroundColor={"green.200"}
+                    width={150}
+                    height={150}
+                    borderRadius={"full"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Box
+                      backgroundColor={"green.300"}
+                      width={120}
+                      height={120}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      borderRadius={"full"}
+                    >
+                      <Box
+                        backgroundColor={"green.400"}
+                        width={90}
+                        height={90}
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        borderRadius={"full"}
+                      >
+                        <LottieView
+                          autoPlay
+                          source={require("../../../assets/Animation - 1696582972947.json")}
+                        />
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
             </>
           ) : (
             <>
-              <LottieView
-                style={{ width: "64" }}
-                autoPlay
-                source={require("../../../assets/Animation - 1696583921849.json")}
-              />
-              <Text>Failure</Text>
+              <Box
+                width={"100%"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Box
+                  backgroundColor={"red.100"}
+                  width={180}
+                  height={180}
+                  borderRadius={"full"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Box
+                    backgroundColor={"red.200"}
+                    width={150}
+                    height={150}
+                    borderRadius={"full"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Box
+                      backgroundColor={"red.300"}
+                      width={120}
+                      height={120}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      borderRadius={"full"}
+                    >
+                      <Box
+                        backgroundColor={"red.400"}
+                        width={90}
+                        height={90}
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        borderRadius={"full"}
+                      >
+                        <LottieView
+                          autoPlay
+                          source={require("../../../assets/Animation - 1696583921849.json")}
+                        />
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
             </>
           )}
-        </Box>
-        <VStack marginTop="20%">
-          <HStack>
-            <Text width="50%" textAlign="center">
-              Event Name
-            </Text>
-            <Text width="50%" textAlign="center">
-              {data.getPaymentReciptById.cpeEvnet?.name}
-            </Text>
-          </HStack>
+          <Box width={"100%"} justifyContent={"center"} alignItems={"center"}>
+            {data.getPaymentReciptById.isPaymnetPaid === true ? (
+              <Text color={"#41ad49"} fontSize={"3xl"} bold>
+                Payment Successful
+              </Text>
+            ) : (
+              <Text color={"#f01a24"} fontSize={"3xl"} bold>
+                Payment Unsuccessful
+              </Text>
+            )}
+          </Box>
+          <Box
+            borderRadius={"3xl"}
+            backgroundColor={"white"}
+            // width={"90%"}
+            // justifyContent={"center"}
+            // alignItems={"center"}
+            // borderWidth="1"
+            // borderColor="gray.200"
+          >
+            <Stack
+              width={"100%"}
+              space={5}
+              my={10}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <HStack>
+                <Text width="40%" textAlign="justify" fontWeight="semibold">
+                  Event Name
+                </Text>
+                <Text width="55%" textAlign="justify">
+                  {data.getPaymentReciptById.cpeEvnet?.name}
+                </Text>
+              </HStack>
 
-          <HStack>
-            <Text width="50%" textAlign="center">
-              Amount
-            </Text>
-            <Text width="50%" textAlign="center">
-              ₹ 50000
-            </Text>
-          </HStack>
-          <HStack>
-            <Text textAlign="center" width="50%">
-              Transcation Id
-            </Text>
-            <Text width="50%" textAlign="center">
-              {data.getPaymentReciptById.CUST_ID}
-            </Text>
-          </HStack>
+              <HStack>
+                <Text width="40%" textAlign="justify" fontWeight="semibold">
+                  Amount
+                </Text>
+                <Text width="55%" textAlign="justify">
+                  ₹ 50000
+                </Text>
+              </HStack>
+              <HStack>
+                <Text textAlign="justify" width="40%" fontWeight="semibold">
+                  Transcation Id
+                </Text>
+                <Text width="55%" textAlign="justify">
+                  {data.getPaymentReciptById.CUST_ID}
+                </Text>
+              </HStack>
 
-          <Button alignSelf="center" onPress={handlegoback}>
-            Go Back
-          </Button>
+              <Button
+                alignSelf="center"
+                onPress={handlegoback}
+                backgroundColor="#0f045d"
+                mt={10}
+              >
+                Go Back
+              </Button>
+            </Stack>
+          </Box>
         </VStack>
       </View>
     </>

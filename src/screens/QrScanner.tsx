@@ -35,8 +35,6 @@ function QRScreen() {
     })();
   }, []);
 
-  const toast = useToast();
-
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
     setScanned(true);
 
@@ -68,27 +66,6 @@ function QRScreen() {
     }
   };
 
-  const handleScanAgain = () => {
-    console.log("Handle Scan ???");
-    setScanned(false);
-  };
-
-  const renderScanner = () => {
-    if (!scanned) {
-      return <BarCodeScanner onBarCodeScanned={handleBarCodeScanned} />;
-    } else {
-      return (
-        <View>
-          <Text>QR Code scanned!</Text>
-          <Button onPress={() => console.log("Scannned")}>Scan Again</Button>
-        </View>
-      );
-    }
-  };
-  const { data: events } = useGetCpeEventByIdQuery({
-    variables: { options: { id: info || "" } },
-  });
-
   if (hasPermission === null) {
     return <Text>Requesting camera permission...</Text>;
   }
@@ -115,6 +92,10 @@ function QRScreen() {
       </>
     );
   }
+
+  const { data: events } = useGetCpeEventByIdQuery({
+    variables: { options: { id: info || "" } },
+  });
 
   return (
     <>

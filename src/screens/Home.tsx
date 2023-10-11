@@ -153,10 +153,11 @@ export const Seminar = () => {
         </HStack>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
-            {data?.getMyAttendedEvent.map((item) => {
+            {data?.getMyAttendedEvent.reverse().map((item) => {
               return (
                 <>
                   <AttendedCard
+                    key={item._id}
                     name={item.cpeEvent?.name || ""}
                     duration={item.cpeEvent?.cpehrs || ""}
                     startdatetime={

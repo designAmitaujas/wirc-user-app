@@ -119,6 +119,7 @@ const RenderForm: FC<{
 
   useEffect(() => {
     (async () => {
+      return;
       if (values.membershipNumber) {
         const response = await getData({
           variables: { options: { id: values.membershipNumber } },
@@ -532,7 +533,9 @@ const EventRegistration = () => {
           .then((result) => {
             console.log(result);
             //@ts-ignore
-            navigate("TransactionDetails");
+            navigate("TransactionDetails", {
+              id: resposne.data?.genEventPaymnet.data?.EventHistoryID || "",
+            });
             show({
               title: _.capitalize("your payment done successfully"),
               placement: "top",
@@ -540,7 +543,9 @@ const EventRegistration = () => {
           })
           .catch((err) => {
             //@ts-ignore
-            navigate("TransactionDetails");
+            navigate("TransactionDetails", {
+              id: resposne.data?.genEventPaymnet.data?.EventHistoryID || "",
+            });
             show({
               title: _.capitalize("trouble processing your payment "),
               placement: "top",

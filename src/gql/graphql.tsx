@@ -396,6 +396,14 @@ export type EmailTemplate = {
   name: Scalars['String']['output'];
 };
 
+export type EventAttendence = {
+  __typename?: 'EventAttendence';
+  _id: Scalars['String']['output'];
+  cpeEvent?: Maybe<CpeEvent>;
+  isActive: Scalars['Boolean']['output'];
+  membershipId: Scalars['String']['output'];
+};
+
 export type EventRegistrationMember = {
   __typename?: 'EventRegistrationMember';
   _id: Scalars['String']['output'];
@@ -594,6 +602,12 @@ export type IAuthResoverResponse = {
 export type IChangePassword = {
   newPassword: Scalars['String']['input'];
   oldPassword: Scalars['String']['input'];
+};
+
+export type ICombineState = {
+  __typename?: 'ICombineState';
+  state: Array<IVisitorState>;
+  visitor: Array<IVisitorCounter>;
 };
 
 export type ICoworkingSearch = {
@@ -1182,6 +1196,12 @@ export type ICreateMemberRegistration = {
   username: Scalars['String']['input'];
 };
 
+export type ICreateMemberSkills = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  isActive: Scalars['Boolean']['input'];
+  skills: Scalars['String']['input'];
+};
+
 export type ICreateMentorshipZone = {
   _id?: InputMaybe<Scalars['String']['input']>;
   address: Scalars['String']['input'];
@@ -1662,6 +1682,7 @@ export type IPaymentField = {
   CHECKSUMHASH: Scalars['String']['output'];
   CUST_ID: Scalars['String']['output'];
   EMAIL: Scalars['String']['output'];
+  EventHistoryID: Scalars['String']['output'];
   MID: Scalars['String']['output'];
   ORDER_ID: Scalars['String']['output'];
   TOKEN: Scalars['String']['output'];
@@ -1740,6 +1761,18 @@ export type IVacancyPost = {
   mentorshipPortal: Array<MentorshipZone>;
   networkingZone: Array<NetworkingZone>;
   prerna: Array<Prerna>;
+};
+
+export type IVisitorCounter = {
+  __typename?: 'IVisitorCounter';
+  count: Scalars['Float']['output'];
+  visitorDate: Scalars['String']['output'];
+};
+
+export type IVisitorState = {
+  __typename?: 'IVisitorState';
+  count: Scalars['Float']['output'];
+  title: Scalars['String']['output'];
 };
 
 export type Images = {
@@ -1894,6 +1927,14 @@ export type MemberRegistration = {
   username: Scalars['String']['output'];
 };
 
+export type MemberSkills = {
+  __typename?: 'MemberSkills';
+  _id: Scalars['String']['output'];
+  associatedUser?: Maybe<User>;
+  isActive: Scalars['Boolean']['output'];
+  skills: Scalars['String']['output'];
+};
+
 export type MentorshipZone = {
   __typename?: 'MentorshipZone';
   _id: Scalars['String']['output'];
@@ -1988,6 +2029,7 @@ export type Mutation = {
   createOrUpdateMember: IStatusResponse;
   createOrUpdateMemberDesignation: IStatusResponse;
   createOrUpdateMemberRegistration: IStatusResponse;
+  createOrUpdateMemberSkills: IStatusResponse;
   createOrUpdateMentorshipZone: IStatusResponse;
   createOrUpdateNetworkingZone: IStatusResponse;
   createOrUpdatePastChairperson: IStatusResponse;
@@ -2078,6 +2120,7 @@ export type Mutation = {
   deleteMember: IStatusResponse;
   deleteMemberDesignation: IStatusResponse;
   deleteMemberRegistration: IStatusResponse;
+  deleteMemberSkills: IStatusResponse;
   deleteMentorshipZone: IStatusResponse;
   deleteNetworkingZone: IStatusResponse;
   deletePastChairperson: IStatusResponse;
@@ -2470,6 +2513,11 @@ export type MutationCreateOrUpdateMemberDesignationArgs = {
 
 export type MutationCreateOrUpdateMemberRegistrationArgs = {
   options: ICreateMemberRegistration;
+};
+
+
+export type MutationCreateOrUpdateMemberSkillsArgs = {
+  options: ICreateMemberSkills;
 };
 
 
@@ -2919,6 +2967,11 @@ export type MutationDeleteMemberDesignationArgs = {
 
 
 export type MutationDeleteMemberRegistrationArgs = {
+  options: IGetById;
+};
+
+
+export type MutationDeleteMemberSkillsArgs = {
   options: IGetById;
 };
 
@@ -3506,6 +3559,7 @@ export type Query = {
   getAllMember: Array<Member>;
   getAllMemberDesignation: Array<MemberDesignation>;
   getAllMemberRegistration: Array<MemberRegistration>;
+  getAllMemberSkills: Array<MemberSkills>;
   getAllMentorshipZone: Array<MentorshipZone>;
   getAllMentorshipZoneFront: Array<MentorshipZone>;
   getAllNetworkingZone: Array<NetworkingZone>;
@@ -3567,6 +3621,7 @@ export type Query = {
   getCount: IEventRegistrationCountRespose;
   getCountByCpeEvent: IEventRegistrationCount;
   getCountByStudyEvent: IEventRegistrationCount;
+  getCounter: ICombineState;
   getCountryById: Country;
   getCoworkingZoneById: CoworkingZone;
   getCpeByPaymentReciptById: EventRegistrationMember;
@@ -3613,8 +3668,11 @@ export type Query = {
   getMemberById: Member;
   getMemberDesignationById: MemberDesignation;
   getMemberRegistrationById: MemberRegistration;
+  getMemberSkillsById: MemberSkills;
   getMentorshipZoneById: MentorshipZone;
+  getMyAttendedEvent: EventAttendence;
   getMyEventList: Array<RegistrationList>;
+  getMyEventList2: Array<RegistrationList>;
   getNetworkingZoneById: NetworkingZone;
   getPastChairpersonById: PastChairperson;
   getPaymentDetailsById: PaymentTranscation;
@@ -3985,6 +4043,11 @@ export type QueryGetMemberRegistrationByIdArgs = {
 };
 
 
+export type QueryGetMemberSkillsByIdArgs = {
+  options: IGetById;
+};
+
+
 export type QueryGetMentorshipZoneByIdArgs = {
   options: IGetById;
 };
@@ -4201,10 +4264,12 @@ export type Region = {
 
 export type RegistrationList = {
   __typename?: 'RegistrationList';
+  email: Scalars['String']['output'];
   eventAddress: Scalars['String']['output'];
   eventDate: Scalars['String']['output'];
   eventId: Scalars['String']['output'];
   eventName: Scalars['String']['output'];
+  name: Scalars['String']['output'];
   personCount: Scalars['String']['output'];
   registrationDate: Scalars['String']['output'];
   totalPay: Scalars['String']['output'];
@@ -4476,7 +4541,7 @@ export type GenEventPaymnetMutationVariables = Exact<{
 }>;
 
 
-export type GenEventPaymnetMutation = { __typename?: 'Mutation', genEventPaymnet: { __typename?: 'IPaymentResponse', success: boolean, msg: string, data?: { __typename?: 'IPaymentField', MID: string, WEBSITE: string, CHANNEL_ID: string, CUST_ID: string, ORDER_ID: string, TXN_AMOUNT: string, CALLBACK_URL: string, EMAIL: string, CHECKSUMHASH: string, TOKEN: string } | null } };
+export type GenEventPaymnetMutation = { __typename?: 'Mutation', genEventPaymnet: { __typename?: 'IPaymentResponse', success: boolean, msg: string, data?: { __typename?: 'IPaymentField', MID: string, WEBSITE: string, CHANNEL_ID: string, CUST_ID: string, ORDER_ID: string, TXN_AMOUNT: string, CALLBACK_URL: string, EMAIL: string, CHECKSUMHASH: string, TOKEN: string, EventHistoryID: string } | null } };
 
 export type AddAttendenceMutationVariables = Exact<{
   options: IAddAttendenceInput;
@@ -4694,6 +4759,7 @@ export const GenEventPaymnetDocument = gql`
       EMAIL
       CHECKSUMHASH
       TOKEN
+      EventHistoryID
     }
   }
 }

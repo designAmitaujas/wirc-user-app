@@ -28,6 +28,7 @@ import {
 } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import { LogBox, SafeAreaView } from "react-native";
+import ErrorBoundary from "react-native-error-boundary";
 import "react-native-gesture-handler";
 import Routes from "./src/Routes";
 import { GQL_API_URL } from "./src/constant";
@@ -164,6 +165,11 @@ const App = () => {
     }
   }, [appIsReady]);
 
+  const errorHandler = (error: Error, stackTrace: string) => {
+    console.error(error);
+    console.error(stackTrace);
+  };
+
   if (!appIsReady) {
     return null;
   }
@@ -173,16 +179,18 @@ const App = () => {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <NativeBaseProvider theme={theme}>
-        <NavigationContainer onReady={onLayoutRootView}>
-          <SafeAreaView style={{ flex: 1 }}>
-            <StatusBar hidden={false} />
-            <Routes />
-          </SafeAreaView>
-        </NavigationContainer>
-      </NativeBaseProvider>
-    </ApolloProvider>
+    <ErrorBoundary onError={errorHandler}>
+      <ApolloProvider client={client}>
+        <NativeBaseProvider theme={theme}>
+          <NavigationContainer onReady={onLayoutRootView}>
+            <SafeAreaView style={{ flex: 1 }}>
+              <StatusBar hidden={false} />
+              <Routes />
+            </SafeAreaView>
+          </NavigationContainer>
+        </NativeBaseProvider>
+      </ApolloProvider>
+    </ErrorBoundary>
   );
 };
 

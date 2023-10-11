@@ -1,10 +1,11 @@
 import { useIsFocused } from "@react-navigation/native";
 import { BarCodeScanner, PermissionStatus } from "expo-barcode-scanner";
 import Lottie from "lottie-react-native";
-import { Box, Button, HStack, Text, VStack, View } from "native-base";
+import { Box, Button, HStack, Text, VStack, View, useToast } from "native-base";
 import { useEffect, useState } from "react";
 import {
   useAddAttendenceMutation,
+  useGetCpeEventByIdQuery,
   useMyProfileInformationQuery,
 } from "../gql/graphql";
 
@@ -19,7 +20,7 @@ const QRScanner = () => {
 function QRScreen() {
   const [hasPermission, setHasPermission] = useState<boolean>(false);
   const [scanned, setScanned] = useState(false);
-  const [info, setInfo] = useState(null);
+  const [info, setInfo] = useState("");
 
   const { data: profile } = useMyProfileInformationQuery();
   const [addAttendence] = useAddAttendenceMutation();
@@ -31,10 +32,12 @@ function QRScreen() {
     })();
   }, []);
 
+  const toast = useToast();
+
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
     setScanned(true);
 
-    // setInfo(data);
+    setInfo(data);
 
     console.log(data);
 
@@ -47,29 +50,11 @@ function QRScreen() {
       },
     });
 
-    // {"data": {"addAttendence": {"__typename": "IStatusResponse", "data": "", "msg": "Your attendee was added successfully.", "success": true}}}
     console.log(response);
-
-    // Handle scanned QR code here
   };
-
-  const handleScanAgain = () => {
-    console.log("Handle Scan ???");
-    setScanned(false);
-  };
-
-  const renderScanner = () => {
-    if (!scanned) {
-      return <BarCodeScanner onBarCodeScanned={handleBarCodeScanned} />;
-    } else {
-      return (
-        <View>
-          <Text>QR Code scanned!</Text>
-          <Button onPress={() => console.log("Scannned")}>Scan Again</Button>
-        </View>
-      );
-    }
-  };
+  const { data: events } = useGetCpeEventByIdQuery({
+    variables: { options: { id: info || "" } },
+  });
 
   if (hasPermission === null) {
     return <Text>Requesting camera permission...</Text>;
@@ -129,7 +114,7 @@ function QRScreen() {
             </Text>
             <Text w={"10%"}>:</Text>
             <Text w={"60%"} fontSize={"md"}>
-              {info}
+              {events?.getCpeEventById._id}
             </Text>
           </HStack>
           <HStack w={"100%"}>
@@ -138,7 +123,9 @@ function QRScreen() {
             </Text>
             <Text w={"10%"}>:</Text>
             <Text w={"60%"} fontSize={"md"}>
-              Anomynous Shah
+              {profile?.myProfileInformation?.firstName}{" "}
+              {profile?.myProfileInformation?.middleName}{" "}
+              {profile?.myProfileInformation?.lastName}
             </Text>
           </HStack>
           <HStack w={"100%"}>
@@ -147,7 +134,7 @@ function QRScreen() {
             </Text>
             <Text w={"10%"}>:</Text>
             <Text w={"60%"} fontSize={"md"}>
-              Tech Edge Series (Virtual)
+              {events?.getCpeEventById.name}
             </Text>
           </HStack>
         </VStack>

@@ -14,9 +14,8 @@ import {
   useToast,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { Platform, ScrollView } from "react-native";
+import { Platform, ScrollView, TouchableOpacity } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import RenderHtml from "react-native-render-html";
 import { downloadPath, windowWidth } from "../constant";
 import {

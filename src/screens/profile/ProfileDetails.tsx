@@ -13,7 +13,7 @@ import {
   useToast,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import { CustomInput } from "../../components/CustomForm";
 import {

@@ -26,8 +26,7 @@ import {
   View,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { Linking, Platform } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Linking, Platform, TouchableOpacity } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AnimatedSearchBar from "./Search";
 

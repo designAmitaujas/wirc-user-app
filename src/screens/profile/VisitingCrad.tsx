@@ -1,3 +1,6 @@
+// @ts-ignore
+import { QRCode } from "react-native-custom-qr-codes-expo";
+
 import {
   FontAwesome5,
   Ionicons,
@@ -25,9 +28,7 @@ import {
   useColorModeValue,
 } from "native-base";
 import React from "react";
-import { Dimensions } from "react-native";
-import { QRCode } from "react-native-custom-qr-codes-expo";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Dimensions, TouchableOpacity } from "react-native";
 import { SceneMap, TabView } from "react-native-tab-view";
 import * as Yup from "yup";
 import { CustomInput, CustomTextArea } from "../../components/CustomForm";
@@ -216,7 +217,7 @@ const VisitingCardForm = () => {
                             borderColor={"#0f045d"}
                             bgColor={"white"}
                             currentValue={values.name}
-                            errMsg={errors.name}
+                            errMsg={errors.name || ""}
                             isInvalid={!!touched.name && !!errors.name}
                             label="Name"
                             name="name"
@@ -232,7 +233,7 @@ const VisitingCardForm = () => {
                             borderColor={"#0f045d"}
                             bgColor={"white"}
                             currentValue={values.mobilenumber}
-                            errMsg={errors.mobilenumber}
+                            errMsg={errors.mobilenumber || ""}
                             isInvalid={
                               !!touched.mobilenumber && !!errors.mobilenumber
                             }
@@ -252,7 +253,7 @@ const VisitingCardForm = () => {
                             borderColor={"#0f045d"}
                             bgColor={"white"}
                             currentValue={values.email}
-                            errMsg={errors.email}
+                            errMsg={errors.email || ""}
                             isInvalid={!!touched.email && !!errors.email}
                             label="Email Address"
                             keyboardType="email-address"
@@ -269,7 +270,7 @@ const VisitingCardForm = () => {
                             borderColor={"#0f045d"}
                             bgColor={"white"}
                             currentValue={values.website}
-                            errMsg={errors.website}
+                            errMsg={errors.website || ""}
                             isInvalid={!!touched.website && !!errors.website}
                             label="Website"
                             keyboardType="email-address"
@@ -285,7 +286,7 @@ const VisitingCardForm = () => {
                             borderColor={"#0f045d"}
                             bgColor={"white"}
                             currentValue={values.address}
-                            errMsg={errors.address}
+                            errMsg={errors.address || ""}
                             isInvalid={!!touched.address && !!errors.address}
                             label="Address"
                             name="address"
@@ -1208,7 +1209,7 @@ const renderScene = SceneMap({
   fifth: FifthRoute,
 });
 
-function VisitingCard({ route, navigation }) {
+function VisitingCard() {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {
@@ -1268,54 +1269,62 @@ function VisitingCard({ route, navigation }) {
     },
   ]);
 
-  const renderTabBar = (props) => {
+  const renderTabBar = (props: {
+    navigationState: { routes: any[] };
+    position: {
+      interpolate: (arg0: { inputRange: any; outputRange: any }) => any;
+    };
+  }) => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
     return (
       <Box flexDirection="row" bg={"white"}>
-        {props.navigationState.routes.map((route, i) => {
-          const opacity = props.position.interpolate({
-            inputRange,
-            outputRange: inputRange.map((inputIndex) =>
-              inputIndex === i ? 1 : 0.5
-            ),
-          });
-          const color =
-            index === i
-              ? useColorModeValue("#0f045d", "#0f045d")
-              : useColorModeValue("#fff", "#fff");
-          const borderColor =
-            index === i
-              ? "#0f045d"
-              : useColorModeValue("coolGray.200", "gray.400");
-          return (
-            <Box
-              borderBottomWidth={2.5}
-              borderColor={borderColor}
-              flex={1}
-              alignItems="center"
-              p="3"
-            >
-              <Pressable
-                onPress={() => {
-                  setIndex(i);
-                }}
+        {props.navigationState.routes.map(
+          (route: { icon: any }, i: React.SetStateAction<number>) => {
+            const opacity = props.position.interpolate({
+              inputRange,
+              outputRange: inputRange.map(
+                (inputIndex: React.SetStateAction<number>) =>
+                  inputIndex === i ? 1 : 0.5
+              ),
+            });
+            const color =
+              index === i
+                ? useColorModeValue("#0f045d", "#0f045d")
+                : useColorModeValue("#fff", "#fff");
+            const borderColor =
+              index === i
+                ? "#0f045d"
+                : useColorModeValue("coolGray.200", "gray.400");
+            return (
+              <Box
+                borderBottomWidth={2.5}
+                borderColor={borderColor}
+                flex={1}
+                alignItems="center"
+                p="3"
               >
-                <Box>
-                  <HStack
-                    space={2}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <View>{route.icon}</View>
-                    {/* <Text fontSize={"md"} fontWeight={"semibold"}>
+                <Pressable
+                  onPress={() => {
+                    setIndex(i);
+                  }}
+                >
+                  <Box>
+                    <HStack
+                      space={2}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      <View>{route.icon}</View>
+                      {/* <Text fontSize={"md"} fontWeight={"semibold"}>
                       {route.title}
                     </Text> */}
-                  </HStack>
-                </Box>
-              </Pressable>
-            </Box>
-          );
-        })}
+                    </HStack>
+                  </Box>
+                </Pressable>
+              </Box>
+            );
+          }
+        )}
       </Box>
     );
   };

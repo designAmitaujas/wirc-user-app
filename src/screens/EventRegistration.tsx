@@ -14,7 +14,7 @@ import {
 } from "native-base";
 import AllInOneSDKManager from "paytm_allinone_react-native";
 import { FC, useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import {
   CustomButton,

@@ -94,7 +94,7 @@ const Success: FC<{ id: string }> = ({ id }) => {
           {data.getPaymentReciptById.isPaymnetPaid === true ? (
             <>
               <LottieView
-                style={{ width: "64" }}
+                style={{ width: 64 }}
                 autoPlay
                 source={require("../../../assets/Animation - 1696582972947.json")}
               />
@@ -103,7 +103,7 @@ const Success: FC<{ id: string }> = ({ id }) => {
           ) : (
             <>
               <LottieView
-                style={{ width: "64" }}
+                style={{ width: 64 }}
                 autoPlay
                 source={require("../../../assets/Animation - 1696583921849.json")}
               />

@@ -37,41 +37,41 @@ import {
   useGetMemberInfoByMembershipNumberMutation,
 } from "../gql/graphql";
 
-// const initalValue = {
-//   membershipNumber: "",
-//   name: "",
-//   organization: "",
-//   email: "",
-//   contactNo: "",
-//   gstNo: "",
-//   address: "",
-//   country: "",
-//   state: "",
-//   city: "",
-//   pincode: "",
-//   userType: "",
-//   billingEmail: "",
-//   billingGst: "",
-//   billingName: "",
-// };
-
 const initalValue = {
-  address: "vadodara",
-  billingEmail: "design@amitaujas.com",
-  billingGst: "123456",
-  billingName: "Chauhan Harsh",
-  city: "NUDE5I4_",
-  contactNo: "8401534693",
-  country: "32QemeLO",
-  email: "design@amitaujas.com",
-  gstNo: "123456",
-  membershipNumber: "010203",
-  name: "chauhan",
-  organization: "amitaujas",
-  pincode: "390016",
-  state: "oWLJbpA4",
-  userType: "bhlYXdvp",
+  membershipNumber: "",
+  name: "",
+  organization: "",
+  email: "",
+  contactNo: "",
+  gstNo: "",
+  address: "",
+  country: "",
+  state: "",
+  city: "",
+  pincode: "",
+  userType: "",
+  billingEmail: "",
+  billingGst: "",
+  billingName: "",
 };
+
+// const initalValue = {
+//   address: "vadodara",
+//   billingEmail: "design@amitaujas.com",
+//   billingGst: "123456",
+//   billingName: "Chauhan Harsh",
+//   city: "NUDE5I4_",
+//   contactNo: "8401534693",
+//   country: "32QemeLO",
+//   email: "design@amitaujas.com",
+//   gstNo: "123456",
+//   membershipNumber: "010203",
+//   name: "chauhan",
+//   organization: "amitaujas",
+//   pincode: "390016",
+//   state: "oWLJbpA4",
+//   userType: "bhlYXdvp",
+// };
 
 const validationSchema = Yup.object().shape({
   membershipNumber: Yup.string().required(),
@@ -124,7 +124,7 @@ const RenderForm: FC<{
           variables: { options: { id: values.membershipNumber } },
         });
 
-        if (false && response.data?.getMemberInfoByMembershipNumber) {
+        if (response.data?.getMemberInfoByMembershipNumber) {
           setFieldValue(
             "name",
             response.data?.getMemberInfoByMembershipNumber?.name

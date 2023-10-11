@@ -1,5 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
 import { BarCodeScanner, PermissionStatus } from "expo-barcode-scanner";
+import _ from "lodash";
 import Lottie from "lottie-react-native";
 import { Box, Button, HStack, Text, VStack, View, useToast } from "native-base";
 import { useEffect, useState } from "react";
@@ -24,6 +25,8 @@ function QRScreen() {
 
   const { data: profile } = useMyProfileInformationQuery();
   const [addAttendence] = useAddAttendenceMutation();
+
+  const { show } = useToast();
 
   useEffect(() => {
     (async () => {
@@ -50,7 +53,37 @@ function QRScreen() {
       },
     });
 
-    console.log(response);
+    if (response.data?.addAttendence.success) {
+      show({
+        title: _.capitalize(response.data.addAttendence.msg),
+        placement: "top",
+      });
+
+      setScanned(true);
+    } else {
+      show({
+        title: _.capitalize(response.data?.addAttendence.msg || ""),
+        placement: "top",
+      });
+    }
+  };
+
+  const handleScanAgain = () => {
+    console.log("Handle Scan ???");
+    setScanned(false);
+  };
+
+  const renderScanner = () => {
+    if (!scanned) {
+      return <BarCodeScanner onBarCodeScanned={handleBarCodeScanned} />;
+    } else {
+      return (
+        <View>
+          <Text>QR Code scanned!</Text>
+          <Button onPress={() => console.log("Scannned")}>Scan Again</Button>
+        </View>
+      );
+    }
   };
   const { data: events } = useGetCpeEventByIdQuery({
     variables: { options: { id: info || "" } },

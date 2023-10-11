@@ -73,6 +73,7 @@ const RestHeader = () => {
 const Success: FC<{ id: string }> = ({ id }) => {
   const { goBack } = useNavigation();
 
+  // EventTransactionHistory
   const { data } = useGetPaymentReciptByIdQuery({
     variables: { options: { id } },
   });
@@ -80,9 +81,11 @@ const Success: FC<{ id: string }> = ({ id }) => {
   if (!data?.getPaymentReciptById) {
     return <></>;
   }
+
   const handlegoback = () => {
     goBack();
   };
+
   return (
     <>
       <RestHeader />
@@ -148,14 +151,12 @@ const Transactiondetail = () => {
   const { params } = useRoute();
 
   // @ts-ignore
-  if (!params.id) return <></>;
+  if (params?.id) {
+    // @ts-ignore
+    return <Success id={params.id} />;
+  }
 
-  return (
-    <>
-      {/*  @ts-ignore */}
-      <Success id={params.id} />
-    </>
-  );
+  return <></>;
 };
 
 export default Transactiondetail;

@@ -1,10 +1,9 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 import { Box, Button, HStack, Text, VStack, View } from "native-base";
 import { FC } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useParams } from "react-router-dom";
 import { useGetPaymentReciptByIdQuery } from "../../gql/graphql";
 import { useAppAuthState } from "../../store";
 
@@ -146,13 +145,15 @@ const Success: FC<{ id: string }> = ({ id }) => {
 };
 
 const Transactiondetail = () => {
-  const { id } = useParams() as { id?: string };
+  const { params } = useRoute();
 
-  if (!id) return <></>;
+  // @ts-ignore
+  if (!params.id) return <></>;
 
   return (
     <>
-      <Success id={id} />
+      {/*  @ts-ignore */}
+      <Success id={params.id} />
     </>
   );
 };

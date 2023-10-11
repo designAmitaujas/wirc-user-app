@@ -12,7 +12,10 @@ import {
 } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useGetAllCpeEventQuery } from "../gql/graphql";
+import {
+  useGetAllCpeEventQuery,
+  useGetMyAttendedEventQuery,
+} from "../gql/graphql";
 
 const logo = require("../../assets/wirclogo.png");
 
@@ -139,6 +142,7 @@ const AttendedCard: React.FC<{
 };
 
 export const Seminar = () => {
+  const { data } = useGetMyAttendedEventQuery();
   return (
     <>
       <VStack space={4} pl={4} pr={4} pb={4}>
@@ -155,15 +159,6 @@ export const Seminar = () => {
               startdatetime="20-06-2023, 7:30 AM"
               enddatetime="22-06-2023, 9:30 AM"
               vanue="Nakshtra Party Ploat Harni, Vadodara - 360002"
-            />
-
-            <AttendedCard
-              name="Two days Workshop on Excel Skills for Real World Business
-                  Operations"
-              duration="45 Minute"
-              startdatetime="20-06-2023, 7:30 AM"
-              enddatetime="22-06-2023, 9:30 AM"
-              vanue="NarayanWadi Atladara, Vadodara - 360002"
             />
           </HStack>
         </ScrollView>

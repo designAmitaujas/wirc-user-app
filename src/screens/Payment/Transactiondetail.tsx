@@ -190,7 +190,7 @@ const Success: FC<{ id: string }> = ({ id }) => {
               </Text>
             ) : (
               <Text color={"#f01a24"} fontSize={"3xl"} bold>
-                Payment Unsuccessful
+                Payment Failure
               </Text>
             )}
           </Box>

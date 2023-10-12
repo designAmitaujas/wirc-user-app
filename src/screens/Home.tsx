@@ -155,20 +155,18 @@ export const Seminar = () => {
           <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
             {data?.getMyAttendedEvent.reverse().map((item) => {
               return (
-                <>
-                  <AttendedCard
-                    key={item._id}
-                    name={item.cpeEvent?.name || ""}
-                    duration={item.cpeEvent?.cpehrs || ""}
-                    startdatetime={
-                      moment(item.cpeEvent?.date1).format("DD-MM-YYYY") || ""
-                    }
-                    enddatetime={
-                      moment(item.cpeEvent?.date2).format("DD-MM-YYYY") || ""
-                    }
-                    vanue={item.cpeEvent?.location || ""}
-                  />
-                </>
+                <AttendedCard
+                  key={item._id}
+                  name={item.cpeEvent?.name || ""}
+                  duration={item.cpeEvent?.cpehrs || ""}
+                  startdatetime={
+                    moment(item.cpeEvent?.date1).format("DD-MM-YYYY") || ""
+                  }
+                  enddatetime={
+                    moment(item.cpeEvent?.date2).format("DD-MM-YYYY") || ""
+                  }
+                  vanue={item.cpeEvent?.location || ""}
+                />
               );
             })}
           </HStack>

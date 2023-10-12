@@ -6,6 +6,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
+import * as eva from "@eva-design/eva";
 import {
   Quicksand_300Light,
   Quicksand_400Regular,
@@ -16,6 +17,7 @@ import {
 } from "@expo-google-fonts/quicksand";
 import { Entypo } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
+import { ApplicationProvider } from "@ui-kitten/components";
 import { createUploadLink } from "apollo-upload-client";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
@@ -183,14 +185,16 @@ const App = () => {
   return (
     <ErrorBoundary onError={errorHandler}>
       <ApolloProvider client={client}>
-        <NativeBaseProvider theme={theme}>
-          <NavigationContainer onReady={onLayoutRootView}>
-            <SafeAreaView style={{ flex: 1 }}>
-              <StatusBar hidden={false} />
-              <Routes />
-            </SafeAreaView>
-          </NavigationContainer>
-        </NativeBaseProvider>
+        <ApplicationProvider {...eva} theme={eva.light}>
+          <NativeBaseProvider theme={theme}>
+            <NavigationContainer onReady={onLayoutRootView}>
+              <SafeAreaView style={{ flex: 1 }}>
+                <StatusBar hidden={false} />
+                <Routes />
+              </SafeAreaView>
+            </NavigationContainer>
+          </NativeBaseProvider>
+        </ApplicationProvider>
       </ApolloProvider>
     </ErrorBoundary>
   );

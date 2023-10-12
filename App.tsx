@@ -30,10 +30,12 @@ import { useCallback, useEffect, useState } from "react";
 import { LogBox, SafeAreaView } from "react-native";
 import ErrorBoundary from "react-native-error-boundary";
 import "react-native-gesture-handler";
+import { enableScreens } from "react-native-screens";
 import Routes from "./src/Routes";
 import { GQL_API_URL } from "./src/constant";
 import { useAppAuthState } from "./src/store";
 
+enableScreens(false);
 SplashScreen.preventAutoHideAsync();
 
 const theme = extendTheme({

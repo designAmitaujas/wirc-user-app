@@ -1,6 +1,5 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-
 import { Formik, FormikHelpers } from "formik";
 import {
   Avatar,
@@ -13,7 +12,7 @@ import {
   useToast,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import { CustomInput } from "../../components/CustomForm";
 import {
@@ -78,6 +77,7 @@ const validationSchema = Yup.object().shape({
   username: Yup.string(),
   userType: Yup.string().oneOf(["member", "none-member", "student"]).required(),
 });
+
 const RestHeader = () => {
   // const { goBack } = useNavigation();
   const { removeAuth } = useAppAuthState();

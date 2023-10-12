@@ -1,6 +1,6 @@
 import LottieView from "lottie-react-native";
 import { Box, View } from "native-base";
-import React, { memo } from "react";
+import { memo } from "react";
 import isEqual from "react-fast-compare";
 
 const AppLoading = () => {

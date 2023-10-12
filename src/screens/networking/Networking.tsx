@@ -26,8 +26,7 @@ import {
   View,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { Linking, Platform } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Linking, Platform, TouchableOpacity } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AnimatedSearchBar from "./Search";
 
@@ -480,112 +479,114 @@ const NetworkingScreen = () => {
             ml={1}
             mr={1}
           >
-            <VStack space={1}>
-              <Text
-                fontWeight={"semibold"}
-                fontSize={"md"}
-                color={"gray.400"}
-                ml={1}
-              >
-                Select Date
-              </Text>
+            {false && (
+              <VStack space={1}>
+                <Text
+                  fontWeight={"semibold"}
+                  fontSize={"md"}
+                  color={"gray.400"}
+                  ml={1}
+                >
+                  Select Date
+                </Text>
 
-              {Platform.OS === "android" ? (
-                <Pressable onPress={showDatePicker}>
-                  <Input
-                    placeholder="Select Date"
-                    placeholderTextColor={"#000000"}
-                    fontSize={"xs"}
-                    w={32}
-                    h={8}
-                    borderColor={"white"}
-                    bg={"blue.100"}
-                    borderRadius={10}
-                    editable={false}
-                    value={moment(selectedDate).format("DD/MM/YYYY")}
-                  />
-                  <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
-                    mode="date"
-                    onConfirm={handleDateSelect}
-                    onCancel={hideDatePicker}
-                  />
-                </Pressable>
-              ) : (
-                <TouchableOpacity onPress={showDatePicker}>
-                  <Input
-                    placeholder="Select Date"
-                    placeholderTextColor={"#000000"}
-                    fontSize={"xs"}
-                    w={32}
-                    h={8}
-                    shadow={5}
-                    borderColor={"white"}
-                    bg={"blue.100"}
-                    borderRadius={10}
-                    editable={false}
-                    value={moment(selectedDate).format("DD/MM/YYYY")}
-                  />
-                  <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
-                    mode="date"
-                    onConfirm={handleDateSelect}
-                    onCancel={hideDatePicker}
-                  />
-                </TouchableOpacity>
-              )}
-            </VStack>
-
-            <VStack space={1}>
-              <Text
-                fontWeight={"semibold"}
-                fontSize={"md"}
-                color={"gray.400"}
-                ml={1}
-              >
-                Select Skill
-              </Text>
-              <Select
-                dropdownIcon={
-                  <MaterialIcons
-                    name="arrow-drop-down"
-                    size={24}
-                    color="#64B5F6"
-                    style={{ marginRight: 10 }}
-                  />
-                }
-                w={48}
-                h={8}
-                borderColor={"white"}
-                shadow={5}
-                fontSize={"xs"}
-                bg={"blue.100"}
-                borderRadius={10}
-                alignSelf={"center"}
-                selectedValue={skills}
-                accessibilityLabel="Select Skill"
-                placeholder="Select Skill"
-                placeholderTextColor={"black"}
-                _selectedItem={{
-                  endIcon: (
-                    <Feather
-                      name="check"
-                      size={18}
-                      color="#64B5F6"
-                      style={{ marginTop: 2 }}
+                {false && Platform.OS === "android" ? (
+                  <Pressable onPress={showDatePicker}>
+                    <Input
+                      placeholder="Select Date"
+                      placeholderTextColor={"#000000"}
+                      fontSize={"xs"}
+                      w={32}
+                      h={8}
+                      borderColor={"white"}
+                      bg={"blue.100"}
+                      borderRadius={10}
+                      editable={false}
+                      value={moment(selectedDate).format("DD/MM/YYYY")}
                     />
-                  ),
-                }}
-                onValueChange={(itemValue) => setSkills(itemValue)}
-              >
-                <Select.Item label="Communication" value="ux-ui" />
-                <Select.Item label="Problem solving" value="front" />
-                <Select.Item label="Finance" value="back" />
-                <Select.Item label="Ethics" value="back" />
-                <Select.Item label="Analytical skill" value="back" />
-              </Select>
-            </VStack>
+                    <DateTimePickerModal
+                      isVisible={isDatePickerVisible}
+                      mode="date"
+                      onConfirm={handleDateSelect}
+                      onCancel={hideDatePicker}
+                    />
+                  </Pressable>
+                ) : (
+                  <TouchableOpacity onPress={showDatePicker}>
+                    <Input
+                      placeholder="Select Date"
+                      placeholderTextColor={"#000000"}
+                      fontSize={"xs"}
+                      w={32}
+                      h={8}
+                      shadow={5}
+                      borderColor={"white"}
+                      bg={"blue.100"}
+                      borderRadius={10}
+                      editable={false}
+                      value={moment(selectedDate).format("DD/MM/YYYY")}
+                    />
+                    <DateTimePickerModal
+                      isVisible={isDatePickerVisible}
+                      mode="date"
+                      onConfirm={handleDateSelect}
+                      onCancel={hideDatePicker}
+                    />
+                  </TouchableOpacity>
+                )}
+              </VStack>
+            )}
           </HStack>
+
+          <VStack space={1}>
+            <Text
+              fontWeight={"semibold"}
+              fontSize={"md"}
+              color={"gray.400"}
+              ml={1}
+            >
+              Select Skill
+            </Text>
+            <Select
+              dropdownIcon={
+                <MaterialIcons
+                  name="arrow-drop-down"
+                  size={24}
+                  color="#64B5F6"
+                  style={{ marginRight: 10 }}
+                />
+              }
+              w={"98%"}
+              h={8}
+              borderColor={"white"}
+              shadow={5}
+              fontSize={"xs"}
+              bg={"blue.100"}
+              borderRadius={10}
+              alignSelf={"center"}
+              selectedValue={skills}
+              accessibilityLabel="Select Skill"
+              placeholder="Select Skill"
+              placeholderTextColor={"black"}
+              _selectedItem={{
+                endIcon: (
+                  <Feather
+                    name="check"
+                    size={18}
+                    color="#64B5F6"
+                    style={{ marginTop: 2 }}
+                  />
+                ),
+              }}
+              onValueChange={(itemValue) => setSkills(itemValue)}
+            >
+              <Select.Item label="Communication" value="ux-ui" />
+              <Select.Item label="Problem solving" value="front" />
+              <Select.Item label="Finance" value="back" />
+              <Select.Item label="Ethics" value="back" />
+              <Select.Item label="Analytical skill" value="back" />
+            </Select>
+          </VStack>
 
           <VStack space={1} mt={3}>
             <Text

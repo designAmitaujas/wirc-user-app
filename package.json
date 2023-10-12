@@ -17,6 +17,7 @@
     "@react-native-community/netinfo": "9.3.10",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
+    "@react-navigation/native-stack": "^6.9.14",
     "@react-navigation/stack": "^6.3.16",
     "@types/react": "~18.2.14",
     "apollo-upload-client": "^17.0.0",
@@ -54,7 +55,8 @@
     "react-router-dom": "^5.3.4",
     "url-parse": "^1.5.10",
     "yup": "^1.1.1",
-    "zustand": "^4.4.1"
+    "zustand": "^4.4.1",
+    "react-native-screens": "~3.22.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

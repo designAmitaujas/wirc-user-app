@@ -3,7 +3,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 import { Box, Button, HStack, Stack, Text, VStack, View } from "native-base";
 import { FC } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import { useGetPaymentReciptByIdQuery } from "../../gql/graphql";
 import { useAppAuthState } from "../../store";
 

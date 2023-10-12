@@ -182,7 +182,32 @@ query GetMyAttendedEvent {
     isActive
   }
 }
+query GetTodayCpeEvent {
+  getTodayCpeEvent {
+    _id
+    name
+    img
+    date1
+    cpehrs
+    date2
+    time1
+    time2
+    location
+    flyer
+    capacity
+    cutoffDate
+    cms
+    price
 
+    igst
+    cgst
+    sgst
+    isForStudent
+    isArchived
+
+    isActive
+  }
+}
 query GetCpeEventById($options: IGetByID!) {
   getCpeEventById(options: $options) {
     _id

@@ -18,7 +18,6 @@ import {
   Image,
   Modal,
   ScrollView,
-  Select,
   Text,
   VStack,
   View,
@@ -27,7 +26,10 @@ import React, { useEffect, useState } from "react";
 import { Linking, TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import { CustomSelect } from "../../components/CustomForm";
-import { useGetAllSkillsQuery } from "../../gql/graphql";
+import {
+  useGetAllSkillsQuery,
+  useGetTodayCpeEventQuery,
+} from "../../gql/graphql";
 import AnimatedSearchBar from "./Search";
 
 const RestHeader = () => {
@@ -198,7 +200,6 @@ const ParticipantsCard: React.FC<{
                       Skills
                     </Text>
                     <Text w={"10%"}>:</Text>
-                    {/* <Text >{}</Text> */}
                     <FlatList
                       data={skills}
                       renderItem={({ item }) => {
@@ -214,15 +215,6 @@ const ParticipantsCard: React.FC<{
                         );
                       }}
                     />
-                    {/* {skills.map((item) => (
-                        <Badge
-                          variant={"solid"}
-                          colorScheme={"lightBlue"}
-                          borderRadius={8}
-                        >
-                          {item.name}
-                        </Badge>
-                      ))} */}
                   </HStack>
                 </VStack>
               </Modal.Body>
@@ -450,10 +442,11 @@ const NetworkingScreen = () => {
   const [skills, setSkills] = React.useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isLoading, setIsLoding] = useState(false);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [key, setKey] = useState(Math.random());
 
   const { data: getAllskill } = useGetAllSkillsQuery();
+  const { data: getAllEvent } = useGetTodayCpeEventQuery();
 
   useEffect(() => {
     setIsLoding(true);
@@ -467,23 +460,23 @@ const NetworkingScreen = () => {
     setKey(Math.random());
   }, [selectedDate, seminar, skills]);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+  // const showDatePicker = () => {
+  //   setDatePickerVisibility(true);
+  // };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  // const hideDatePicker = () => {
+  //   setDatePickerVisibility(false);
+  // };
 
-  const handleDateSelect = (date: React.SetStateAction<Date>) => {
-    setDatePickerVisibility(false);
-    setSelectedDate(date);
-  };
+  // const handleDateSelect = (date: React.SetStateAction<Date>) => {
+  //   setDatePickerVisibility(false);
+  //   setSelectedDate(date);
+  // };
 
-  const handleConfirm = (date: any) => {
-    console.warn("A date has been picked: ", date);
-    hideDatePicker();
-  };
+  // const handleConfirm = (date: any) => {
+  //   console.warn("A date has been picked: ", date);
+  //   hideDatePicker();
+  // };
 
   const handleSubmit = async (
     val: IInputForm,
@@ -494,7 +487,7 @@ const NetworkingScreen = () => {
     actions.setSubmitting(false);
   };
 
-  if (!getAllskill?.getAllSkills) {
+  if (!getAllskill?.getAllSkills || !getAllEvent?.getTodayCpeEvent) {
     return <></>;
   }
 
@@ -512,14 +505,6 @@ const NetworkingScreen = () => {
               return (
                 <>
                   <VStack space={1}>
-                    <Text
-                      fontWeight={"semibold"}
-                      fontSize={"md"}
-                      color={"gray.400"}
-                      ml={1}
-                    >
-                      Select Skill
-                    </Text>
                     <CustomSelect
                       isRequired={true}
                       isInvalid={!!touched.skills && !!errors.skills}
@@ -531,8 +516,34 @@ const NetworkingScreen = () => {
                       setFieldValue={setFieldValue}
                       initValue={values.skills}
                       errMsg={errors.skills || ""}
+                      dropdownIcon={
+                        <MaterialIcons
+                          name="arrow-drop-down"
+                          size={24}
+                          color="#64B5F6"
+                          style={{ marginRight: 10 }}
+                        />
+                      }
+                      borderColor={"white"}
+                      shadow={5}
+                      fontSize={"xs"}
+                      bg={"blue.100"}
+                      w={"98%"}
+                      h={10}
+                      borderRadius={10}
+                      placeholderTextColor={"black"}
+                      _selectedItem={{
+                        endIcon: (
+                          <Feather
+                            name="check"
+                            size={18}
+                            color="#64B5F6"
+                            style={{ marginTop: 2 }}
+                          />
+                        ),
+                      }}
                     />
-                    <Select
+                    {/* <Select
                       dropdownIcon={
                         <MaterialIcons
                           name="arrow-drop-down"
@@ -570,19 +581,21 @@ const NetworkingScreen = () => {
                           <Select.Item label={item.name} value={item._id} />
                         );
                       })}
-                    </Select>
+                    </Select> */}
                   </VStack>
 
                   <VStack space={1} mt={3}>
-                    <Text
-                      fontWeight={"semibold"}
-                      fontSize={"md"}
-                      color={"gray.400"}
-                      ml={2}
-                    >
-                      Select Event
-                    </Text>
-                    <Select
+                    <CustomSelect
+                      isRequired={true}
+                      isInvalid={!!touched.event && !!errors.event}
+                      label={"Select Event"}
+                      options={getAllEvent.getTodayCpeEvent
+                        .filter((item) => item.isActive === true)
+                        .map((item) => ({ label: item.name, value: item._id }))}
+                      name="event"
+                      setFieldValue={setFieldValue}
+                      initValue={values.event}
+                      errMsg={errors.event || ""}
                       dropdownIcon={
                         <MaterialIcons
                           name="arrow-drop-down"
@@ -591,17 +604,13 @@ const NetworkingScreen = () => {
                           style={{ marginRight: 10 }}
                         />
                       }
-                      w={"98%"}
-                      h={8}
                       borderColor={"white"}
                       shadow={5}
                       fontSize={"xs"}
                       bg={"blue.100"}
+                      w={"98%"}
+                      h={10}
                       borderRadius={10}
-                      alignSelf={"center"}
-                      selectedValue={seminar}
-                      accessibilityLabel="Select Seminar"
-                      placeholder="Select Seminar"
                       placeholderTextColor={"black"}
                       _selectedItem={{
                         endIcon: (
@@ -613,21 +622,7 @@ const NetworkingScreen = () => {
                           />
                         ),
                       }}
-                      onValueChange={(itemValue) => setSeminar(itemValue)}
-                    >
-                      <Select.Item
-                        label="Tech Edge Series (Virtual)"
-                        value="ux-ui"
-                      />
-                      <Select.Item
-                        label="Two days Workshop on Excel Skills for Real World Business Operations"
-                        value="front"
-                      />
-                      <Select.Item
-                        label="Direct Tax Refresher Course (Physical)"
-                        value="back"
-                      />
-                    </Select>
+                    />
                   </VStack>
                 </>
               );

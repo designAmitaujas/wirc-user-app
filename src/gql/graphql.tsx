@@ -1196,9 +1196,10 @@ export type ICreateMemberRegistration = {
   username: Scalars['String']['input'];
 };
 
-export type ICreateMemberSkills = {
+export type ICreateMemberSkill = {
   _id?: InputMaybe<Scalars['String']['input']>;
   isActive: Scalars['Boolean']['input'];
+  membershipNumber: Scalars['String']['input'];
   skills: Scalars['String']['input'];
 };
 
@@ -1653,6 +1654,11 @@ export type IForgotPasswordUpdateInput = {
   newPassword: Scalars['String']['input'];
 };
 
+export type IGetAllMemberSkills = {
+  event: Scalars['String']['input'];
+  skills: Scalars['String']['input'];
+};
+
 export type IGetAllTransactionId = {
   ids: Array<Scalars['String']['input']>;
 };
@@ -1933,12 +1939,12 @@ export type MemberRegistration = {
   username: Scalars['String']['output'];
 };
 
-export type MemberSkills = {
-  __typename?: 'MemberSkills';
+export type MemberSkill = {
+  __typename?: 'MemberSkill';
   _id: Scalars['String']['output'];
-  associatedUser?: Maybe<User>;
   isActive: Scalars['Boolean']['output'];
-  skills: Scalars['String']['output'];
+  membershipNumber: Scalars['String']['output'];
+  skills?: Maybe<Skills>;
 };
 
 export type MentorshipZone = {
@@ -2035,7 +2041,7 @@ export type Mutation = {
   createOrUpdateMember: IStatusResponse;
   createOrUpdateMemberDesignation: IStatusResponse;
   createOrUpdateMemberRegistration: IStatusResponse;
-  createOrUpdateMemberSkills: IStatusResponse;
+  createOrUpdateMemberSkill: IStatusResponse;
   createOrUpdateMentorshipZone: IStatusResponse;
   createOrUpdateNetworkingZone: IStatusResponse;
   createOrUpdatePastChairperson: IStatusResponse;
@@ -2127,7 +2133,7 @@ export type Mutation = {
   deleteMember: IStatusResponse;
   deleteMemberDesignation: IStatusResponse;
   deleteMemberRegistration: IStatusResponse;
-  deleteMemberSkills: IStatusResponse;
+  deleteMemberSkill: IStatusResponse;
   deleteMentorshipZone: IStatusResponse;
   deleteNetworkingZone: IStatusResponse;
   deletePastChairperson: IStatusResponse;
@@ -2171,6 +2177,7 @@ export type Mutation = {
   genPayment: IPaymentResponse;
   getAllPaytmIdfromTransactionId: Array<IPaytmIdResponseRespose>;
   getAllPublicationPaymentHistory: Array<PublicationBilling>;
+  getFilterdSkillMember: Scalars['String']['output'];
   getMemberInfoByMembershipNumber?: Maybe<IUserInfoByMembershipNumber>;
   getPublicaLibraryRegistration: IStatusResponse;
   getRedeamCode: IStatusResponse;
@@ -2524,8 +2531,8 @@ export type MutationCreateOrUpdateMemberRegistrationArgs = {
 };
 
 
-export type MutationCreateOrUpdateMemberSkillsArgs = {
-  options: ICreateMemberSkills;
+export type MutationCreateOrUpdateMemberSkillArgs = {
+  options: ICreateMemberSkill;
 };
 
 
@@ -2984,7 +2991,7 @@ export type MutationDeleteMemberRegistrationArgs = {
 };
 
 
-export type MutationDeleteMemberSkillsArgs = {
+export type MutationDeleteMemberSkillArgs = {
   options: IGetById;
 };
 
@@ -3201,6 +3208,11 @@ export type MutationGetAllPaytmIdfromTransactionIdArgs = {
 
 export type MutationGetAllPublicationPaymentHistoryArgs = {
   options: IGetPaymentDetails;
+};
+
+
+export type MutationGetFilterdSkillMemberArgs = {
+  options: IGetAllMemberSkills;
 };
 
 
@@ -3577,7 +3589,7 @@ export type Query = {
   getAllMember: Array<Member>;
   getAllMemberDesignation: Array<MemberDesignation>;
   getAllMemberRegistration: Array<MemberRegistration>;
-  getAllMemberSkills: Array<MemberSkills>;
+  getAllMemberSkill: Array<MemberSkill>;
   getAllMentorshipZone: Array<MentorshipZone>;
   getAllMentorshipZoneFront: Array<MentorshipZone>;
   getAllNetworkingZone: Array<NetworkingZone>;
@@ -3687,7 +3699,7 @@ export type Query = {
   getMemberById: Member;
   getMemberDesignationById: MemberDesignation;
   getMemberRegistrationById: MemberRegistration;
-  getMemberSkillsById: MemberSkills;
+  getMemberSkillById: MemberSkill;
   getMentorshipZoneById: MentorshipZone;
   getMyAttendedEvent: Array<EventAttendence>;
   getMyEventList: Array<RegistrationList>;
@@ -4064,7 +4076,7 @@ export type QueryGetMemberRegistrationByIdArgs = {
 };
 
 
-export type QueryGetMemberSkillsByIdArgs = {
+export type QueryGetMemberSkillByIdArgs = {
   options: IGetById;
 };
 
@@ -4583,6 +4595,20 @@ export type AddAttendenceMutationVariables = Exact<{
 
 export type AddAttendenceMutation = { __typename?: 'Mutation', addAttendence: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
 
+export type CreateOrUpdateMemberSkillMutationVariables = Exact<{
+  options: ICreateMemberSkill;
+}>;
+
+
+export type CreateOrUpdateMemberSkillMutation = { __typename?: 'Mutation', createOrUpdateMemberSkill: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
+
+export type DeleteMemberSkillMutationVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type DeleteMemberSkillMutation = { __typename?: 'Mutation', deleteMemberSkill: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
+
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4669,6 +4695,18 @@ export type GetAllSkillsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllSkillsQuery = { __typename?: 'Query', getAllSkills: Array<{ __typename?: 'Skills', _id: string, name: string, isActive: boolean }> };
+
+export type GetMemberSkillByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetMemberSkillByIdQuery = { __typename?: 'Query', getMemberSkillById: { __typename?: 'MemberSkill', _id: string, membershipNumber: string, isActive: boolean, skills?: { __typename?: 'Skills', _id: string, name: string, isActive: boolean } | null } };
+
+export type GetAllMemberSkillQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllMemberSkillQuery = { __typename?: 'Query', getAllMemberSkill: Array<{ __typename?: 'MemberSkill', _id: string, membershipNumber: string, isActive: boolean, skills?: { __typename?: 'Skills', _id: string, name: string, isActive: boolean } | null }> };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -4868,6 +4906,76 @@ export function useAddAttendenceMutation(baseOptions?: Apollo.MutationHookOption
 export type AddAttendenceMutationHookResult = ReturnType<typeof useAddAttendenceMutation>;
 export type AddAttendenceMutationResult = Apollo.MutationResult<AddAttendenceMutation>;
 export type AddAttendenceMutationOptions = Apollo.BaseMutationOptions<AddAttendenceMutation, AddAttendenceMutationVariables>;
+export const CreateOrUpdateMemberSkillDocument = gql`
+    mutation CreateOrUpdateMemberSkill($options: ICreateMemberSkill!) {
+  createOrUpdateMemberSkill(options: $options) {
+    success
+    msg
+    data
+  }
+}
+    `;
+export type CreateOrUpdateMemberSkillMutationFn = Apollo.MutationFunction<CreateOrUpdateMemberSkillMutation, CreateOrUpdateMemberSkillMutationVariables>;
+
+/**
+ * __useCreateOrUpdateMemberSkillMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateMemberSkillMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateMemberSkillMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateMemberSkillMutation, { data, loading, error }] = useCreateOrUpdateMemberSkillMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useCreateOrUpdateMemberSkillMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateMemberSkillMutation, CreateOrUpdateMemberSkillMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrUpdateMemberSkillMutation, CreateOrUpdateMemberSkillMutationVariables>(CreateOrUpdateMemberSkillDocument, options);
+      }
+export type CreateOrUpdateMemberSkillMutationHookResult = ReturnType<typeof useCreateOrUpdateMemberSkillMutation>;
+export type CreateOrUpdateMemberSkillMutationResult = Apollo.MutationResult<CreateOrUpdateMemberSkillMutation>;
+export type CreateOrUpdateMemberSkillMutationOptions = Apollo.BaseMutationOptions<CreateOrUpdateMemberSkillMutation, CreateOrUpdateMemberSkillMutationVariables>;
+export const DeleteMemberSkillDocument = gql`
+    mutation DeleteMemberSkill($options: IGetByID!) {
+  deleteMemberSkill(options: $options) {
+    success
+    msg
+    data
+  }
+}
+    `;
+export type DeleteMemberSkillMutationFn = Apollo.MutationFunction<DeleteMemberSkillMutation, DeleteMemberSkillMutationVariables>;
+
+/**
+ * __useDeleteMemberSkillMutation__
+ *
+ * To run a mutation, you first call `useDeleteMemberSkillMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMemberSkillMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMemberSkillMutation, { data, loading, error }] = useDeleteMemberSkillMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useDeleteMemberSkillMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMemberSkillMutation, DeleteMemberSkillMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMemberSkillMutation, DeleteMemberSkillMutationVariables>(DeleteMemberSkillDocument, options);
+      }
+export type DeleteMemberSkillMutationHookResult = ReturnType<typeof useDeleteMemberSkillMutation>;
+export type DeleteMemberSkillMutationResult = Apollo.MutationResult<DeleteMemberSkillMutation>;
+export type DeleteMemberSkillMutationOptions = Apollo.BaseMutationOptions<DeleteMemberSkillMutation, DeleteMemberSkillMutationVariables>;
 export const GetAllCpeEventDocument = gql`
     query GetAllCpeEvent {
   getAllCpeEvent {
@@ -5585,3 +5693,86 @@ export function useGetAllSkillsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetAllSkillsQueryHookResult = ReturnType<typeof useGetAllSkillsQuery>;
 export type GetAllSkillsLazyQueryHookResult = ReturnType<typeof useGetAllSkillsLazyQuery>;
 export type GetAllSkillsQueryResult = Apollo.QueryResult<GetAllSkillsQuery, GetAllSkillsQueryVariables>;
+export const GetMemberSkillByIdDocument = gql`
+    query GetMemberSkillById($options: IGetByID!) {
+  getMemberSkillById(options: $options) {
+    _id
+    membershipNumber
+    skills {
+      _id
+      name
+      isActive
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetMemberSkillByIdQuery__
+ *
+ * To run a query within a React component, call `useGetMemberSkillByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMemberSkillByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMemberSkillByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetMemberSkillByIdQuery(baseOptions: Apollo.QueryHookOptions<GetMemberSkillByIdQuery, GetMemberSkillByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMemberSkillByIdQuery, GetMemberSkillByIdQueryVariables>(GetMemberSkillByIdDocument, options);
+      }
+export function useGetMemberSkillByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMemberSkillByIdQuery, GetMemberSkillByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMemberSkillByIdQuery, GetMemberSkillByIdQueryVariables>(GetMemberSkillByIdDocument, options);
+        }
+export type GetMemberSkillByIdQueryHookResult = ReturnType<typeof useGetMemberSkillByIdQuery>;
+export type GetMemberSkillByIdLazyQueryHookResult = ReturnType<typeof useGetMemberSkillByIdLazyQuery>;
+export type GetMemberSkillByIdQueryResult = Apollo.QueryResult<GetMemberSkillByIdQuery, GetMemberSkillByIdQueryVariables>;
+export const GetAllMemberSkillDocument = gql`
+    query GetAllMemberSkill {
+  getAllMemberSkill {
+    _id
+    membershipNumber
+    skills {
+      _id
+      name
+      isActive
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllMemberSkillQuery__
+ *
+ * To run a query within a React component, call `useGetAllMemberSkillQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMemberSkillQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMemberSkillQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllMemberSkillQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>(GetAllMemberSkillDocument, options);
+      }
+export function useGetAllMemberSkillLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>(GetAllMemberSkillDocument, options);
+        }
+export type GetAllMemberSkillQueryHookResult = ReturnType<typeof useGetAllMemberSkillQuery>;
+export type GetAllMemberSkillLazyQueryHookResult = ReturnType<typeof useGetAllMemberSkillLazyQuery>;
+export type GetAllMemberSkillQueryResult = Apollo.QueryResult<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>;

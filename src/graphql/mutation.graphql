@@ -59,3 +59,19 @@ mutation AddAttendence($options: IAddAttendenceInput!) {
     data
   }
 }
+
+mutation CreateOrUpdateMemberSkill($options: ICreateMemberSkill!) {
+  createOrUpdateMemberSkill(options: $options) {
+    success
+    msg
+    data
+  }
+}
+
+mutation DeleteMemberSkill($options: IGetByID!) {
+  deleteMemberSkill(options: $options) {
+    success
+    msg
+    data
+  }
+}

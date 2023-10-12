@@ -5,8 +5,8 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { Formik, FormikHelpers } from "formik";
 import LottieView from "lottie-react-native";
-import moment from "moment";
 import {
   Badge,
   Box,
@@ -16,9 +16,7 @@ import {
   HStack,
   Icon,
   Image,
-  Input,
   Modal,
-  Pressable,
   ScrollView,
   Select,
   Text,
@@ -26,8 +24,10 @@ import {
   View,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { Linking, Platform, TouchableOpacity } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Linking, TouchableOpacity } from "react-native";
+import * as Yup from "yup";
+import { CustomSelect } from "../../components/CustomForm";
+import { useGetAllSkillsQuery } from "../../gql/graphql";
 import AnimatedSearchBar from "./Search";
 
 const RestHeader = () => {
@@ -79,6 +79,21 @@ const RestHeader = () => {
 interface skillType {
   name: string;
 }
+
+interface IInputForm {
+  skills: string;
+  event: string;
+}
+
+const initialValue: IInputForm = {
+  skills: "",
+  event: "",
+};
+
+const validationSchema = Yup.object().shape({
+  skills: Yup.string().required(),
+  event: Yup.string().required(),
+});
 
 const ParticipantsCard: React.FC<{
   name: string;
@@ -438,6 +453,8 @@ const NetworkingScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [key, setKey] = useState(Math.random());
 
+  const { data: getAllskill } = useGetAllSkillsQuery();
+
   useEffect(() => {
     setIsLoding(true);
 
@@ -468,179 +485,154 @@ const NetworkingScreen = () => {
     hideDatePicker();
   };
 
+  const handleSubmit = async (
+    val: IInputForm,
+    actions: FormikHelpers<IInputForm>
+  ) => {
+    actions.setSubmitting(true);
+
+    actions.setSubmitting(false);
+  };
+
+  if (!getAllskill?.getAllSkills) {
+    return <></>;
+  }
+
   return (
     <>
       <View bg={"white"} flex={1}>
         <RestHeader />
         <Box mb={2} mt={3} pl={3} pr={3}>
-          <HStack
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            ml={1}
-            mr={1}
+          <Formik
+            initialValues={initialValue}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
           >
-            {false && (
-              <VStack space={1}>
-                <Text
-                  fontWeight={"semibold"}
-                  fontSize={"md"}
-                  color={"gray.400"}
-                  ml={1}
-                >
-                  Select Date
-                </Text>
-
-                {false && Platform.OS === "android" ? (
-                  <Pressable onPress={showDatePicker}>
-                    <Input
-                      placeholder="Select Date"
-                      placeholderTextColor={"#000000"}
-                      fontSize={"xs"}
-                      w={32}
+            {({ touched, errors, setFieldValue, values }) => {
+              return (
+                <>
+                  <VStack space={1}>
+                    <Text
+                      fontWeight={"semibold"}
+                      fontSize={"md"}
+                      color={"gray.400"}
+                      ml={1}
+                    >
+                      Select Skill
+                    </Text>
+                    <CustomSelect
+                      isRequired={true}
+                      isInvalid={!!touched.skills && !!errors.skills}
+                      label={"Select Skill"}
+                      options={getAllskill.getAllSkills
+                        .filter((item) => item.isActive === true)
+                        .map((item) => ({ label: item.name, value: item._id }))}
+                      name="skills"
+                      setFieldValue={setFieldValue}
+                      initValue={values.skills}
+                      errMsg={errors.skills || ""}
+                    />
+                    <Select
+                      dropdownIcon={
+                        <MaterialIcons
+                          name="arrow-drop-down"
+                          size={24}
+                          color="#64B5F6"
+                          style={{ marginRight: 10 }}
+                        />
+                      }
+                      w={"98%"}
                       h={8}
                       borderColor={"white"}
-                      bg={"blue.100"}
-                      borderRadius={10}
-                      editable={false}
-                      value={moment(selectedDate).format("DD/MM/YYYY")}
-                    />
-                    <DateTimePickerModal
-                      isVisible={isDatePickerVisible}
-                      mode="date"
-                      onConfirm={handleDateSelect}
-                      onCancel={hideDatePicker}
-                    />
-                  </Pressable>
-                ) : (
-                  <TouchableOpacity onPress={showDatePicker}>
-                    <Input
-                      placeholder="Select Date"
-                      placeholderTextColor={"#000000"}
-                      fontSize={"xs"}
-                      w={32}
-                      h={8}
                       shadow={5}
-                      borderColor={"white"}
+                      fontSize={"xs"}
                       bg={"blue.100"}
                       borderRadius={10}
-                      editable={false}
-                      value={moment(selectedDate).format("DD/MM/YYYY")}
-                    />
-                    <DateTimePickerModal
-                      isVisible={isDatePickerVisible}
-                      mode="date"
-                      onConfirm={handleDateSelect}
-                      onCancel={hideDatePicker}
-                    />
-                  </TouchableOpacity>
-                )}
-              </VStack>
-            )}
-          </HStack>
+                      alignSelf={"center"}
+                      selectedValue={skills}
+                      accessibilityLabel="Select Skill"
+                      placeholder="Select Skill"
+                      placeholderTextColor={"black"}
+                      _selectedItem={{
+                        endIcon: (
+                          <Feather
+                            name="check"
+                            size={18}
+                            color="#64B5F6"
+                            style={{ marginTop: 2 }}
+                          />
+                        ),
+                      }}
+                      onValueChange={(itemValue) => setSkills(itemValue)}
+                    >
+                      {getAllskill?.getAllSkills.map((item) => {
+                        return (
+                          <Select.Item label={item.name} value={item._id} />
+                        );
+                      })}
+                    </Select>
+                  </VStack>
 
-          <VStack space={1}>
-            <Text
-              fontWeight={"semibold"}
-              fontSize={"md"}
-              color={"gray.400"}
-              ml={1}
-            >
-              Select Skill
-            </Text>
-            <Select
-              dropdownIcon={
-                <MaterialIcons
-                  name="arrow-drop-down"
-                  size={24}
-                  color="#64B5F6"
-                  style={{ marginRight: 10 }}
-                />
-              }
-              w={"98%"}
-              h={8}
-              borderColor={"white"}
-              shadow={5}
-              fontSize={"xs"}
-              bg={"blue.100"}
-              borderRadius={10}
-              alignSelf={"center"}
-              selectedValue={skills}
-              accessibilityLabel="Select Skill"
-              placeholder="Select Skill"
-              placeholderTextColor={"black"}
-              _selectedItem={{
-                endIcon: (
-                  <Feather
-                    name="check"
-                    size={18}
-                    color="#64B5F6"
-                    style={{ marginTop: 2 }}
-                  />
-                ),
-              }}
-              onValueChange={(itemValue) => setSkills(itemValue)}
-            >
-              <Select.Item label="Communication" value="ux-ui" />
-              <Select.Item label="Problem solving" value="front" />
-              <Select.Item label="Finance" value="back" />
-              <Select.Item label="Ethics" value="back" />
-              <Select.Item label="Analytical skill" value="back" />
-            </Select>
-          </VStack>
-
-          <VStack space={1} mt={3}>
-            <Text
-              fontWeight={"semibold"}
-              fontSize={"md"}
-              color={"gray.400"}
-              ml={2}
-            >
-              Select Event
-            </Text>
-            <Select
-              dropdownIcon={
-                <MaterialIcons
-                  name="arrow-drop-down"
-                  size={24}
-                  color="#64B5F6"
-                  style={{ marginRight: 10 }}
-                />
-              }
-              w={"98%"}
-              h={8}
-              borderColor={"white"}
-              shadow={5}
-              fontSize={"xs"}
-              bg={"blue.100"}
-              borderRadius={10}
-              alignSelf={"center"}
-              selectedValue={seminar}
-              accessibilityLabel="Select Seminar"
-              placeholder="Select Seminar"
-              placeholderTextColor={"black"}
-              _selectedItem={{
-                endIcon: (
-                  <Feather
-                    name="check"
-                    size={18}
-                    color="#64B5F6"
-                    style={{ marginTop: 2 }}
-                  />
-                ),
-              }}
-              onValueChange={(itemValue) => setSeminar(itemValue)}
-            >
-              <Select.Item label="Tech Edge Series (Virtual)" value="ux-ui" />
-              <Select.Item
-                label="Two days Workshop on Excel Skills for Real World Business Operations"
-                value="front"
-              />
-              <Select.Item
-                label="Direct Tax Refresher Course (Physical)"
-                value="back"
-              />
-            </Select>
-          </VStack>
+                  <VStack space={1} mt={3}>
+                    <Text
+                      fontWeight={"semibold"}
+                      fontSize={"md"}
+                      color={"gray.400"}
+                      ml={2}
+                    >
+                      Select Event
+                    </Text>
+                    <Select
+                      dropdownIcon={
+                        <MaterialIcons
+                          name="arrow-drop-down"
+                          size={24}
+                          color="#64B5F6"
+                          style={{ marginRight: 10 }}
+                        />
+                      }
+                      w={"98%"}
+                      h={8}
+                      borderColor={"white"}
+                      shadow={5}
+                      fontSize={"xs"}
+                      bg={"blue.100"}
+                      borderRadius={10}
+                      alignSelf={"center"}
+                      selectedValue={seminar}
+                      accessibilityLabel="Select Seminar"
+                      placeholder="Select Seminar"
+                      placeholderTextColor={"black"}
+                      _selectedItem={{
+                        endIcon: (
+                          <Feather
+                            name="check"
+                            size={18}
+                            color="#64B5F6"
+                            style={{ marginTop: 2 }}
+                          />
+                        ),
+                      }}
+                      onValueChange={(itemValue) => setSeminar(itemValue)}
+                    >
+                      <Select.Item
+                        label="Tech Edge Series (Virtual)"
+                        value="ux-ui"
+                      />
+                      <Select.Item
+                        label="Two days Workshop on Excel Skills for Real World Business Operations"
+                        value="front"
+                      />
+                      <Select.Item
+                        label="Direct Tax Refresher Course (Physical)"
+                        value="back"
+                      />
+                    </Select>
+                  </VStack>
+                </>
+              );
+            }}
+          </Formik>
         </Box>
         <HStack
           mx={5}

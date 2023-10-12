@@ -1419,6 +1419,12 @@ export type ICreateServices = {
   name: Scalars['String']['input'];
 };
 
+export type ICreateSkills = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  isActive: Scalars['Boolean']['input'];
+  name: Scalars['String']['input'];
+};
+
 export type ICreateState = {
   _id?: InputMaybe<Scalars['String']['input']>;
   country: Scalars['String']['input'];
@@ -2049,6 +2055,7 @@ export type Mutation = {
   createOrUpdateRegion: IStatusResponse;
   createOrUpdateServiceType: IStatusResponse;
   createOrUpdateServices: IStatusResponse;
+  createOrUpdateSkills: IStatusResponse;
   createOrUpdateState: IStatusResponse;
   createOrUpdateStudentDownload: IStatusResponse;
   createOrUpdateStudentDownloadCategory: IStatusResponse;
@@ -2140,6 +2147,7 @@ export type Mutation = {
   deleteRegion: IStatusResponse;
   deleteServiceType: IStatusResponse;
   deleteServices: IStatusResponse;
+  deleteSkills: IStatusResponse;
   deleteState: IStatusResponse;
   deleteStudentDownload: IStatusResponse;
   deleteStudentDownloadCategory: IStatusResponse;
@@ -2616,6 +2624,11 @@ export type MutationCreateOrUpdateServicesArgs = {
 };
 
 
+export type MutationCreateOrUpdateSkillsArgs = {
+  options: ICreateSkills;
+};
+
+
 export type MutationCreateOrUpdateStateArgs = {
   options: ICreateState;
 };
@@ -3067,6 +3080,11 @@ export type MutationDeleteServiceTypeArgs = {
 
 
 export type MutationDeleteServicesArgs = {
+  options: IGetById;
+};
+
+
+export type MutationDeleteSkillsArgs = {
   options: IGetById;
 };
 
@@ -3582,6 +3600,7 @@ export type Query = {
   getAllServiceTypeFront: Array<ServiceType>;
   getAllServices: Array<Services>;
   getAllServicesFront: Array<Services>;
+  getAllSkills: Array<Skills>;
   getAllState: Array<State>;
   getAllStudentDownload: Array<StudentDownload>;
   getAllStudentDownloadCategory: Array<StudentDownloadCategory>;
@@ -3697,6 +3716,7 @@ export type Query = {
   getRegionById: Region;
   getServiceTypeById: ServiceType;
   getServicesById: Services;
+  getSkillsById: Skills;
   getStateById: State;
   getStudentDownloadById: StudentDownload;
   getStudentDownloadCategoryById: StudentDownloadCategory;
@@ -3706,6 +3726,7 @@ export type Query = {
   getStudyGroupCategoryById: StudyGroupCategory;
   getTaxById: Tax;
   getTitleById: Title;
+  getTodayCpeEvent: Array<CpeEvent>;
   getUserInformation?: Maybe<User>;
   getVideoGallaryById: VideoGallary;
   getWebCastById: WebCast;
@@ -4163,6 +4184,11 @@ export type QueryGetServicesByIdArgs = {
 };
 
 
+export type QueryGetSkillsByIdArgs = {
+  options: IGetById;
+};
+
+
 export type QueryGetStateByIdArgs = {
   options: IGetById;
 };
@@ -4285,6 +4311,13 @@ export type ServiceType = {
 
 export type Services = {
   __typename?: 'Services';
+  _id: Scalars['String']['output'];
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type Skills = {
+  __typename?: 'Skills';
   _id: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
@@ -4631,6 +4664,11 @@ export type GetCountByCpeEventQueryVariables = Exact<{
 
 
 export type GetCountByCpeEventQuery = { __typename?: 'Query', getCountByCpeEvent: { __typename?: 'IEventRegistrationCount', eventId: string, occupied: string } };
+
+export type GetAllSkillsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllSkillsQuery = { __typename?: 'Query', getAllSkills: Array<{ __typename?: 'Skills', _id: string, name: string, isActive: boolean }> };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -5511,3 +5549,39 @@ export function useGetCountByCpeEventLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetCountByCpeEventQueryHookResult = ReturnType<typeof useGetCountByCpeEventQuery>;
 export type GetCountByCpeEventLazyQueryHookResult = ReturnType<typeof useGetCountByCpeEventLazyQuery>;
 export type GetCountByCpeEventQueryResult = Apollo.QueryResult<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>;
+export const GetAllSkillsDocument = gql`
+    query GetAllSkills {
+  getAllSkills {
+    _id
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllSkillsQuery__
+ *
+ * To run a query within a React component, call `useGetAllSkillsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllSkillsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllSkillsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllSkillsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllSkillsQuery, GetAllSkillsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllSkillsQuery, GetAllSkillsQueryVariables>(GetAllSkillsDocument, options);
+      }
+export function useGetAllSkillsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllSkillsQuery, GetAllSkillsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllSkillsQuery, GetAllSkillsQueryVariables>(GetAllSkillsDocument, options);
+        }
+export type GetAllSkillsQueryHookResult = ReturnType<typeof useGetAllSkillsQuery>;
+export type GetAllSkillsLazyQueryHookResult = ReturnType<typeof useGetAllSkillsLazyQuery>;
+export type GetAllSkillsQueryResult = Apollo.QueryResult<GetAllSkillsQuery, GetAllSkillsQueryVariables>;

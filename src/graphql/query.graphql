@@ -284,3 +284,11 @@ query GetCountByCpeEvent($options: IGetByID!) {
     occupied
   }
 }
+
+query GetAllSkills {
+  getAllSkills {
+    _id
+    name
+    isActive
+  }
+}

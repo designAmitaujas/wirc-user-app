@@ -75,7 +75,7 @@ const AttendedCard: React.FC<{
   const { navigate } = useNavigation();
   const Attendance = () => {
     //@ts-ignore
-    navigate("Attendancesheet");
+    navigate("Feedback");
   };
   return (
     <>

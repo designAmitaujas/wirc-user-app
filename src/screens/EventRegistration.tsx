@@ -5,7 +5,6 @@ import _ from "lodash";
 import {
   Box,
   HStack,
-  Icon,
   ScrollView,
   Text,
   VStack,
@@ -414,7 +413,7 @@ const RenderForm: FC<{
         bgColor="white"
       />
       <CustomButton
-        name="Login"
+        name="Submit"
         mt="8"
         borderRadius={25}
         w={"48"}
@@ -422,7 +421,7 @@ const RenderForm: FC<{
         alignSelf={"center"}
         bg={"#0f045d"}
         colorScheme={"white"}
-        leftIcon={<Icon as={FontAwesome5} name="lock" mr="1" size="sm" />}
+        // leftIcon={<Icon as={FontAwesome5} name="lock" mr="1" size="sm" />}
         isSubmitting={isSubmitting}
         onSubmit={handleSubmit}
       />

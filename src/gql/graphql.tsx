@@ -4637,6 +4637,11 @@ export type GetMyAttendedEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
 
+export type GetTodayCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTodayCpeEventQuery = { __typename?: 'Query', getTodayCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean }> };
+
 export type GetCpeEventByIdQueryVariables = Exact<{
   options: IGetById;
 }>;
@@ -5333,6 +5338,59 @@ export function useGetMyAttendedEventLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetMyAttendedEventQueryHookResult = ReturnType<typeof useGetMyAttendedEventQuery>;
 export type GetMyAttendedEventLazyQueryHookResult = ReturnType<typeof useGetMyAttendedEventLazyQuery>;
 export type GetMyAttendedEventQueryResult = Apollo.QueryResult<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>;
+export const GetTodayCpeEventDocument = gql`
+    query GetTodayCpeEvent {
+  getTodayCpeEvent {
+    _id
+    name
+    img
+    date1
+    cpehrs
+    date2
+    time1
+    time2
+    location
+    flyer
+    capacity
+    cutoffDate
+    cms
+    price
+    igst
+    cgst
+    sgst
+    isForStudent
+    isArchived
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetTodayCpeEventQuery__
+ *
+ * To run a query within a React component, call `useGetTodayCpeEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTodayCpeEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTodayCpeEventQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTodayCpeEventQuery(baseOptions?: Apollo.QueryHookOptions<GetTodayCpeEventQuery, GetTodayCpeEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTodayCpeEventQuery, GetTodayCpeEventQueryVariables>(GetTodayCpeEventDocument, options);
+      }
+export function useGetTodayCpeEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTodayCpeEventQuery, GetTodayCpeEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTodayCpeEventQuery, GetTodayCpeEventQueryVariables>(GetTodayCpeEventDocument, options);
+        }
+export type GetTodayCpeEventQueryHookResult = ReturnType<typeof useGetTodayCpeEventQuery>;
+export type GetTodayCpeEventLazyQueryHookResult = ReturnType<typeof useGetTodayCpeEventLazyQuery>;
+export type GetTodayCpeEventQueryResult = Apollo.QueryResult<GetTodayCpeEventQuery, GetTodayCpeEventQueryVariables>;
 export const GetCpeEventByIdDocument = gql`
     query GetCpeEventById($options: IGetByID!) {
   getCpeEventById(options: $options) {

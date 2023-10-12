@@ -225,6 +225,7 @@ query GetCpeEventRangeByCpeId($options: IGetByID!) {
     isActive
   }
 }
+
 query GetPaymentReciptById($options: IGetByID!) {
   getPaymentReciptById(options: $options) {
     _id

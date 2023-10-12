@@ -1,10 +1,10 @@
 import capitalize from "lodash/capitalize";
 import { Alert, HStack, Text, VStack } from "native-base";
 import { ColorSchemeType } from "native-base/lib/typescript/components/types";
-import React, { memo } from "react";
+import { FC, memo } from "react";
 import isEqual from "react-fast-compare";
 
-const CustomAlert: React.FC<{ msg: string; type: ColorSchemeType }> = ({
+const CustomAlert: FC<{ msg: string; type: ColorSchemeType }> = ({
   msg,
   type,
 }) => {

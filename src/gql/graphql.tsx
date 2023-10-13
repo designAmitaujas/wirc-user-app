@@ -426,6 +426,15 @@ export type EventRegistrationMember = {
   type: Scalars['String']['output'];
 };
 
+export type EventTopic = {
+  __typename?: 'EventTopic';
+  _id: Scalars['String']['output'];
+  cpeEvent?: Maybe<CpeEvent>;
+  faculty: Scalars['String']['output'];
+  isActive: Scalars['Boolean']['output'];
+  topic: Scalars['String']['output'];
+};
+
 export type EventTransactionHistory = {
   __typename?: 'EventTransactionHistory';
   CALLBACK_URL: Scalars['String']['output'];
@@ -968,6 +977,14 @@ export type ICreateEmailTemplate = {
   html: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
   name: Scalars['String']['input'];
+};
+
+export type ICreateEventTopic = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  cpeEvent: Scalars['String']['input'];
+  faculty: Scalars['String']['input'];
+  isActive: Scalars['Boolean']['input'];
+  topic: Scalars['String']['input'];
 };
 
 export type ICreateFooterLink = {
@@ -2040,6 +2057,7 @@ export type Mutation = {
   createOrUpdateCpeStudyGroupDetails: IStatusResponse;
   createOrUpdateEmailCredential: IStatusResponse;
   createOrUpdateEmailTemplate: IStatusResponse;
+  createOrUpdateEventTopic: IStatusResponse;
   createOrUpdateFooterCateogry: IStatusResponse;
   createOrUpdateFooterLink: IStatusResponse;
   createOrUpdateGalleryEvent: IStatusResponse;
@@ -2133,6 +2151,7 @@ export type Mutation = {
   deleteCpeStudyGroupDetails: IStatusResponse;
   deleteEmailCredential: IStatusResponse;
   deleteEmailTemplate: IStatusResponse;
+  deleteEventTopic: IStatusResponse;
   deleteFooterCateogry: IStatusResponse;
   deleteFooterLink: IStatusResponse;
   deleteGalleryEvent: IStatusResponse;
@@ -2437,6 +2456,11 @@ export type MutationCreateOrUpdateEmailCredentialArgs = {
 
 export type MutationCreateOrUpdateEmailTemplateArgs = {
   options: ICreateEmailTemplate;
+};
+
+
+export type MutationCreateOrUpdateEventTopicArgs = {
+  options: ICreateEventTopic;
 };
 
 
@@ -2901,6 +2925,11 @@ export type MutationDeleteEmailCredentialArgs = {
 
 
 export type MutationDeleteEmailTemplateArgs = {
+  options: IGetById;
+};
+
+
+export type MutationDeleteEventTopicArgs = {
   options: IGetById;
 };
 
@@ -3601,6 +3630,7 @@ export type Query = {
   getAllCpeStudyGroupDetails: Array<CpeStudyGroupDetails>;
   getAllEmailCredentials: Array<EmailCredential>;
   getAllEmailTemplate: Array<EmailTemplate>;
+  getAllEventTopic: Array<EventTopic>;
   getAllFooterCateogry: Array<FooterLinkGroup>;
   getAllFooterLink: Array<FooterLink>;
   getAllGalleryEvent: Array<GalleryEvent>;
@@ -3708,6 +3738,7 @@ export type Query = {
   getCpeStudyGroupDetailsById: CpeStudyGroupDetails;
   getEmailCredentialsById: EmailCredential;
   getEmailTemplateById: EmailTemplate;
+  getEventTopicById: EventTopic;
   getFooterCateogryById: FooterLinkGroup;
   getFooterLinkById: FooterLink;
   getGalleryEventById: GalleryEvent;
@@ -3984,6 +4015,11 @@ export type QueryGetEmailCredentialsByIdArgs = {
 
 
 export type QueryGetEmailTemplateByIdArgs = {
+  options: IGetById;
+};
+
+
+export type QueryGetEventTopicByIdArgs = {
   options: IGetById;
 };
 
@@ -4785,6 +4821,11 @@ export type GetMySkillListQueryVariables = Exact<{
 
 
 export type GetMySkillListQuery = { __typename?: 'Query', getMySkillList: Array<{ __typename?: 'MemberSkill', _id: string, membershipNumber: string, isActive: boolean, skills?: { __typename?: 'Skills', _id: string, name: string, isActive: boolean } | null }> };
+
+export type GetAllEventTopicQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllEventTopicQuery = { __typename?: 'Query', getAllEventTopic: Array<{ __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -6064,3 +6105,62 @@ export function useGetMySkillListLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetMySkillListQueryHookResult = ReturnType<typeof useGetMySkillListQuery>;
 export type GetMySkillListLazyQueryHookResult = ReturnType<typeof useGetMySkillListLazyQuery>;
 export type GetMySkillListQueryResult = Apollo.QueryResult<GetMySkillListQuery, GetMySkillListQueryVariables>;
+export const GetAllEventTopicDocument = gql`
+    query GetAllEventTopic {
+  getAllEventTopic {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      capacity
+      cutoffDate
+      cms
+      price
+      igst
+      cgst
+      sgst
+      isForStudent
+      isArchived
+      isActive
+    }
+    topic
+    faculty
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllEventTopicQuery__
+ *
+ * To run a query within a React component, call `useGetAllEventTopicQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllEventTopicQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllEventTopicQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllEventTopicQuery(baseOptions?: Apollo.QueryHookOptions<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>(GetAllEventTopicDocument, options);
+      }
+export function useGetAllEventTopicLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>(GetAllEventTopicDocument, options);
+        }
+export type GetAllEventTopicQueryHookResult = ReturnType<typeof useGetAllEventTopicQuery>;
+export type GetAllEventTopicLazyQueryHookResult = ReturnType<typeof useGetAllEventTopicLazyQuery>;
+export type GetAllEventTopicQueryResult = Apollo.QueryResult<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>;

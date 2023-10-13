@@ -83,11 +83,12 @@ const AttendedCard: React.FC<{
   startdatetime: string;
   enddatetime: string;
   vanue: string;
-}> = ({ name, duration, startdatetime, enddatetime, vanue }) => {
+  id: string;
+}> = ({ name, duration, startdatetime, enddatetime, vanue, id }) => {
   const { navigate } = useNavigation();
   const Attendance = () => {
     //@ts-ignore
-    navigate("Feedback");
+    navigate("Feedback", { eventId: id });
   };
   return (
     <>
@@ -169,6 +170,7 @@ export const Seminar = () => {
             {data?.getMyAttendedEvent.reverse().map((item) => {
               return (
                 <AttendedCard
+                  id={item.cpeEvent?._id || ""}
                   key={item._id}
                   name={item.cpeEvent?.name || ""}
                   duration={item.cpeEvent?.cpehrs || ""}

@@ -500,6 +500,13 @@ export type GalleryYear = {
   uri: Scalars['String']['output'];
 };
 
+export type Gender = {
+  __typename?: 'Gender';
+  _id: Scalars['String']['output'];
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type Gmcs = {
   __typename?: 'Gmcs';
   _id: Scalars['String']['output'];
@@ -1006,6 +1013,12 @@ export type ICreateGalleryYear = {
   uri: Scalars['String']['input'];
 };
 
+export type ICreateGender = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  isActive: Scalars['Boolean']['input'];
+  name: Scalars['String']['input'];
+};
+
 export type ICreateGmcs = {
   _id?: InputMaybe<Scalars['String']['input']>;
   description: Scalars['String']['input'];
@@ -1179,6 +1192,7 @@ export type ICreateMemberRegistration = {
   country: Scalars['String']['input'];
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
+  gender: Scalars['String']['input'];
   gstNo: Scalars['String']['input'];
   hash: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
@@ -1920,6 +1934,7 @@ export type MemberRegistration = {
   country?: Maybe<Country>;
   email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
+  gender?: Maybe<Gender>;
   gstNo: Scalars['String']['output'];
   hash: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
@@ -2021,6 +2036,7 @@ export type Mutation = {
   createOrUpdateGalleryEvent: IStatusResponse;
   createOrUpdateGalleryImage: IStatusResponse;
   createOrUpdateGalleryYear: IStatusResponse;
+  createOrUpdateGender: IStatusResponse;
   createOrUpdateGmcs: IStatusResponse;
   createOrUpdateHelpDeskCategory: IStatusResponse;
   createOrUpdateHelpDeskQA: IStatusResponse;
@@ -2113,6 +2129,7 @@ export type Mutation = {
   deleteGalleryEvent: IStatusResponse;
   deleteGalleryImage: IStatusResponse;
   deleteGalleryYear: IStatusResponse;
+  deleteGender: IStatusResponse;
   deleteGmcs: IStatusResponse;
   deleteHelpDeskCategory: IStatusResponse;
   deleteHelpDeskQA: IStatusResponse;
@@ -2436,6 +2453,11 @@ export type MutationCreateOrUpdateGalleryImageArgs = {
 
 export type MutationCreateOrUpdateGalleryYearArgs = {
   options: ICreateGalleryYear;
+};
+
+
+export type MutationCreateOrUpdateGenderArgs = {
+  options: ICreateGender;
 };
 
 
@@ -2895,6 +2917,11 @@ export type MutationDeleteGalleryImageArgs = {
 
 
 export type MutationDeleteGalleryYearArgs = {
+  options: IGetById;
+};
+
+
+export type MutationDeleteGenderArgs = {
   options: IGetById;
 };
 
@@ -3570,6 +3597,7 @@ export type Query = {
   getAllGalleryEvent: Array<GalleryEvent>;
   getAllGalleryImage: Array<GalleryImage>;
   getAllGalleryYear: Array<GalleryYear>;
+  getAllGender: Array<Gender>;
   getAllGmcs: Array<Gmcs>;
   getAllHelpDeskCategory: Array<HelpDeskCategory>;
   getAllHelpDeskQA: Array<HelpDeskQa>;
@@ -3676,6 +3704,7 @@ export type Query = {
   getGalleryEventById: GalleryEvent;
   getGalleryImageById: GalleryImage;
   getGalleryYearById: GalleryYear;
+  getGenderById: Gender;
   getGmcsById: Gmcs;
   getHelpDeskCategoryById: HelpDeskCategory;
   getHelpDeskQAByCategoryId: Array<HelpDeskQa>;
@@ -3971,6 +4000,11 @@ export type QueryGetGalleryImageByIdArgs = {
 
 
 export type QueryGetGalleryYearByIdArgs = {
+  options: IGetById;
+};
+
+
+export type QueryGetGenderByIdArgs = {
   options: IGetById;
 };
 
@@ -4657,10 +4691,22 @@ export type GetAllTitleQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllTitleQuery = { __typename?: 'Query', getAllTitle: Array<{ __typename?: 'Title', _id: string, name: string, isActive: boolean }> };
 
+export type GetAllGenderQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllGenderQuery = { __typename?: 'Query', getAllGender: Array<{ __typename?: 'Gender', _id: string, name: string, isActive: boolean }> };
+
+export type GetGenderByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetGenderByIdQuery = { __typename?: 'Query', getGenderById: { __typename?: 'Gender', _id: string, name: string, isActive: boolean } };
+
 export type MyProfileInformationQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfileInformationQuery = { __typename?: 'Query', myProfileInformation?: { __typename?: 'MemberRegistration', _id: string, firstName: string, lastName: string, middleName: string, hash: string, email: string, userType: string, membershipNo: string, username: string, gstNo: string, tradeName: string, address1: string, address2: string, pinCode: string, phone: string, isApproved: boolean, isActive: boolean, regionType?: { __typename?: 'Region', _id: string, name: string, isActive: boolean } | null, title?: { __typename?: 'Title', _id: string, name: string, isActive: boolean } | null, country?: { __typename?: 'Country', _id: string, name: string, isActive: boolean } | null, state?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null, city?: { __typename?: 'City', _id: string, name: string, isActive: boolean } | null, approvedBy?: { __typename?: 'User', _id: string, name: string, isActive: boolean } | null } | null };
+export type MyProfileInformationQuery = { __typename?: 'Query', myProfileInformation?: { __typename?: 'MemberRegistration', _id: string, firstName: string, lastName: string, middleName: string, hash: string, email: string, userType: string, membershipNo: string, username: string, gstNo: string, tradeName: string, address1: string, address2: string, pinCode: string, phone: string, isApproved: boolean, isActive: boolean, regionType?: { __typename?: 'Region', _id: string, name: string, isActive: boolean } | null, gender?: { __typename?: 'Gender', _id: string, name: string, isActive: boolean } | null, title?: { __typename?: 'Title', _id: string, name: string, isActive: boolean } | null, country?: { __typename?: 'Country', _id: string, name: string, isActive: boolean } | null, state?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null, city?: { __typename?: 'City', _id: string, name: string, isActive: boolean } | null, approvedBy?: { __typename?: 'User', _id: string, name: string, isActive: boolean } | null } | null };
 
 export type GetMyAttendedEventQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5319,6 +5365,79 @@ export function useGetAllTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetAllTitleQueryHookResult = ReturnType<typeof useGetAllTitleQuery>;
 export type GetAllTitleLazyQueryHookResult = ReturnType<typeof useGetAllTitleLazyQuery>;
 export type GetAllTitleQueryResult = Apollo.QueryResult<GetAllTitleQuery, GetAllTitleQueryVariables>;
+export const GetAllGenderDocument = gql`
+    query GetAllGender {
+  getAllGender {
+    _id
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllGenderQuery__
+ *
+ * To run a query within a React component, call `useGetAllGenderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllGenderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllGenderQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllGenderQuery(baseOptions?: Apollo.QueryHookOptions<GetAllGenderQuery, GetAllGenderQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllGenderQuery, GetAllGenderQueryVariables>(GetAllGenderDocument, options);
+      }
+export function useGetAllGenderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllGenderQuery, GetAllGenderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllGenderQuery, GetAllGenderQueryVariables>(GetAllGenderDocument, options);
+        }
+export type GetAllGenderQueryHookResult = ReturnType<typeof useGetAllGenderQuery>;
+export type GetAllGenderLazyQueryHookResult = ReturnType<typeof useGetAllGenderLazyQuery>;
+export type GetAllGenderQueryResult = Apollo.QueryResult<GetAllGenderQuery, GetAllGenderQueryVariables>;
+export const GetGenderByIdDocument = gql`
+    query GetGenderById($options: IGetByID!) {
+  getGenderById(options: $options) {
+    _id
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetGenderByIdQuery__
+ *
+ * To run a query within a React component, call `useGetGenderByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenderByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenderByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetGenderByIdQuery(baseOptions: Apollo.QueryHookOptions<GetGenderByIdQuery, GetGenderByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenderByIdQuery, GetGenderByIdQueryVariables>(GetGenderByIdDocument, options);
+      }
+export function useGetGenderByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenderByIdQuery, GetGenderByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenderByIdQuery, GetGenderByIdQueryVariables>(GetGenderByIdDocument, options);
+        }
+export type GetGenderByIdQueryHookResult = ReturnType<typeof useGetGenderByIdQuery>;
+export type GetGenderByIdLazyQueryHookResult = ReturnType<typeof useGetGenderByIdLazyQuery>;
+export type GetGenderByIdQueryResult = Apollo.QueryResult<GetGenderByIdQuery, GetGenderByIdQueryVariables>;
 export const MyProfileInformationDocument = gql`
     query MyProfileInformation {
   myProfileInformation {
@@ -5330,6 +5449,11 @@ export const MyProfileInformationDocument = gql`
     email
     userType
     regionType {
+      _id
+      name
+      isActive
+    }
+    gender {
       _id
       name
       isActive

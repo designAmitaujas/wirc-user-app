@@ -14,11 +14,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import * as Yup from "yup";
-import { CustomInput } from "../../components/CustomForm";
+import { CustomInput, CustomSelect } from "../../components/CustomForm";
 import {
   ICreateMemberRegistration,
   useGetAllCityQuery,
   useGetAllCountryQuery,
+  useGetAllGenderQuery,
   useGetAllRegionQuery,
   useGetAllStateQuery,
   useGetAllTitleQuery,
@@ -52,6 +53,7 @@ const initialvalues: ICreateMemberRegistration = {
   tradeName: "",
   username: "",
   userType: "member",
+  gender: "",
 };
 
 const validationSchema = Yup.object().shape({
@@ -75,6 +77,7 @@ const validationSchema = Yup.object().shape({
   title: Yup.string(),
   tradeName: Yup.string(),
   username: Yup.string(),
+  gender: Yup.string(),
   userType: Yup.string().oneOf(["member", "none-member", "student"]).required(),
 });
 
@@ -171,6 +174,7 @@ const ProfileScreen = () => {
         tradeName: profile?.myProfileInformation.tradeName,
         username: profile?.myProfileInformation.username || "",
         userType: profile?.myProfileInformation.userType || "",
+        gender: profile?.myProfileInformation.gender?._id || "",
         isActive: true,
         isApproved: true,
       });
@@ -183,6 +187,7 @@ const ProfileScreen = () => {
   const { data: city } = useGetAllCityQuery();
   const { data: state } = useGetAllStateQuery();
   const { data: country } = useGetAllCountryQuery();
+  const { data: gender } = useGetAllGenderQuery();
 
   const toast = useToast();
 
@@ -214,6 +219,7 @@ const ProfileScreen = () => {
           tradeName: val.tradeName,
           username: val.username || "",
           userType: val.userType || "",
+          gender: val.gender || "",
           isActive: true,
           isApproved: true,
         },
@@ -238,7 +244,8 @@ const ProfileScreen = () => {
     !title?.getAllTitle ||
     !city?.getAllCity ||
     !country?.getAllCountry ||
-    !state?.getAllState
+    !state?.getAllState ||
+    !gender?.getAllGender
   ) {
     return <></>;
   }
@@ -355,6 +362,22 @@ const ProfileScreen = () => {
                           keyboardAppearance="light"
                           keyboardType="number-pad"
                           value={values.phone}
+                        />
+                        <CustomSelect
+                          options={gender.getAllGender
+                            .filter((item) => item.isActive === true)
+                            .map((item) => ({
+                              value: item._id,
+                              label: item.name,
+                            }))}
+                          errMsg={errors.gender || ""}
+                          isInvalid={!!touched.gender && !!errors.gender}
+                          label={"gender"}
+                          name="gender"
+                          placeholder="Select gender"
+                          initValue={values.gender}
+                          isRequired={false}
+                          setFieldValue={setFieldValue}
                         />
 
                         {/* <CustomSelect

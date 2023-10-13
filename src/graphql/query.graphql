@@ -98,6 +98,21 @@ query GetAllTitle {
     isActive
   }
 }
+query GetAllGender {
+  getAllGender {
+    _id
+    name
+    isActive
+  }
+}
+
+query GetGenderById($options: IGetByID!) {
+  getGenderById(options: $options) {
+    _id
+    name
+    isActive
+  }
+}
 
 query MyProfileInformation {
   myProfileInformation {
@@ -109,6 +124,11 @@ query MyProfileInformation {
     email
     userType
     regionType {
+      _id
+      name
+      isActive
+    }
+    gender {
       _id
       name
       isActive

@@ -278,7 +278,7 @@ const ProfileScreen = () => {
                   <>
                     <ScrollView p={4}>
                       <VStack space={1} mt={5} mb={3} alignSelf={"center"}>
-                        {profile?.myProfileInformation?.gender?.name ===
+                        {profile?.myProfileInformation?.gender?.name.toLocaleLowerCase() ===
                         "male" ? (
                           <>
                             <Avatar

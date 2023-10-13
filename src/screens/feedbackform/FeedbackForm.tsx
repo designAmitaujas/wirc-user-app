@@ -14,6 +14,9 @@ import {
   View,
 } from "native-base";
 import React from "react";
+import { useGetAllEventTopicQuery } from "../../gql/graphql";
+
+// eventId
 
 const RestHeader = () => {
   const { goBack } = useNavigation();
@@ -67,6 +70,9 @@ const FeedbackForm = () => {
   const [value2, setValue2] = React.useState("");
   const [value3, setValue3] = React.useState("");
   const [value4, setValue4] = React.useState("");
+
+  const { data } = useGetAllEventTopicQuery();
+
   return (
     <>
       <View bg={"white"} flex={1}>

@@ -7,7 +7,7 @@ import SkillSection from "./screens/SkillSection";
 import UpcomingEvents from "./screens/UpcomingEvents";
 import Login from "./screens/auth/Login";
 import MobileLogin from "./screens/auth/NumberLogin";
-import Attendancesheet from "./screens/feedbackform/Attendancesheet";
+
 import FeedbackForm from "./screens/feedbackform/FeedbackForm";
 import NetworkingScreen from "./screens/networking/Networking";
 import ProfileScreen from "./screens/profile/ProfileDetails";
@@ -36,7 +36,6 @@ const Routes = () => {
           <Stack.Screen name="QRcode" component={Qrcode} />
           <Stack.Screen name="RegisteredEvents" component={UpcomingEvents} />
           <Stack.Screen name="Feedback" component={FeedbackForm} />
-          <Stack.Screen name="Attendancesheet" component={Attendancesheet} />
           <Stack.Screen name="VisitingCard" component={VisitingCard} />
           <Stack.Screen name="Networking" component={NetworkingScreen} />
           <Stack.Screen

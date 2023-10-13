@@ -363,331 +363,51 @@ const FeedbackForm = () => {
               <Text>
                 5. &nbsp;Kindly indicate how effective the following topics to
                 you were : {"\n"}
-                <Text fontWeight={"semibold"}>
-                  &nbsp;&nbsp;&nbsp;&nbsp;(7 - 8 July 2023)
-                </Text>
               </Text>
-
-              <VStack space={2}>
-                <Text textAlign={"justify"} w={"95%"} pl={2}>
-                  1) &nbsp;How to deal the Search cases? During the search
-                  proceeding Post Search- Summon to Order; Order to Appeal
-                  Procedural Part: Flaws and Wins General Mistakes of
-                  Consultants (Start to End) Opportunities for CAs (Beyond
-                  Drafting and Representation in Search Cases)
-                </Text>
-                <HStack w={"100%"} pl={2}>
-                  <Text color={"gray.500"} w={"20%"}>
-                    Faculty
-                  </Text>
-                  <Text w={"5%"}>:</Text>
-                  <Text w={"75%"} fontWeight={"semibold"}>
-                    Adv. CA. Vivek Laddha
-                  </Text>
-                </HStack>
-                <Radio.Group
-                  name="myRadioGroup"
-                  accessibilityLabel="favorite number"
-                  value={value1}
-                  onChange={(nextValue) => {
-                    setValue1(nextValue);
-                  }}
-                >
-                  <HStack space={2}>
-                    <Radio shadow={2} value="excellent" size="sm" my="2">
-                      Excellent
-                    </Radio>
-                    <Radio shadow={2} value="verygood" size="sm" my="2">
-                      Very Good
-                    </Radio>
-                    <Radio shadow={2} value="good" size="sm" my="2">
-                      Good
-                    </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
-                  </HStack>
-                </Radio.Group>
-              </VStack>
-              <Divider w={"72"} alignSelf="center" />
-              <VStack space={2}>
-                <Text textAlign={"justify"} w={"95%"} pl={2}>
-                  2) &nbsp;Adjudication: SCN: Check List Procedural Part: Flaws
-                  and Wins (Notice, Intimation and SCN) Drafting the Replies:
-                  Major points of caution (Along with 2 Sample) General Mistakes
-                  of Consultants (Start to End) Check with third eyes: Other
-                  Opportunities for Cas for future coming out of the
-                  adjudication (Beyond Drafting and Representation in
-                  adjudication Cases)
-                </Text>
-                <HStack w={"100%"} pl={2}>
-                  <Text color={"gray.500"} w={"20%"}>
-                    Faculty
-                  </Text>
-                  <Text w={"5%"}>:</Text>
-                  <Text w={"75%"} fontWeight={"semibold"}>
-                    CA. Keval Shah
-                  </Text>
-                </HStack>
-                <Radio.Group
-                  name="myRadioGroup"
-                  accessibilityLabel="favorite number"
-                  value={value2}
-                  onChange={(nextValue) => {
-                    setValue2(nextValue);
-                  }}
-                >
-                  <HStack space={2}>
-                    <Radio shadow={2} value="excellent" size="sm" my="2">
-                      Excellent
-                    </Radio>
-                    <Radio shadow={2} value="verygood" size="sm" my="2">
-                      Very Good
-                    </Radio>
-                    <Radio shadow={2} value="good" size="sm" my="2">
-                      Good
-                    </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
-                  </HStack>
-                </Radio.Group>
-              </VStack>
-              <Divider w={"72"} alignSelf="center" />
-              <VStack space={2}>
-                <Text textAlign={"justify"} w={"95%"} pl={2}>
-                  3) &nbsp;How to keep track of Case Laws Precautions while
-                  referring the case laws
-                </Text>
-                <HStack w={"100%"} pl={2}>
-                  <Text color={"gray.500"} w={"20%"}>
-                    Faculty
-                  </Text>
-                  <Text w={"5%"}>:</Text>
-                  <Text w={"75%"} fontWeight={"semibold"}>
-                    Dr. CA. Arpit Haldia
-                  </Text>
-                </HStack>
-                <Radio.Group
-                  name="myRadioGroup"
-                  accessibilityLabel="favorite number"
-                  value={value3}
-                  onChange={(nextValue) => {
-                    setValue3(nextValue);
-                  }}
-                >
-                  <HStack space={2}>
-                    <Radio shadow={2} value="excellent" size="sm" my="2">
-                      Excellent
-                    </Radio>
-                    <Radio shadow={2} value="verygood" size="sm" my="2">
-                      Very Good
-                    </Radio>
-                    <Radio shadow={2} value="good" size="sm" my="2">
-                      Good
-                    </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
-                  </HStack>
-                </Radio.Group>
-              </VStack>
-              <Divider w={"72"} alignSelf="center" />
-              <VStack space={2}>
-                <Text textAlign={"justify"} w={"95%"} pl={2}>
-                  4) &nbsp;Most emerging areas in Litigation and preparation
-                  thereof
-                </Text>
-                <HStack w={"100%"} pl={2}>
-                  <Text color={"gray.500"} w={"20%"}>
-                    Faculty
-                  </Text>
-                  <Text w={"5%"}>:</Text>
-                  <Text w={"75%"} fontWeight={"semibold"}>
-                    CA. Vasant Bhat
-                  </Text>
-                </HStack>
-                <Radio.Group
-                  name="myRadioGroup"
-                  accessibilityLabel="favorite number"
-                  value={value4}
-                  onChange={(nextValue) => {
-                    setValue4(nextValue);
-                  }}
-                >
-                  <HStack space={2}>
-                    <Radio shadow={2} value="excellent" size="sm" my="2">
-                      Excellent
-                    </Radio>
-                    <Radio shadow={2} value="verygood" size="sm" my="2">
-                      Very Good
-                    </Radio>
-                    <Radio shadow={2} value="good" size="sm" my="2">
-                      Good
-                    </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
-                  </HStack>
-                </Radio.Group>
-              </VStack>
-              <Divider w={"72"} alignSelf="center" />
-              <VStack space={2}>
-                <Text textAlign={"justify"} w={"95%"} pl={2}>
-                  5) &nbsp;Appeal: First Appellate Authority and Tribunal Draft
-                  the appeal Procedural Part: Flaws and Wins (Order)
-                  Representation: A game changer (Along with 2 Sample Case
-                  Studies) General Mistakes of Consultants (Start to End)
-                  Opportunities for CAs (Beyond Drafting and Representation in
-                  Search Cases)
-                </Text>
-                <HStack w={"100%"} pl={2}>
-                  <Text color={"gray.500"} w={"20%"}>
-                    Faculty
-                  </Text>
-                  <Text w={"5%"}>:</Text>
-                  <Text w={"75%"} fontWeight={"semibold"}>
-                    CA. Rajiv Luthia
-                  </Text>
-                </HStack>
-                <Radio.Group
-                  name="myRadioGroup"
-                  accessibilityLabel="favorite number"
-                  value={value4}
-                  onChange={(nextValue) => {
-                    setValue4(nextValue);
-                  }}
-                >
-                  <HStack space={2}>
-                    <Radio shadow={2} value="excellent" size="sm" my="2">
-                      Excellent
-                    </Radio>
-                    <Radio shadow={2} value="verygood" size="sm" my="2">
-                      Very Good
-                    </Radio>
-                    <Radio shadow={2} value="good" size="sm" my="2">
-                      Good
-                    </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
-                  </HStack>
-                </Radio.Group>
-              </VStack>
-              <Divider w={"72"} alignSelf="center" />
-              <VStack space={2}>
-                <Text textAlign={"justify"} w={"95%"} pl={2}>
-                  6) &nbsp;Fast reading techniques of Case Laws
-                </Text>
-                <HStack w={"100%"} pl={2}>
-                  <Text color={"gray.500"} w={"20%"}>
-                    Faculty
-                  </Text>
-                  <Text w={"5%"}>:</Text>
-                  <Text w={"75%"} fontWeight={"semibold"}>
-                    CA. Nihalchand Jain
-                  </Text>
-                </HStack>
-                <Radio.Group
-                  name="myRadioGroup"
-                  accessibilityLabel="favorite number"
-                  value={value4}
-                  onChange={(nextValue) => {
-                    setValue4(nextValue);
-                  }}
-                >
-                  <HStack space={2}>
-                    <Radio shadow={2} value="excellent" size="sm" my="2">
-                      Excellent
-                    </Radio>
-                    <Radio shadow={2} value="verygood" size="sm" my="2">
-                      Very Good
-                    </Radio>
-                    <Radio shadow={2} value="good" size="sm" my="2">
-                      Good
-                    </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
-                  </HStack>
-                </Radio.Group>
-              </VStack>
-              <Divider w={"72"} alignSelf="center" />
-              <VStack space={2}>
-                <Text textAlign={"justify"} w={"95%"} pl={2}>
-                  7) &nbsp;Grow with Networking in Litigation practice
-                </Text>
-                <HStack w={"100%"} pl={2}>
-                  <Text color={"gray.500"} w={"20%"}>
-                    Faculty
-                  </Text>
-                  <Text w={"5%"}>:</Text>
-                  <Text w={"75%"} fontWeight={"semibold"}>
-                    CA. Jignesh Kansara
-                  </Text>
-                </HStack>
-                <Radio.Group
-                  name="myRadioGroup"
-                  accessibilityLabel="favorite number"
-                  value={value4}
-                  onChange={(nextValue) => {
-                    setValue4(nextValue);
-                  }}
-                >
-                  <HStack space={2}>
-                    <Radio shadow={2} value="excellent" size="sm" my="2">
-                      Excellent
-                    </Radio>
-                    <Radio shadow={2} value="verygood" size="sm" my="2">
-                      Very Good
-                    </Radio>
-                    <Radio shadow={2} value="good" size="sm" my="2">
-                      Good
-                    </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
-                  </HStack>
-                </Radio.Group>
-              </VStack>
-              <Divider w={"72"} alignSelf="center" />
-              <VStack space={2}>
-                <Text textAlign={"justify"} w={"95%"} pl={2}>
-                  8) &nbsp;A small competition among the attendees
-                </Text>
-                <HStack w={"100%"} pl={2}>
-                  <Text color={"gray.500"} w={"20%"}>
-                    Faculty
-                  </Text>
-                  <Text w={"5%"}>:</Text>
-                  <Text w={"75%"} fontWeight={"semibold"}>
-                    CA. Nitin Bhuta
-                  </Text>
-                </HStack>
-                <Radio.Group
-                  name="myRadioGroup"
-                  accessibilityLabel="favorite number"
-                  value={value4}
-                  onChange={(nextValue) => {
-                    setValue4(nextValue);
-                  }}
-                >
-                  <HStack space={2}>
-                    <Radio shadow={2} value="excellent" size="sm" my="2">
-                      Excellent
-                    </Radio>
-                    <Radio shadow={2} value="verygood" size="sm" my="2">
-                      Very Good
-                    </Radio>
-                    <Radio shadow={2} value="good" size="sm" my="2">
-                      Good
-                    </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
-                  </HStack>
-                </Radio.Group>
-              </VStack>
+              {data?.getAllEventTopic.map((item, index) => {
+                return (
+                  <>
+                    <VStack space={2}>
+                      <Text textAlign={"justify"} w={"95%"} pl={2}>
+                        {index + 1} {item.topic}
+                      </Text>
+                      <HStack w={"100%"} pl={2}>
+                        <Text color={"gray.500"} w={"20%"}>
+                          Faculty
+                        </Text>
+                        <Text w={"5%"}>:</Text>
+                        <Text w={"75%"} fontWeight={"semibold"}>
+                          {item.faculty}
+                        </Text>
+                      </HStack>
+                      <Radio.Group
+                        name="myRadioGroup"
+                        accessibilityLabel="favorite number"
+                        value={value1}
+                        onChange={(e) => {
+                          setValue1(item._id);
+                        }}
+                      >
+                        <HStack space={2}>
+                          <Radio shadow={2} value="excellent" size="sm" my="2">
+                            Excellent
+                          </Radio>
+                          <Radio shadow={2} value="verygood" size="sm" my="2">
+                            Very Good
+                          </Radio>
+                          <Radio shadow={2} value="good" size="sm" my="2">
+                            Good
+                          </Radio>
+                          <Radio shadow={2} value="fair" size="sm" my="2">
+                            Fair
+                          </Radio>
+                        </HStack>
+                      </Radio.Group>
+                    </VStack>
+                    <Divider w={"72"} alignSelf="center" />
+                  </>
+                );
+              })}
             </VStack>
           </VStack>
           <Button

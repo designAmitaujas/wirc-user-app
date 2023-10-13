@@ -56,10 +56,15 @@ const FeedbackForm = () => {
     //@ts-ignore
     navigate("Home");
   };
+
+  const [checkedItems, setCheckedItems] = React.useState({});
+
   const [value1, setValue1] = React.useState("");
   const [value2, setValue2] = React.useState("");
   const [value3, setValue3] = React.useState("");
   const [value4, setValue4] = React.useState("");
+
+  console.log(checkedItems);
 
   const { data } = useGetAllEventTopicQuery();
 
@@ -364,50 +369,59 @@ const FeedbackForm = () => {
                 5. &nbsp;Kindly indicate how effective the following topics to
                 you were : {"\n"}
               </Text>
-              {data?.getAllEventTopic.map((item, index) => {
-                return (
-                  <>
-                    <VStack space={2}>
-                      <Text textAlign={"justify"} w={"95%"} pl={2}>
-                        {index + 1} {item.topic}
-                      </Text>
-                      <HStack w={"100%"} pl={2}>
-                        <Text color={"gray.500"} w={"20%"}>
-                          Faculty
+              {data?.getAllEventTopic
+                .filter((item) => item.isActive === true)
+                .map((item, index) => {
+                  return (
+                    <>
+                      <VStack space={2}>
+                        <Text textAlign={"justify"} w={"95%"} pl={2}>
+                          {index + 1} ) {item.topic}
                         </Text>
-                        <Text w={"5%"}>:</Text>
-                        <Text w={"75%"} fontWeight={"semibold"}>
-                          {item.faculty}
-                        </Text>
-                      </HStack>
-                      <Radio.Group
-                        name="myRadioGroup"
-                        accessibilityLabel="favorite number"
-                        value={value1}
-                        onChange={(e) => {
-                          setValue1(item._id);
-                        }}
-                      >
-                        <HStack space={2}>
-                          <Radio shadow={2} value="excellent" size="sm" my="2">
-                            Excellent
-                          </Radio>
-                          <Radio shadow={2} value="verygood" size="sm" my="2">
-                            Very Good
-                          </Radio>
-                          <Radio shadow={2} value="good" size="sm" my="2">
-                            Good
-                          </Radio>
-                          <Radio shadow={2} value="fair" size="sm" my="2">
-                            Fair
-                          </Radio>
+                        <HStack w={"100%"} pl={2}>
+                          <Text color={"gray.500"} w={"20%"}>
+                            Faculty
+                          </Text>
+                          <Text w={"5%"}>:</Text>
+                          <Text w={"75%"} fontWeight={"semibold"}>
+                            {item.faculty}
+                          </Text>
                         </HStack>
-                      </Radio.Group>
-                    </VStack>
-                    <Divider w={"72"} alignSelf="center" />
-                  </>
-                );
-              })}
+                        <Radio.Group
+                          name="myRadioGroup"
+                          accessibilityLabel="favorite number"
+                          onChange={(e) => {
+                            setCheckedItems(item._id);
+                            console.log(item.faculty);
+                            console.log("hello", e);
+                          }}
+                        >
+                          <HStack space={2}>
+                            <Radio
+                              shadow={2}
+                              value="excellent"
+                              size="sm"
+                              my="2"
+                              _checked={checkedItems}
+                            >
+                              Excellent
+                            </Radio>
+                            <Radio shadow={2} value="verygood" size="sm" my="2">
+                              Very Good
+                            </Radio>
+                            <Radio shadow={2} value="good" size="sm" my="2">
+                              Good
+                            </Radio>
+                            <Radio shadow={2} value="fair" size="sm" my="2">
+                              Fair
+                            </Radio>
+                          </HStack>
+                        </Radio.Group>
+                      </VStack>
+                      <Divider w={"72"} alignSelf="center" />
+                    </>
+                  );
+                })}
             </VStack>
           </VStack>
           <Button

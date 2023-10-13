@@ -13,7 +13,7 @@ import {
   VStack,
   View,
 } from "native-base";
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetAllEventTopicQuery } from "../../gql/graphql";
 
 // eventId
@@ -64,7 +64,9 @@ const FeedbackForm = () => {
   const [value3, setValue3] = React.useState("");
   const [value4, setValue4] = React.useState("");
 
-  console.log(checkedItems);
+  useEffect(() => {
+    console.log("checkedItems: ", checkedItems);
+  }, [checkedItems]);
 
   const { data } = useGetAllEventTopicQuery();
 

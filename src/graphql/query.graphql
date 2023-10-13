@@ -343,3 +343,16 @@ query GetAllMemberSkill {
     isActive
   }
 }
+
+query GetMySkillList($options: IGetByID!) {
+  getMySkillList(options: $options) {
+    _id
+    membershipNumber
+    skills {
+      _id
+      name
+      isActive
+    }
+    isActive
+  }
+}

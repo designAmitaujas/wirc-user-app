@@ -22,9 +22,7 @@ const RestHeader = () => {
     <HStack
       backgroundColor="#0f045d"
       borderBottomRadius={40}
-      // justifyContent={"space-between"}
       py="3"
-      // h={16}
       px={4}
       alignItems="center"
       alignSelf={"center"}
@@ -33,7 +31,6 @@ const RestHeader = () => {
       <Button
         bg="transparent"
         colorScheme={"white"}
-        // w="14%"
         onPress={goBack}
         leftIcon={
           <Icon
@@ -43,14 +40,7 @@ const RestHeader = () => {
           />
         }
       />
-      <Text
-        color="white"
-        ml={12}
-        fontSize="22"
-        fontWeight="bold"
-        // mb={1}
-        // w={"40%"}
-      >
+      <Text color="white" ml={12} fontSize="22" fontWeight="bold">
         Feedback Form
       </Text>
     </HStack>

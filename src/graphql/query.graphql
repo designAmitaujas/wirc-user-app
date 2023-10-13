@@ -376,3 +376,34 @@ query GetMySkillList($options: IGetByID!) {
     isActive
   }
 }
+
+query GetAllEventTopic {
+  getAllEventTopic {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      capacity
+      cutoffDate
+      cms
+      price
+      igst
+      cgst
+      sgst
+      isForStudent
+      isArchived
+      isActive
+    }
+    topic
+    faculty
+    isActive
+  }
+}

@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import {
@@ -20,11 +20,18 @@ import {
 const logo = require("../../assets/wirclogo.png");
 
 const Home = () => {
+  const [menuVisible, setMenuVisible] = React.useState(false);
+
   const { navigate } = useNavigation();
 
   const networking = () => {
     // @ts-ignore
     navigate("Networking");
+  };
+
+  const handleSkill = () => {
+    // @ts-ignore
+    navigate("SkillSection");
   };
 
   return (
@@ -46,9 +53,23 @@ const Home = () => {
               h={12}
               w={12}
             />
-            <TouchableOpacity onPress={networking}>
-              <Ionicons name="earth" size={32} color="white" />
-            </TouchableOpacity>
+
+            <HStack>
+              <TouchableOpacity onPress={networking}>
+                <Ionicons
+                  name="earth"
+                  size={24}
+                  style={{ marginRight: 10 }}
+                  color="white"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleSkill}
+                style={{ justifyContent: "center", display: "flex" }}
+              >
+                <Entypo name="trophy" size={24} color="white" />
+              </TouchableOpacity>
+            </HStack>
           </HStack>
         </Box>
         <ScrollView pt={5} pb={5}>
@@ -62,8 +83,6 @@ const Home = () => {
     </>
   );
 };
-
-export default Home;
 
 const AttendedCard: React.FC<{
   name: string;
@@ -143,6 +162,7 @@ const AttendedCard: React.FC<{
 
 export const Seminar = () => {
   const { data } = useGetMyAttendedEventQuery();
+
   return (
     <>
       <VStack space={4} pl={4} pr={4} pb={4}>
@@ -175,8 +195,6 @@ export const Seminar = () => {
     </>
   );
 };
-
-//Upcoming Seminar
 
 const UpcomingCard: React.FC<{
   name: string;
@@ -285,3 +303,5 @@ export const UpcomingEvent = () => {
     </>
   );
 };
+
+export default Home;

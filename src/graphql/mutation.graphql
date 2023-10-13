@@ -60,7 +60,7 @@ mutation AddAttendence($options: IAddAttendenceInput!) {
   }
 }
 
-mutation CreateOrUpdateMemberSkill($options: ICreateMemberSkill!) {
+mutation CreateOrUpdateMemberSkill($options: IGetMemberSkill!) {
   createOrUpdateMemberSkill(options: $options) {
     success
     msg

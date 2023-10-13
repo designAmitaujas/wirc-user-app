@@ -3,6 +3,7 @@ import * as SplashScreen from "expo-splash-screen";
 import BottomTab from "./screens/BottomTab";
 import EventRegistration from "./screens/EventRegistration";
 import Transactiondetail from "./screens/Payment/Transactiondetail";
+import SkillSection from "./screens/SkillSection";
 import UpcomingEvents from "./screens/UpcomingEvents";
 import Login from "./screens/auth/Login";
 import MobileLogin from "./screens/auth/NumberLogin";
@@ -29,6 +30,7 @@ const Routes = () => {
       {isAuth === true ? (
         <>
           <Stack.Screen name="BottomTab" component={BottomTab} />
+          <Stack.Screen name="SkillSection" component={SkillSection} />
           <Stack.Screen name="EditProfile" component={ProfileScreen} />
           <Stack.Screen name="mobile" component={MobileLogin} />
           <Stack.Screen name="QRcode" component={Qrcode} />

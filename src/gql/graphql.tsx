@@ -1210,13 +1210,6 @@ export type ICreateMemberRegistration = {
   username: Scalars['String']['input'];
 };
 
-export type ICreateMemberSkill = {
-  _id?: InputMaybe<Scalars['String']['input']>;
-  isActive: Scalars['Boolean']['input'];
-  membershipNumber: Scalars['String']['input'];
-  skills: Scalars['String']['input'];
-};
-
 export type ICreateMentorshipZone = {
   _id?: InputMaybe<Scalars['String']['input']>;
   address: Scalars['String']['input'];
@@ -1684,6 +1677,11 @@ export type IGetById = {
 export type IGetEmailInput = {
   email: Scalars['String']['input'];
   otp: Scalars['String']['input'];
+};
+
+export type IGetMemberSkill = {
+  arr: Array<Scalars['String']['input']>;
+  membershipNumber: Scalars['String']['input'];
 };
 
 export type IGetPaymentDetails = {
@@ -2554,7 +2552,7 @@ export type MutationCreateOrUpdateMemberRegistrationArgs = {
 
 
 export type MutationCreateOrUpdateMemberSkillArgs = {
-  options: ICreateMemberSkill;
+  options: IGetMemberSkill;
 };
 
 
@@ -3733,6 +3731,7 @@ export type Query = {
   getMyAttendedEvent: Array<EventAttendence>;
   getMyEventList: Array<RegistrationList>;
   getMyEventList2: Array<RegistrationList>;
+  getMySkillList: Array<MemberSkill>;
   getNetworkingZoneById: NetworkingZone;
   getPastChairpersonById: PastChairperson;
   getPaymentDetailsById: PaymentTranscation;
@@ -4116,6 +4115,11 @@ export type QueryGetMemberSkillByIdArgs = {
 
 
 export type QueryGetMentorshipZoneByIdArgs = {
+  options: IGetById;
+};
+
+
+export type QueryGetMySkillListArgs = {
   options: IGetById;
 };
 
@@ -4630,7 +4634,7 @@ export type AddAttendenceMutationVariables = Exact<{
 export type AddAttendenceMutation = { __typename?: 'Mutation', addAttendence: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
 
 export type CreateOrUpdateMemberSkillMutationVariables = Exact<{
-  options: ICreateMemberSkill;
+  options: IGetMemberSkill;
 }>;
 
 
@@ -4758,6 +4762,13 @@ export type GetAllMemberSkillQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllMemberSkillQuery = { __typename?: 'Query', getAllMemberSkill: Array<{ __typename?: 'MemberSkill', _id: string, membershipNumber: string, isActive: boolean, skills?: { __typename?: 'Skills', _id: string, name: string, isActive: boolean } | null }> };
+
+export type GetMySkillListQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetMySkillListQuery = { __typename?: 'Query', getMySkillList: Array<{ __typename?: 'MemberSkill', _id: string, membershipNumber: string, isActive: boolean, skills?: { __typename?: 'Skills', _id: string, name: string, isActive: boolean } | null }> };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -4958,7 +4969,7 @@ export type AddAttendenceMutationHookResult = ReturnType<typeof useAddAttendence
 export type AddAttendenceMutationResult = Apollo.MutationResult<AddAttendenceMutation>;
 export type AddAttendenceMutationOptions = Apollo.BaseMutationOptions<AddAttendenceMutation, AddAttendenceMutationVariables>;
 export const CreateOrUpdateMemberSkillDocument = gql`
-    mutation CreateOrUpdateMemberSkill($options: ICreateMemberSkill!) {
+    mutation CreateOrUpdateMemberSkill($options: IGetMemberSkill!) {
   createOrUpdateMemberSkill(options: $options) {
     success
     msg
@@ -5958,3 +5969,45 @@ export function useGetAllMemberSkillLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetAllMemberSkillQueryHookResult = ReturnType<typeof useGetAllMemberSkillQuery>;
 export type GetAllMemberSkillLazyQueryHookResult = ReturnType<typeof useGetAllMemberSkillLazyQuery>;
 export type GetAllMemberSkillQueryResult = Apollo.QueryResult<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>;
+export const GetMySkillListDocument = gql`
+    query GetMySkillList($options: IGetByID!) {
+  getMySkillList(options: $options) {
+    _id
+    membershipNumber
+    skills {
+      _id
+      name
+      isActive
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetMySkillListQuery__
+ *
+ * To run a query within a React component, call `useGetMySkillListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMySkillListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMySkillListQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetMySkillListQuery(baseOptions: Apollo.QueryHookOptions<GetMySkillListQuery, GetMySkillListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMySkillListQuery, GetMySkillListQueryVariables>(GetMySkillListDocument, options);
+      }
+export function useGetMySkillListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMySkillListQuery, GetMySkillListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMySkillListQuery, GetMySkillListQueryVariables>(GetMySkillListDocument, options);
+        }
+export type GetMySkillListQueryHookResult = ReturnType<typeof useGetMySkillListQuery>;
+export type GetMySkillListLazyQueryHookResult = ReturnType<typeof useGetMySkillListLazyQuery>;
+export type GetMySkillListQueryResult = Apollo.QueryResult<GetMySkillListQuery, GetMySkillListQueryVariables>;

@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import * as Yup from "yup";
-import { CustomInput, CustomSelect } from "../../components/CustomForm";
+import { CustomInput } from "../../components/CustomForm";
 import {
   ICreateMemberRegistration,
   useGetAllCityQuery,
@@ -381,7 +381,7 @@ const ProfileScreen = () => {
                           keyboardType="number-pad"
                           value={values.phone}
                         />
-                        <CustomSelect
+                        {/* <CustomSelect
                           options={gender.getAllGender
                             .filter((item) => item.isActive === true)
                             .map((item) => ({
@@ -396,7 +396,7 @@ const ProfileScreen = () => {
                           initValue={values.gender}
                           isRequired={false}
                           setFieldValue={setFieldValue}
-                        />
+                        /> */}
 
                         {/* <CustomSelect
                           options={country.getAllCountry

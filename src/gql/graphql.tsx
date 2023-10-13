@@ -1684,6 +1684,15 @@ export type IGetMemberSkill = {
   membershipNumber: Scalars['String']['input'];
 };
 
+export type IGetMyList = {
+  __typename?: 'IGetMyList';
+  email: Scalars['String']['output'];
+  gender: Scalars['String']['output'];
+  mobile: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  skill: Array<Scalars['String']['output']>;
+};
+
 export type IGetPaymentDetails = {
   endDate: Scalars['String']['input'];
   eventId: Scalars['String']['input'];
@@ -2192,7 +2201,7 @@ export type Mutation = {
   genPayment: IPaymentResponse;
   getAllPaytmIdfromTransactionId: Array<IPaytmIdResponseRespose>;
   getAllPublicationPaymentHistory: Array<PublicationBilling>;
-  getFilterdSkillMember: Scalars['String']['output'];
+  getFilterdSkillMember: Array<IGetMyList>;
   getMemberInfoByMembershipNumber?: Maybe<IUserInfoByMembershipNumber>;
   getPublicaLibraryRegistration: IStatusResponse;
   getRedeamCode: IStatusResponse;
@@ -4612,6 +4621,13 @@ export type MemberRegistrationAuthResolverMutationVariables = Exact<{
 
 export type MemberRegistrationAuthResolverMutation = { __typename?: 'Mutation', memberRegistrationAuthResolver: { __typename?: 'IAuthResoverResponse', success: boolean, msg: string, jwt: string, email: string, name: string } };
 
+export type GetFilterdSkillMemberMutationVariables = Exact<{
+  options: IGetAllMemberSkills;
+}>;
+
+
+export type GetFilterdSkillMemberMutation = { __typename?: 'Mutation', getFilterdSkillMember: Array<{ __typename?: 'IGetMyList', name: string, email: string, mobile: string, skill: Array<string>, gender: string }> };
+
 export type GetMemberInfoByMembershipNumberMutationVariables = Exact<{
   options: IGetById;
 }>;
@@ -4843,6 +4859,43 @@ export function useMemberRegistrationAuthResolverMutation(baseOptions?: Apollo.M
 export type MemberRegistrationAuthResolverMutationHookResult = ReturnType<typeof useMemberRegistrationAuthResolverMutation>;
 export type MemberRegistrationAuthResolverMutationResult = Apollo.MutationResult<MemberRegistrationAuthResolverMutation>;
 export type MemberRegistrationAuthResolverMutationOptions = Apollo.BaseMutationOptions<MemberRegistrationAuthResolverMutation, MemberRegistrationAuthResolverMutationVariables>;
+export const GetFilterdSkillMemberDocument = gql`
+    mutation GetFilterdSkillMember($options: IGetAllMemberSkills!) {
+  getFilterdSkillMember(options: $options) {
+    name
+    email
+    mobile
+    skill
+    gender
+  }
+}
+    `;
+export type GetFilterdSkillMemberMutationFn = Apollo.MutationFunction<GetFilterdSkillMemberMutation, GetFilterdSkillMemberMutationVariables>;
+
+/**
+ * __useGetFilterdSkillMemberMutation__
+ *
+ * To run a mutation, you first call `useGetFilterdSkillMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetFilterdSkillMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getFilterdSkillMemberMutation, { data, loading, error }] = useGetFilterdSkillMemberMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetFilterdSkillMemberMutation(baseOptions?: Apollo.MutationHookOptions<GetFilterdSkillMemberMutation, GetFilterdSkillMemberMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GetFilterdSkillMemberMutation, GetFilterdSkillMemberMutationVariables>(GetFilterdSkillMemberDocument, options);
+      }
+export type GetFilterdSkillMemberMutationHookResult = ReturnType<typeof useGetFilterdSkillMemberMutation>;
+export type GetFilterdSkillMemberMutationResult = Apollo.MutationResult<GetFilterdSkillMemberMutation>;
+export type GetFilterdSkillMemberMutationOptions = Apollo.BaseMutationOptions<GetFilterdSkillMemberMutation, GetFilterdSkillMemberMutationVariables>;
 export const GetMemberInfoByMembershipNumberDocument = gql`
     mutation GetMemberInfoByMembershipNumber($options: IGetByID!) {
   getMemberInfoByMembershipNumber(options: $options) {

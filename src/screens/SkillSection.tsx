@@ -1,6 +1,18 @@
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { IndexPath, Select, SelectItem } from "@ui-kitten/components";
 import _ from "lodash";
-import { Button, Text, View, useToast } from "native-base";
+import LottieView from "lottie-react-native";
+import {
+  Box,
+  Button,
+  HStack,
+  Icon,
+  Text,
+  VStack,
+  View,
+  useToast,
+} from "native-base";
 import { useEffect, useState } from "react";
 import {
   useCreateOrUpdateMemberSkillMutation,
@@ -8,6 +20,50 @@ import {
   useGetMySkillListLazyQuery,
   useMyProfileInformationQuery,
 } from "../gql/graphql";
+
+const RestHeader = () => {
+  const { goBack } = useNavigation();
+
+  return (
+    <>
+      <HStack
+        backgroundColor="#0f045d"
+        borderBottomRadius={40}
+        // justifyContent={"space-between"}
+        py="3"
+        // h={16}
+        px={4}
+        alignItems="center"
+        alignSelf={"center"}
+        w={"100%"}
+      >
+        <Button
+          bg="transparent"
+          colorScheme={"white"}
+          // w="14%"
+          onPress={goBack}
+          leftIcon={
+            <Icon
+              size="md"
+              as={<FontAwesome5 name="arrow-left" />}
+              color="white"
+            />
+          }
+        />
+        <Text
+          color="white"
+          ml={8}
+          fontSize="20"
+          fontWeight="bold"
+          mb={1}
+          // w={"40%"}
+        >
+          Members Skills
+        </Text>
+      </HStack>
+    </>
+  );
+};
 
 const SkillSection = () => {
   const { data } = useGetAllSkillsQuery();
@@ -120,27 +176,53 @@ const SkillSection = () => {
   if (!data?.getAllSkills) return <></>;
 
   return (
-    <View flex={1} alignItems="center" bg="#FFF">
-      <Text>SkillSection</Text>
-      <Select
-        multiSelect={true}
-        value={showValue}
-        selectedIndex={multiSelectedIndex}
-        // @ts-ignore
-        onSelect={(index: IndexPath[]) => {
-          console.log(index);
-          setMultiSelectedIndex(index);
-        }}
-        style={{ width: "78%" }}
-      >
-        {dataArr.map((item) => {
-          return <SelectItem title={item} key={item} />;
-        })}
-      </Select>
-      <Button w="78%" mt="3" onPress={handleUpdate}>
-        Update
-      </Button>
-    </View>
+    <>
+      <View flex={1} alignItems="center" bg="#FFF">
+        <RestHeader />
+        <Select
+          multiSelect={true}
+          value={showValue}
+          selectedIndex={multiSelectedIndex}
+          // @ts-ignore
+          onSelect={(index: IndexPath[]) => {
+            console.log(index);
+            setMultiSelectedIndex(index);
+          }}
+          style={{ width: "78%", marginTop: 24 }}
+        >
+          {dataArr.map((item) => {
+            return <SelectItem title={item} key={item} />;
+          })}
+        </Select>
+
+        <Button
+          w="50%"
+          mt="10"
+          onPress={handleUpdate}
+          backgroundColor="#0f045d"
+        >
+          Update
+        </Button>
+        <Text mt="12" fontSize="lg" fontWeight="bold">
+          Your Selected Skills
+        </Text>
+        <Box h={"32"} w={"48"}>
+          <LottieView
+            autoPlay
+            source={require("../../assets/animation_lnof4dix.json")}
+          />
+        </Box>
+        <VStack mt="10">
+          {showValue.split(",").map((item, index) => {
+            return (
+              <Text fontSize="lg" fontWeight="bold" width="65%">
+                {index + 1} {item}
+              </Text>
+            );
+          })}
+        </VStack>
+      </View>
+    </>
   );
 };
 

@@ -12,7 +12,6 @@ import {
   Box,
   Button,
   Divider,
-  FlatList,
   HStack,
   Icon,
   Image,
@@ -25,12 +24,14 @@ import {
 import React, { useEffect, useState } from "react";
 import { Linking, TouchableOpacity } from "react-native";
 import * as Yup from "yup";
-import { CustomSelect } from "../../components/CustomForm";
+import { CustomButton, CustomSelect } from "../../components/CustomForm";
 import {
+  IGetMyList,
   useGetAllSkillsQuery,
+  useGetFilterdSkillMemberMutation,
   useGetTodayCpeEventQuery,
+  useMyProfileInformationQuery,
 } from "../../gql/graphql";
-import AnimatedSearchBar from "./Search";
 
 const RestHeader = () => {
   // const { goBack } = useNavigation();
@@ -78,10 +79,6 @@ const RestHeader = () => {
   );
 };
 
-interface skillType {
-  name: string;
-}
-
 interface IInputForm {
   skills: string;
   event: string;
@@ -99,11 +96,11 @@ const validationSchema = Yup.object().shape({
 
 const ParticipantsCard: React.FC<{
   name: string;
-  position: string;
-  gender: string;
+  position?: string;
+  gender?: string;
   email: string;
-  mo_number: number;
-  skills: skillType[];
+  mo_number: string;
+  skills: string[];
 }> = ({ name, position, gender, email, mo_number, skills }) => {
   // console.log(mo_number);
 
@@ -113,9 +110,11 @@ const ParticipantsCard: React.FC<{
     Linking.openURL(`tel:${mo_number.toString()}`);
   };
 
+  const { data: profile } = useMyProfileInformationQuery();
+
   return (
     <>
-      {gender === "male" ? (
+      {profile?.myProfileInformation?.gender?.name === "male" ? (
         <VStack
           shadow={5}
           style={{ shadowColor: "blue" }}
@@ -200,28 +199,21 @@ const ParticipantsCard: React.FC<{
                       Skills
                     </Text>
                     <Text w={"10%"}>:</Text>
-                    <FlatList
-                      data={skills}
-                      renderItem={({ item }) => {
-                        return (
-                          <Badge
-                            my={1}
-                            variant={"solid"}
-                            colorScheme={"lightBlue"}
-                            borderRadius={8}
-                          >
-                            {item.name}
-                          </Badge>
-                        );
-                      }}
-                    />
+                    <Badge
+                      my={1}
+                      variant={"solid"}
+                      colorScheme={"lightBlue"}
+                      borderRadius={8}
+                    >
+                      {skills}
+                    </Badge>
                   </HStack>
                 </VStack>
               </Modal.Body>
             </Modal.Content>
           </Modal>
         </VStack>
-      ) : gender === "female" ? (
+      ) : profile?.myProfileInformation?.gender?.name === "female" ? (
         <VStack
           shadow={5}
           style={{ shadowColor: "red" }}
@@ -280,13 +272,7 @@ const ParticipantsCard: React.FC<{
                     <Text w={"10%"}>:</Text>
                     <Text w={"65%"}>{name}</Text>
                   </HStack>
-                  <HStack w={"100%"}>
-                    <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Position
-                    </Text>
-                    <Text w={"10%"}>:</Text>
-                    <Text w={"65%"}>{position}</Text>
-                  </HStack>
+
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                       Email
@@ -306,21 +292,14 @@ const ParticipantsCard: React.FC<{
                       Skills
                     </Text>
                     <Text w={"10%"}>:</Text>
-                    <FlatList
-                      data={skills}
-                      renderItem={({ item }) => {
-                        return (
-                          <Badge
-                            my={1}
-                            variant={"solid"}
-                            colorScheme={"lightBlue"}
-                            borderRadius={8}
-                          >
-                            {item.name}
-                          </Badge>
-                        );
-                      }}
-                    />
+                    <Badge
+                      my={1}
+                      variant={"solid"}
+                      colorScheme={"lightBlue"}
+                      borderRadius={8}
+                    >
+                      {skills}
+                    </Badge>
                   </HStack>
                 </VStack>
               </Modal.Body>
@@ -385,13 +364,7 @@ const ParticipantsCard: React.FC<{
                     <Text w={"10%"}>:</Text>
                     <Text w={"65%"}>{name}</Text>
                   </HStack>
-                  <HStack w={"100%"}>
-                    <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Position
-                    </Text>
-                    <Text w={"10%"}>:</Text>
-                    <Text w={"65%"}>{position}</Text>
-                  </HStack>
+
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                       Email
@@ -411,21 +384,14 @@ const ParticipantsCard: React.FC<{
                       Skills
                     </Text>
                     <Text w={"10%"}>:</Text>
-                    <FlatList
-                      data={skills}
-                      renderItem={({ item }) => {
-                        return (
-                          <Badge
-                            my={1}
-                            variant={"solid"}
-                            colorScheme={"lightBlue"}
-                            borderRadius={8}
-                          >
-                            {item.name}
-                          </Badge>
-                        );
-                      }}
-                    />
+                    <Badge
+                      my={1}
+                      variant={"solid"}
+                      colorScheme={"lightBlue"}
+                      borderRadius={8}
+                    >
+                      {skills}
+                    </Badge>
                   </HStack>
                 </VStack>
               </Modal.Body>
@@ -440,21 +406,15 @@ const ParticipantsCard: React.FC<{
 const NetworkingScreen = () => {
   const [seminar, setSeminar] = React.useState("");
   const [skills, setSkills] = React.useState("");
+  const [participants, setParticipants] = React.useState<Array<IGetMyList>>();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [isLoading, setIsLoding] = useState(false);
 
   const [key, setKey] = useState(Math.random());
 
   const { data: getAllskill } = useGetAllSkillsQuery();
   const { data: getAllEvent } = useGetTodayCpeEventQuery();
 
-  useEffect(() => {
-    setIsLoding(true);
-
-    setTimeout(() => {
-      setIsLoding(false);
-    }, 2000);
-  }, [key]);
+  const [filter] = useGetFilterdSkillMemberMutation();
 
   useEffect(() => {
     setKey(Math.random());
@@ -465,6 +425,19 @@ const NetworkingScreen = () => {
     actions: FormikHelpers<IInputForm>
   ) => {
     actions.setSubmitting(true);
+
+    const response = await filter({
+      variables: {
+        options: {
+          event: val.event,
+          skills: val.skills,
+        },
+      },
+    });
+
+    if (response.data?.getFilterdSkillMember) {
+      setParticipants(response.data.getFilterdSkillMember);
+    }
 
     actions.setSubmitting(false);
   };
@@ -483,7 +456,14 @@ const NetworkingScreen = () => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ touched, errors, setFieldValue, values }) => {
+            {({
+              touched,
+              errors,
+              setFieldValue,
+              values,
+              handleSubmit,
+              isSubmitting,
+            }) => {
               return (
                 <>
                   <VStack space={1}>
@@ -525,45 +505,6 @@ const NetworkingScreen = () => {
                         ),
                       }}
                     />
-                    {/* <Select
-                      dropdownIcon={
-                        <MaterialIcons
-                          name="arrow-drop-down"
-                          size={24}
-                          color="#64B5F6"
-                          style={{ marginRight: 10 }}
-                        />
-                      }
-                      w={"98%"}
-                      h={8}
-                      borderColor={"white"}
-                      shadow={5}
-                      fontSize={"xs"}
-                      bg={"blue.100"}
-                      borderRadius={10}
-                      alignSelf={"center"}
-                      selectedValue={skills}
-                      accessibilityLabel="Select Skill"
-                      placeholder="Select Skill"
-                      placeholderTextColor={"black"}
-                      _selectedItem={{
-                        endIcon: (
-                          <Feather
-                            name="check"
-                            size={18}
-                            color="#64B5F6"
-                            style={{ marginTop: 2 }}
-                          />
-                        ),
-                      }}
-                      onValueChange={(itemValue) => setSkills(itemValue)}
-                    >
-                      {getAllskill?.getAllSkills.map((item) => {
-                        return (
-                          <Select.Item label={item.name} value={item._id} />
-                        );
-                      })}
-                    </Select> */}
                   </VStack>
 
                   <VStack space={1} mt={3}>
@@ -606,6 +547,21 @@ const NetworkingScreen = () => {
                       }}
                     />
                   </VStack>
+                  <CustomButton
+                    name="Submit"
+                    mt="8"
+                    borderRadius={25}
+                    w={"48"}
+                    h={12}
+                    alignSelf={"center"}
+                    bg={"#0f045d"}
+                    colorScheme={"white"}
+                    leftIcon={
+                      <Icon as={FontAwesome5} name="lock" mr="1" size="sm" />
+                    }
+                    isSubmitting={isSubmitting}
+                    onSubmit={handleSubmit}
+                  />
                 </>
               );
             }}
@@ -630,11 +586,11 @@ const NetworkingScreen = () => {
             </Box>
           </HStack>
 
-          <AnimatedSearchBar />
+          {/* <AnimatedSearchBar /> */}
         </HStack>
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space={3} mb={4} mt={2}>
-            {isLoading ? (
+            {participants?.length === 0 ? (
               <>
                 <Box h={64} w={64} alignSelf={"center"} mt={12}>
                   <LottieView
@@ -654,42 +610,20 @@ const NetworkingScreen = () => {
                   pr={5}
                   pb={2}
                 >
-                  <ParticipantsCard
-                    gender="male"
-                    name="CA. Nihar Jambusaria"
-                    position="Past President – ICAI"
-                    email="abc@gmail.com"
-                    mo_number={8866383353}
-                    skills={[
-                      {
-                        name: "Analytical skill",
-                      },
-                      {
-                        name: "Communication",
-                      },
-                      {
-                        name: "Problem solving",
-                      },
-                      {
-                        name: "Finance",
-                      },
-                    ]}
-                  />
-                  <ParticipantsCard
-                    gender="female"
-                    name="CA. Yogita Thar"
-                    position="Internal Audit"
-                    email="abc@gmail.com"
-                    mo_number={7885964789}
-                    skills={[
-                      {
-                        name: "Problem solving",
-                      },
-                      {
-                        name: "Finance",
-                      },
-                    ]}
-                  />
+                  {participants?.map((item) => {
+                    return (
+                      <>
+                        <ParticipantsCard
+                          key={key}
+                          gender={item.gender}
+                          name={item.name}
+                          email={item.email}
+                          mo_number={item.mobile}
+                          skills={item.skill}
+                        />
+                      </>
+                    );
+                  })}
                 </HStack>
               </VStack>
             )}

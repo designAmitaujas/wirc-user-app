@@ -20,8 +20,6 @@ import {
 const logo = require("../../assets/wirclogo.png");
 
 const Home = () => {
-  const [menuVisible, setMenuVisible] = React.useState(false);
-
   const { navigate } = useNavigation();
 
   const networking = () => {
@@ -54,14 +52,9 @@ const Home = () => {
               w={12}
             />
 
-            <HStack>
+            <HStack display="flex" space={10}>
               <TouchableOpacity onPress={networking}>
-                <Ionicons
-                  name="earth"
-                  size={24}
-                  style={{ marginRight: 10 }}
-                  color="white"
-                />
+                <Ionicons name="earth" size={24} color="white" />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleSkill}
@@ -278,7 +271,7 @@ export const UpcomingEvent = () => {
               .filter((item) => item.isActive === true)
               .filter((item) => item.isForStudent === false)
               .filter((item) =>
-                moment().isBefore(moment(item.date1).startOf("D").add(1, "d"))
+                moment().isBefore(moment(item.date2).startOf("D").add(1, "d"))
               )
               .sort((a, b) => {
                 return (

@@ -15,7 +15,15 @@ mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
     name
   }
 }
-
+mutation GetFilterdSkillMember($options: IGetAllMemberSkills!) {
+  getFilterdSkillMember(options: $options) {
+    name
+    email
+    mobile
+    skill
+    gender
+  }
+}
 mutation GetMemberInfoByMembershipNumber($options: IGetByID!) {
   getMemberInfoByMembershipNumber(options: $options) {
     isData

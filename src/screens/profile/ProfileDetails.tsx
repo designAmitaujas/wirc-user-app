@@ -278,15 +278,33 @@ const ProfileScreen = () => {
                   <>
                     <ScrollView p={4}>
                       <VStack space={1} mt={5} mb={3} alignSelf={"center"}>
-                        <Avatar
-                          borderWidth={2}
-                          borderColor={"#0f045d"}
-                          bg="white"
-                          alignSelf={"center"}
-                          mb={3}
-                          size={"xl"}
-                          source={male}
-                        />
+                        {profile?.myProfileInformation?.gender?.name ===
+                        "male" ? (
+                          <>
+                            <Avatar
+                              borderWidth={2}
+                              borderColor={"#0f045d"}
+                              bg="white"
+                              alignSelf={"center"}
+                              mb={3}
+                              size={"xl"}
+                              source={male}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <Avatar
+                              borderWidth={2}
+                              borderColor={"#0f045d"}
+                              bg="white"
+                              alignSelf={"center"}
+                              mb={3}
+                              size={"xl"}
+                              source={female}
+                            />
+                          </>
+                        )}
+
                         <CustomInput
                           w={"72"}
                           borderColor={"#0f045d"}

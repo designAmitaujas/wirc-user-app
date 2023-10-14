@@ -73,6 +73,7 @@ const SkillSection = () => {
 
   const [showValue, setShowValue] = useState<string>("");
   const [dataArr, setDataArr] = useState<Array<string>>([]);
+  const [key, setKey] = useState(Math.random());
 
   const [multiSelectedIndex, setMultiSelectedIndex] = useState<IndexPath[]>([]);
 
@@ -104,7 +105,7 @@ const SkillSection = () => {
         sortedCollection.map((item, index) => {
           indexPathArr.push(new IndexPath(index));
         });
-
+        setKey(Math.random());
         setMultiSelectedIndex(indexPathArr);
       }
     })();
@@ -191,7 +192,7 @@ const SkillSection = () => {
           style={{ width: "78%", marginTop: 24 }}
         >
           {dataArr.map((item) => {
-            return <SelectItem title={item} key={item} />;
+            return <SelectItem title={item} key={key} />;
           })}
         </Select>
 

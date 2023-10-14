@@ -22,6 +22,9 @@ function QRScreen() {
   const [hasPermission, setHasPermission] = useState<boolean>(false);
   const [scanned, setScanned] = useState(false);
   const [info, setInfo] = useState("");
+  const { data: events } = useGetCpeEventByIdQuery({
+    variables: { options: { id: info || "" } },
+  });
 
   const { data: profile } = useMyProfileInformationQuery();
   const [addAttendence] = useAddAttendenceMutation();
@@ -38,10 +41,6 @@ function QRScreen() {
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
     setScanned(true);
 
-    setInfo(data);
-
-    console.log(data);
-
     const response = await addAttendence({
       variables: {
         options: {
@@ -56,7 +55,7 @@ function QRScreen() {
         title: _.capitalize(response.data.addAttendence.msg),
         placement: "top",
       });
-
+      setInfo(data);
       setScanned(true);
     } else {
       show({
@@ -92,10 +91,6 @@ function QRScreen() {
       </>
     );
   }
-
-  const { data: events } = useGetCpeEventByIdQuery({
-    variables: { options: { id: info || "" } },
-  });
 
   return (
     <>

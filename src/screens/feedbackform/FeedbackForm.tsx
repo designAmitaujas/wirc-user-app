@@ -1,5 +1,6 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import _ from "lodash";
 import moment from "moment";
 import {
   Button,
@@ -13,9 +14,12 @@ import {
   TextArea,
   VStack,
   View,
+  useToast,
 } from "native-base";
 import React, { useEffect } from "react";
 import {
+  IClassFeedback,
+  useAddFeedBackFromMutation,
   useGetAllEventTopicQuery,
   useGetCpeEventByIdLazyQuery,
 } from "../../gql/graphql";
@@ -63,6 +67,8 @@ const FeedbackForm = () => {
     navigate("Home");
   };
 
+  const [getfeedback] = useAddFeedBackFromMutation();
+
   const [getData, { data: fetchedEvent }] = useGetCpeEventByIdLazyQuery();
 
   useEffect(() => {
@@ -75,20 +81,48 @@ const FeedbackForm = () => {
     })();
   }, [params]);
 
-  const [checkedItems, setCheckedItems] = React.useState({});
+  const [checkedItems, setCheckedItems] = React.useState<Array<IClassFeedback>>(
+    []
+  );
+
+  useEffect(() => {
+    console.log("Checked items = ", checkedItems);
+  }, [checkedItems]);
 
   const [value1, setValue1] = React.useState("");
   const [value2, setValue2] = React.useState("");
   const [value3, setValue3] = React.useState("");
   const [value4, setValue4] = React.useState("");
+  const [value5, setValue5] = React.useState("");
 
-  useEffect(() => {
-    console.log("checkedItems: ", checkedItems);
-  }, [checkedItems]);
+  const toast = useToast();
 
   const { data } = useGetAllEventTopicQuery();
 
-  console.log(params);
+  const handleSubmit = async () => {
+    const response = await getfeedback({
+      variables: {
+        options: {
+          academicContent: value3,
+          arrangementByPOU: "Western India Regional Council",
+          cpeEvent: fetchedEvent?.getCpeEventById._id || "",
+          feedbackForm: [{ topic: "", answer: "" }],
+          professionalExperience: value4,
+          programDesign: value1,
+          readingMaterial: value2,
+          remarks: value5,
+        },
+      },
+    });
+
+    if (response.data?.addFeedBackFrom.success === true) {
+      toast.show({ title: response.data.addFeedBackFrom.msg });
+      // @ts-ignore
+      navigate("BottomTab");
+    } else {
+      toast.show({ title: _.capitalize("Please select all options") });
+    }
+  };
 
   return (
     <>
@@ -151,7 +185,7 @@ const FeedbackForm = () => {
                 >
                   :
                 </Text>
-                <Text w={"66%"} fontSize={"xs"}>
+                <Text w={"66%"} fontSize={"xs"} textAlign="justify">
                   {fetchedEvent?.getCpeEventById.name}
                 </Text>
               </HStack>
@@ -383,6 +417,8 @@ const FeedbackForm = () => {
                 w={"95%"}
                 bgColor={"white"}
                 alignSelf={"center"}
+                value={value5}
+                onChangeText={(e) => setValue5(e)}
               />
             </VStack>
             <VStack
@@ -419,9 +455,30 @@ const FeedbackForm = () => {
                           name="myRadioGroup"
                           accessibilityLabel="favorite number"
                           onChange={(e) => {
-                            setCheckedItems(item._id);
-                            console.log(item.faculty);
-                            console.log("hello", e);
+                            if (checkedItems.length === 0) {
+                              console.log("0 length");
+
+                              setCheckedItems([
+                                ...checkedItems,
+                                { answer: e, topic: item.topic },
+                              ]);
+                            } else {
+                              console.log("Has some data");
+                            }
+
+                            // if (
+                            //   newData.filter((x) => x.topic === item.topic)
+                            //     .length === 0
+                            // ) {
+                            //   console.log("not available");
+
+                            //   newData.push({
+                            //     answer: e,
+                            //     topic: item.topic,
+                            //   });
+                            // } else {
+                            //   console.log("Already available");
+                            // }
                           }}
                         >
                           <HStack space={2}>
@@ -430,7 +487,6 @@ const FeedbackForm = () => {
                               value="excellent"
                               size="sm"
                               my="2"
-                              _checked={checkedItems}
                             >
                               Excellent
                             </Radio>
@@ -460,7 +516,7 @@ const FeedbackForm = () => {
             w={"32"}
             alignSelf={"center"}
             bgColor={"#0f045d"}
-            onPress={home}
+            onPress={handleSubmit}
           >
             <Text color={"white"} fontSize={"sm"} fontWeight={"medium"}>
               Submit

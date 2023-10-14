@@ -15,6 +15,7 @@ mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
     name
   }
 }
+
 mutation GetFilterdSkillMember($options: IGetAllMemberSkills!) {
   getFilterdSkillMember(options: $options) {
     name
@@ -24,6 +25,7 @@ mutation GetFilterdSkillMember($options: IGetAllMemberSkills!) {
     gender
   }
 }
+
 mutation GetMemberInfoByMembershipNumber($options: IGetByID!) {
   getMemberInfoByMembershipNumber(options: $options) {
     isData
@@ -78,6 +80,14 @@ mutation CreateOrUpdateMemberSkill($options: IGetMemberSkill!) {
 
 mutation DeleteMemberSkill($options: IGetByID!) {
   deleteMemberSkill(options: $options) {
+    success
+    msg
+    data
+  }
+}
+
+mutation AddFeedBackFrom($options: IFeedBackForm!) {
+  addFeedBackFrom(options: $options) {
     success
     msg
     data

@@ -98,6 +98,7 @@ query GetAllTitle {
     isActive
   }
 }
+
 query GetAllGender {
   getAllGender {
     _id
@@ -202,6 +203,7 @@ query GetMyAttendedEvent {
     isActive
   }
 }
+
 query GetTodayCpeEvent {
   getTodayCpeEvent {
     _id
@@ -228,6 +230,7 @@ query GetTodayCpeEvent {
     isActive
   }
 }
+
 query GetCpeEventById($options: IGetByID!) {
   getCpeEventById(options: $options) {
     _id

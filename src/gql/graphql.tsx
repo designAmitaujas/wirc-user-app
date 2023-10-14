@@ -620,6 +620,11 @@ export type IChangePassword = {
   oldPassword: Scalars['String']['input'];
 };
 
+export type IClassFeedback = {
+  answer: Scalars['String']['input'];
+  topic: Scalars['String']['input'];
+};
+
 export type ICombineState = {
   __typename?: 'ICombineState';
   state: Array<IVisitorState>;
@@ -1668,6 +1673,17 @@ export type IEventRegistrationInput = {
   studyGroupId: Scalars['String']['input'];
 };
 
+export type IFeedBackForm = {
+  academicContent: Scalars['String']['input'];
+  arrangementByPOU: Scalars['String']['input'];
+  cpeEvent: Scalars['String']['input'];
+  feedbackForm: Array<IClassFeedback>;
+  professionalExperience: Scalars['String']['input'];
+  programDesign: Scalars['String']['input'];
+  readingMaterial: Scalars['String']['input'];
+  remarks: Scalars['String']['input'];
+};
+
 export type IForgotPasswordInput = {
   email: Scalars['String']['input'];
   membershipNumber: Scalars['String']['input'];
@@ -2018,6 +2034,7 @@ export type Mutation = {
   GetPaymentDetails: Array<EventRegistrationMember>;
   GetPaymentDetailsByStudyGroup: Array<EventRegistrationMember>;
   addAttendence: IStatusResponse;
+  addFeedBackFrom: IStatusResponse;
   addHelpDeskQA: IStatusResponse;
   articleVacancySearch: Array<ArticlesPlacement>;
   authPublicationLoginResolver: IAuthResoverResponse;
@@ -2261,6 +2278,11 @@ export type MutationGetPaymentDetailsByStudyGroupArgs = {
 
 export type MutationAddAttendenceArgs = {
   options: IAddAttendenceInput;
+};
+
+
+export type MutationAddFeedBackFromArgs = {
+  options: IFeedBackForm;
 };
 
 
@@ -4699,6 +4721,13 @@ export type DeleteMemberSkillMutationVariables = Exact<{
 
 export type DeleteMemberSkillMutation = { __typename?: 'Mutation', deleteMemberSkill: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
 
+export type AddFeedBackFromMutationVariables = Exact<{
+  options: IFeedBackForm;
+}>;
+
+
+export type AddFeedBackFromMutation = { __typename?: 'Mutation', addFeedBackFrom: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
+
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5132,6 +5161,41 @@ export function useDeleteMemberSkillMutation(baseOptions?: Apollo.MutationHookOp
 export type DeleteMemberSkillMutationHookResult = ReturnType<typeof useDeleteMemberSkillMutation>;
 export type DeleteMemberSkillMutationResult = Apollo.MutationResult<DeleteMemberSkillMutation>;
 export type DeleteMemberSkillMutationOptions = Apollo.BaseMutationOptions<DeleteMemberSkillMutation, DeleteMemberSkillMutationVariables>;
+export const AddFeedBackFromDocument = gql`
+    mutation AddFeedBackFrom($options: IFeedBackForm!) {
+  addFeedBackFrom(options: $options) {
+    success
+    msg
+    data
+  }
+}
+    `;
+export type AddFeedBackFromMutationFn = Apollo.MutationFunction<AddFeedBackFromMutation, AddFeedBackFromMutationVariables>;
+
+/**
+ * __useAddFeedBackFromMutation__
+ *
+ * To run a mutation, you first call `useAddFeedBackFromMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddFeedBackFromMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addFeedBackFromMutation, { data, loading, error }] = useAddFeedBackFromMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useAddFeedBackFromMutation(baseOptions?: Apollo.MutationHookOptions<AddFeedBackFromMutation, AddFeedBackFromMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddFeedBackFromMutation, AddFeedBackFromMutationVariables>(AddFeedBackFromDocument, options);
+      }
+export type AddFeedBackFromMutationHookResult = ReturnType<typeof useAddFeedBackFromMutation>;
+export type AddFeedBackFromMutationResult = Apollo.MutationResult<AddFeedBackFromMutation>;
+export type AddFeedBackFromMutationOptions = Apollo.BaseMutationOptions<AddFeedBackFromMutation, AddFeedBackFromMutationVariables>;
 export const GetAllCpeEventDocument = gql`
     query GetAllCpeEvent {
   getAllCpeEvent {

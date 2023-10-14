@@ -1,5 +1,6 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import moment from "moment";
 import {
   Button,
   Checkbox,
@@ -14,7 +15,10 @@ import {
   View,
 } from "native-base";
 import React, { useEffect } from "react";
-import { useGetAllEventTopicQuery } from "../../gql/graphql";
+import {
+  useGetAllEventTopicQuery,
+  useGetCpeEventByIdLazyQuery,
+} from "../../gql/graphql";
 
 // eventId
 
@@ -52,11 +56,24 @@ const RestHeader = () => {
 
 const FeedbackForm = () => {
   const { navigate } = useNavigation();
+  const { params } = useRoute();
 
   const home = () => {
     //@ts-ignore
     navigate("Home");
   };
+
+  const [getData, { data: fetchedEvent }] = useGetCpeEventByIdLazyQuery();
+
+  useEffect(() => {
+    (async () => {
+      const { eventId } = params as { eventId?: string };
+
+      if (eventId) {
+        await getData({ variables: { options: { id: eventId } } });
+      }
+    })();
+  }, [params]);
 
   const [checkedItems, setCheckedItems] = React.useState({});
 
@@ -70,6 +87,8 @@ const FeedbackForm = () => {
   }, [checkedItems]);
 
   const { data } = useGetAllEventTopicQuery();
+
+  console.log(params);
 
   return (
     <>
@@ -133,7 +152,7 @@ const FeedbackForm = () => {
                   :
                 </Text>
                 <Text w={"66%"} fontSize={"xs"}>
-                  Workshop on GST Representation & Preparation Management
+                  {fetchedEvent?.getCpeEventById.name}
                 </Text>
               </HStack>
               <HStack w={"100%"} pl={2}>
@@ -155,7 +174,13 @@ const FeedbackForm = () => {
                   :
                 </Text>
                 <Text w={"66%"} fontSize={"xs"}>
-                  7 & 8 July 2023. 10.00 am to 06.00 pm.
+                  {moment(fetchedEvent?.getCpeEventById.date1).format(
+                    "DD-MM-YYYY"
+                  )}{" "}
+                  To{" "}
+                  {moment(fetchedEvent?.getCpeEventById.date2).format(
+                    "DD-MM-YYYY"
+                  )}
                 </Text>
               </HStack>
               <HStack w={"100%"} pl={2}>
@@ -177,7 +202,7 @@ const FeedbackForm = () => {
                   :
                 </Text>
                 <Text w={"66%"} fontSize={"xs"}>
-                  12 hrs.
+                  {fetchedEvent?.getCpeEventById.cpehrs}
                 </Text>
               </HStack>
               <Divider w={"72"} alignSelf="center" m={1} />

@@ -6,6 +6,7 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
+import _ from "lodash";
 import LottieView from "lottie-react-native";
 import {
   Badge,
@@ -20,8 +21,9 @@ import {
   Text,
   VStack,
   View,
+  useToast,
 } from "native-base";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Linking, TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import { CustomButton, CustomSelect } from "../../components/CustomForm";
@@ -30,7 +32,6 @@ import {
   useGetAllSkillsQuery,
   useGetFilterdSkillMemberMutation,
   useGetTodayCpeEventQuery,
-  useMyProfileInformationQuery,
 } from "../../gql/graphql";
 
 const RestHeader = () => {
@@ -97,7 +98,7 @@ const validationSchema = Yup.object().shape({
 const ParticipantsCard: React.FC<{
   name: string;
   position?: string;
-  gender?: string;
+  gender: string;
   email: string;
   mo_number: string;
   skills: string[];
@@ -110,11 +111,9 @@ const ParticipantsCard: React.FC<{
     Linking.openURL(`tel:${mo_number.toString()}`);
   };
 
-  const { data: profile } = useMyProfileInformationQuery();
-
   return (
     <>
-      {profile?.myProfileInformation?.gender?.name === "male" ? (
+      {gender.toLocaleLowerCase() === "male" ? (
         <VStack
           shadow={5}
           style={{ shadowColor: "blue" }}
@@ -134,9 +133,6 @@ const ParticipantsCard: React.FC<{
           <Text fontWeight={"semibold"} alignSelf={"center"}>
             {name}
           </Text>
-          <Text color={"gray.500"} fontSize={"xs"} alignSelf={"center"}>
-            {position}
-          </Text>
 
           <Divider marginY={2} />
           <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
@@ -173,13 +169,13 @@ const ParticipantsCard: React.FC<{
                     <Text w={"10%"}>:</Text>
                     <Text w={"65%"}>{name}</Text>
                   </HStack>
-                  <HStack w={"100%"}>
+                  {/* <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                       Position
                     </Text>
                     <Text w={"10%"}>:</Text>
                     <Text w={"65%"}>{position}</Text>
-                  </HStack>
+                  </HStack> */}
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                       Email
@@ -205,7 +201,15 @@ const ParticipantsCard: React.FC<{
                       colorScheme={"lightBlue"}
                       borderRadius={8}
                     >
-                      {skills}
+                      {skills.map((item, index) => {
+                        return (
+                          <>
+                            <Text key={index} color="white">
+                              {index + 1} ) {item}
+                            </Text>
+                          </>
+                        );
+                      })}
                     </Badge>
                   </HStack>
                 </VStack>
@@ -213,7 +217,7 @@ const ParticipantsCard: React.FC<{
             </Modal.Content>
           </Modal>
         </VStack>
-      ) : profile?.myProfileInformation?.gender?.name === "female" ? (
+      ) : gender.toLocaleLowerCase() === "female" ? (
         <VStack
           shadow={5}
           style={{ shadowColor: "red" }}
@@ -233,9 +237,6 @@ const ParticipantsCard: React.FC<{
           <Text fontWeight={"semibold"} alignSelf={"center"}>
             {name}
           </Text>
-          <Text color={"gray.500"} fontSize={"xs"} alignSelf={"center"}>
-            {position}
-          </Text>
 
           <Divider marginY={2} />
           <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
@@ -298,7 +299,15 @@ const ParticipantsCard: React.FC<{
                       colorScheme={"lightBlue"}
                       borderRadius={8}
                     >
-                      {skills}
+                      {skills.map((item, index) => {
+                        return (
+                          <>
+                            <Text key={index} color="white">
+                              {index + 1} ) {item}
+                            </Text>
+                          </>
+                        );
+                      })}
                     </Badge>
                   </HStack>
                 </VStack>
@@ -326,9 +335,7 @@ const ParticipantsCard: React.FC<{
           <Text fontWeight={"semibold"} alignSelf={"center"}>
             {name}
           </Text>
-          <Text color={"gray.500"} fontSize={"xs"} alignSelf={"center"}>
-            {position}
-          </Text>
+
           <Divider marginY={2} />
           <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
             <TouchableOpacity onPress={phonecall}>
@@ -390,7 +397,15 @@ const ParticipantsCard: React.FC<{
                       colorScheme={"lightBlue"}
                       borderRadius={8}
                     >
-                      {skills}
+                      {skills.map((item, index) => {
+                        return (
+                          <>
+                            <Text key={index} color="white">
+                              {index + 1} ) {item}
+                            </Text>
+                          </>
+                        );
+                      })}
                     </Badge>
                   </HStack>
                 </VStack>
@@ -404,21 +419,15 @@ const ParticipantsCard: React.FC<{
 };
 
 const NetworkingScreen = () => {
-  const [seminar, setSeminar] = React.useState("");
-  const [skills, setSkills] = React.useState("");
   const [participants, setParticipants] = React.useState<Array<IGetMyList>>();
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const [key, setKey] = useState(Math.random());
 
   const { data: getAllskill } = useGetAllSkillsQuery();
   const { data: getAllEvent } = useGetTodayCpeEventQuery();
 
+  const toast = useToast();
   const [filter] = useGetFilterdSkillMemberMutation();
-
-  useEffect(() => {
-    setKey(Math.random());
-  }, [selectedDate, seminar, skills]);
 
   const handleSubmit = async (
     val: IInputForm,
@@ -437,6 +446,9 @@ const NetworkingScreen = () => {
 
     if (response.data?.getFilterdSkillMember) {
       setParticipants(response.data.getFilterdSkillMember);
+      setKey(Math.random());
+    } else {
+      toast.show({ title: _.capitalize(" error") });
     }
 
     actions.setSubmitting(false);

@@ -1,5 +1,6 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import _ from "lodash";
 import moment from "moment";
 import {
   Button,
@@ -13,14 +14,15 @@ import {
   TextArea,
   VStack,
   View,
+  useToast,
 } from "native-base";
-import React, { useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import {
+  EventTopic,
+  useAddFeedBackFromMutation,
   useGetAllEventTopicQuery,
   useGetCpeEventByIdLazyQuery,
 } from "../../gql/graphql";
-
-// eventId
 
 const RestHeader = () => {
   const { goBack } = useNavigation();
@@ -54,16 +56,99 @@ const RestHeader = () => {
   );
 };
 
+const RenderFeedbackTopics: FC<{
+  eventTopic: EventTopic;
+  index: number;
+  topicArr: {
+    topic: string;
+    selectedValue: string;
+  }[];
+  setTopicArr: React.Dispatch<
+    React.SetStateAction<
+      {
+        topic: string;
+        selectedValue: string;
+      }[]
+    >
+  >;
+}> = ({ eventTopic, index, setTopicArr, topicArr }) => {
+  const handleFuncChange = (currentValue: string) => {
+    const mergedArray: typeof topicArr = [
+      ...topicArr,
+      { topic: eventTopic._id, selectedValue: _.toString(currentValue) },
+    ];
+
+    const returnMergedArray = _.uniqBy(mergedArray, function (e) {
+      return e.topic;
+    });
+
+    setTopicArr((item) =>
+      _.uniqBy([...returnMergedArray, ...item], function (e) {
+        return e.topic;
+      })
+    );
+  };
+
+  return (
+    <>
+      <VStack space={2}>
+        <Text textAlign={"justify"} w={"95%"} pl={2}>
+          {index + 1} {")"} {eventTopic.topic}
+        </Text>
+        <HStack w={"100%"} pl={2}>
+          <Text color={"gray.500"} w={"20%"}>
+            Faculty
+          </Text>
+          <Text w={"5%"}>:</Text>
+          <Text w={"75%"} fontWeight={"semibold"}>
+            {eventTopic.faculty}
+          </Text>
+        </HStack>
+        <Radio.Group
+          name="myRadioGroup"
+          onChange={handleFuncChange}
+          accessibilityLabel="favorite number"
+        >
+          <HStack space={2}>
+            <Radio shadow={2} value="excellent" size="sm" my="2">
+              Excellent
+            </Radio>
+            <Radio shadow={2} value="verygood" size="sm" my="2">
+              Very Good
+            </Radio>
+            <Radio shadow={2} value="good" size="sm" my="2">
+              Good
+            </Radio>
+            <Radio shadow={2} value="fair" size="sm" my="2">
+              Fair
+            </Radio>
+          </HStack>
+        </Radio.Group>
+      </VStack>
+      <Divider w={"72"} alignSelf="center" />
+    </>
+  );
+};
+
 const FeedbackForm = () => {
+  const toast = useToast();
   const { navigate } = useNavigation();
   const { params } = useRoute();
 
-  const home = () => {
-    //@ts-ignore
-    navigate("Home");
-  };
+  const { data } = useGetAllEventTopicQuery();
 
+  const [getfeedback] = useAddFeedBackFromMutation();
   const [getData, { data: fetchedEvent }] = useGetCpeEventByIdLazyQuery();
+
+  const [value1, setValue1] = useState("");
+  const [value2, setValue2] = useState("");
+  const [value3, setValue3] = useState("");
+  const [value4, setValue4] = useState("");
+  const [value5, setValue5] = useState("");
+
+  const [topicArr, setTopicArr] = useState<
+    Array<{ topic: string; selectedValue: string }>
+  >([]);
 
   useEffect(() => {
     (async () => {
@@ -75,32 +160,41 @@ const FeedbackForm = () => {
     })();
   }, [params]);
 
-  const [checkedItems, setCheckedItems] = React.useState({});
-
-  const [value1, setValue1] = React.useState("");
-  const [value2, setValue2] = React.useState("");
-  const [value3, setValue3] = React.useState("");
-  const [value4, setValue4] = React.useState("");
-
   useEffect(() => {
-    console.log("checkedItems: ", checkedItems);
-  }, [checkedItems]);
+    console.log(topicArr);
+  }, [topicArr]);
 
-  const { data } = useGetAllEventTopicQuery();
+  const handleSubmit = async () => {
+    const response = await getfeedback({
+      variables: {
+        options: {
+          academicContent: value3,
+          arrangementByPOU: "Western India Regional Council",
+          cpeEvent: fetchedEvent?.getCpeEventById._id || "",
+          feedbackForm: [{ topic: "", answer: "" }],
+          professionalExperience: value4,
+          programDesign: value1,
+          readingMaterial: value2,
+          remarks: value5,
+        },
+      },
+    });
 
-  console.log(params);
+    if (response.data?.addFeedBackFrom.success === true) {
+      toast.show({ title: response.data.addFeedBackFrom.msg });
+      // @ts-ignore
+      navigate("BottomTab");
+    } else {
+      toast.show({ title: _.capitalize("Please select all options") });
+    }
+  };
 
   return (
     <>
       <View bg={"white"} flex={1}>
         <RestHeader />
         <ScrollView showsVerticalScrollIndicator={false} mt={2} mb={2}>
-          <VStack
-            // borderWidth={1}
-            m={4}
-            // borderColor={"gray.400"}
-            // borderRadius={"10"}
-          >
+          <VStack m={4}>
             <Text
               textAlign={"center"}
               fontWeight={"semibold"}
@@ -151,7 +245,7 @@ const FeedbackForm = () => {
                 >
                   :
                 </Text>
-                <Text w={"66%"} fontSize={"xs"}>
+                <Text w={"66%"} fontSize={"xs"} textAlign="justify">
                   {fetchedEvent?.getCpeEventById.name}
                 </Text>
               </HStack>
@@ -383,6 +477,8 @@ const FeedbackForm = () => {
                 w={"95%"}
                 bgColor={"white"}
                 alignSelf={"center"}
+                value={value5}
+                onChangeText={(e) => setValue5(e)}
               />
             </VStack>
             <VStack
@@ -401,53 +497,13 @@ const FeedbackForm = () => {
                 .filter((item) => item.isActive === true)
                 .map((item, index) => {
                   return (
-                    <>
-                      <VStack space={2}>
-                        <Text textAlign={"justify"} w={"95%"} pl={2}>
-                          {index + 1} ) {item.topic}
-                        </Text>
-                        <HStack w={"100%"} pl={2}>
-                          <Text color={"gray.500"} w={"20%"}>
-                            Faculty
-                          </Text>
-                          <Text w={"5%"}>:</Text>
-                          <Text w={"75%"} fontWeight={"semibold"}>
-                            {item.faculty}
-                          </Text>
-                        </HStack>
-                        <Radio.Group
-                          name="myRadioGroup"
-                          accessibilityLabel="favorite number"
-                          onChange={(e) => {
-                            setCheckedItems(item._id);
-                            console.log(item.faculty);
-                            console.log("hello", e);
-                          }}
-                        >
-                          <HStack space={2}>
-                            <Radio
-                              shadow={2}
-                              value="excellent"
-                              size="sm"
-                              my="2"
-                              _checked={checkedItems}
-                            >
-                              Excellent
-                            </Radio>
-                            <Radio shadow={2} value="verygood" size="sm" my="2">
-                              Very Good
-                            </Radio>
-                            <Radio shadow={2} value="good" size="sm" my="2">
-                              Good
-                            </Radio>
-                            <Radio shadow={2} value="fair" size="sm" my="2">
-                              Fair
-                            </Radio>
-                          </HStack>
-                        </Radio.Group>
-                      </VStack>
-                      <Divider w={"72"} alignSelf="center" />
-                    </>
+                    <RenderFeedbackTopics
+                      eventTopic={item}
+                      key={item._id}
+                      index={index}
+                      topicArr={topicArr}
+                      setTopicArr={setTopicArr}
+                    />
                   );
                 })}
             </VStack>
@@ -460,7 +516,7 @@ const FeedbackForm = () => {
             w={"32"}
             alignSelf={"center"}
             bgColor={"#0f045d"}
-            onPress={home}
+            onPress={handleSubmit}
           >
             <Text color={"white"} fontSize={"sm"} fontWeight={"medium"}>
               Submit

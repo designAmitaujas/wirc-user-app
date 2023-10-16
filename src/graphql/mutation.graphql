@@ -16,6 +16,14 @@ mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
   }
 }
 
+mutation AddFeedBackFrom($options: IFeedBackForm!) {
+  addFeedBackFrom(options: $options) {
+    success
+    msg
+    data
+  }
+}
+
 mutation GetFilterdSkillMember($options: IGetAllMemberSkills!) {
   getFilterdSkillMember(options: $options) {
     name

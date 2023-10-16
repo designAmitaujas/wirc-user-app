@@ -4,7 +4,6 @@ import _ from "lodash";
 import moment from "moment";
 import {
   Button,
-  Checkbox,
   Divider,
   HStack,
   Icon,
@@ -144,6 +143,7 @@ const FeedbackForm = () => {
   const [readingMaterial, setReadingMaterial] = useState("");
   const [academic, setAcademic] = useState("");
   const [arragmentOfPOU, setArragmentOfPOU] = useState("");
+  const [experience, setExperience] = useState("");
   const [remarks, setRemarks] = useState("");
 
   const [topicArr, setTopicArr] = useState<
@@ -310,32 +310,26 @@ const FeedbackForm = () => {
               borderRadius={"10"}
             >
               <Text>1. &nbsp;Your experience in the profession :</Text>
-              <HStack w={"100%"} pl={2}>
-                <Text w={"85%"}>a) &nbsp;Less than 5 years</Text>
-                <Checkbox
-                  size={"sm"}
-                  value="test"
-                  accessibilityLabel="This is a dummy checkbox"
-                />
-              </HStack>
-              <HStack w={"100%"} pl={2}>
-                <Text w={"85%"}>
-                  b) &nbsp;More than 5 but less than 10 years
-                </Text>
-                <Checkbox
-                  size={"sm"}
-                  value="test"
-                  accessibilityLabel="This is a dummy checkbox"
-                />
-              </HStack>
-              <HStack w={"100%"} pl={2}>
-                <Text w={"85%"}>c) &nbsp;More than 10 years</Text>
-                <Checkbox
-                  size={"sm"}
-                  value="test"
-                  accessibilityLabel="This is a dummy checkbox"
-                />
-              </HStack>
+              <Radio.Group
+                name="myRadioGroup"
+                accessibilityLabel="favorite number"
+                value={experience}
+                onChange={(nextValue) => {
+                  setExperience(nextValue);
+                }}
+              >
+                <VStack space={2}>
+                  <Radio shadow={2} value="excellent" size="sm" my="2">
+                    a) &nbsp;Less than 5 years
+                  </Radio>
+                  <Radio shadow={2} value="verygood" size="sm" my="2">
+                    b) &nbsp;More than 5 but less than 10 years
+                  </Radio>
+                  <Radio shadow={2} value="good" size="sm" my="2">
+                    c) &nbsp;More than 10 years
+                  </Radio>
+                </VStack>
+              </Radio.Group>
             </VStack>
             <VStack
               p={2}

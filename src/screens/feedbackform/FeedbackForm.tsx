@@ -17,6 +17,7 @@ import {
   useToast,
 } from "native-base";
 import { FC, useEffect, useState } from "react";
+import * as Yup from "yup";
 import {
   EventTopic,
   useAddFeedBackFromMutation,
@@ -160,18 +161,27 @@ const FeedbackForm = () => {
     })();
   }, [params]);
 
-  useEffect(() => {
-    console.log(topicArr);
-  }, [topicArr]);
-
   const handleSubmit = async () => {
+    const validationSchema = Yup.object().shape({
+      programDesign: Yup.string().required(),
+      readingMaterial: Yup.string().required(),
+      academic: Yup.string().required(),
+      arragmentOfPOU: Yup.string().required(),
+      remarks: Yup.string().required(),
+    });
+
     const response = await getfeedback({
       variables: {
         options: {
           academicContent: academic,
           arrangementByPOU: "Western India Regional Council",
           cpeEvent: fetchedEvent?.getCpeEventById._id || "",
-          feedbackForm: [{ topic: "", answer: "" }],
+          feedbackForm: [
+            ...topicArr.map((item) => ({
+              topic: item.topic,
+              answer: item.selectedValue,
+            })),
+          ],
           professionalExperience: arragmentOfPOU,
           programDesign: programDesign,
           readingMaterial: readingMaterial,
@@ -185,7 +195,7 @@ const FeedbackForm = () => {
       // @ts-ignore
       navigate("BottomTab");
     } else {
-      toast.show({ title: _.capitalize("Please select all options") });
+      toast.show({ title: _.capitalize(response.data?.addFeedBackFrom.msg) });
     }
   };
 

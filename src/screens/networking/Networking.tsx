@@ -102,7 +102,7 @@ const ParticipantsCard: React.FC<{
   mo_number: string;
   skills: string[];
 }> = ({ name, position, gender, email, mo_number, skills }) => {
-  // console.log(mo_number);
+  // console.log();mo_number
 
   const [showModal, setShowModal] = useState(false);
   const phonecall = () => {

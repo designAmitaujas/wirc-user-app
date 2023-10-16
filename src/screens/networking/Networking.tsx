@@ -34,6 +34,21 @@ import {
   useGetTodayCpeEventQuery,
 } from "../../gql/graphql";
 
+interface IInputForm {
+  skills: string;
+  event: string;
+}
+
+const initialValue: IInputForm = {
+  skills: "",
+  event: "",
+};
+
+const validationSchema = Yup.object().shape({
+  skills: Yup.string().required(),
+  event: Yup.string().required(),
+});
+
 const RestHeader = () => {
   // const { goBack } = useNavigation();
   const { goBack } = useNavigation();
@@ -79,21 +94,6 @@ const RestHeader = () => {
     </>
   );
 };
-
-interface IInputForm {
-  skills: string;
-  event: string;
-}
-
-const initialValue: IInputForm = {
-  skills: "",
-  event: "",
-};
-
-const validationSchema = Yup.object().shape({
-  skills: Yup.string().required(),
-  event: Yup.string().required(),
-});
 
 const ParticipantsCard: React.FC<{
   name: string;

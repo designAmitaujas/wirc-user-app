@@ -1,6 +1,5 @@
 import LottieView from "lottie-react-native";
 import { View } from "native-base";
-import React from "react";
 
 const NoInternet = () => {
   return (

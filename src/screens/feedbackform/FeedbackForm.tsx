@@ -140,11 +140,11 @@ const FeedbackForm = () => {
   const [getfeedback] = useAddFeedBackFromMutation();
   const [getData, { data: fetchedEvent }] = useGetCpeEventByIdLazyQuery();
 
-  const [value1, setValue1] = useState("");
-  const [value2, setValue2] = useState("");
-  const [value3, setValue3] = useState("");
-  const [value4, setValue4] = useState("");
-  const [value5, setValue5] = useState("");
+  const [programDesign, setProgramDesign] = useState("");
+  const [readingMaterial, setReadingMaterial] = useState("");
+  const [academic, setAcademic] = useState("");
+  const [arragmentOfPOU, setArragmentOfPOU] = useState("");
+  const [remarks, setRemarks] = useState("");
 
   const [topicArr, setTopicArr] = useState<
     Array<{ topic: string; selectedValue: string }>
@@ -168,14 +168,14 @@ const FeedbackForm = () => {
     const response = await getfeedback({
       variables: {
         options: {
-          academicContent: value3,
+          academicContent: academic,
           arrangementByPOU: "Western India Regional Council",
           cpeEvent: fetchedEvent?.getCpeEventById._id || "",
           feedbackForm: [{ topic: "", answer: "" }],
-          professionalExperience: value4,
-          programDesign: value1,
-          readingMaterial: value2,
-          remarks: value5,
+          professionalExperience: arragmentOfPOU,
+          programDesign: programDesign,
+          readingMaterial: readingMaterial,
+          remarks: remarks,
         },
       },
     });
@@ -356,9 +356,9 @@ const FeedbackForm = () => {
                 <Radio.Group
                   name="myRadioGroup"
                   accessibilityLabel="favorite number"
-                  value={value1}
+                  value={programDesign}
                   onChange={(nextValue) => {
-                    setValue1(nextValue);
+                    setProgramDesign(nextValue);
                   }}
                 >
                   <HStack space={2}>
@@ -384,9 +384,9 @@ const FeedbackForm = () => {
                 <Radio.Group
                   name="myRadioGroup"
                   accessibilityLabel="favorite number"
-                  value={value2}
+                  value={readingMaterial}
                   onChange={(nextValue) => {
-                    setValue2(nextValue);
+                    setReadingMaterial(nextValue);
                   }}
                 >
                   <HStack space={2}>
@@ -412,9 +412,9 @@ const FeedbackForm = () => {
                 <Radio.Group
                   name="myRadioGroup"
                   accessibilityLabel="favorite number"
-                  value={value3}
+                  value={academic}
                   onChange={(nextValue) => {
-                    setValue3(nextValue);
+                    setAcademic(nextValue);
                   }}
                 >
                   <HStack space={2}>
@@ -440,9 +440,9 @@ const FeedbackForm = () => {
                 <Radio.Group
                   name="myRadioGroup"
                   accessibilityLabel="favorite number"
-                  value={value4}
+                  value={arragmentOfPOU}
                   onChange={(nextValue) => {
-                    setValue4(nextValue);
+                    setArragmentOfPOU(nextValue);
                   }}
                 >
                   <HStack space={2}>
@@ -477,8 +477,8 @@ const FeedbackForm = () => {
                 w={"95%"}
                 bgColor={"white"}
                 alignSelf={"center"}
-                value={value5}
-                onChangeText={(e) => setValue5(e)}
+                value={remarks}
+                onChangeText={(e) => setRemarks(e)}
               />
             </VStack>
             <VStack

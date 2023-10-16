@@ -38,15 +38,6 @@ const RestHeader = () => {
   const { goBack } = useNavigation();
   const { navigate } = useNavigation();
 
-  const visitingcard = () => {
-    // @ts-ignore
-    navigate("VisitingCard");
-  };
-
-  const logout = () => {
-    // @ts-ignore
-    navigate("Login");
-  };
   return (
     <>
       <HStack
@@ -113,19 +104,6 @@ const validationSchema = Yup.object().shape({
 
 const VisitingCardForm = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
-
-  // const selectDoc = async () => {
-  //   try {
-  //     const doc = await DocumentPicker.pick({
-  //       type: [DocumentPicker.types.images],
-  //     });
-  //     console.log(doc);
-  //   } catch (err) {
-  //     if (DocumentPicker.isCancel(err))
-  //       console.log("User Cancelled the upload", err);
-  //     else console.log(err);
-  //   }
-  // };
 
   const selectDoc = async () => {
     const res = await DocumentPicker.getDocumentAsync({

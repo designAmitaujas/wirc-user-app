@@ -434,7 +434,6 @@ const NetworkingScreen = () => {
     actions: FormikHelpers<IInputForm>
   ) => {
     actions.setSubmitting(true);
-    console.log(val);
 
     const response = await filter({
       variables: {
@@ -445,8 +444,6 @@ const NetworkingScreen = () => {
       },
     });
 
-    console.log(response.data?.getFilterdSkillMember);
-
     if (response.data?.getFilterdSkillMember) {
       setParticipants(response.data.getFilterdSkillMember);
       setKey(Math.random());
@@ -456,8 +453,6 @@ const NetworkingScreen = () => {
 
     actions.setSubmitting(false);
   };
-
-  console.log(participants);
 
   if (!getAllskill?.getAllSkills || !getAllEvent?.getTodayCpeEvent) {
     return <></>;

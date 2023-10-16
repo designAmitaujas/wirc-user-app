@@ -163,40 +163,87 @@ const FeedbackForm = () => {
 
   const handleSubmit = async () => {
     const validationSchema = Yup.object().shape({
+      professionalExperience: Yup.string().required(),
       programDesign: Yup.string().required(),
       readingMaterial: Yup.string().required(),
-      academic: Yup.string().required(),
-      arragmentOfPOU: Yup.string().required(),
+      academicContent: Yup.string().required(),
+      arrangementByPOU: Yup.string().required(),
+      cpeEvent: Yup.string().required(),
       remarks: Yup.string().required(),
+      feedbackForm: Yup.array()
+        .of(
+          Yup.object({
+            topic: Yup.string().required(),
+            answer: Yup.string().required(),
+          })
+        )
+        .min(
+          data?.getAllEventTopic && Array.isArray(data?.getAllEventTopic)
+            ? data.getAllEventTopic.length
+            : 0
+        ),
     });
 
-    const response = await getfeedback({
-      variables: {
-        options: {
-          academicContent: academic,
-          arrangementByPOU: "Western India Regional Council",
-          cpeEvent: fetchedEvent?.getCpeEventById._id || "",
-          feedbackForm: [
-            ...topicArr.map((item) => ({
-              topic: item.topic,
-              answer: item.selectedValue,
-            })),
-          ],
-          professionalExperience: arragmentOfPOU,
-          programDesign: programDesign,
-          readingMaterial: readingMaterial,
-          remarks: remarks,
-        },
-      },
-    });
+    const jsonObj = {
+      academicContent: academic,
+      arrangementByPOU: "Western India Regional Council",
+      cpeEvent: fetchedEvent?.getCpeEventById._id || "",
+      feedbackForm: [
+        ...topicArr.map((item) => ({
+          topic: item.topic,
+          answer: item.selectedValue,
+        })),
+      ],
+      professionalExperience: arragmentOfPOU,
+      programDesign: programDesign,
+      readingMaterial: readingMaterial,
+      remarks: remarks,
+    };
 
-    if (response.data?.addFeedBackFrom.success === true) {
-      toast.show({ title: response.data.addFeedBackFrom.msg });
-      // @ts-ignore
-      navigate("BottomTab");
-    } else {
-      toast.show({ title: _.capitalize(response.data?.addFeedBackFrom.msg) });
-    }
+    await validationSchema
+      .validate(jsonObj, {
+        strict: true,
+      })
+      .then((res) => {
+        (async () => {
+          const response = await getfeedback({
+            variables: {
+              options: {
+                academicContent: academic,
+                arrangementByPOU: "Western India Regional Council",
+                cpeEvent: fetchedEvent?.getCpeEventById._id || "",
+                feedbackForm: [
+                  ...topicArr.map((item) => ({
+                    topic: item.topic,
+                    answer: item.selectedValue,
+                  })),
+                ],
+                professionalExperience: arragmentOfPOU,
+                programDesign: programDesign,
+                readingMaterial: readingMaterial,
+                remarks: remarks,
+              },
+            },
+          });
+
+          if (response.data?.addFeedBackFrom.success === true) {
+            toast.show({ title: response.data.addFeedBackFrom.msg });
+            // @ts-ignore
+            navigate("BottomTab");
+          } else {
+            toast.show({
+              title: _.capitalize(response.data?.addFeedBackFrom.msg),
+              placement: "top",
+            });
+          }
+        })();
+      })
+      .catch((err: any) => {
+        toast.show({
+          placement: "top",
+          title: _.capitalize("Please select all field"),
+        });
+      });
   };
 
   return (

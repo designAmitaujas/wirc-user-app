@@ -242,6 +242,7 @@ const FeedbackForm = () => {
         toast.show({
           placement: "top",
           title: _.capitalize("Please select all field"),
+          backgroundColor: "red.500",
         });
       });
   };

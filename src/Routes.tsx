@@ -7,7 +7,6 @@ import SkillSection from "./screens/SkillSection";
 import UpcomingEvents from "./screens/UpcomingEvents";
 import Login from "./screens/auth/Login";
 import MobileLogin from "./screens/auth/NumberLogin";
-
 import FeedbackForm from "./screens/feedbackform/FeedbackForm";
 import NetworkingScreen from "./screens/networking/Networking";
 import ProfileScreen from "./screens/profile/ProfileDetails";

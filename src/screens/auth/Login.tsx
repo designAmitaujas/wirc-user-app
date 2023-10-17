@@ -106,7 +106,7 @@ const Login = () => {
                     h={"32"}
                     resizeMode="contain"
                     alt="Image not found"
-                    source={require("../../../assets/wirclogo.jpg")}
+                    source={require("../../../assets/wirclogo.png")}
                   />
                   <Text
                     fontSize={"lg"}

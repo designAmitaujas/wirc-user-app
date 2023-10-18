@@ -1,9 +1,8 @@
 import { Dimensions } from "react-native";
 import Url from "url-parse";
 
-export const GQL_API_URL =
-  //  "https://admin.wirc-icai.org/graphql";
-  "https://says-polyester-asbestos-amounts.trycloudflare.com/ graphql";
+export const GQL_API_URL = "https://admin.wirc-icai.org/graphql";
+// "https://says-polyester-asbestos-amounts.trycloudflare.com/graphql";
 
 const parsedUrl = new Url(GQL_API_URL);
 

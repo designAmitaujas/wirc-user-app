@@ -229,9 +229,11 @@ const UpcomingEvents = () => {
               color={"white"}
               fontSize={"xl"}
               fontWeight={"semibold"}
-              ml={16}
+              ml={4}
             >
-              {eventInformation?.name}
+              {eventInformation?.name.length > 25
+                ? eventInformation?.name.slice(0, 25) + "..."
+                : eventInformation?.name}
             </Text>
           </HStack>
         </Box>

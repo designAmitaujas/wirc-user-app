@@ -1,12 +1,11 @@
 {
   "expo": {
-    "name": "WIRC-User",
-    "slug": "WIRC-User",
-    "version": "1.0",
+    "name": "WIRC Connect",
+    "slug": "WIRC Connect",
+    "version": "1.6",
     "orientation": "portrait",
     "icon": "./assets/wirclogo.png",
     "userInterfaceStyle": "light",
-    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/splash-logo.png",
       "resizeMode": "conatin",
@@ -14,10 +13,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "jsEngine": "jsc"
+      "supportsTablet": true
     },
     "android": {
+      "versionCode": 1006,
       "adaptiveIcon": {
         "foregroundImage": "./assets/wirclogo.png",
         "backgroundColor": "#ffffff"

@@ -108,10 +108,10 @@ const BottomNavigation = memo((props: any) => {
           <PressableIcons
             selected={selected}
             setSelected={setSelected}
-            defaultName="qr-code"
-            outlineName="qr-code-outline"
+            defaultName="ios-scan-circle"
+            outlineName="ios-scan-circle-outline"
             indexNumber={1}
-            name="Qr Scanner"
+            name="Scan QR"
           />
 
           <PressableIcons

@@ -51,7 +51,16 @@ const Home = () => {
               h={12}
               w={12}
             />
-
+            <Text
+              color="white"
+              // ml={16}
+              fontSize="22"
+              fontWeight="bold"
+              // mb={1}
+              // w={"40%"}
+            >
+              WIRC
+            </Text>
             <HStack display="flex" space={10}>
               <TouchableOpacity onPress={networking}>
                 <Ionicons name="earth" size={24} color="white" />

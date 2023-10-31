@@ -1,4 +1,4 @@
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 import { Box, Button, HStack, Stack, Text, VStack, View } from "native-base";
@@ -37,9 +37,9 @@ const RestHeader = () => {
       alignSelf={"center"}
       w={"100%"}
     >
-      <TouchableOpacity onPress={visitingcard}>
+      {/* <TouchableOpacity onPress={visitingcard}>
         <FontAwesome name="id-card" size={24} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Text
         color="white"
         // ml={16}

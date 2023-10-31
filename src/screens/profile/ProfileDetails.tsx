@@ -1,4 +1,4 @@
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
 import {
@@ -124,9 +124,9 @@ const RestHeader = () => {
           />
         }
       /> */}
-      <TouchableOpacity onPress={visitingcard}>
+      {/* <TouchableOpacity onPress={visitingcard}>
         <FontAwesome name="id-card" size={24} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Text
         color="white"
         // ml={16}

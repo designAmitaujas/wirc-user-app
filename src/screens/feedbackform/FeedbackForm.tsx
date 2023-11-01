@@ -119,10 +119,10 @@ const RenderFeedbackTopics: FC<{
             <Radio shadow={2} value="good" size="sm" my="2">
               Good
             </Radio>
-            <Radio shadow={2} value="fair" size="sm" my="2">
-              Fair
-            </Radio>
           </HStack>
+          <Radio shadow={2} value="fair" size="sm" my="2">
+            Fair
+          </Radio>
         </Radio.Group>
       </VStack>
       <Divider w={"72"} alignSelf="center" />
@@ -303,7 +303,7 @@ const FeedbackForm = () => {
                 >
                   :
                 </Text>
-                <Text w={"66%"} fontSize={"xs"} textAlign="justify">
+                <Text w={"60%"} fontSize={"xs"}>
                   {fetchedEvent?.getCpeEventById.name}
                 </Text>
               </HStack>
@@ -423,10 +423,10 @@ const FeedbackForm = () => {
                     <Radio shadow={2} value="good" size="sm" my="2">
                       Good
                     </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
                   </HStack>
+                  <Radio shadow={2} value="fair" size="sm" my="2">
+                    Fair
+                  </Radio>
                 </Radio.Group>
               </VStack>
               <VStack>
@@ -451,10 +451,10 @@ const FeedbackForm = () => {
                     <Radio shadow={2} value="good" size="sm" my="2">
                       Good
                     </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
                   </HStack>
+                  <Radio shadow={2} value="fair" size="sm" my="2">
+                    Fair
+                  </Radio>
                 </Radio.Group>
               </VStack>
               <VStack>
@@ -479,10 +479,10 @@ const FeedbackForm = () => {
                     <Radio shadow={2} value="good" size="sm" my="2">
                       Good
                     </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
                   </HStack>
+                  <Radio shadow={2} value="fair" size="sm" my="2">
+                    Fair
+                  </Radio>
                 </Radio.Group>
               </VStack>
               <VStack>
@@ -507,10 +507,10 @@ const FeedbackForm = () => {
                     <Radio shadow={2} value="good" size="sm" my="2">
                       Good
                     </Radio>
-                    <Radio shadow={2} value="fair" size="sm" my="2">
-                      Fair
-                    </Radio>
                   </HStack>
+                  <Radio shadow={2} value="fair" size="sm" my="2">
+                    Fair
+                  </Radio>
                 </Radio.Group>
               </VStack>
             </VStack>

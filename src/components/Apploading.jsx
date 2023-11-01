@@ -15,7 +15,7 @@ const AppLoading = () => {
           alignSelf={"center"}
         >
           <LottieView
-            source={require("../../assets/84639-loading-bar/124519-loder.json")}
+            source={require("../../assets/no-internet.json")}
             autoPlay
             loop
           />

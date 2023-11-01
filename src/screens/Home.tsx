@@ -1,5 +1,5 @@
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import {
   Box,
@@ -10,9 +10,11 @@ import {
   Text,
   VStack,
 } from "native-base";
-import React from "react";
-import { TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { RefreshControl, TouchableOpacity } from "react-native";
+import { useInterval } from "usehooks-ts";
 import {
+  EventAttendence,
   useGetAllCpeEventQuery,
   useGetMyAttendedEventQuery,
 } from "../gql/graphql";
@@ -164,7 +166,41 @@ const AttendedCard: React.FC<{
 };
 
 export const Seminar = () => {
-  const { data } = useGetMyAttendedEventQuery();
+  const { data, refetch } = useGetMyAttendedEventQuery();
+  const [refreshing, setRefreshing] = React.useState(false);
+  const isFocused = useIsFocused();
+  const [list, setList] = useState<Array<EventAttendence>>([]); // Initialize as an empty array
+
+  useEffect(() => {
+    if (data?.getMyAttendedEvent) {
+      setList(data.getMyAttendedEvent);
+    }
+  }, [data]);
+
+  const newRefetch = async () => {
+    setRefreshing(true);
+
+    try {
+      await refetch(); // Refetch the data
+      setRefreshing(false);
+    } catch (error) {
+      // Handle any errors that may occur during refetch
+      console.error("Error while refetching data:", error);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      newRefetch(); // Trigger a refresh when the component is focused
+    }
+  }, [isFocused]);
+
+  useInterval(() => {
+    if (!refreshing) {
+      newRefetch(); // Trigger a refresh at regular intervals only if not already refreshing
+    }
+  }, 300 * 1000);
 
   return (
     <>
@@ -174,9 +210,15 @@ export const Seminar = () => {
             Attended Events
           </Text>
         </HStack>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={newRefetch} />
+          }
+        >
           <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
-            {data?.getMyAttendedEvent.reverse().map((item) => {
+            {list?.reverse().map((item) => {
               return (
                 <AttendedCard
                   id={item.cpeEvent?._id || ""}
@@ -266,7 +308,7 @@ const UpcomingCard: React.FC<{
 };
 
 export const UpcomingEvent = () => {
-  const { data } = useGetAllCpeEventQuery();
+  const { data, loading } = useGetAllCpeEventQuery();
 
   return (
     <>
@@ -279,7 +321,7 @@ export const UpcomingEvent = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space={5}>
             {data?.getAllCpeEvent
-              .filter((item) => item.isActive === true)
+              ?.filter((item) => item.isActive === true)
               .filter((item) => item.isForStudent === false)
               .filter((item) =>
                 moment().isBefore(moment(item.date2).startOf("D").add(1, "d"))

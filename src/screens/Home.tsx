@@ -200,7 +200,7 @@ export const Seminar = () => {
     if (!refreshing) {
       newRefetch(); // Trigger a refresh at regular intervals only if not already refreshing
     }
-  }, 300 * 1000);
+  }, 30 * 1000);
 
   return (
     <>
@@ -218,23 +218,31 @@ export const Seminar = () => {
           }
         >
           <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
-            {list?.reverse().map((item) => {
-              return (
-                <AttendedCard
-                  id={item.cpeEvent?._id || ""}
-                  key={item._id}
-                  name={item.cpeEvent?.name || ""}
-                  duration={item.cpeEvent?.cpehrs || ""}
-                  startdatetime={
-                    moment(item.cpeEvent?.date1).format("DD-MM-YYYY") || ""
-                  }
-                  enddatetime={
-                    moment(item.cpeEvent?.date2).format("DD-MM-YYYY") || ""
-                  }
-                  vanue={item.cpeEvent?.location || ""}
-                />
-              );
-            })}
+            {list
+              ?.sort((a, b) => {
+                return (
+                  moment(a.cpeEvent?.date2).toDate().getTime() -
+                  moment(b.cpeEvent?.date2).toDate().getTime()
+                );
+              })
+              .reverse()
+              .map((item) => {
+                return (
+                  <AttendedCard
+                    id={item.cpeEvent?._id || ""}
+                    key={item._id}
+                    name={item.cpeEvent?.name || ""}
+                    duration={item.cpeEvent?.cpehrs || ""}
+                    startdatetime={
+                      moment(item.cpeEvent?.date1).format("DD-MM-YYYY") || ""
+                    }
+                    enddatetime={
+                      moment(item.cpeEvent?.date2).format("DD-MM-YYYY") || ""
+                    }
+                    vanue={item.cpeEvent?.location || ""}
+                  />
+                );
+              })}
           </HStack>
         </ScrollView>
       </VStack>

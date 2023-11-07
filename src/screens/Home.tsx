@@ -11,7 +11,7 @@ import {
   VStack,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { RefreshControl, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { useInterval } from "usehooks-ts";
 import {
   EventAttendence,
@@ -200,7 +200,7 @@ export const Seminar = () => {
     if (!refreshing) {
       newRefetch(); // Trigger a refresh at regular intervals only if not already refreshing
     }
-  }, 30 * 1000);
+  }, 10 * 1000);
 
   return (
     <>
@@ -213,9 +213,9 @@ export const Seminar = () => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={newRefetch} />
-          }
+          // refreshControl={
+          //   <RefreshControl refreshing={refreshing} onRefresh={newRefetch} />
+          // }
         >
           <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
             {list

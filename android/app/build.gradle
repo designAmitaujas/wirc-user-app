@@ -118,8 +118,8 @@ android {
         applicationId 'com.amitaujas.WIRCUser'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1006
-        versionName "1.6"
+        versionCode 1007
+        versionName "1.7"
     }
 
     splits {
@@ -192,7 +192,7 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-implementation "com.squareup.okhttp3:okhttp:4.2.1"
+    implementation "com.squareup.okhttp3:okhttp:4.2.1"
 implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
 implementation "com.squareup.okhttp3:okhttp-urlconnection:4.2.1"
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";

@@ -216,9 +216,13 @@ const SkillSection = () => {
         <VStack mt="10">
           {showValue.split(",").map((item, index) => {
             return (
-              <Text fontSize="lg" fontWeight="bold" width="65%">
-                {index + 1} {item}
-              </Text>
+              <>
+                {item && (
+                  <Text fontSize="lg" fontWeight="bold" width="65%">
+                    {index + 1} {item}
+                  </Text>
+                )}
+              </>
             );
           })}
         </VStack>

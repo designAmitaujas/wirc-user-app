@@ -29,7 +29,7 @@ function QRScreen() {
   const { data: profile } = useMyProfileInformationQuery();
   const [addAttendence] = useAddAttendenceMutation();
 
-  const { show } = useToast();
+  const toast = useToast();
 
   useEffect(() => {
     (async () => {
@@ -51,15 +51,15 @@ function QRScreen() {
     });
 
     if (response.data?.addAttendence.success) {
-      show({
+      toast.show({
         title: _.capitalize(response.data.addAttendence.msg),
         placement: "top",
       });
       setInfo(data);
       setScanned(true);
     } else {
-      show({
-        title: _.capitalize(response.data?.addAttendence.msg || ""),
+      toast.show({
+        title: _.capitalize(response.data?.addAttendence.msg),
         placement: "top",
       });
     }
@@ -119,11 +119,11 @@ function QRScreen() {
 
           <HStack mx={5} w={"100%"}>
             <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
-              Seminar ID
+              Seminar Location
             </Text>
             <Text w={"10%"}>:</Text>
             <Text w={"60%"} fontSize={"md"}>
-              {events?.getCpeEventById._id}
+              {events?.getCpeEventById.location}
             </Text>
           </HStack>
           <HStack w={"100%"}>
@@ -147,6 +147,25 @@ function QRScreen() {
             </Text>
           </HStack>
         </VStack>
+        {/* ) : (
+          <>
+            <VStack
+              bg={"white"}
+              borderRadius={10}
+              shadow={5}
+              mx={5}
+              p={3}
+              space={2}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <Text fontSize={"xl"} fontWeight={"semibold"}>
+                Thank you for scanning the QR code. It appears you haven't
+                participated
+              </Text>
+            </VStack>
+          </>
+        )} */}
         <View
           position={"relative"}
           justifyContent={"flex-end"}

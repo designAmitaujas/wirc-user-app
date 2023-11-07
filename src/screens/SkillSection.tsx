@@ -1,5 +1,5 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { IndexPath, Select, SelectItem } from "@ui-kitten/components";
 import _ from "lodash";
 import LottieView from "lottie-react-native";
@@ -14,6 +14,7 @@ import {
   useToast,
 } from "native-base";
 import { useEffect, useState } from "react";
+import { useInterval } from "usehooks-ts";
 import {
   useCreateOrUpdateMemberSkillMutation,
   useGetAllSkillsQuery,
@@ -66,7 +67,7 @@ const RestHeader = () => {
 };
 
 const SkillSection = () => {
-  const { data } = useGetAllSkillsQuery();
+  const { data, refetch } = useGetAllSkillsQuery();
   const { data: profile } = useMyProfileInformationQuery();
 
   const { show } = useToast();
@@ -74,7 +75,8 @@ const SkillSection = () => {
   const [showValue, setShowValue] = useState<string>("");
   const [dataArr, setDataArr] = useState<Array<string>>([]);
   const [key, setKey] = useState(Math.random());
-
+  const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
   const [multiSelectedIndex, setMultiSelectedIndex] = useState<IndexPath[]>([]);
 
   const [getMySkillList] = useGetMySkillListLazyQuery();
@@ -121,6 +123,31 @@ const SkillSection = () => {
         .join(", ")
     );
   }, [multiSelectedIndex]);
+
+  const newRefetch = async () => {
+    setRefreshing(true);
+
+    try {
+      await refetch(); // Refetch the data
+      setRefreshing(false);
+    } catch (error) {
+      // Handle any errors that may occur during refetch
+      console.error("Error while refetching data:", error);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      newRefetch(); // Trigger a refresh when the component is focused
+    }
+  }, [isFocused]);
+
+  useInterval(() => {
+    if (!refreshing) {
+      newRefetch(); // Trigger a refresh at regular intervals only if not already refreshing
+    }
+  }, 10 * 1000);
 
   useEffect(() => {
     const tempArry: Array<string> = [];

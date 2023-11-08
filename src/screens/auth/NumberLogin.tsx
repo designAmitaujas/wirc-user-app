@@ -348,7 +348,7 @@ export default MobileLogin;
 //                     w={"100%"}
 //                     resizeMode="contain"
 //                     alt="Image not found"
-//                     source={require("../../../assets/wirc-logo.png")}
+//                     source={require("../../../assets/wirclogo2.png")}
 //                   />
 //                   <Text
 //                     mt={5}

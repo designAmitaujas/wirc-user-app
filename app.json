@@ -2,7 +2,7 @@
   "expo": {
     "name": "WIRC Connect",
     "slug": "WIRC Connect",
-    "version": "1.7",
+    "version": "1.8",
     "orientation": "portrait",
     "icon": "./assets/wirclogo.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,7 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 1007,
+      "versionCode": 1008,
       "adaptiveIcon": {
         "foregroundImage": "./assets/wirclogo.png",
         "backgroundColor": "#ffffff"

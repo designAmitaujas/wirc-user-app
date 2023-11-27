@@ -173,7 +173,7 @@ export const Seminar = () => {
 
   useEffect(() => {
     if (data?.getMyAttendedEvent) {
-      setList(data.getMyAttendedEvent);
+      setList(data?.getMyAttendedEvent);
     }
   }, [data]);
 

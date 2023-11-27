@@ -254,14 +254,19 @@ export type CpeEvent = {
   cutoffDate?: Maybe<Scalars['DateTime']['output']>;
   date1: Scalars['DateTime']['output'];
   date2: Scalars['DateTime']['output'];
+  externalRegistration: Scalars['String']['output'];
   flyer: Scalars['String']['output'];
+  flyerArr?: Maybe<Array<MultiFlyerImage>>;
   igst: Scalars['Float']['output'];
   igstState?: Maybe<State>;
   img: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
   isArchived: Scalars['Boolean']['output'];
   isForStudent: Scalars['Boolean']['output'];
+  isRegistrationOn: Scalars['Boolean']['output'];
+  lati: Scalars['Float']['output'];
   location: Scalars['String']['output'];
+  longi: Scalars['Float']['output'];
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
   sgst: Scalars['Float']['output'];
@@ -855,13 +860,19 @@ export type ICreateCpeEvent = {
   cutoffDate: Scalars['String']['input'];
   date1: Scalars['String']['input'];
   date2: Scalars['String']['input'];
+  externalRegistration: Scalars['String']['input'];
   flyer: Scalars['String']['input'];
+  flyerArr: Array<Scalars['String']['input']>;
   igst: Scalars['Float']['input'];
   igstCity: Scalars['String']['input'];
   img: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
+  isArchived: Scalars['Boolean']['input'];
   isForStudent: Scalars['Boolean']['input'];
+  isRegistrationOn: Scalars['Boolean']['input'];
+  lati: Scalars['Float']['input'];
   location: Scalars['String']['input'];
+  longi: Scalars['Float']['input'];
   name: Scalars['String']['input'];
   price: Scalars['Float']['input'];
   sgst: Scalars['Float']['input'];
@@ -1471,6 +1482,7 @@ export type ICreateStudentDownload = {
   name: Scalars['String']['input'];
   speaker: Scalars['String']['input'];
   uri: Scalars['String']['input'];
+  zoomvideo: Scalars['String']['input'];
 };
 
 export type ICreateStudentDownloadCategory = {
@@ -1478,6 +1490,13 @@ export type ICreateStudentDownloadCategory = {
   date: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
   name: Scalars['String']['input'];
+};
+
+export type ICreateStudentDownloadCode = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  category: Scalars['String']['input'];
+  isActive: Scalars['Boolean']['input'];
+  videocode: Scalars['String']['input'];
 };
 
 export type ICreateStudentWicasaCommunity = {
@@ -1805,6 +1824,11 @@ export type IStatusResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type IStudentInput = {
+  id: Scalars['String']['input'];
+  studentId: Scalars['String']['input'];
+};
+
 export type IUserInfoByMembershipNumber = {
   __typename?: 'IUserInfoByMembershipNumber';
   address: Scalars['String']['output'];
@@ -1855,6 +1879,7 @@ export type InitiativeMailInput = {
   id: Scalars['String']['input'];
   name: Scalars['String']['input'];
   number: Scalars['String']['input'];
+  query: Scalars['String']['input'];
   type: Scalars['String']['input'];
 };
 
@@ -2027,6 +2052,13 @@ export type MentorshipZone = {
   workType?: Maybe<WorkType>;
 };
 
+export type MultiFlyerImage = {
+  __typename?: 'MultiFlyerImage';
+  _id: Scalars['String']['output'];
+  img: Scalars['String']['output'];
+  parent?: Maybe<CpeEvent>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   GetAllPaymentDetailsByDateRange: Array<EventRegistrationMember>;
@@ -2123,6 +2155,7 @@ export type Mutation = {
   createOrUpdateState: IStatusResponse;
   createOrUpdateStudentDownload: IStatusResponse;
   createOrUpdateStudentDownloadCategory: IStatusResponse;
+  createOrUpdateStudentDownloadCode: IStatusResponse;
   createOrUpdateStudentWicasaCommunity: IStatusResponse;
   createOrUpdateStudyCircleMetting: IStatusResponse;
   createOrUpdateStudyGroup: IStatusResponse;
@@ -2217,6 +2250,7 @@ export type Mutation = {
   deleteState: IStatusResponse;
   deleteStudentDownload: IStatusResponse;
   deleteStudentDownloadCategory: IStatusResponse;
+  deleteStudentDownloadCode: IStatusResponse;
   deleteStudentWicasaCommunity: IStatusResponse;
   deleteStudyCircleMetting: IStatusResponse;
   deleteStudyGroup: IStatusResponse;
@@ -2241,6 +2275,7 @@ export type Mutation = {
   getMemberInfoByMembershipNumber?: Maybe<IUserInfoByMembershipNumber>;
   getPublicaLibraryRegistration: IStatusResponse;
   getRedeamCode: IStatusResponse;
+  getRedeemDownloadCode: IStatusResponse;
   initiativeMail: IStatusResponse;
   memberRegistrationAuthResolver: IAuthResoverResponse;
   mentorshipPlacementSearch: Array<MentorshipZone>;
@@ -2726,6 +2761,11 @@ export type MutationCreateOrUpdateStudentDownloadCategoryArgs = {
 };
 
 
+export type MutationCreateOrUpdateStudentDownloadCodeArgs = {
+  options: ICreateStudentDownloadCode;
+};
+
+
 export type MutationCreateOrUpdateStudentWicasaCommunityArgs = {
   options: ICreateStudentWicasaCommunity;
 };
@@ -3196,6 +3236,11 @@ export type MutationDeleteStudentDownloadCategoryArgs = {
 };
 
 
+export type MutationDeleteStudentDownloadCodeArgs = {
+  options: IGetById;
+};
+
+
 export type MutationDeleteStudentWicasaCommunityArgs = {
   options: IGetById;
 };
@@ -3313,6 +3358,11 @@ export type MutationGetPublicaLibraryRegistrationArgs = {
 
 export type MutationGetRedeamCodeArgs = {
   options: IGetById;
+};
+
+
+export type MutationGetRedeemDownloadCodeArgs = {
+  options: IStudentInput;
 };
 
 
@@ -3703,6 +3753,7 @@ export type Query = {
   getAllState: Array<State>;
   getAllStudentDownload: Array<StudentDownload>;
   getAllStudentDownloadCategory: Array<StudentDownloadCategory>;
+  getAllStudentDownloadCode: Array<StudentDownloadCode>;
   getAllStudentWicasaCommunity: Array<StudentWicasaCommunity>;
   getAllStudyCircleMetting: Array<StudyCircleMetting>;
   getAllStudyGroup: Array<StudyGroup>;
@@ -3791,8 +3842,10 @@ export type Query = {
   getMemberSkillById: MemberSkill;
   getMentorshipZoneById: MentorshipZone;
   getMyAttendedEvent: Array<EventAttendence>;
+  getMyAttendedMemberlistById: Array<EventAttendence>;
   getMyEventList: Array<RegistrationList>;
   getMyEventList2: Array<RegistrationList>;
+  getMyMemberListByhistoryId: Array<EventRegistrationMember>;
   getMySkillList: Array<MemberSkill>;
   getNetworkingZoneById: NetworkingZone;
   getPastChairpersonById: PastChairperson;
@@ -3820,8 +3873,10 @@ export type Query = {
   getServicesById: Services;
   getSkillsById: Skills;
   getStateById: State;
+  getStudentCodeAccessById: IStatusResponse;
   getStudentDownloadById: StudentDownload;
   getStudentDownloadCategoryById: StudentDownloadCategory;
+  getStudentDownloadCodeById: StudentDownloadCode;
   getStudentWicasaCommunityById: StudentWicasaCommunity;
   getStudyCircleMettingById: StudyCircleMetting;
   getStudyGroupById: StudyGroup;
@@ -4186,6 +4241,16 @@ export type QueryGetMentorshipZoneByIdArgs = {
 };
 
 
+export type QueryGetMyAttendedMemberlistByIdArgs = {
+  historyId: Scalars['String']['input'];
+};
+
+
+export type QueryGetMyMemberListByhistoryIdArgs = {
+  historyId: Scalars['String']['input'];
+};
+
+
 export type QueryGetMySkillListArgs = {
   options: IGetById;
 };
@@ -4317,6 +4382,11 @@ export type QueryGetStudentDownloadByIdArgs = {
 
 
 export type QueryGetStudentDownloadCategoryByIdArgs = {
+  options: IGetById;
+};
+
+
+export type QueryGetStudentDownloadCodeByIdArgs = {
   options: IGetById;
 };
 
@@ -4458,6 +4528,7 @@ export type StudentDownload = {
   name: Scalars['String']['output'];
   speaker: Scalars['String']['output'];
   uri: Scalars['String']['output'];
+  zoomvideo: Scalars['String']['output'];
 };
 
 export type StudentDownloadCategory = {
@@ -4466,6 +4537,14 @@ export type StudentDownloadCategory = {
   date: Scalars['DateTime']['output'];
   isActive: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
+};
+
+export type StudentDownloadCode = {
+  __typename?: 'StudentDownloadCode';
+  _id: Scalars['String']['output'];
+  category?: Maybe<StudentDownload>;
+  isActive: Scalars['Boolean']['output'];
+  videocode: Scalars['String']['output'];
 };
 
 export type StudentWicasaCommunity = {
@@ -4731,7 +4810,7 @@ export type DeleteMemberSkillMutation = { __typename?: 'Mutation', deleteMemberS
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllCpeEventQuery = { __typename?: 'Query', getAllCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null }> };
+export type GetAllCpeEventQuery = { __typename?: 'Query', getAllCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, lati: number, longi: number, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null }> };
 
 export type GetAllStateQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4784,6 +4863,13 @@ export type GetGenderByIdQueryVariables = Exact<{
 
 export type GetGenderByIdQuery = { __typename?: 'Query', getGenderById: { __typename?: 'Gender', _id: string, name: string, isActive: boolean } };
 
+export type GetMyAttendedMemberlistByIdQueryVariables = Exact<{
+  historyId: Scalars['String']['input'];
+}>;
+
+
+export type GetMyAttendedMemberlistByIdQuery = { __typename?: 'Query', getMyAttendedMemberlistById: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, externalRegistration: string, price: number, igst: number, cgst: number, sgst: number, isRegistrationOn: boolean, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+
 export type MyProfileInformationQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4792,19 +4878,19 @@ export type MyProfileInformationQuery = { __typename?: 'Query', myProfileInforma
 export type GetMyAttendedEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, lati: number, longi: number, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
 
 export type GetTodayCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTodayCpeEventQuery = { __typename?: 'Query', getTodayCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean }> };
+export type GetTodayCpeEventQuery = { __typename?: 'Query', getTodayCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, lati: number, longi: number, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean }> };
 
 export type GetCpeEventByIdQueryVariables = Exact<{
   options: IGetById;
 }>;
 
 
-export type GetCpeEventByIdQuery = { __typename?: 'Query', getCpeEventById: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null } };
+export type GetCpeEventByIdQuery = { __typename?: 'Query', getCpeEventById: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, lati: number, longi: number, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null } };
 
 export type GetCpeEventRangeByCpeIdQueryVariables = Exact<{
   options: IGetById;
@@ -4818,7 +4904,7 @@ export type GetPaymentReciptByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentReciptByIdQuery = { __typename?: 'Query', getPaymentReciptById: { __typename?: 'EventTransactionHistory', _id: string, customId: string, billingEmail: string, billingGst: string, billingName: string, isSameCity: boolean, CALLBACK_URL: string, CHANNEL_ID: string, CHECKSUMHASH: string, CUST_ID: string, EMAIL: string, MID: string, ORDER_ID: string, TXN_AMOUNT: string, WEBSITE: string, isPaymnetPaid: boolean, isActive: boolean, createdAt: any, cpeEvnet?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, isActive: boolean, name: string } | null } | null } };
+export type GetPaymentReciptByIdQuery = { __typename?: 'Query', getPaymentReciptById: { __typename?: 'EventTransactionHistory', _id: string, customId: string, billingEmail: string, billingGst: string, billingName: string, isSameCity: boolean, CALLBACK_URL: string, CHANNEL_ID: string, CHECKSUMHASH: string, CUST_ID: string, EMAIL: string, MID: string, ORDER_ID: string, TXN_AMOUNT: string, WEBSITE: string, isPaymnetPaid: boolean, isActive: boolean, createdAt: any, cpeEvnet?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, lati: number, longi: number, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, isActive: boolean, name: string } | null } | null } };
 
 export type GetCountByCpeEventQueryVariables = Exact<{
   options: IGetById;
@@ -4854,7 +4940,7 @@ export type GetMySkillListQuery = { __typename?: 'Query', getMySkillList: Array<
 export type GetAllEventTopicQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllEventTopicQuery = { __typename?: 'Query', getAllEventTopic: Array<{ __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+export type GetAllEventTopicQuery = { __typename?: 'Query', getAllEventTopic: Array<{ __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, lati: number, longi: number, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -5204,6 +5290,8 @@ export const GetAllCpeEventDocument = gql`
     img
     date1
     cpehrs
+    lati
+    longi
     date2
     time1
     time2
@@ -5596,6 +5684,67 @@ export function useGetGenderByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetGenderByIdQueryHookResult = ReturnType<typeof useGetGenderByIdQuery>;
 export type GetGenderByIdLazyQueryHookResult = ReturnType<typeof useGetGenderByIdLazyQuery>;
 export type GetGenderByIdQueryResult = Apollo.QueryResult<GetGenderByIdQuery, GetGenderByIdQueryVariables>;
+export const GetMyAttendedMemberlistByIdDocument = gql`
+    query GetMyAttendedMemberlistById($historyId: String!) {
+  getMyAttendedMemberlistById(historyId: $historyId) {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      capacity
+      cutoffDate
+      cms
+      externalRegistration
+      price
+      igst
+      cgst
+      sgst
+      isRegistrationOn
+      isForStudent
+      isArchived
+      isActive
+    }
+    membershipId
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetMyAttendedMemberlistByIdQuery__
+ *
+ * To run a query within a React component, call `useGetMyAttendedMemberlistByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyAttendedMemberlistByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyAttendedMemberlistByIdQuery({
+ *   variables: {
+ *      historyId: // value for 'historyId'
+ *   },
+ * });
+ */
+export function useGetMyAttendedMemberlistByIdQuery(baseOptions: Apollo.QueryHookOptions<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>(GetMyAttendedMemberlistByIdDocument, options);
+      }
+export function useGetMyAttendedMemberlistByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>(GetMyAttendedMemberlistByIdDocument, options);
+        }
+export type GetMyAttendedMemberlistByIdQueryHookResult = ReturnType<typeof useGetMyAttendedMemberlistByIdQuery>;
+export type GetMyAttendedMemberlistByIdLazyQueryHookResult = ReturnType<typeof useGetMyAttendedMemberlistByIdLazyQuery>;
+export type GetMyAttendedMemberlistByIdQueryResult = Apollo.QueryResult<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>;
 export const MyProfileInformationDocument = gql`
     query MyProfileInformation {
   myProfileInformation {
@@ -5689,6 +5838,8 @@ export const GetMyAttendedEventDocument = gql`
       _id
       name
       img
+      lati
+      longi
       date1
       cpehrs
       date2
@@ -5746,6 +5897,8 @@ export const GetTodayCpeEventDocument = gql`
     name
     img
     date1
+    lati
+    longi
     cpehrs
     date2
     time1
@@ -5801,6 +5954,8 @@ export const GetCpeEventByIdDocument = gql`
     date1
     cpehrs
     date2
+    lati
+    longi
     time1
     time2
     location
@@ -5906,6 +6061,8 @@ export const GetPaymentReciptByIdDocument = gql`
       name
       img
       date1
+      lati
+      longi
       cpehrs
       date2
       time1
@@ -6178,6 +6335,8 @@ export const GetAllEventTopicDocument = gql`
       name
       img
       date1
+      lati
+      longi
       cpehrs
       date2
       time1

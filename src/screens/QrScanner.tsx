@@ -1,12 +1,13 @@
 import { useIsFocused } from "@react-navigation/native";
 import { BarCodeScanner, PermissionStatus } from "expo-barcode-scanner";
+import * as Location from "expo-location";
 import _ from "lodash";
 import Lottie from "lottie-react-native";
 import { Box, Button, HStack, Text, VStack, View, useToast } from "native-base";
 import { useEffect, useState } from "react";
 import {
   useAddAttendenceMutation,
-  useGetCpeEventByIdQuery,
+  useGetAllCpeEventQuery,
   useMyProfileInformationQuery,
 } from "../gql/graphql";
 
@@ -22,14 +23,35 @@ function QRScreen() {
   const [hasPermission, setHasPermission] = useState<boolean>(false);
   const [scanned, setScanned] = useState(false);
   const [info, setInfo] = useState("");
-  const { data: events } = useGetCpeEventByIdQuery({
-    variables: { options: { id: info || "" } },
-  });
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null
+  );
+
+  // const { data: events } = useGetCpeEventByIdQuery({
+  //   variables: { options: { id: info || "" } },
+  // });
+
+  const { data: getevents } = useGetAllCpeEventQuery();
 
   const { data: profile } = useMyProfileInformationQuery();
   const [addAttendence] = useAddAttendenceMutation();
 
   const toast = useToast();
+  useEffect(() => {
+    (async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          throw new Error("Location permission not granted");
+        }
+
+        const location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      } catch (error) {
+        console.error("Error getting location:", error);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -38,8 +60,68 @@ function QRScreen() {
     })();
   }, []);
 
+  console.log(location?.coords.latitude);
+  console.log(location?.coords.longitude);
+
+  const isWithinGeoFence = () => {
+    if (!location || !getevents) {
+      return false;
+    }
+    for (const event of getevents.getAllCpeEvent) {
+      const R = 6371;
+      const lat2 = event.lati;
+      const lon2 = event.longi;
+
+      const dLat = (lat2 - location.coords.latitude) * (Math.PI / 180);
+      const dLon = (lon2 - location.coords.longitude) * (Math.PI / 180);
+
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(location.coords.latitude * (Math.PI / 180)) *
+          Math.cos(lat2 * (Math.PI / 180)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      const distance = R * c;
+
+      console.log("Event:", event.name);
+      console.log("Distance:", distance);
+
+      // Round the distance for better comparison
+      const roundedDistance = Math.round(distance * 1000); // in meters
+
+      // Set your desired radius (in meters) for the geo-fence
+      const geoFenceRadius = 1000; // 1 kilometer
+
+      if (roundedDistance <= geoFenceRadius) {
+        console.log("Within geo-fence!");
+        return true;
+      }
+    }
+
+    console.log("Not within geo-fence!");
+    return false;
+  };
+
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
-    setScanned(true);
+    if (!isWithinGeoFence()) {
+      toast.show({
+        title: "Not within geo-fence range",
+        placement: "top",
+      });
+      setScanned(false); // Set scanned to true if you still want to prevent further scans
+      return;
+    }
+    if (scanned) {
+      toast.show({
+        title: "Attendance already marked",
+        placement: "top",
+      });
+      setScanned(false);
+      return;
+    }
 
     const response = await addAttendence({
       variables: {
@@ -122,9 +204,21 @@ function QRScreen() {
               Seminar Location
             </Text>
             <Text w={"10%"}>:</Text>
-            <Text w={"60%"} fontSize={"md"}>
+            {getevents?.getAllCpeEvent
+              .filter((item) => item._id === info)
+              .map((item) => {
+                return (
+                  <>
+                    <Text w={"60%"} fontSize={"md"}>
+                      {item.location}
+                    </Text>
+                  </>
+                );
+              })}
+            {/* <Text w={"60%"} fontSize={"md"}>
               {events?.getCpeEventById.location}
-            </Text>
+              
+            </Text> */}
           </HStack>
           <HStack w={"100%"}>
             <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
@@ -142,9 +236,20 @@ function QRScreen() {
               Seminar
             </Text>
             <Text w={"10%"}>:</Text>
-            <Text w={"60%"} fontSize={"md"}>
+            {getevents?.getAllCpeEvent
+              .filter((item) => item._id === info)
+              .map((item) => {
+                return (
+                  <>
+                    <Text w={"60%"} fontSize={"md"}>
+                      {item.name}
+                    </Text>
+                  </>
+                );
+              })}
+            {/* <Text w={"60%"} fontSize={"md"}>
               {events?.getCpeEventById.name}
-            </Text>
+            </Text> */}
           </HStack>
         </VStack>
         {/* ) : (

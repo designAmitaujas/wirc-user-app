@@ -5,6 +5,8 @@ query GetAllCpeEvent {
     img
     date1
     cpehrs
+    lati
+    longi
     date2
     time1
     time2
@@ -115,6 +117,38 @@ query GetGenderById($options: IGetByID!) {
   }
 }
 
+query GetMyAttendedMemberlistById($historyId: String!) {
+  getMyAttendedMemberlistById(historyId: $historyId) {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      capacity
+      cutoffDate
+      cms
+      externalRegistration
+      price
+      igst
+      cgst
+      sgst
+      isRegistrationOn
+      isForStudent
+      isArchived
+      isActive
+    }
+    membershipId
+    isActive
+  }
+}
+
 query MyProfileInformation {
   myProfileInformation {
     _id
@@ -179,6 +213,8 @@ query GetMyAttendedEvent {
       _id
       name
       img
+      lati
+      longi
       date1
       cpehrs
       date2
@@ -210,6 +246,8 @@ query GetTodayCpeEvent {
     name
     img
     date1
+    lati
+    longi
     cpehrs
     date2
     time1
@@ -239,6 +277,8 @@ query GetCpeEventById($options: IGetByID!) {
     date1
     cpehrs
     date2
+    lati
+    longi
     time1
     time2
     location
@@ -286,6 +326,8 @@ query GetPaymentReciptById($options: IGetByID!) {
       name
       img
       date1
+      lati
+      longi
       cpehrs
       date2
       time1
@@ -388,6 +430,8 @@ query GetAllEventTopic {
       name
       img
       date1
+      lati
+      longi
       cpehrs
       date2
       time1

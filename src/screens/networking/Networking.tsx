@@ -18,6 +18,7 @@ import {
   Image,
   Modal,
   ScrollView,
+  Spinner,
   Text,
   VStack,
   View,
@@ -420,11 +421,12 @@ const ParticipantsCard: React.FC<{
 
 const NetworkingScreen = () => {
   const [participants, setParticipants] = React.useState<Array<IGetMyList>>();
+  const [loadingParticipants, setLoadingParticipants] = React.useState(false);
 
   const [key, setKey] = useState(Math.random());
 
-  const { data: getAllskill } = useGetAllSkillsQuery();
-  const { data: getAllEvent } = useGetTodayCpeEventQuery();
+  const { data: getAllskill, loading: l1 } = useGetAllSkillsQuery();
+  const { data: getAllEvent, loading: l2 } = useGetTodayCpeEventQuery();
 
   const toast = useToast();
   const [filter] = useGetFilterdSkillMemberMutation();
@@ -435,6 +437,7 @@ const NetworkingScreen = () => {
   ) => {
     actions.setSubmitting(true);
 
+    setLoadingParticipants(true);
     const response = await filter({
       variables: {
         options: {
@@ -450,12 +453,36 @@ const NetworkingScreen = () => {
     } else {
       toast.show({ title: _.capitalize(" error") });
     }
-
+    setLoadingParticipants(false);
     actions.setSubmitting(false);
   };
 
+  if (l1 || l2) {
+    <>
+      <HStack
+        flex={1}
+        alignSelf={"center"}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Spinner
+          accessibilityLabel="Loading participants"
+          size="lg"
+          color="#0f045d"
+        />
+        <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+          Loading
+        </Text>
+      </HStack>
+    </>;
+  }
   if (!getAllskill?.getAllSkills || !getAllEvent?.getTodayCpeEvent) {
-    return <></>;
+    return (
+      <>
+        <Spinner color="blue.500" />
+      </>
+    );
   }
 
   return (
@@ -600,47 +627,66 @@ const NetworkingScreen = () => {
 
           {/* <AnimatedSearchBar /> */}
         </HStack>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <VStack space={3} mb={4} mt={2}>
-            {participants?.length === 0 ? (
-              <>
-                <Box h={64} w={64} alignSelf={"center"} mt={12}>
-                  <LottieView
-                    source={require("../../../assets/participants-loader/76352-people-brainstorming-and-get-feedback.json")}
-                    autoPlay
-                    loop
-                  />
-                </Box>
-              </>
-            ) : (
-              <VStack space={3}>
-                <HStack
-                  justifyContent={"space-between"}
-                  w={"100%"}
-                  alignSelf={"center"}
-                  pl={5}
-                  pr={5}
-                  pb={2}
-                >
-                  {participants?.map((item) => {
-                    return (
-                      <>
-                        <ParticipantsCard
-                          key={key}
-                          gender={item.gender}
-                          name={item.name}
-                          email={item.email}
-                          mo_number={item.mobile}
-                          skills={item.skill}
-                        />
-                      </>
-                    );
-                  })}
-                </HStack>
-              </VStack>
-            )}
-          </VStack>
-        </ScrollView>
+        {loadingParticipants ? (
+          <HStack
+            flex={1}
+            alignSelf={"center"}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Spinner
+              accessibilityLabel="Loading participants"
+              size="lg"
+              color="#0f045d"
+            />
+            <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+              Loading Participants
+            </Text>
+          </HStack>
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <VStack space={3} mb={4} mt={2}>
+              {participants?.length === 0 ? (
+                <>
+                  <Box h={64} w={64} alignSelf={"center"} mt={12}>
+                    <LottieView
+                      source={require("../../../assets/participants-loader/76352-people-brainstorming-and-get-feedback.json")}
+                      autoPlay
+                      loop
+                    />
+                  </Box>
+                </>
+              ) : (
+                <VStack space={3}>
+                  <HStack
+                    justifyContent={"space-between"}
+                    w={"100%"}
+                    alignSelf={"center"}
+                    pl={5}
+                    pr={5}
+                    pb={2}
+                  >
+                    {participants?.map((item) => {
+                      return (
+                        <>
+                          <ParticipantsCard
+                            key={key}
+                            gender={item.gender}
+                            name={item.name}
+                            email={item.email}
+                            mo_number={item.mobile}
+                            skills={item.skill}
+                          />
+                        </>
+                      );
+                    })}
+                  </HStack>
+                </VStack>
+              )}
+            </VStack>
+          </ScrollView>
+        )}
       </View>
     </>
   );

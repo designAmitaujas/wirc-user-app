@@ -3836,13 +3836,13 @@ export type Query = {
   getLibraryRegistrationFormById: LibraryRegistrationForm;
   getLibraryRegistrationLocationById: LibraryRegistrationLocation;
   getMcsById: Mcs;
+  getMemberAttendanceList: Array<MemberRegistration>;
   getMemberById: Member;
   getMemberDesignationById: MemberDesignation;
   getMemberRegistrationById: MemberRegistration;
   getMemberSkillById: MemberSkill;
   getMentorshipZoneById: MentorshipZone;
   getMyAttendedEvent: Array<EventAttendence>;
-  getMyAttendedMemberlistById: Array<EventAttendence>;
   getMyEventList: Array<RegistrationList>;
   getMyEventList2: Array<RegistrationList>;
   getMyMemberListByhistoryId: Array<EventRegistrationMember>;
@@ -4216,6 +4216,11 @@ export type QueryGetMcsByIdArgs = {
 };
 
 
+export type QueryGetMemberAttendanceListArgs = {
+  eventId: Scalars['String']['input'];
+};
+
+
 export type QueryGetMemberByIdArgs = {
   options: IGetById;
 };
@@ -4238,11 +4243,6 @@ export type QueryGetMemberSkillByIdArgs = {
 
 export type QueryGetMentorshipZoneByIdArgs = {
   options: IGetById;
-};
-
-
-export type QueryGetMyAttendedMemberlistByIdArgs = {
-  historyId: Scalars['String']['input'];
 };
 
 
@@ -4863,12 +4863,12 @@ export type GetGenderByIdQueryVariables = Exact<{
 
 export type GetGenderByIdQuery = { __typename?: 'Query', getGenderById: { __typename?: 'Gender', _id: string, name: string, isActive: boolean } };
 
-export type GetMyAttendedMemberlistByIdQueryVariables = Exact<{
-  historyId: Scalars['String']['input'];
+export type GetMemberAttendanceListQueryVariables = Exact<{
+  eventId: Scalars['String']['input'];
 }>;
 
 
-export type GetMyAttendedMemberlistByIdQuery = { __typename?: 'Query', getMyAttendedMemberlistById: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, externalRegistration: string, price: number, igst: number, cgst: number, sgst: number, isRegistrationOn: boolean, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+export type GetMemberAttendanceListQuery = { __typename?: 'Query', getMemberAttendanceList: Array<{ __typename?: 'MemberRegistration', _id: string, firstName: string, lastName: string, middleName: string, hash: string, email: string, userType: string, membershipNo: string, username: string, gstNo: string, tradeName: string, address1: string, address2: string, pinCode: string, phone: string, isApproved: boolean, isActive: boolean, gender?: { __typename?: 'Gender', _id: string, name: string, isActive: boolean } | null }> };
 
 export type MyProfileInformationQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5684,67 +5684,62 @@ export function useGetGenderByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetGenderByIdQueryHookResult = ReturnType<typeof useGetGenderByIdQuery>;
 export type GetGenderByIdLazyQueryHookResult = ReturnType<typeof useGetGenderByIdLazyQuery>;
 export type GetGenderByIdQueryResult = Apollo.QueryResult<GetGenderByIdQuery, GetGenderByIdQueryVariables>;
-export const GetMyAttendedMemberlistByIdDocument = gql`
-    query GetMyAttendedMemberlistById($historyId: String!) {
-  getMyAttendedMemberlistById(historyId: $historyId) {
+export const GetMemberAttendanceListDocument = gql`
+    query GetMemberAttendanceList($eventId: String!) {
+  getMemberAttendanceList(eventId: $eventId) {
     _id
-    cpeEvent {
+    firstName
+    lastName
+    middleName
+    hash
+    email
+    userType
+    gender {
       _id
       name
-      img
-      date1
-      cpehrs
-      date2
-      time1
-      time2
-      location
-      flyer
-      capacity
-      cutoffDate
-      cms
-      externalRegistration
-      price
-      igst
-      cgst
-      sgst
-      isRegistrationOn
-      isForStudent
-      isArchived
       isActive
     }
-    membershipId
+    membershipNo
+    username
+    gstNo
+    tradeName
+    address1
+    address2
+    pinCode
+    phone
+    isApproved
     isActive
   }
 }
     `;
 
 /**
- * __useGetMyAttendedMemberlistByIdQuery__
+ * __useGetMemberAttendanceListQuery__
  *
- * To run a query within a React component, call `useGetMyAttendedMemberlistByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMyAttendedMemberlistByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetMemberAttendanceListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMemberAttendanceListQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMyAttendedMemberlistByIdQuery({
+ * const { data, loading, error } = useGetMemberAttendanceListQuery({
  *   variables: {
- *      historyId: // value for 'historyId'
+ *      eventId: // value for 'eventId'
  *   },
  * });
  */
-export function useGetMyAttendedMemberlistByIdQuery(baseOptions: Apollo.QueryHookOptions<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>) {
+export function useGetMemberAttendanceListQuery(baseOptions: Apollo.QueryHookOptions<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>(GetMyAttendedMemberlistByIdDocument, options);
+        return Apollo.useQuery<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>(GetMemberAttendanceListDocument, options);
       }
-export function useGetMyAttendedMemberlistByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>) {
+export function useGetMemberAttendanceListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>(GetMyAttendedMemberlistByIdDocument, options);
+          return Apollo.useLazyQuery<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>(GetMemberAttendanceListDocument, options);
         }
-export type GetMyAttendedMemberlistByIdQueryHookResult = ReturnType<typeof useGetMyAttendedMemberlistByIdQuery>;
-export type GetMyAttendedMemberlistByIdLazyQueryHookResult = ReturnType<typeof useGetMyAttendedMemberlistByIdLazyQuery>;
-export type GetMyAttendedMemberlistByIdQueryResult = Apollo.QueryResult<GetMyAttendedMemberlistByIdQuery, GetMyAttendedMemberlistByIdQueryVariables>;
+export type GetMemberAttendanceListQueryHookResult = ReturnType<typeof useGetMemberAttendanceListQuery>;
+export type GetMemberAttendanceListLazyQueryHookResult = ReturnType<typeof useGetMemberAttendanceListLazyQuery>;
+export type GetMemberAttendanceListQueryResult = Apollo.QueryResult<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>;
 export const MyProfileInformationDocument = gql`
     query MyProfileInformation {
   myProfileInformation {

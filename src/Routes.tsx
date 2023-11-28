@@ -8,6 +8,7 @@ import UpcomingEvents from "./screens/UpcomingEvents";
 import Login from "./screens/auth/Login";
 import MobileLogin from "./screens/auth/NumberLogin";
 import FeedbackForm from "./screens/feedbackform/FeedbackForm";
+import Memberattendancelist from "./screens/networking/Memberattendancelist";
 import NetworkingScreen from "./screens/networking/Networking";
 import ProfileScreen from "./screens/profile/ProfileDetails";
 import Qrcode from "./screens/profile/Qrcode";
@@ -37,6 +38,10 @@ const Routes = () => {
           <Stack.Screen name="Feedback" component={FeedbackForm} />
           <Stack.Screen name="VisitingCard" component={VisitingCard} />
           <Stack.Screen name="Networking" component={NetworkingScreen} />
+          <Stack.Screen
+            name="MemberAttendance"
+            component={Memberattendancelist}
+          />
           <Stack.Screen
             name="TransactionDetails"
             component={Transactiondetail}

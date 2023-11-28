@@ -117,34 +117,29 @@ query GetGenderById($options: IGetByID!) {
   }
 }
 
-query GetMyAttendedMemberlistById($historyId: String!) {
-  getMyAttendedMemberlistById(historyId: $historyId) {
+query GetMemberAttendanceList($eventId: String!) {
+  getMemberAttendanceList(eventId: $eventId) {
     _id
-    cpeEvent {
+    firstName
+    lastName
+    middleName
+    hash
+    email
+    userType
+    gender {
       _id
       name
-      img
-      date1
-      cpehrs
-      date2
-      time1
-      time2
-      location
-      flyer
-      capacity
-      cutoffDate
-      cms
-      externalRegistration
-      price
-      igst
-      cgst
-      sgst
-      isRegistrationOn
-      isForStudent
-      isArchived
       isActive
     }
-    membershipId
+    membershipNo
+    username
+    gstNo
+    tradeName
+    address1
+    address2
+    pinCode
+    phone
+    isApproved
     isActive
   }
 }

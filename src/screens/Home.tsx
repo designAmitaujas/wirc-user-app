@@ -1,20 +1,23 @@
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome, Ionicons, Zocial } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import moment from "moment";
+
 import {
   Box,
   Button,
   HStack,
+  Heading,
   Image,
   ScrollView,
+  Skeleton,
+  Spinner,
   Text,
   VStack,
 } from "native-base";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { useInterval } from "usehooks-ts";
 import {
-  EventAttendence,
   useGetAllCpeEventQuery,
   useGetMyAttendedEventQuery,
 } from "../gql/graphql";
@@ -101,9 +104,12 @@ const AttendedCard: React.FC<{
     //@ts-ignore
     navigate("Feedback", { eventId: id });
   };
+  const handlelist = () => {
+    // @ts-ignore
+    navigate("MemberAttendance", { id });
+  };
   return (
     <>
-      {/* <TouchableOpacity onPress={feedback}> */}
       <VStack
         space={2}
         p={2}
@@ -123,6 +129,7 @@ const AttendedCard: React.FC<{
         >
           {name}
         </Text>
+
         <HStack w={"100%"}>
           <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
             Duration
@@ -150,32 +157,46 @@ const AttendedCard: React.FC<{
           <Text w={"5%"}>:</Text>
           <Text w={"65%"}>{vanue}</Text>
         </HStack>
-        <Button
-          bg={"#0f045d"}
-          onPress={Attendance}
-          size={"sm"}
-          borderRadius={12}
-          alignSelf={"center"}
-        >
-          Feedback
-        </Button>
+        <HStack w={"100%"} flex={1} justifyContent="center" space="2">
+          <Button
+            bg={"#0f045d"}
+            onPress={Attendance}
+            size={"sm"}
+            borderRadius={12}
+            alignSelf={"center"}
+            leftIcon={
+              <FontAwesome name="pencil-square-o" size={24} color="white" />
+            }
+          >
+            Feedback
+          </Button>
+          <Button
+            bg={"#0f045d"}
+            size={"sm"}
+            borderRadius={12}
+            alignSelf={"center"}
+            onPress={handlelist}
+            leftIcon={<Zocial name="persona" size={24} color="white" />}
+          >
+            participation
+          </Button>
+        </HStack>
       </VStack>
-      {/* </TouchableOpacity> */}
     </>
   );
 };
 
 export const Seminar = () => {
-  const { data, refetch } = useGetMyAttendedEventQuery();
+  const { data, refetch, loading } = useGetMyAttendedEventQuery();
   const [refreshing, setRefreshing] = React.useState(false);
   const isFocused = useIsFocused();
-  const [list, setList] = useState<Array<EventAttendence>>([]); // Initialize as an empty array
+  // const [list, setList] = useState<Array<EventAttendence>>([]); // Initialize as an empty array
 
-  useEffect(() => {
-    if (data?.getMyAttendedEvent) {
-      setList(data?.getMyAttendedEvent);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data?.getMyAttendedEvent) {
+  //     setList(data?.getMyAttendedEvent);
+  //   }
+  // }, [data]);
 
   const newRefetch = async () => {
     setRefreshing(true);
@@ -202,6 +223,19 @@ export const Seminar = () => {
     }
   }, 10 * 1000);
 
+  // if (loading) {
+  //   return (
+  //     <>
+  //       <Box>
+  //         <LottieView
+  //           autoPlay
+  //           source={require("../../assets/participants-loader/76352-people-brainstorming-and-get-feedback.json")}
+  //         />
+  //       </Box>
+  //     </>
+  //   );
+  // }
+
   return (
     <>
       <VStack space={4} pl={4} pr={4} pb={4}>
@@ -210,41 +244,65 @@ export const Seminar = () => {
             Attended Events
           </Text>
         </HStack>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          // refreshControl={
-          //   <RefreshControl refreshing={refreshing} onRefresh={newRefetch} />
-          // }
-        >
-          <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
-            {list
-              ?.sort((a, b) => {
-                return (
-                  moment(a.cpeEvent?.date2).toDate().getTime() -
-                  moment(b.cpeEvent?.date2).toDate().getTime()
-                );
-              })
-              .reverse()
-              .map((item) => {
-                return (
-                  <AttendedCard
-                    id={item.cpeEvent?._id || ""}
-                    key={item._id}
-                    name={item.cpeEvent?.name || ""}
-                    duration={item.cpeEvent?.cpehrs || ""}
-                    startdatetime={
-                      moment(item.cpeEvent?.date1).format("DD-MM-YYYY") || ""
-                    }
-                    enddatetime={
-                      moment(item.cpeEvent?.date2).format("DD-MM-YYYY") || ""
-                    }
-                    vanue={item.cpeEvent?.location || ""}
-                  />
-                );
-              })}
-          </HStack>
-        </ScrollView>
+        {loading ? (
+          <>
+            <HStack
+              flex={1}
+              justifyContent="center"
+              space="2"
+              alignItems="center"
+            >
+              <Spinner
+                accessibilityLabel="Loading posts"
+                size="lg"
+                color="primary.500"
+              />
+              <Heading color="primary.500" fontSize="lg" fontWeight="bold">
+                Loading
+              </Heading>
+            </HStack>
+          </>
+        ) : (
+          <>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              // refreshControl={
+              //   <RefreshControl refreshing={refreshing} onRefresh={newRefetch} />
+              // }
+            >
+              <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
+                {data?.getMyAttendedEvent
+                  ?.sort((a, b) => {
+                    return (
+                      moment(a.cpeEvent?.date2).toDate().getTime() -
+                      moment(b.cpeEvent?.date2).toDate().getTime()
+                    );
+                  })
+                  .reverse()
+                  .map((item) => {
+                    return (
+                      <AttendedCard
+                        id={item.cpeEvent?._id || ""}
+                        key={item._id}
+                        name={item.cpeEvent?.name || ""}
+                        duration={item.cpeEvent?.cpehrs || ""}
+                        startdatetime={
+                          moment(item.cpeEvent?.date1).format("DD-MM-YYYY") ||
+                          ""
+                        }
+                        enddatetime={
+                          moment(item.cpeEvent?.date2).format("DD-MM-YYYY") ||
+                          ""
+                        }
+                        vanue={item.cpeEvent?.location || ""}
+                      />
+                    );
+                  })}
+              </HStack>
+            </ScrollView>
+          </>
+        )}
       </VStack>
     </>
   );
@@ -318,6 +376,13 @@ const UpcomingCard: React.FC<{
 export const UpcomingEvent = () => {
   const { data, loading } = useGetAllCpeEventQuery();
 
+  // if (loading) {
+  //   return (
+  //     <>
+  //     </>
+  //   );
+  // }
+
   return (
     <>
       <VStack space={4} p={4} mb={5}>
@@ -327,31 +392,55 @@ export const UpcomingEvent = () => {
           </Text>
         </HStack>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <VStack space={5}>
-            {data?.getAllCpeEvent
-              ?.filter((item) => item.isActive === true)
-              .filter((item) => item.isForStudent === false)
-              .filter((item) =>
-                moment().isBefore(moment(item.date2).startOf("D").add(1, "d"))
-              )
-              .sort((a, b) => {
-                return (
-                  moment(a.date1).toDate().getTime() -
-                  moment(b.date1).toDate().getTime()
-                );
-              })
-              .map((item) => {
-                return (
-                  <UpcomingCard
-                    key={item._id}
-                    eventId={item._id}
-                    name={item.name}
-                    startdatetime={moment(item.date1).format("DD-MM-YYYY")}
-                    enddatetime={moment(item.date2).format("DD-MM-YYYY")}
-                  />
-                );
-              })}
-          </VStack>
+          {loading ? (
+            <>
+              <VStack space={4} p={4} mb={5}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  {[1, 2, 3].map((index) => (
+                    <Skeleton
+                      key={index}
+                      startColor="gray.200"
+                      endColor="gray.100"
+                      height={150}
+                      width="100%"
+                      borderRadius={12}
+                      mb={4}
+                    />
+                  ))}
+                </ScrollView>
+              </VStack>
+            </>
+          ) : (
+            <>
+              <VStack space={5}>
+                {data?.getAllCpeEvent
+                  ?.filter((item) => item.isActive === true)
+                  .filter((item) => item.isForStudent === false)
+                  .filter((item) =>
+                    moment().isBefore(
+                      moment(item.date2).startOf("D").add(1, "d")
+                    )
+                  )
+                  .sort((a, b) => {
+                    return (
+                      moment(a.date1).toDate().getTime() -
+                      moment(b.date1).toDate().getTime()
+                    );
+                  })
+                  .map((item) => {
+                    return (
+                      <UpcomingCard
+                        key={item._id}
+                        eventId={item._id}
+                        name={item.name}
+                        startdatetime={moment(item.date1).format("DD-MM-YYYY")}
+                        enddatetime={moment(item.date2).format("DD-MM-YYYY")}
+                      />
+                    );
+                  })}
+              </VStack>
+            </>
+          )}
         </ScrollView>
       </VStack>
     </>

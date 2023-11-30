@@ -69,7 +69,8 @@ const ParticipantsCard: React.FC<{
   email?: string;
   mo_number?: string;
   skills?: string[];
-}> = ({ name, position, gender, email, mo_number, skills }) => {
+  keey: string;
+}> = ({ name, position, gender, email, mo_number, skills, keey }) => {
   // console.log();mo_number
 
   const [showModal, setShowModal] = useState(false);
@@ -88,6 +89,7 @@ const ParticipantsCard: React.FC<{
           borderRadius={15}
           w={"45%"}
           p={1}
+          key={keey}
         >
           <Image
             w={"10"}
@@ -170,6 +172,7 @@ const ParticipantsCard: React.FC<{
           borderRadius={15}
           w={"45%"}
           p={1}
+          key={keey}
         >
           <Image
             w={"10"}
@@ -246,6 +249,7 @@ const ParticipantsCard: React.FC<{
           borderRadius={15}
           w={"45%"}
           p={1}
+          key={keey}
         >
           <Image
             w={"10"}
@@ -342,9 +346,9 @@ const Memberattendancelist = () => {
                 <Spinner
                   accessibilityLabel="Loading participants"
                   size="lg"
-                  color="primary.500"
+                  color="#0f045d"
                 />
-                <Text color="primary.500" fontSize="lg" fontWeight="bold">
+                <Text color="#0f045d" fontSize="lg" fontWeight="bold">
                   Loading
                 </Text>
               </HStack>
@@ -363,7 +367,7 @@ const Memberattendancelist = () => {
                   return (
                     <>
                       <ParticipantsCard
-                        key={item._id + Math.random()}
+                        keey={item._id}
                         name={
                           item.firstName +
                           " " +

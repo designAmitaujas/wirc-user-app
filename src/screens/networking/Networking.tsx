@@ -32,7 +32,7 @@ import {
   IGetMyList,
   useGetAllSkillsQuery,
   useGetFilterdSkillMemberMutation,
-  useGetTodayCpeEventQuery,
+  useGetMyAttendedEventQuery,
 } from "../../gql/graphql";
 
 interface IInputForm {
@@ -102,8 +102,9 @@ const ParticipantsCard: React.FC<{
   gender: string;
   email: string;
   mo_number: string;
+  keey: number;
   skills: string[];
-}> = ({ name, position, gender, email, mo_number, skills }) => {
+}> = ({ name, position, gender, email, mo_number, skills, keey }) => {
   // console.log();mo_number
 
   const [showModal, setShowModal] = useState(false);
@@ -122,6 +123,7 @@ const ParticipantsCard: React.FC<{
           borderRadius={15}
           w={"45%"}
           p={1}
+          key={keey}
         >
           <Image
             w={"10"}
@@ -226,6 +228,7 @@ const ParticipantsCard: React.FC<{
           borderRadius={15}
           w={"45%"}
           p={1}
+          key={keey}
         >
           <Image
             w={"10"}
@@ -324,6 +327,7 @@ const ParticipantsCard: React.FC<{
           borderRadius={15}
           w={"45%"}
           p={1}
+          key={keey}
         >
           <Image
             w={"10"}
@@ -426,7 +430,7 @@ const NetworkingScreen = () => {
   const [key, setKey] = useState(Math.random());
 
   const { data: getAllskill, loading: l1 } = useGetAllSkillsQuery();
-  const { data: getAllEvent, loading: l2 } = useGetTodayCpeEventQuery();
+  const { data: getAllEvent, loading: l2 } = useGetMyAttendedEventQuery();
 
   const toast = useToast();
   const [filter] = useGetFilterdSkillMemberMutation();
@@ -477,10 +481,26 @@ const NetworkingScreen = () => {
       </HStack>
     </>;
   }
-  if (!getAllskill?.getAllSkills || !getAllEvent?.getTodayCpeEvent) {
+  if (!getAllskill?.getAllSkills || !getAllEvent?.getMyAttendedEvent) {
     return (
       <>
-        <Spinner color="blue.500" />
+        <RestHeader />
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
       </>
     );
   }
@@ -551,9 +571,10 @@ const NetworkingScreen = () => {
                       isRequired={true}
                       isInvalid={!!touched.event && !!errors.event}
                       label={"Select Event"}
-                      options={getAllEvent.getTodayCpeEvent
-                        .filter((item) => item.isActive === true)
-                        .map((item) => ({ label: item.name, value: item._id }))}
+                      options={getAllEvent.getMyAttendedEvent.map((item) => ({
+                        label: item.cpeEvent?.name || "",
+                        value: item.cpeEvent?._id || "",
+                      }))}
                       name="event"
                       setFieldValue={setFieldValue}
                       initValue={values.event}
@@ -651,7 +672,7 @@ const NetworkingScreen = () => {
                 <>
                   <Box h={64} w={64} alignSelf={"center"} mt={12}>
                     <LottieView
-                      source={require("../../../assets/participants-loader/76352-people-brainstorming-and-get-feedback.json")}
+                      source={require("../../../assets/Animation_1701238770915.json")}
                       autoPlay
                       loop
                     />
@@ -672,6 +693,7 @@ const NetworkingScreen = () => {
                         <>
                           <ParticipantsCard
                             key={key}
+                            keey={key}
                             gender={item.gender}
                             name={item.name}
                             email={item.email}

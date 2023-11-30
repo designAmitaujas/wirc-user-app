@@ -255,9 +255,9 @@ export const Seminar = () => {
               <Spinner
                 accessibilityLabel="Loading posts"
                 size="lg"
-                color="primary.500"
+                color="#0f045d"
               />
-              <Heading color="primary.500" fontSize="lg" fontWeight="bold">
+              <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
                 Loading
               </Heading>
             </HStack>

@@ -237,9 +237,9 @@ const SkillSection = () => {
             <Spinner
               accessibilityLabel="Loading participants"
               size="lg"
-              color="primary.500"
+              color="#0f045d"
             />
-            <Text color="primary.500" fontSize="lg" fontWeight="bold">
+            <Text color="#0f045d" fontSize="lg" fontWeight="bold">
               Loading
             </Text>
           </HStack>
@@ -283,7 +283,12 @@ const SkillSection = () => {
                 return (
                   <>
                     {item && (
-                      <Text fontSize="lg" fontWeight="bold" width="65%">
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        width="65%"
+                        key={key}
+                      >
                         {index + 1} {item}
                       </Text>
                     )}

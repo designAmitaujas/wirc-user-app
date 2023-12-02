@@ -535,7 +535,13 @@ const EventRegistration = () => {
               id: resposne.data?.genEventPaymnet.data?.EventHistoryID || "",
             });
             show({
-              title: _.capitalize("your payment done successfully"),
+              render: () => {
+                return (
+                  <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
+                    Your registration and Payment done successfully
+                  </Box>
+                );
+              },
               placement: "top",
             });
           })
@@ -545,14 +551,26 @@ const EventRegistration = () => {
               id: resposne.data?.genEventPaymnet.data?.EventHistoryID || "",
             });
             show({
-              title: _.capitalize("trouble processing your payment "),
+              render: () => {
+                return (
+                  <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
+                    trouble processing your payment
+                  </Box>
+                );
+              },
               placement: "top",
             });
           });
       }
     } else {
       show({
-        title: _.capitalize("you are out of registration capacity."),
+        render: () => {
+          return (
+            <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
+              you are out of registration capacity.
+            </Box>
+          );
+        },
         placement: "top",
       });
     }

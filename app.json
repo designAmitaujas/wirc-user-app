@@ -2,7 +2,7 @@
   "expo": {
     "name": "WIRC Connect",
     "slug": "WIRC Connect",
-    "version": "1.8",
+    "version": "1.9",
     "orientation": "portrait",
     "icon": "./assets/wirclogo.png",
     "userInterfaceStyle": "light",
@@ -15,11 +15,12 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Your location is needed for XYZ"
+        "NSLocationWhenInUseUsageDescription": "We need your location to scan QR codes for attendance tracking.",
+        "NSCameraUsageDescription": "We need access to your camera to scan QR codes for attendance tracking."
       }
     },
     "android": {
-      "versionCode": 1008,
+      "versionCode": 1009,
       "adaptiveIcon": {
         "foregroundImage": "./assets/wirclogo.png",
         "backgroundColor": "#ffffff"

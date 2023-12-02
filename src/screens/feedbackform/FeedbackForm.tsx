@@ -550,6 +550,7 @@ const FeedbackForm = () => {
                 .map((item, index) => {
                   return (
                     <RenderFeedbackTopics
+                      //@ts-ignore
                       eventTopic={item}
                       key={item._id}
                       index={index}

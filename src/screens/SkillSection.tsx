@@ -15,8 +15,11 @@ import {
   useToast,
 } from "native-base";
 import { useEffect, useState } from "react";
+import { RefreshControl, ScrollView } from "react-native";
+
 import { useInterval } from "usehooks-ts";
 import {
+  Skills,
   useCreateOrUpdateMemberSkillMutation,
   useGetAllSkillsQuery,
   useGetMySkillListLazyQuery,
@@ -173,12 +176,24 @@ const SkillSection = () => {
 
         if (response.data?.createOrUpdateMemberSkill.success === true) {
           show({
-            title: _.capitalize("you skills is updated successfully"),
+            render: () => {
+              return (
+                <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
+                  Your skills updated successfully
+                </Box>
+              );
+            },
             placement: "top",
           });
         } else {
           show({
-            title: _.capitalize("trouble updating skills"),
+            render: () => {
+              return (
+                <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
+                  trouble updating skills
+                </Box>
+              );
+            },
             placement: "top",
           });
         }
@@ -200,10 +215,12 @@ const SkillSection = () => {
     setRefreshing(true);
 
     try {
-      await refetch(); // Refetch the data
+      const result = await refetch(); // Refetch the data
+      const skillsArray: Skills[] = result.data?.getAllSkills || [];
+      const skillNames: string[] = skillsArray.map((skill) => skill.name);
+      setDataArr(skillNames);
       setRefreshing(false);
     } catch (error) {
-      // Handle any errors that may occur during refetch
       console.error("Error while refetching data:", error);
       setRefreshing(false);
     }
@@ -219,86 +236,114 @@ const SkillSection = () => {
     if (!refreshing) {
       newRefetch();
     }
-  }, 9 * 1000);
+  }, 10 * 1000);
 
-  if (!data?.getAllSkills) return <></>;
+  if (!data?.getAllSkills)
+    return (
+      <>
+        <RestHeader />
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
 
   return (
     <>
-      <View flex={1} alignItems="center" bg="#FFF">
-        <RestHeader />
-        {l1 || loading ? (
-          <HStack
-            flex={1}
-            alignSelf={"center"}
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Spinner
-              accessibilityLabel="Loading participants"
-              size="lg"
-              color="#0f045d"
-            />
-            <Text color="#0f045d" fontSize="lg" fontWeight="bold">
-              Loading
-            </Text>
-          </HStack>
-        ) : (
-          <>
-            <Select
-              multiSelect={true}
-              value={showValue}
-              selectedIndex={multiSelectedIndex}
-              // @ts-ignore
-              onSelect={(index: IndexPath[]) => {
-                console.log(index);
-                setMultiSelectedIndex(index);
-              }}
-              style={{ width: "78%", marginTop: 24 }}
+      <ScrollView
+        style={{ backgroundColor: "#FFF" }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={newRefetch} />
+        }
+      >
+        <View flex={1} alignItems="center" bg="#FFF">
+          <RestHeader />
+          {l1 || loading ? (
+            <HStack
+              flex={1}
+              alignSelf={"center"}
+              justifyContent="center"
+              alignItems="center"
             >
-              {dataArr.map((item) => {
-                return <SelectItem title={item} key={key} />;
-              })}
-            </Select>
-
-            <Button
-              w="50%"
-              mt="10"
-              onPress={handleUpdate}
-              backgroundColor="#0f045d"
-            >
-              Update
-            </Button>
-            <Text mt="12" fontSize="lg" fontWeight="bold">
-              Your Selected Skills
-            </Text>
-            <Box h={"32"} w={"48"}>
-              <LottieView
-                autoPlay
-                source={require("../../assets/animation_lnof4dix.json")}
+              <Spinner
+                accessibilityLabel="Loading participants"
+                size="lg"
+                color="#0f045d"
               />
-            </Box>
-            <VStack mt="10">
-              {showValue.split(",").map((item, index) => {
-                return (
-                  <>
-                    {item && (
-                      <Text
-                        fontSize="lg"
-                        fontWeight="bold"
-                        width="65%"
-                        key={key}
-                      >
-                        {index + 1} {item}
-                      </Text>
-                    )}
-                  </>
-                );
-              })}
-            </VStack>
-          </>
-        )}
-      </View>
+              <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+                Loading
+              </Text>
+            </HStack>
+          ) : (
+            <>
+              <Select
+                multiSelect={true}
+                value={showValue}
+                selectedIndex={multiSelectedIndex}
+                // @ts-ignore
+                onSelect={(index: IndexPath[]) => {
+                  console.log(index);
+                  setMultiSelectedIndex(index);
+                }}
+                style={{ width: "78%", marginTop: 24 }}
+              >
+                {dataArr.map((item) => {
+                  return <SelectItem title={item} key={key} />;
+                })}
+              </Select>
+
+              <Button
+                w="50%"
+                mt="10"
+                onPress={handleUpdate}
+                backgroundColor="#0f045d"
+              >
+                Update
+              </Button>
+              <Text mt="12" fontSize="lg" fontWeight="bold">
+                Your Selected Skills
+              </Text>
+              <Box h={"32"} w={"48"}>
+                <LottieView
+                  autoPlay
+                  source={require("../../assets/animation_lnof4dix.json")}
+                />
+              </Box>
+              <VStack mt="10">
+                {showValue.split(",").map((item, index) => {
+                  return (
+                    <>
+                      {item && (
+                        <Text
+                          fontSize="lg"
+                          fontWeight="bold"
+                          width="65%"
+                          key={key}
+                        >
+                          {index + 1} {item}
+                        </Text>
+                      )}
+                    </>
+                  );
+                })}
+              </VStack>
+            </>
+          )}
+        </View>
+      </ScrollView>
     </>
   );
 };

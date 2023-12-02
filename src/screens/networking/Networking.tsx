@@ -455,7 +455,7 @@ const NetworkingScreen = () => {
       setParticipants(response.data.getFilterdSkillMember);
       setKey(Math.random());
     } else {
-      toast.show({ title: _.capitalize(" error") });
+      toast.show({ title: _.capitalize(" error"), placement: "top" });
     }
     setLoadingParticipants(false);
     actions.setSubmitting(false);

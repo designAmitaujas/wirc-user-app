@@ -3,15 +3,17 @@ import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
 import {
   Avatar,
+  Box,
   Button,
   HStack,
   ScrollView,
+  Spinner,
   Text,
   VStack,
   View,
   useToast,
 } from "native-base";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import { CustomInput, CustomSelect } from "../../components/CustomForm";
@@ -145,8 +147,6 @@ const RestHeader = () => {
 };
 
 const ProfileScreen = () => {
-  const [key, setKey] = React.useState(Math.random());
-
   const [initValue, setInitValue] =
     useState<ICreateMemberRegistration>(initialvalues);
 
@@ -227,12 +227,27 @@ const ProfileScreen = () => {
     });
 
     if (response.data?.updateMyProfile.success === true) {
-      toast.show({ title: "Profile data updated successfully" });
+      toast.show({
+        render: () => {
+          return (
+            <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
+              Profile Updated Successfully
+            </Box>
+          );
+        },
+        placement: "top",
+      });
     } else {
       toast.show({
-        title:
-          response.data?.updateMyProfile.msg ||
-          "Something went wrong on server",
+        render: () => {
+          return (
+            <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
+              {response.data?.updateMyProfile.msg ||
+                "Something went wrong on server"}
+            </Box>
+          );
+        },
+        placement: "top",
       });
     }
 
@@ -247,7 +262,27 @@ const ProfileScreen = () => {
     !state?.getAllState ||
     !gender?.getAllGender
   ) {
-    return <></>;
+    return (
+      <>
+        <RestHeader />
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
   }
 
   return (

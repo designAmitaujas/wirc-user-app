@@ -10,7 +10,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 import * as SplashScreen from "expo-splash-screen";
-import { NativeBaseProvider, extendTheme } from "native-base";
+import { NativeBaseProvider, StatusBar, extendTheme } from "native-base";
 import { FC, ReactNode } from "react";
 import { NoInternet } from "./AppLoader";
 
@@ -75,6 +75,7 @@ const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
       <>
         <NativeBaseProvider theme={theme}>
           <NavigationContainer>
+            <StatusBar backgroundColor={theme.colors.black[600]} />
             {isConnected ? children : <NoInternet />}
           </NavigationContainer>
         </NativeBaseProvider>

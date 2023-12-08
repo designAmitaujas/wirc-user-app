@@ -1,36 +1,31 @@
-import { Entypo, FontAwesome, Ionicons, Zocial } from "@expo/vector-icons";
+import { Entypo, FontAwesome, FontAwesome5, Zocial } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import moment from "moment";
 
+import _ from "lodash";
 import {
   Box,
   Button,
   HStack,
   Heading,
-  Image,
   ScrollView,
-  Skeleton,
   Spinner,
   Text,
   VStack,
 } from "native-base";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { useInterval } from "usehooks-ts";
 import {
   useGetAllCpeEventQuery,
   useGetMyAttendedEventQuery,
-} from "../gql/graphql";
+  useGetMyMobileEventListQuery,
+} from "../../gql/graphql";
 
-const logo = require("../../assets/wirclogo.png");
+const logo = require("../../../assets/wirclogo.png");
 
 const Home = () => {
-  const { navigate } = useNavigation();
-
-  const networking = () => {
-    // @ts-ignore
-    navigate("Networking");
-  };
+  const { navigate, goBack } = useNavigation();
 
   const handleSkill = () => {
     // @ts-ignore
@@ -49,13 +44,9 @@ const Home = () => {
           justifyContent={"center"}
         >
           <HStack mx={8} justifyContent={"space-between"} alignItems={"center"}>
-            <Image
-              source={logo}
-              alt="logo"
-              resizeMode="contain"
-              h={12}
-              w={12}
-            />
+            <TouchableOpacity onPress={goBack}>
+              <FontAwesome5 name="arrow-left" size={22} color="white" />
+            </TouchableOpacity>
             <Text
               color="white"
               // ml={16}
@@ -64,12 +55,9 @@ const Home = () => {
               // mb={1}
               // w={"40%"}
             >
-              WIRC
+              Event Home
             </Text>
             <HStack display="flex" space={10}>
-              <TouchableOpacity onPress={networking}>
-                <Ionicons name="earth" size={24} color="white" />
-              </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleSkill}
                 style={{ justifyContent: "center", display: "flex" }}
@@ -80,11 +68,10 @@ const Home = () => {
           </HStack>
         </Box>
         <ScrollView pt={5} pb={5}>
-          {/* Seminar */}
-          <Seminar />
+          <RegisteredEvent />
 
-          {/* Upcoming Event */}
           <UpcomingEvent />
+          <Seminar />
         </ScrollView>
       </VStack>
     </>
@@ -108,6 +95,7 @@ const AttendedCard: React.FC<{
     // @ts-ignore
     navigate("MemberAttendance", { id });
   };
+
   return (
     <>
       <VStack
@@ -284,7 +272,10 @@ export const Seminar = () => {
                     return (
                       <AttendedCard
                         id={item.cpeEvent?._id || ""}
-                        key={item._id}
+                        key={`${item._id}_${item.cpeEvent?._id.replace(
+                          /\s+/g,
+                          "_"
+                        )}`}
                         name={item.cpeEvent?.name || ""}
                         duration={item.cpeEvent?.cpehrs || ""}
                         startdatetime={
@@ -313,55 +304,67 @@ const UpcomingCard: React.FC<{
   startdatetime: string;
   enddatetime: string;
   eventId: string;
-}> = ({ name, startdatetime, enddatetime, eventId }) => {
+  start: string;
+  endtime: string;
+}> = ({ name, startdatetime, enddatetime, eventId, start, endtime }) => {
   const { navigate } = useNavigation();
 
-  const RegisteredEvents = () => {
+  const handleEvents = () => {
     //@ts-ignore
     navigate("RegisteredEvents", { eventId });
   };
-
   return (
     <>
       <VStack
         space={2}
         p={2}
-        shadow={3}
+        w={"72"}
         borderWidth={0.5}
-        borderColor={"amber.600"}
-        style={{ shadowColor: "#FFD54F" }}
+        borderColor={"#0f045d"}
+        style={{ shadowColor: "blue" }}
         borderRadius={"15"}
         bg={"white"}
       >
         <Text
-          textAlign={"center"}
           fontWeight={"medium"}
           fontSize={"lg"}
-          color={"#0f045d"}
+          color={"amber.600"}
           alignSelf={"center"}
+          textAlign={"center"}
         >
           {name}
         </Text>
 
         <HStack w={"100%"}>
-          <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"} ml={3}>
-            Date & Time
+          <Text color={"gray.500"} fontWeight={"semibold"} w={"15%"}>
+            Date
           </Text>
-          <Text ml={2} mr={2} w={"5%"}>
-            :
-          </Text>
+          <Text w={"5%"}>:</Text>
           <VStack>
             <HStack space={3}>
               <Text>{startdatetime}</Text>
               <Text>to</Text>
+              <Text>{enddatetime}</Text>
             </HStack>
-            <Text>{enddatetime}</Text>
+          </VStack>
+        </HStack>
+        <HStack w={"100%"}>
+          <Text color={"gray.500"} fontWeight={"semibold"} w={"15%"}>
+            Time
+          </Text>
+          <Text w={"5%"}>:</Text>
+          <VStack>
+            <HStack space={3}>
+              <Text>{start}</Text>
+              <Text>to</Text>
+              <Text>{endtime}</Text>
+            </HStack>
           </VStack>
         </HStack>
 
         <Button
           bg={"#0f045d"}
-          onPress={RegisteredEvents}
+          onPress={handleEvents}
           size={"sm"}
           borderRadius={12}
           alignSelf={"center"}
@@ -391,28 +394,35 @@ export const UpcomingEvent = () => {
             Upcoming CPE Events (Members)
           </Text>
         </HStack>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {loading ? (
-            <>
-              <VStack space={4} p={4} mb={5}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  {[1, 2, 3].map((index) => (
-                    <Skeleton
-                      key={index}
-                      startColor="gray.200"
-                      endColor="gray.100"
-                      height={150}
-                      width="100%"
-                      borderRadius={12}
-                      mb={4}
-                    />
-                  ))}
-                </ScrollView>
-              </VStack>
-            </>
-          ) : (
-            <>
-              <VStack space={5}>
+
+        {loading ? (
+          <>
+            <HStack
+              flex={1}
+              justifyContent="center"
+              space="2"
+              alignItems="center"
+            >
+              <Spinner
+                accessibilityLabel="Loading posts"
+                size="lg"
+                color="#0f045d"
+              />
+              <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
+                Loading
+              </Heading>
+            </HStack>
+          </>
+        ) : (
+          <>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              // refreshControl={
+              //   <RefreshControl refreshing={refreshing} onRefresh={newRefetch} />
+              // }
+            >
+              <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
                 {data?.getAllCpeEvent
                   ?.filter((item) => item.isActive === true)
                   .filter((item) => item.isForStudent === false)
@@ -423,25 +433,205 @@ export const UpcomingEvent = () => {
                   )
                   .sort((a, b) => {
                     return (
-                      moment(a.date1).toDate().getTime() -
-                      moment(b.date1).toDate().getTime()
+                      _.toNumber(moment(a.date1).toDate()) -
+                      _.toNumber(moment(b.date1).toDate())
                     );
                   })
                   .map((item) => {
                     return (
                       <UpcomingCard
-                        key={item._id}
+                        key={`${item._id}_${item.name.replace(/\s+/g, "_")}`}
+                        endtime={item.time2}
+                        start={item.time1}
                         eventId={item._id}
                         name={item.name}
-                        startdatetime={moment(item.date1).format("DD-MM-YYYY")}
-                        enddatetime={moment(item.date2).format("DD-MM-YYYY")}
+                        startdatetime={moment(item.date1).format("DD-MMM-YYYY")}
+                        enddatetime={moment(item.date2).format("DD-MMM-YYYY")}
                       />
                     );
                   })}
-              </VStack>
-            </>
-          )}
-        </ScrollView>
+              </HStack>
+            </ScrollView>
+          </>
+        )}
+      </VStack>
+    </>
+  );
+};
+
+const RegisterdCard: React.FC<{
+  name: string;
+  startdatetime: string;
+  enddatetime: string;
+  eventId: string;
+}> = ({ name, startdatetime, enddatetime, eventId }) => {
+  const [showModal, setShowModal] = useState(false);
+  const { navigate } = useNavigation();
+
+  const handleEvents = () => {
+    //@ts-ignore
+    navigate("EventsDetails", { eventId });
+
+    setShowModal(false);
+  };
+
+  const handleSpeaker = () => {
+    //@ts-ignore
+    navigate("Eventspeaker", { eventId });
+    setShowModal(false);
+  };
+
+  const handleQrscan = () => {
+    //@ts-ignore
+    navigate("QRcode", { eventId });
+    setShowModal(false);
+  };
+
+  const networking = () => {
+    // @ts-ignore
+    navigate("Networking", { eventId });
+    setShowModal(false);
+  };
+
+  const handlelist = () => {
+    // @ts-ignore
+    navigate("MemberAttendance", { eventId });
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      {/* <Center>
+        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+          <Modal.Content maxWidth="400px">
+            <Modal.CloseButton />
+            <Modal.Header>Contact Us</Modal.Header>
+            <Modal.Body>
+            
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
+      </Center> */}
+
+      <VStack
+        space={2}
+        p={2}
+        w={"72"}
+        borderWidth={0.5}
+        borderColor={"#0f045d"}
+        style={{ shadowColor: "blue" }}
+        borderRadius={"15"}
+        bg={"white"}
+      >
+        <Text
+          fontWeight={"medium"}
+          fontSize={"lg"}
+          color={"amber.600"}
+          alignSelf={"center"}
+          textAlign={"center"}
+        >
+          {name}
+        </Text>
+
+        <HStack w={"100%"}>
+          <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
+            Date & Time
+          </Text>
+          <Text w={"5%"}>:</Text>
+          <VStack>
+            <HStack space={3}>
+              <Text>{startdatetime}</Text>
+              <Text>to</Text>
+            </HStack>
+            <Text>{enddatetime}</Text>
+          </VStack>
+        </HStack>
+        <HStack justifyContent="center" space="3" mt="4">
+          <Button
+            bg={"#0f045d"}
+            onPress={handleEvents}
+            size={"sm"}
+            borderRadius={12}
+          >
+            View Details
+          </Button>
+          <Button
+            bg={"#0f045d"}
+            size={"sm"}
+            borderRadius={12}
+            onPress={handleQrscan}
+          >
+            Attendance Scan
+          </Button>
+        </HStack>
+      </VStack>
+    </>
+  );
+};
+
+export const RegisteredEvent = () => {
+  const { data, refetch, loading } = useGetMyMobileEventListQuery();
+
+  return (
+    <>
+      <VStack space={4} p={4} mb={5}>
+        <HStack alignItems={"center"} space={3}>
+          <Text fontWeight={"semibold"} fontSize={"xl"} color={"gray.400"}>
+            Registered CPE Events (Members)
+          </Text>
+        </HStack>
+
+        {loading ? (
+          <>
+            <HStack
+              flex={1}
+              justifyContent="center"
+              space="2"
+              alignItems="center"
+            >
+              <Spinner
+                accessibilityLabel="Loading posts"
+                size="lg"
+                color="#0f045d"
+              />
+              <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
+                Loading
+              </Heading>
+            </HStack>
+          </>
+        ) : (
+          <>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
+                {data?.getMyMobileEventList
+
+                  .sort((a, b) => {
+                    return (
+                      _.toNumber(moment(a.startDate).toDate()) -
+                      _.toNumber(moment(b.startDate).toDate())
+                    );
+                  })
+                  .map((item) => {
+                    const startDate = moment(item.startDate, "DD-MM-YYYY");
+                    const endDate = moment(item.endDate, "DD-MM-YYYY");
+
+                    return (
+                      <RegisterdCard
+                        key={`${item.eventId}_${item.eventId.replace(
+                          /\s+/g,
+                          "_"
+                        )}`}
+                        eventId={item.eventId}
+                        name={item.eventName}
+                        startdatetime={startDate.format("DD-MMM-YYYY")}
+                        enddatetime={endDate.format("DD-MMM-YYYY")}
+                      />
+                    );
+                  })}
+              </HStack>
+            </ScrollView>
+          </>
+        )}
       </VStack>
     </>
   );

@@ -116,6 +116,92 @@ query GetGenderById($options: IGetByID!) {
     isActive
   }
 }
+query GetMyMobileEventList {
+  getMyMobileEventList {
+    registrationDate
+    eventName
+    startDate
+    endDate
+    eventAddress
+    eventId
+  }
+}
+
+query GetEventTopicById($options: IGetByID!) {
+  getEventTopicById(options: $options) {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      lati
+      longi
+
+      capacity
+      cutoffDate
+      cms
+      externalRegistration
+      price
+
+      igst
+      cgst
+      sgst
+      isRegistrationOn
+      isForStudent
+      isArchived
+
+      isActive
+    }
+    topic
+    faculty
+    isActive
+  }
+}
+
+query GetAllEventTopic {
+  getAllEventTopic {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      lati
+      longi
+
+      capacity
+      cutoffDate
+      cms
+      externalRegistration
+      price
+
+      igst
+      cgst
+      sgst
+      isRegistrationOn
+      isForStudent
+      isArchived
+
+      isActive
+    }
+    topic
+    faculty
+    isActive
+  }
+}
 
 query GetMemberAttendanceList($eventId: String!) {
   getMemberAttendanceList(eventId: $eventId) {
@@ -413,39 +499,6 @@ query GetMySkillList($options: IGetByID!) {
       name
       isActive
     }
-    isActive
-  }
-}
-
-query GetAllEventTopic {
-  getAllEventTopic {
-    _id
-    cpeEvent {
-      _id
-      name
-      img
-      date1
-      lati
-      longi
-      cpehrs
-      date2
-      time1
-      time2
-      location
-      flyer
-      capacity
-      cutoffDate
-      cms
-      price
-      igst
-      cgst
-      sgst
-      isForStudent
-      isArchived
-      isActive
-    }
-    topic
-    faculty
     isActive
   }
 }

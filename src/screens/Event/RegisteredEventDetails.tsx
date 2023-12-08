@@ -18,11 +18,11 @@ import React, { useEffect, useState } from "react";
 import { Platform, ScrollView, TouchableOpacity } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import RenderHtml from "react-native-render-html";
-import { downloadPath, windowWidth } from "../constant";
+import { downloadPath, windowWidth } from "../../constant";
 import {
   GetCpeEventByIdQuery,
   useGetCpeEventByIdLazyQuery,
-} from "../gql/graphql";
+} from "../../gql/graphql";
 
 const UpcomingCard: React.FC<{
   name: string;
@@ -178,7 +178,7 @@ const UpcomingCard: React.FC<{
   );
 };
 
-const UpcomingEvents = () => {
+const RegisterdEventDetails = () => {
   const { goBack, navigate } = useNavigation();
   const { params } = useRoute();
 
@@ -204,10 +204,22 @@ const UpcomingEvents = () => {
     }
   }, [params]);
 
-  const handleRedirect = () => {
+  const handleSpeaker = () => {
+    const { eventId } = params as { eventId?: string };
+    //@ts-ignore
+    navigate("Eventspeaker", { eventId });
+  };
+
+  const networking = () => {
     const { eventId } = params as { eventId?: string };
     // @ts-ignore
-    navigate("EventRegistration", { eventId });
+    navigate("Networking", { eventId });
+  };
+
+  const handlelist = () => {
+    const { eventId } = params as { eventId?: string };
+    // @ts-ignore
+    navigate("MemberAttendance", { eventId });
   };
 
   if (loading || !eventInformation)
@@ -286,7 +298,27 @@ const UpcomingEvents = () => {
             />
           )}
 
-          <Button
+          <VStack
+            space={4}
+            flex={1}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Button width="70%" onPress={handlelist}>
+              Participants List
+            </Button>
+
+            <Button width="70%" onPress={handleSpeaker}>
+              Event Speaker
+            </Button>
+
+            <Button width="70%" onPress={networking}>
+              Networking
+              {/* <Ionicons name="earth" size={24} color="white" /> */}
+            </Button>
+          </VStack>
+
+          {/* <Button
             onPress={handleRedirect}
             bg={"#0f045d"}
             mt={5}
@@ -294,11 +326,11 @@ const UpcomingEvents = () => {
             mb="30"
           >
             Registration
-          </Button>
+          </Button> */}
         </ScrollView>
       </View>
     </>
   );
 };
 
-export default UpcomingEvents;
+export default RegisterdEventDetails;

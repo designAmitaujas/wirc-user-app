@@ -6,6 +6,7 @@ import {
   Box,
   HStack,
   ScrollView,
+  Spinner,
   Text,
   VStack,
   View,
@@ -34,6 +35,7 @@ import {
   useGetCpeEventByIdLazyQuery,
   useGetCpeEventRangeByCpeIdQuery,
   useGetMemberInfoByMembershipNumberMutation,
+  useMyProfileInformationQuery,
 } from "../gql/graphql";
 
 const initalValue = {
@@ -116,67 +118,71 @@ const RenderForm: FC<{
 }) => {
   const [getData] = useGetMemberInfoByMembershipNumberMutation();
 
-  useEffect(() => {
-    (async () => {
-      if (values.membershipNumber) {
-        const response = await getData({
-          variables: { options: { id: values.membershipNumber } },
-        });
+  // useEffect(() => {
+  //   (async () => {
+  //     if (values.membershipNumber) {
+  //       const response = await getData({
+  //         variables: {
+  //           options: {
+  //             id: values.membershipNumber,
+  //           },
+  //         },
+  //       });
 
-        if (response.data?.getMemberInfoByMembershipNumber) {
-          setFieldValue(
-            "name",
-            response.data?.getMemberInfoByMembershipNumber?.name
-          );
+  //       if (response.data?.getMemberInfoByMembershipNumber) {
+  //         setFieldValue(
+  //           "name",
+  //           response.data?.getMemberInfoByMembershipNumber?.name
+  //         );
 
-          setFieldValue(
-            "organization",
-            response.data?.getMemberInfoByMembershipNumber?.organization
-          );
+  //         setFieldValue(
+  //           "organization",
+  //           response.data?.getMemberInfoByMembershipNumber?.organization
+  //         );
 
-          setFieldValue(
-            "email",
-            response.data?.getMemberInfoByMembershipNumber?.email
-          );
+  //         setFieldValue(
+  //           "email",
+  //           response.data?.getMemberInfoByMembershipNumber?.email
+  //         );
 
-          setFieldValue(
-            "contactNo",
-            response.data?.getMemberInfoByMembershipNumber?.contactInfo
-          );
+  //         setFieldValue(
+  //           "contactNo",
+  //           response.data?.getMemberInfoByMembershipNumber?.contactInfo
+  //         );
 
-          setFieldValue(
-            "gstNo",
-            response.data?.getMemberInfoByMembershipNumber?.gst
-          );
+  //         setFieldValue(
+  //           "gstNo",
+  //           response.data?.getMemberInfoByMembershipNumber?.gst
+  //         );
 
-          setFieldValue(
-            "address",
-            response.data?.getMemberInfoByMembershipNumber?.address
-          );
+  //         setFieldValue(
+  //           "address",
+  //           response.data?.getMemberInfoByMembershipNumber?.address
+  //         );
 
-          setFieldValue(
-            "country",
-            response.data?.getMemberInfoByMembershipNumber?.country
-          );
+  //         setFieldValue(
+  //           "country",
+  //           response.data?.getMemberInfoByMembershipNumber?.country
+  //         );
 
-          setFieldValue(
-            "state",
-            response.data?.getMemberInfoByMembershipNumber?.state
-          );
+  //         setFieldValue(
+  //           "state",
+  //           response.data?.getMemberInfoByMembershipNumber?.state
+  //         );
 
-          setFieldValue(
-            "city",
-            response.data?.getMemberInfoByMembershipNumber?.city
-          );
+  //         setFieldValue(
+  //           "city",
+  //           response.data?.getMemberInfoByMembershipNumber?.city
+  //         );
 
-          setFieldValue(
-            "pincode",
-            response.data?.getMemberInfoByMembershipNumber?.pincode
-          );
-        }
-      }
-    })();
-  }, [values.membershipNumber]);
+  //         setFieldValue(
+  //           "pincode",
+  //           response.data?.getMemberInfoByMembershipNumber?.pincode
+  //         );
+  //       }
+  //     }
+  //   })();
+  // }, [values.membershipNumber]);
 
   return (
     <VStack alignSelf={"center"} mt={"5"} mb={"10"}>
@@ -448,7 +454,8 @@ const EventRegistration = () => {
   const { show } = useToast();
 
   const [getEventInformation] = useGetCpeEventByIdLazyQuery();
-
+  const { data: profile } = useMyProfileInformationQuery();
+  const [initValue, setInitValue] = useState(initalValue);
   const [generatePayment] = useGenEventPaymnetMutation();
 
   const { navigate } = useNavigation();
@@ -457,6 +464,38 @@ const EventRegistration = () => {
     // @ts-ignore
     variables: { options: { id: params?.eventId || "" } },
   });
+
+  useEffect(() => {
+    if (profile?.myProfileInformation) {
+      setInitValue({
+        membershipNumber: profile.myProfileInformation.membershipNo,
+        name:
+          profile.myProfileInformation.firstName +
+          " " +
+          profile?.myProfileInformation.middleName +
+          " " +
+          profile?.myProfileInformation.lastName,
+        organization: profile.myProfileInformation.tradeName,
+        email: profile.myProfileInformation.email,
+        contactNo: profile.myProfileInformation.phone,
+        gstNo: profile.myProfileInformation.gstNo,
+        address: profile.myProfileInformation.address1,
+        country: profile.myProfileInformation.country?._id || "",
+        state: profile.myProfileInformation.state?._id || "",
+        city: profile.myProfileInformation.city?._id || "",
+        pincode: profile.myProfileInformation.pinCode,
+        userType: "",
+        billingEmail: profile.myProfileInformation.email,
+        billingGst: profile.myProfileInformation.gstNo,
+        billingName:
+          profile.myProfileInformation.firstName +
+          " " +
+          profile?.myProfileInformation.middleName +
+          " " +
+          profile?.myProfileInformation.lastName,
+      });
+    }
+  }, [profile]);
 
   useEffect(() => {
     const { eventId } = params as { eventId?: string };
@@ -509,6 +548,7 @@ const EventRegistration = () => {
                 postCode: val.pincode,
                 rangeID: val.userType,
                 state: val.state,
+                birthdate: "",
                 type: "member",
               },
             ],
@@ -585,7 +625,26 @@ const EventRegistration = () => {
     !eventRenge?.getCpeEventRangeByCpeId ||
     !countryList?.getAllCountry
   ) {
-    return <></>;
+    return (
+      <>
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
   }
 
   return (
@@ -601,14 +660,23 @@ const EventRegistration = () => {
           <TouchableOpacity onPress={goBack}>
             <FontAwesome5 name="arrow-left" size={22} color="white" />
           </TouchableOpacity>
-          <Text color={"white"} fontSize={"xl"} fontWeight={"semibold"} ml={16}>
-            {eventInformation?.name}
+          <Text
+            w={"90%"}
+            fontWeight={"medium"}
+            fontSize={"lg"}
+            color={"#fff"}
+            alignSelf={"center"}
+            ml={4}
+          >
+            {eventInformation?.name.length || 0 > 25
+              ? eventInformation?.name.slice(0, 25) + "..."
+              : eventInformation?.name}
           </Text>
         </HStack>
       </Box>
       <ScrollView flex={1}>
         <Formik
-          initialValues={initalValue}
+          initialValues={initValue}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >

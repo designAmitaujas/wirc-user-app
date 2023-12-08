@@ -1,8 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import BottomTab from "./screens/BottomTab";
+import Home from "./screens/Event/EventHome";
+import EventSpeaker from "./screens/Event/EventSpeaker";
+import RegisterdEventDetails from "./screens/Event/RegisteredEventDetails";
 import EventRegistration from "./screens/EventRegistration";
 import Transactiondetail from "./screens/Payment/Transactiondetail";
+import QRScanner from "./screens/QrScanner";
 import SkillSection from "./screens/SkillSection";
 import UpcomingEvents from "./screens/UpcomingEvents";
 import Login from "./screens/auth/Login";
@@ -11,7 +15,6 @@ import FeedbackForm from "./screens/feedbackform/FeedbackForm";
 import Memberattendancelist from "./screens/networking/Memberattendancelist";
 import NetworkingScreen from "./screens/networking/Networking";
 import ProfileScreen from "./screens/profile/ProfileDetails";
-import Qrcode from "./screens/profile/Qrcode";
 import VisitingCard from "./screens/profile/VisitingCrad";
 import { useAppAuthState } from "./store";
 
@@ -30,11 +33,17 @@ const Routes = () => {
       {isAuth === true ? (
         <>
           <Stack.Screen name="BottomTab" component={BottomTab} />
+          <Stack.Screen name="EventHome" component={Home} />
           <Stack.Screen name="SkillSection" component={SkillSection} />
           <Stack.Screen name="EditProfile" component={ProfileScreen} />
           <Stack.Screen name="mobile" component={MobileLogin} />
-          <Stack.Screen name="QRcode" component={Qrcode} />
+          <Stack.Screen name="QRcode" component={QRScanner} />
+          <Stack.Screen name="Eventspeaker" component={EventSpeaker} />
           <Stack.Screen name="RegisteredEvents" component={UpcomingEvents} />
+          <Stack.Screen
+            name="EventsDetails"
+            component={RegisterdEventDetails}
+          />
           <Stack.Screen name="Feedback" component={FeedbackForm} />
           <Stack.Screen name="VisitingCard" component={VisitingCard} />
           <Stack.Screen name="Networking" component={NetworkingScreen} />

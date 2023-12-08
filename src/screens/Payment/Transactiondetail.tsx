@@ -1,64 +1,118 @@
-import { Feather } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
-import { Box, Button, HStack, Stack, Text, VStack, View } from "native-base";
+import {
+  Box,
+  Button,
+  HStack,
+  Icon,
+  Spinner,
+  Stack,
+  Text,
+  VStack,
+  View,
+} from "native-base";
 import { FC } from "react";
-import { TouchableOpacity } from "react-native";
 import { useGetPaymentReciptByIdQuery } from "../../gql/graphql";
-import { useAppAuthState } from "../../store";
 
+// const RestHeader = () => {
+//   // const { goBack } = useNavigation();
+//   const { removeAuth } = useAppAuthState();
+
+//   const { navigate } = useNavigation();
+
+//   const visitingcard = () => {
+//     // @ts-ignore
+//     navigate("VisitingCard");
+//   };
+
+//   const logout = async () => {
+//     removeAuth();
+//     await new Promise((r) => setTimeout(r, 2000));
+//     // @ts-ignore
+//     navigate("Login");
+//   };
+
+//   return (
+//     <HStack
+//       backgroundColor="#0f045d"
+//       borderBottomRadius={40}
+//       justifyContent={"space-between"}
+//       // py="3.5"
+//       h={16}
+//       px={7}
+//       alignItems="center"
+//       alignSelf={"center"}
+//       w={"100%"}
+//     >
+//       {/* <TouchableOpacity onPress={visitingcard}>
+//         <FontAwesome name="id-card" size={24} color="white" />
+//       </TouchableOpacity> */}
+//       <Text
+//         color="white"
+//         // ml={16}
+//         fontSize="22"
+//         fontWeight="bold"
+//         textAlign="center"
+//         // mb={1}
+//         // w={"40%"}
+//       >
+//         Payment Status
+//       </Text>
+//       <TouchableOpacity onPress={logout}>
+//         <Feather name="power" size={24} color="white" />
+//       </TouchableOpacity>
+//     </HStack>
+//   );
+// };
 const RestHeader = () => {
   // const { goBack } = useNavigation();
-  const { removeAuth } = useAppAuthState();
-
+  const { goBack } = useNavigation();
   const { navigate } = useNavigation();
 
-  const visitingcard = () => {
-    // @ts-ignore
-    navigate("VisitingCard");
-  };
-
-  const logout = async () => {
-    removeAuth();
-    await new Promise((r) => setTimeout(r, 2000));
-    // @ts-ignore
-    navigate("Login");
-  };
-
   return (
-    <HStack
-      backgroundColor="#0f045d"
-      borderBottomRadius={40}
-      justifyContent={"space-between"}
-      // py="3.5"
-      h={16}
-      px={7}
-      alignItems="center"
-      alignSelf={"center"}
-      w={"100%"}
-    >
-      {/* <TouchableOpacity onPress={visitingcard}>
-        <FontAwesome name="id-card" size={24} color="white" />
-      </TouchableOpacity> */}
-      <Text
-        color="white"
-        // ml={16}
-        fontSize="22"
-        fontWeight="bold"
-        // mb={1}
-        // w={"40%"}
+    <>
+      <HStack
+        backgroundColor="#0f045d"
+        borderBottomRadius={40}
+        // justifyContent={"space-between"}
+        py="3"
+        // h={16}
+        px={4}
+        alignItems="center"
+        alignSelf={"center"}
+        w={"100%"}
       >
-        Payment Status
-      </Text>
-      <TouchableOpacity onPress={logout}>
-        <Feather name="power" size={24} color="white" />
-      </TouchableOpacity>
-    </HStack>
+        <Button
+          bg="transparent"
+          colorScheme={"white"}
+          // w="14%"
+          onPress={goBack}
+          leftIcon={
+            <Icon
+              size="md"
+              as={<FontAwesome5 name="arrow-left" />}
+              color="white"
+            />
+          }
+        />
+        <Text
+          color="white"
+          ml={8}
+          fontSize="20"
+          fontWeight="bold"
+          mb={1}
+          // w={"40%"}
+        >
+          Payment Status
+        </Text>
+      </HStack>
+    </>
   );
 };
 
 const Success: FC<{ id: string }> = ({ id }) => {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
 
   // EventTransactionHistory
   const { data } = useGetPaymentReciptByIdQuery({
@@ -66,11 +120,32 @@ const Success: FC<{ id: string }> = ({ id }) => {
   });
 
   if (!data?.getPaymentReciptById) {
-    return <></>;
+    return (
+      <>
+        <RestHeader />
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
   }
 
   const handlegoback = () => {
-    goBack();
+    //@ts-ignore
+    navigate("EventHome");
   };
 
   return (
@@ -91,7 +166,6 @@ const Success: FC<{ id: string }> = ({ id }) => {
                 autoPlay
                 source={require("../../../assets/Animation - 1696582972947.json")}
               />
-              <Text>Success</Text>
             </>
           ) : (
             <>
@@ -100,7 +174,6 @@ const Success: FC<{ id: string }> = ({ id }) => {
                 autoPlay
                 source={require("../../../assets/Animation - 1696583921849.json")}
               />
-              <Text>Failure</Text>
             </>
           )}
           <Box width={"100%"} justifyContent={"center"} alignItems={"center"}>
@@ -131,28 +204,37 @@ const Success: FC<{ id: string }> = ({ id }) => {
               alignItems={"center"}
             >
               <HStack>
-                <Text width="40%" textAlign="justify" fontWeight="semibold">
+                <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                   Event Name
                 </Text>
-                <Text width="55%" textAlign="justify">
+                <Text w={"2%"} fontWeight={"bold"}>
+                  :
+                </Text>
+                <Text w={"62%"} fontWeight={"bold"}>
                   {data.getPaymentReciptById.cpeEvnet?.name}
                 </Text>
               </HStack>
 
               <HStack>
-                <Text width="40%" textAlign="justify" fontWeight="semibold">
+                <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                   Amount
                 </Text>
-                <Text width="55%" textAlign="justify">
-                  ₹ 50000
+                <Text w={"2%"} fontWeight={"bold"}>
+                  :
+                </Text>
+                <Text w={"65%"} fontWeight={"bold"}>
+                  ₹ {data.getPaymentReciptById.TXN_AMOUNT}
                 </Text>
               </HStack>
               <HStack>
-                <Text textAlign="justify" width="40%" fontWeight="semibold">
+                <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                   Transcation Id
                 </Text>
-                <Text width="55%" textAlign="justify">
-                  {data.getPaymentReciptById.CUST_ID}
+                <Text w={"2%"} fontWeight={"bold"}>
+                  :
+                </Text>
+                <Text w={"65%"} fontWeight={"bold"}>
+                  {data.getPaymentReciptById.customId}
                 </Text>
               </HStack>
 

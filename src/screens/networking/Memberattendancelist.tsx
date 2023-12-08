@@ -1,4 +1,4 @@
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
 } from "native-base";
 import React, { useState } from "react";
 
-import { Linking, TouchableOpacity } from "react-native";
+import { Linking } from "react-native";
 import { useGetMemberAttendanceListQuery } from "../../gql/graphql";
 
 const RestHeader = () => {
@@ -104,7 +104,7 @@ const ParticipantsCard: React.FC<{
           </Text>
 
           <Divider marginY={2} />
-          <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
+          {/* <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
             <TouchableOpacity onPress={phonecall}>
               <Ionicons name="call-outline" size={20} color="black" />
             </TouchableOpacity>
@@ -115,7 +115,7 @@ const ParticipantsCard: React.FC<{
                 color="black"
               />
             </TouchableOpacity>
-          </HStack>
+          </HStack> */}
           <Modal
             isOpen={showModal}
             onClose={() => setShowModal(false)}
@@ -187,7 +187,7 @@ const ParticipantsCard: React.FC<{
           </Text>
 
           <Divider marginY={2} />
-          <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
+          {/* <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
             <TouchableOpacity onPress={phonecall}>
               <Ionicons name="call-outline" size={20} color="black" />
             </TouchableOpacity>
@@ -198,7 +198,7 @@ const ParticipantsCard: React.FC<{
                 color="black"
               />
             </TouchableOpacity>
-          </HStack>
+          </HStack> */}
           <Modal
             isOpen={showModal}
             onClose={() => setShowModal(false)}
@@ -264,7 +264,7 @@ const ParticipantsCard: React.FC<{
           </Text>
 
           <Divider marginY={2} />
-          <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
+          {/* <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
             <TouchableOpacity onPress={phonecall}>
               <Ionicons name="call-outline" size={20} color="black" />
             </TouchableOpacity>
@@ -275,7 +275,7 @@ const ParticipantsCard: React.FC<{
                 color="black"
               />
             </TouchableOpacity>
-          </HStack>
+          </HStack> */}
           <Modal
             isOpen={showModal}
             onClose={() => setShowModal(false)}
@@ -327,7 +327,7 @@ const Memberattendancelist = () => {
   const { params } = useRoute();
   const { data: participants, loading } = useGetMemberAttendanceListQuery({
     //@ts-ignore
-    variables: { eventId: params?.id || "" },
+    variables: { eventId: params?.eventId || "" },
   });
   return (
     <View>

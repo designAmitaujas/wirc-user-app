@@ -1,4 +1,4 @@
-import { Entypo, FontAwesome, FontAwesome5, Zocial } from "@expo/vector-icons";
+import { Entypo, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import moment from "moment";
 
@@ -91,10 +91,6 @@ const AttendedCard: React.FC<{
     //@ts-ignore
     navigate("Feedback", { eventId: id });
   };
-  const handlelist = () => {
-    // @ts-ignore
-    navigate("MemberAttendance", { id });
-  };
 
   return (
     <>
@@ -157,16 +153,6 @@ const AttendedCard: React.FC<{
             }
           >
             Feedback
-          </Button>
-          <Button
-            bg={"#0f045d"}
-            size={"sm"}
-            borderRadius={12}
-            alignSelf={"center"}
-            onPress={handlelist}
-            leftIcon={<Zocial name="persona" size={24} color="white" />}
-          >
-            participation
           </Button>
         </HStack>
       </VStack>
@@ -475,27 +461,9 @@ const RegisterdCard: React.FC<{
     setShowModal(false);
   };
 
-  const handleSpeaker = () => {
-    //@ts-ignore
-    navigate("Eventspeaker", { eventId });
-    setShowModal(false);
-  };
-
   const handleQrscan = () => {
     //@ts-ignore
     navigate("QRcode", { eventId });
-    setShowModal(false);
-  };
-
-  const networking = () => {
-    // @ts-ignore
-    navigate("Networking", { eventId });
-    setShowModal(false);
-  };
-
-  const handlelist = () => {
-    // @ts-ignore
-    navigate("MemberAttendance", { eventId });
     setShowModal(false);
   };
 

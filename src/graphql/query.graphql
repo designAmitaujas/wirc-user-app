@@ -562,6 +562,21 @@ query GetAllYoutubeLinks {
     isActive
   }
 }
+
+query GetAllWicasaNewsLatter {
+  getAllWicasaNewsLatter {
+    _id
+    name
+    date
+    redirectlink
+    img
+    pdf
+    iswirc
+    showIndex
+    isActive
+  }
+}
+
 query GetWhatWeBrignToYouById($options: IGetByID!) {
   getWhatWeBrignToYouById(options: $options) {
     _id

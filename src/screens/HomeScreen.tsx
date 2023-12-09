@@ -1,4 +1,3 @@
-import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Box, HStack, Image, ScrollView, Text, VStack } from "native-base";
 import { TouchableOpacity } from "react-native";
@@ -8,19 +7,10 @@ const logo1 = require("../../assets/123.png");
 const logo2 = require("../../assets/business.png");
 const logo3 = require("../../assets/evnts.png");
 const logo4 = require("../../assets/news.png");
+const logo5 = require("../../assets/75icai.png");
 
 const HomeScreen = () => {
   const { navigate } = useNavigation();
-
-  const networking = () => {
-    // @ts-ignore
-    navigate("Networking");
-  };
-
-  const handleSkill = () => {
-    // @ts-ignore
-    navigate("SkillSection");
-  };
 
   return (
     <VStack bg={"white"} flex={1}>
@@ -44,17 +34,7 @@ const HomeScreen = () => {
           >
             WIRC
           </Text>
-          <HStack display="flex" space={10}>
-            <TouchableOpacity onPress={networking}>
-              <Ionicons name="earth" size={24} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleSkill}
-              style={{ justifyContent: "center", display: "flex" }}
-            >
-              <Entypo name="trophy" size={24} color="white" />
-            </TouchableOpacity>
-          </HStack>
+          <Image source={logo5} alt="logo" resizeMode="contain" h={12} w={12} />
         </HStack>
       </Box>
       <ScrollView flex={1} marginTop="20">
@@ -80,6 +60,10 @@ export const HomeCards = () => {
   const handleInitatives = () => {
     // @ts-ignore
     navigate("Whatwebring");
+  };
+  const handlenews = () => {
+    // @ts-ignore
+    navigate("newsletter");
   };
   return (
     <>
@@ -141,22 +125,24 @@ export const HomeCards = () => {
               </Text>
             </Box>
           </TouchableOpacity>
-          <Box>
-            <Image
-              size={150}
-              borderRadius={100}
-              source={logo4}
-              alt="Alternate Text"
-            />
-            <Text
-              textAlign="center"
-              fontSize="xl"
-              fontWeight="bold"
-              textTransform="uppercase"
-            >
-              Newsletters
-            </Text>
-          </Box>
+          <TouchableOpacity onPress={handlenews}>
+            <Box>
+              <Image
+                size={150}
+                borderRadius={100}
+                source={logo4}
+                alt="Alternate Text"
+              />
+              <Text
+                textAlign="center"
+                fontSize="xl"
+                fontWeight="bold"
+                textTransform="uppercase"
+              >
+                Newsletters
+              </Text>
+            </Box>
+          </TouchableOpacity>
         </HStack>
       </VStack>
     </>

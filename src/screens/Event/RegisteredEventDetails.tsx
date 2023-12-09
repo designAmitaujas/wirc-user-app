@@ -216,12 +216,6 @@ const RegisterdEventDetails = () => {
     navigate("Networking", { eventId });
   };
 
-  const handlelist = () => {
-    const { eventId } = params as { eventId?: string };
-    // @ts-ignore
-    navigate("MemberAttendance", { eventId });
-  };
-
   if (loading || !eventInformation)
     return (
       <>
@@ -304,10 +298,6 @@ const RegisterdEventDetails = () => {
             justifyContent="center"
             alignItems="center"
           >
-            <Button width="70%" onPress={handlelist}>
-              Participants List
-            </Button>
-
             <Button width="70%" onPress={handleSpeaker}>
               Event Speaker
             </Button>

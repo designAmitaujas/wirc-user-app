@@ -33,6 +33,7 @@ import { LogBox, SafeAreaView } from "react-native";
 import ErrorBoundary from "react-native-error-boundary";
 import "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
+import AppProvider from "./src/AppProvider";
 import Routes from "./src/Routes";
 import { GQL_API_URL } from "./src/constant";
 import { useAppAuthState } from "./src/store";
@@ -185,16 +186,18 @@ const App = () => {
   return (
     <ErrorBoundary onError={errorHandler}>
       <ApolloProvider client={client}>
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <NativeBaseProvider theme={theme}>
-            <NavigationContainer onReady={onLayoutRootView}>
-              <SafeAreaView style={{ flex: 1 }}>
-                <StatusBar hidden={false} />
-                <Routes />
-              </SafeAreaView>
-            </NavigationContainer>
-          </NativeBaseProvider>
-        </ApplicationProvider>
+        <AppProvider>
+          <ApplicationProvider {...eva} theme={eva.light}>
+            <NativeBaseProvider theme={theme}>
+              <NavigationContainer onReady={onLayoutRootView}>
+                <SafeAreaView style={{ flex: 1 }}>
+                  <StatusBar hidden={false} />
+                  <Routes />
+                </SafeAreaView>
+              </NavigationContainer>
+            </NativeBaseProvider>
+          </ApplicationProvider>
+        </AppProvider>
       </ApolloProvider>
     </ErrorBoundary>
   );

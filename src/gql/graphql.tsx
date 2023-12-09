@@ -1787,6 +1787,7 @@ export type IGetMyList = {
   mobile: Scalars['String']['output'];
   name: Scalars['String']['output'];
   skill: Array<Scalars['String']['output']>;
+  userid: Scalars['String']['output'];
 };
 
 export type IGetPaymentDetails = {
@@ -2114,6 +2115,7 @@ export type Mutation = {
   GetAllPublicationPaymentDetailsByDateRange: Array<PublicationBilling>;
   GetPaymentDetails: Array<EventRegistrationMember>;
   GetPaymentDetailsByStudyGroup: Array<EventRegistrationMember>;
+  IsInvitateAccepted: Scalars['Boolean']['output'];
   addAttendence: IStatusResponse;
   addFeedBackFrom: IStatusResponse;
   addHelpDeskQA: IStatusResponse;
@@ -2322,6 +2324,7 @@ export type Mutation = {
   genEmailWithMembershipNumber: IStatusResponse;
   genEventPaymnet: IPaymentResponse;
   genPayment: IPaymentResponse;
+  getAllInvitation: Array<NetworkingInvite>;
   getAllPaytmIdfromTransactionId: Array<IPaytmIdResponseRespose>;
   getAllPublicationPaymentHistory: Array<PublicationBilling>;
   getFilterdSkillMember: Array<IGetMyList>;
@@ -2336,6 +2339,8 @@ export type Mutation = {
   networkingZoneSearch: Array<NetworkingZone>;
   noneMemberRegistrationAuthResolver: IAuthResoverResponse;
   prenaSearch: Array<Prerna>;
+  sendInvitation: Scalars['Boolean']['output'];
+  setFirebaseId: Scalars['Boolean']['output'];
   speakerMail: IStatusResponse;
   updateAdminUser: IStatusResponse;
   updateMyProfile: IStatusResponse;
@@ -2363,6 +2368,12 @@ export type MutationGetPaymentDetailsArgs = {
 
 export type MutationGetPaymentDetailsByStudyGroupArgs = {
   options: IGetPaymentDetails;
+};
+
+
+export type MutationIsInvitateAcceptedArgs = {
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
 };
 
 
@@ -3476,6 +3487,18 @@ export type MutationPrenaSearchArgs = {
 };
 
 
+export type MutationSendInvitationArgs = {
+  eventId: Scalars['String']['input'];
+  firebaseId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+};
+
+
+export type MutationSetFirebaseIdArgs = {
+  firebaseId: Scalars['String']['input'];
+};
+
+
 export type MutationSpeakerMailArgs = {
   options: QnaMailInput;
 };
@@ -3508,6 +3531,16 @@ export type MutationUpdateUserProfileArgs = {
 
 export type MutationVerifyEmailWithMembershipNumberArgs = {
   options: IGetEmailInput;
+};
+
+export type NetworkingInvite = {
+  __typename?: 'NetworkingInvite';
+  _id: Scalars['String']['output'];
+  cpeEvent?: Maybe<CpeEvent>;
+  inviteFrom?: Maybe<User>;
+  inviteTo?: Maybe<User>;
+  isAccepted: Scalars['Boolean']['output'];
+  isActive: Scalars['Boolean']['output'];
 };
 
 export type NetworkingZone = {
@@ -4898,7 +4931,7 @@ export type GetFilterdSkillMemberV2MutationVariables = Exact<{
 }>;
 
 
-export type GetFilterdSkillMemberV2Mutation = { __typename?: 'Mutation', getFilterdSkillMemberV2: Array<{ __typename?: 'IGetMyList', name: string, city: string, email: string, mobile: string, gender: string, skill: Array<string>, firebaseId: string }> };
+export type GetFilterdSkillMemberV2Mutation = { __typename?: 'Mutation', getFilterdSkillMemberV2: Array<{ __typename?: 'IGetMyList', name: string, city: string, email: string, mobile: string, gender: string, skill: Array<string>, firebaseId: string, userid: string }> };
 
 export type GetMemberInfoByMembershipNumberMutationVariables = Exact<{
   options: IGetById;
@@ -4934,6 +4967,35 @@ export type DeleteMemberSkillMutationVariables = Exact<{
 
 
 export type DeleteMemberSkillMutation = { __typename?: 'Mutation', deleteMemberSkill: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
+
+export type SendInvitationMutationVariables = Exact<{
+  firebaseId: Scalars['String']['input'];
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+}>;
+
+
+export type SendInvitationMutation = { __typename?: 'Mutation', sendInvitation: boolean };
+
+export type SetFirebaseIdMutationVariables = Exact<{
+  firebaseId: Scalars['String']['input'];
+}>;
+
+
+export type SetFirebaseIdMutation = { __typename?: 'Mutation', setFirebaseId: boolean };
+
+export type IsInvitateAcceptedMutationVariables = Exact<{
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+}>;
+
+
+export type IsInvitateAcceptedMutation = { __typename?: 'Mutation', IsInvitateAccepted: boolean };
+
+export type GetAllInvitationMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllInvitationMutation = { __typename?: 'Mutation', getAllInvitation: Array<{ __typename?: 'NetworkingInvite', _id: string, isAccepted: boolean, isActive: boolean, inviteFrom?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, inviteTo?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string } | null }> };
 
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5109,6 +5171,11 @@ export type GetAllYoutubeLinksQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllYoutubeLinksQuery = { __typename?: 'Query', getAllYoutubeLinks: Array<{ __typename?: 'YoutubeLinks', _id: string, name: string, redirectlink: string, isActive: boolean, category?: { __typename?: 'WhatWeBrignToYou', _id: string, name: string, isActive: boolean, isWIRC: boolean } | null }> };
 
+export type GetAllWicasaNewsLatterQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllWicasaNewsLatterQuery = { __typename?: 'Query', getAllWicasaNewsLatter: Array<{ __typename?: 'WicasaNewsLatter', _id: string, name: string, date: any, redirectlink: string, img: string, pdf: string, iswirc: boolean, showIndex: string, isActive: boolean }> };
+
 export type GetWhatWeBrignToYouByIdQueryVariables = Exact<{
   options: IGetById;
 }>;
@@ -5241,6 +5308,7 @@ export const GetFilterdSkillMemberV2Document = gql`
     gender
     skill
     firebaseId
+    userid
   }
 }
     `;
@@ -5465,6 +5533,156 @@ export function useDeleteMemberSkillMutation(baseOptions?: Apollo.MutationHookOp
 export type DeleteMemberSkillMutationHookResult = ReturnType<typeof useDeleteMemberSkillMutation>;
 export type DeleteMemberSkillMutationResult = Apollo.MutationResult<DeleteMemberSkillMutation>;
 export type DeleteMemberSkillMutationOptions = Apollo.BaseMutationOptions<DeleteMemberSkillMutation, DeleteMemberSkillMutationVariables>;
+export const SendInvitationDocument = gql`
+    mutation SendInvitation($firebaseId: String!, $eventId: String!, $inviteTo: String!) {
+  sendInvitation(firebaseId: $firebaseId, eventId: $eventId, inviteTo: $inviteTo)
+}
+    `;
+export type SendInvitationMutationFn = Apollo.MutationFunction<SendInvitationMutation, SendInvitationMutationVariables>;
+
+/**
+ * __useSendInvitationMutation__
+ *
+ * To run a mutation, you first call `useSendInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendInvitationMutation, { data, loading, error }] = useSendInvitationMutation({
+ *   variables: {
+ *      firebaseId: // value for 'firebaseId'
+ *      eventId: // value for 'eventId'
+ *      inviteTo: // value for 'inviteTo'
+ *   },
+ * });
+ */
+export function useSendInvitationMutation(baseOptions?: Apollo.MutationHookOptions<SendInvitationMutation, SendInvitationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendInvitationMutation, SendInvitationMutationVariables>(SendInvitationDocument, options);
+      }
+export type SendInvitationMutationHookResult = ReturnType<typeof useSendInvitationMutation>;
+export type SendInvitationMutationResult = Apollo.MutationResult<SendInvitationMutation>;
+export type SendInvitationMutationOptions = Apollo.BaseMutationOptions<SendInvitationMutation, SendInvitationMutationVariables>;
+export const SetFirebaseIdDocument = gql`
+    mutation SetFirebaseId($firebaseId: String!) {
+  setFirebaseId(firebaseId: $firebaseId)
+}
+    `;
+export type SetFirebaseIdMutationFn = Apollo.MutationFunction<SetFirebaseIdMutation, SetFirebaseIdMutationVariables>;
+
+/**
+ * __useSetFirebaseIdMutation__
+ *
+ * To run a mutation, you first call `useSetFirebaseIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetFirebaseIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setFirebaseIdMutation, { data, loading, error }] = useSetFirebaseIdMutation({
+ *   variables: {
+ *      firebaseId: // value for 'firebaseId'
+ *   },
+ * });
+ */
+export function useSetFirebaseIdMutation(baseOptions?: Apollo.MutationHookOptions<SetFirebaseIdMutation, SetFirebaseIdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SetFirebaseIdMutation, SetFirebaseIdMutationVariables>(SetFirebaseIdDocument, options);
+      }
+export type SetFirebaseIdMutationHookResult = ReturnType<typeof useSetFirebaseIdMutation>;
+export type SetFirebaseIdMutationResult = Apollo.MutationResult<SetFirebaseIdMutation>;
+export type SetFirebaseIdMutationOptions = Apollo.BaseMutationOptions<SetFirebaseIdMutation, SetFirebaseIdMutationVariables>;
+export const IsInvitateAcceptedDocument = gql`
+    mutation IsInvitateAccepted($eventId: String!, $inviteTo: String!) {
+  IsInvitateAccepted(eventId: $eventId, inviteTo: $inviteTo)
+}
+    `;
+export type IsInvitateAcceptedMutationFn = Apollo.MutationFunction<IsInvitateAcceptedMutation, IsInvitateAcceptedMutationVariables>;
+
+/**
+ * __useIsInvitateAcceptedMutation__
+ *
+ * To run a mutation, you first call `useIsInvitateAcceptedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIsInvitateAcceptedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [isInvitateAcceptedMutation, { data, loading, error }] = useIsInvitateAcceptedMutation({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *      inviteTo: // value for 'inviteTo'
+ *   },
+ * });
+ */
+export function useIsInvitateAcceptedMutation(baseOptions?: Apollo.MutationHookOptions<IsInvitateAcceptedMutation, IsInvitateAcceptedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IsInvitateAcceptedMutation, IsInvitateAcceptedMutationVariables>(IsInvitateAcceptedDocument, options);
+      }
+export type IsInvitateAcceptedMutationHookResult = ReturnType<typeof useIsInvitateAcceptedMutation>;
+export type IsInvitateAcceptedMutationResult = Apollo.MutationResult<IsInvitateAcceptedMutation>;
+export type IsInvitateAcceptedMutationOptions = Apollo.BaseMutationOptions<IsInvitateAcceptedMutation, IsInvitateAcceptedMutationVariables>;
+export const GetAllInvitationDocument = gql`
+    mutation GetAllInvitation {
+  getAllInvitation {
+    _id
+    inviteFrom {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    inviteTo {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    cpeEvent {
+      _id
+      name
+    }
+    isAccepted
+    isActive
+  }
+}
+    `;
+export type GetAllInvitationMutationFn = Apollo.MutationFunction<GetAllInvitationMutation, GetAllInvitationMutationVariables>;
+
+/**
+ * __useGetAllInvitationMutation__
+ *
+ * To run a mutation, you first call `useGetAllInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetAllInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getAllInvitationMutation, { data, loading, error }] = useGetAllInvitationMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllInvitationMutation(baseOptions?: Apollo.MutationHookOptions<GetAllInvitationMutation, GetAllInvitationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GetAllInvitationMutation, GetAllInvitationMutationVariables>(GetAllInvitationDocument, options);
+      }
+export type GetAllInvitationMutationHookResult = ReturnType<typeof useGetAllInvitationMutation>;
+export type GetAllInvitationMutationResult = Apollo.MutationResult<GetAllInvitationMutation>;
+export type GetAllInvitationMutationOptions = Apollo.BaseMutationOptions<GetAllInvitationMutation, GetAllInvitationMutationVariables>;
 export const GetAllCpeEventDocument = gql`
     query GetAllCpeEvent {
   getAllCpeEvent {
@@ -6871,6 +7089,48 @@ export function useGetAllYoutubeLinksLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetAllYoutubeLinksQueryHookResult = ReturnType<typeof useGetAllYoutubeLinksQuery>;
 export type GetAllYoutubeLinksLazyQueryHookResult = ReturnType<typeof useGetAllYoutubeLinksLazyQuery>;
 export type GetAllYoutubeLinksQueryResult = Apollo.QueryResult<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>;
+export const GetAllWicasaNewsLatterDocument = gql`
+    query GetAllWicasaNewsLatter {
+  getAllWicasaNewsLatter {
+    _id
+    name
+    date
+    redirectlink
+    img
+    pdf
+    iswirc
+    showIndex
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllWicasaNewsLatterQuery__
+ *
+ * To run a query within a React component, call `useGetAllWicasaNewsLatterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllWicasaNewsLatterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllWicasaNewsLatterQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllWicasaNewsLatterQuery(baseOptions?: Apollo.QueryHookOptions<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>(GetAllWicasaNewsLatterDocument, options);
+      }
+export function useGetAllWicasaNewsLatterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>(GetAllWicasaNewsLatterDocument, options);
+        }
+export type GetAllWicasaNewsLatterQueryHookResult = ReturnType<typeof useGetAllWicasaNewsLatterQuery>;
+export type GetAllWicasaNewsLatterLazyQueryHookResult = ReturnType<typeof useGetAllWicasaNewsLatterLazyQuery>;
+export type GetAllWicasaNewsLatterQueryResult = Apollo.QueryResult<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>;
 export const GetWhatWeBrignToYouByIdDocument = gql`
     query GetWhatWeBrignToYouById($options: IGetByID!) {
   getWhatWeBrignToYouById(options: $options) {

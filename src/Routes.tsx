@@ -16,7 +16,8 @@ import UpcomingEvents from "./screens/UpcomingEvents";
 import Login from "./screens/auth/Login";
 import MobileLogin from "./screens/auth/NumberLogin";
 import FeedbackForm from "./screens/feedbackform/FeedbackForm";
-import Memberattendancelist from "./screens/networking/Memberattendancelist";
+
+import Newsletter from "./screens/Business/Newsletter";
 import NetworkingScreen from "./screens/networking/Networking";
 import ProfileScreen from "./screens/profile/ProfileDetails";
 import VisitingCard from "./screens/profile/VisitingCrad";
@@ -49,6 +50,7 @@ const Routes = () => {
           <Stack.Screen name="ViewImage" component={ViewImage} />
           <Stack.Screen name="Whatwebring" component={Whatwe} />
           <Stack.Screen name="Whatwebringdetails" component={Details} />
+          <Stack.Screen name="newsletter" component={Newsletter} />
 
           <Stack.Screen
             name="EventsDetails"
@@ -57,10 +59,7 @@ const Routes = () => {
           <Stack.Screen name="Feedback" component={FeedbackForm} />
           <Stack.Screen name="VisitingCard" component={VisitingCard} />
           <Stack.Screen name="Networking" component={NetworkingScreen} />
-          <Stack.Screen
-            name="MemberAttendance"
-            component={Memberattendancelist}
-          />
+
           <Stack.Screen
             name="TransactionDetails"
             component={Transactiondetail}

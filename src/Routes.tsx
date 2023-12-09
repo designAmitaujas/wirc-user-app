@@ -19,6 +19,7 @@ import FeedbackForm from "./screens/feedbackform/FeedbackForm";
 
 import Newsletter from "./screens/Business/Newsletter";
 import NetworkingScreen from "./screens/networking/Networking";
+import Notification from "./screens/networking/Notification";
 import ProfileScreen from "./screens/profile/ProfileDetails";
 import VisitingCard from "./screens/profile/VisitingCrad";
 import { useAppAuthState } from "./store";
@@ -51,6 +52,7 @@ const Routes = () => {
           <Stack.Screen name="Whatwebring" component={Whatwe} />
           <Stack.Screen name="Whatwebringdetails" component={Details} />
           <Stack.Screen name="newsletter" component={Newsletter} />
+          <Stack.Screen name="notification" component={Notification} />
 
           <Stack.Screen
             name="EventsDetails"

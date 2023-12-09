@@ -35,6 +35,8 @@ import {
   useGetAllSkillsQuery,
   useGetFilterdSkillMemberV2Mutation,
   useGetMyMobileEventListQuery,
+  useIsInvitateAcceptedMutation,
+  useSendInvitationMutation,
 } from "../../gql/graphql";
 
 interface IInputForm {
@@ -59,7 +61,10 @@ const RestHeader = () => {
   // const { goBack } = useNavigation();
   const { goBack } = useNavigation();
   const { navigate } = useNavigation();
-
+  const handlenotification = () => {
+    //@ts-ignore
+    navigate("notification");
+  };
   return (
     <>
       <HStack
@@ -96,6 +101,12 @@ const RestHeader = () => {
         >
           Members Networking
         </Text>
+        <HStack>
+          <Button
+            leftIcon={<Ionicons name="notifications" size={24} color="black" />}
+            onPress={handlenotification}
+          ></Button>
+        </HStack>
       </HStack>
     </>
   );
@@ -103,16 +114,63 @@ const RestHeader = () => {
 
 const ParticipantsCard: React.FC<{
   name: string;
-  position?: string;
+  position: string;
   gender: string;
   email: string;
   mo_number: string;
   keey: number;
+  userid: string;
+  eventid: string;
   skills: string[];
-}> = ({ name, position, gender, email, mo_number, skills, keey }) => {
+}> = ({
+  name,
+  position,
+  gender,
+  email,
+  mo_number,
+  skills,
+  keey,
+  userid,
+  eventid,
+}) => {
   // console.log();mo_number
 
   const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+
+  const [showModal3, setShowModal3] = useState(false);
+
+  const [response] = useSendInvitationMutation();
+  const [responseda] = useIsInvitateAcceptedMutation();
+
+  const handleinvite = async () => {
+    const data = await responseda({
+      variables: { eventId: eventid, inviteTo: userid },
+    });
+
+    if (data.data) {
+      setShowModal3(data.data?.IsInvitateAccepted);
+    }
+  };
+
+  const toast = useToast();
+  const handlesubmit = async () => {
+    const hello = await response({
+      variables: {
+        eventId: eventid || "",
+        firebaseId: position,
+        inviteTo: userid,
+      },
+    });
+    console.log(hello);
+    if (hello.data?.sendInvitation) {
+      toast.show({
+        title: "Attendance already marked",
+        placement: "top",
+      });
+      setShowModal1(false);
+    }
+  };
   const phonecall = () => {
     // console.log("first", mo_number);
     Linking.openURL(`tel:${mo_number.toString()}`);
@@ -145,7 +203,12 @@ const ParticipantsCard: React.FC<{
 
           <Divider marginY={2} />
           <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
-            <TouchableOpacity onPress={phonecall}>
+            <TouchableOpacity
+              onPress={async () => {
+                await handleinvite();
+                setShowModal1(true);
+              }}
+            >
               <Ionicons name="call-outline" size={20} color="black" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setShowModal(true)}>
@@ -156,6 +219,55 @@ const ParticipantsCard: React.FC<{
               />
             </TouchableOpacity>
           </HStack>
+          <Modal
+            isOpen={showModal1}
+            onClose={() => setShowModal1(false)}
+            _backdrop={{
+              _dark: {
+                bg: "coolGray.800",
+              },
+              bg: "warmGray.900",
+            }}
+          >
+            <Modal.Content w={"90%"} borderRadius={15}>
+              <Modal.CloseButton />
+              <Modal.Header>Profile</Modal.Header>
+              <Modal.Body>
+                {showModal3 === true ? (
+                  <>
+                    <HStack w={"100%"}>
+                      <Text
+                        color={"gray.500"}
+                        fontWeight={"semibold"}
+                        w={"30%"}
+                      >
+                        Email
+                      </Text>
+                      <Text w={"10%"}>:</Text>
+                      <Text w={"65%"}>{email}</Text>
+                    </HStack>
+                    <HStack w={"100%"}>
+                      <Text
+                        color={"gray.500"}
+                        fontWeight={"semibold"}
+                        w={"30%"}
+                      >
+                        Mobile No.
+                      </Text>
+                      <Text w={"10%"}>:</Text>
+                      <Text w={"65%"}>{mo_number}</Text>
+                    </HStack>
+                  </>
+                ) : (
+                  <>
+                    <VStack space={2}>
+                      <Button onPress={handlesubmit}>Send Invite</Button>
+                    </VStack>
+                  </>
+                )}
+              </Modal.Body>
+            </Modal.Content>
+          </Modal>
           <Modal
             isOpen={showModal}
             onClose={() => setShowModal(false)}
@@ -185,20 +297,7 @@ const ParticipantsCard: React.FC<{
                     <Text w={"10%"}>:</Text>
                     <Text w={"65%"}>{position}</Text>
                   </HStack> */}
-                  <HStack w={"100%"}>
-                    <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Email
-                    </Text>
-                    <Text w={"10%"}>:</Text>
-                    <Text w={"65%"}>{email}</Text>
-                  </HStack>
-                  <HStack w={"100%"}>
-                    <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Mobile No.
-                    </Text>
-                    <Text w={"10%"}>:</Text>
-                    <Text w={"65%"}>{mo_number}</Text>
-                  </HStack>
+
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                       Skills
@@ -509,6 +608,8 @@ const NetworkingScreen = () => {
         email={item.email}
         mo_number={item.mobile}
         skills={item.skill}
+        userid={item.userid}
+        eventid={eventId || ""}
         position={item.firebaseId}
       />
     );

@@ -602,3 +602,31 @@ query GetEventSpeakerById($options: IGetByID!) {
     isActive
   }
 }
+
+query GetAllInvitation {
+  getAllInvitation {
+    _id
+    inviteFrom {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    inviteTo {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    cpeEvent {
+      _id
+      name
+    }
+    isAccepted
+    isActive
+  }
+}

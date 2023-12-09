@@ -22,6 +22,8 @@ import { createUploadLink } from "apollo-upload-client";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+// import "firebase/auth";
+// import "firebase/database";
 import {
   NativeBaseProvider,
   StatusBar,

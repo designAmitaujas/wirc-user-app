@@ -125,30 +125,10 @@ mutation IsInvitateAccepted($eventId: String!, $inviteTo: String!) {
   IsInvitateAccepted(eventId: $eventId, inviteTo: $inviteTo)
 }
 
-mutation GetAllInvitation {
-  getAllInvitation {
-    _id
-    inviteFrom {
-      memberRegistration {
-        _id
-        firstName
-        middleName
-        lastName
-      }
-    }
-    inviteTo {
-      memberRegistration {
-        _id
-        firstName
-        middleName
-        lastName
-      }
-    }
-    cpeEvent {
-      _id
-      name
-    }
-    isAccepted
-    isActive
-  }
+mutation AcceptInvite($eventId: String!, $inviteTo: String!) {
+  acceptInvite(eventId: $eventId, inviteTo: $inviteTo)
+}
+
+mutation RejectInvite($eventId: String!, $inviteTo: String!) {
+  rejectInvite(eventId: $eventId, inviteTo: $inviteTo)
 }

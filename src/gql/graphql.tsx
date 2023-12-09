@@ -2116,6 +2116,7 @@ export type Mutation = {
   GetPaymentDetails: Array<EventRegistrationMember>;
   GetPaymentDetailsByStudyGroup: Array<EventRegistrationMember>;
   IsInvitateAccepted: Scalars['Boolean']['output'];
+  acceptInvite: Scalars['Boolean']['output'];
   addAttendence: IStatusResponse;
   addFeedBackFrom: IStatusResponse;
   addHelpDeskQA: IStatusResponse;
@@ -2324,7 +2325,6 @@ export type Mutation = {
   genEmailWithMembershipNumber: IStatusResponse;
   genEventPaymnet: IPaymentResponse;
   genPayment: IPaymentResponse;
-  getAllInvitation: Array<NetworkingInvite>;
   getAllPaytmIdfromTransactionId: Array<IPaytmIdResponseRespose>;
   getAllPublicationPaymentHistory: Array<PublicationBilling>;
   getFilterdSkillMember: Array<IGetMyList>;
@@ -2339,6 +2339,7 @@ export type Mutation = {
   networkingZoneSearch: Array<NetworkingZone>;
   noneMemberRegistrationAuthResolver: IAuthResoverResponse;
   prenaSearch: Array<Prerna>;
+  rejectInvite: Scalars['Boolean']['output'];
   sendInvitation: Scalars['Boolean']['output'];
   setFirebaseId: Scalars['Boolean']['output'];
   speakerMail: IStatusResponse;
@@ -2372,6 +2373,12 @@ export type MutationGetPaymentDetailsByStudyGroupArgs = {
 
 
 export type MutationIsInvitateAcceptedArgs = {
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+};
+
+
+export type MutationAcceptInviteArgs = {
   eventId: Scalars['String']['input'];
   inviteTo: Scalars['String']['input'];
 };
@@ -3487,6 +3494,12 @@ export type MutationPrenaSearchArgs = {
 };
 
 
+export type MutationRejectInviteArgs = {
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+};
+
+
 export type MutationSendInvitationArgs = {
   eventId: Scalars['String']['input'];
   firebaseId: Scalars['String']['input'];
@@ -3846,6 +3859,7 @@ export type Query = {
   getAllHomePortal: Array<HomePortal>;
   getAllHomePortalCategory: Array<HomePortalCategory>;
   getAllImages: Array<Images>;
+  getAllInvitation: Array<NetworkingInvite>;
   getAllLawUpdate: Array<LawUpdate>;
   getAllLawUpdateCategory: Array<LawUpdateCategory>;
   getAllLibrary: Array<Library>;
@@ -4992,10 +5006,21 @@ export type IsInvitateAcceptedMutationVariables = Exact<{
 
 export type IsInvitateAcceptedMutation = { __typename?: 'Mutation', IsInvitateAccepted: boolean };
 
-export type GetAllInvitationMutationVariables = Exact<{ [key: string]: never; }>;
+export type AcceptInviteMutationVariables = Exact<{
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+}>;
 
 
-export type GetAllInvitationMutation = { __typename?: 'Mutation', getAllInvitation: Array<{ __typename?: 'NetworkingInvite', _id: string, isAccepted: boolean, isActive: boolean, inviteFrom?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, inviteTo?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string } | null }> };
+export type AcceptInviteMutation = { __typename?: 'Mutation', acceptInvite: boolean };
+
+export type RejectInviteMutationVariables = Exact<{
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+}>;
+
+
+export type RejectInviteMutation = { __typename?: 'Mutation', rejectInvite: boolean };
 
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5189,6 +5214,11 @@ export type GetEventSpeakerByIdQueryVariables = Exact<{
 
 
 export type GetEventSpeakerByIdQuery = { __typename?: 'Query', getEventSpeakerById: { __typename?: 'EventSpeaker', _id: string, speakerimg: string, detailsimg: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, img: string, name: string } | null } };
+
+export type GetAllInvitationQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllInvitationQuery = { __typename?: 'Query', getAllInvitation: Array<{ __typename?: 'NetworkingInvite', _id: string, isAccepted: boolean, isActive: boolean, inviteFrom?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, inviteTo?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string } | null }> };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -5629,60 +5659,70 @@ export function useIsInvitateAcceptedMutation(baseOptions?: Apollo.MutationHookO
 export type IsInvitateAcceptedMutationHookResult = ReturnType<typeof useIsInvitateAcceptedMutation>;
 export type IsInvitateAcceptedMutationResult = Apollo.MutationResult<IsInvitateAcceptedMutation>;
 export type IsInvitateAcceptedMutationOptions = Apollo.BaseMutationOptions<IsInvitateAcceptedMutation, IsInvitateAcceptedMutationVariables>;
-export const GetAllInvitationDocument = gql`
-    mutation GetAllInvitation {
-  getAllInvitation {
-    _id
-    inviteFrom {
-      memberRegistration {
-        _id
-        firstName
-        middleName
-        lastName
-      }
-    }
-    inviteTo {
-      memberRegistration {
-        _id
-        firstName
-        middleName
-        lastName
-      }
-    }
-    cpeEvent {
-      _id
-      name
-    }
-    isAccepted
-    isActive
-  }
+export const AcceptInviteDocument = gql`
+    mutation AcceptInvite($eventId: String!, $inviteTo: String!) {
+  acceptInvite(eventId: $eventId, inviteTo: $inviteTo)
 }
     `;
-export type GetAllInvitationMutationFn = Apollo.MutationFunction<GetAllInvitationMutation, GetAllInvitationMutationVariables>;
+export type AcceptInviteMutationFn = Apollo.MutationFunction<AcceptInviteMutation, AcceptInviteMutationVariables>;
 
 /**
- * __useGetAllInvitationMutation__
+ * __useAcceptInviteMutation__
  *
- * To run a mutation, you first call `useGetAllInvitationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useGetAllInvitationMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useAcceptInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptInviteMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [getAllInvitationMutation, { data, loading, error }] = useGetAllInvitationMutation({
+ * const [acceptInviteMutation, { data, loading, error }] = useAcceptInviteMutation({
  *   variables: {
+ *      eventId: // value for 'eventId'
+ *      inviteTo: // value for 'inviteTo'
  *   },
  * });
  */
-export function useGetAllInvitationMutation(baseOptions?: Apollo.MutationHookOptions<GetAllInvitationMutation, GetAllInvitationMutationVariables>) {
+export function useAcceptInviteMutation(baseOptions?: Apollo.MutationHookOptions<AcceptInviteMutation, AcceptInviteMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<GetAllInvitationMutation, GetAllInvitationMutationVariables>(GetAllInvitationDocument, options);
+        return Apollo.useMutation<AcceptInviteMutation, AcceptInviteMutationVariables>(AcceptInviteDocument, options);
       }
-export type GetAllInvitationMutationHookResult = ReturnType<typeof useGetAllInvitationMutation>;
-export type GetAllInvitationMutationResult = Apollo.MutationResult<GetAllInvitationMutation>;
-export type GetAllInvitationMutationOptions = Apollo.BaseMutationOptions<GetAllInvitationMutation, GetAllInvitationMutationVariables>;
+export type AcceptInviteMutationHookResult = ReturnType<typeof useAcceptInviteMutation>;
+export type AcceptInviteMutationResult = Apollo.MutationResult<AcceptInviteMutation>;
+export type AcceptInviteMutationOptions = Apollo.BaseMutationOptions<AcceptInviteMutation, AcceptInviteMutationVariables>;
+export const RejectInviteDocument = gql`
+    mutation RejectInvite($eventId: String!, $inviteTo: String!) {
+  rejectInvite(eventId: $eventId, inviteTo: $inviteTo)
+}
+    `;
+export type RejectInviteMutationFn = Apollo.MutationFunction<RejectInviteMutation, RejectInviteMutationVariables>;
+
+/**
+ * __useRejectInviteMutation__
+ *
+ * To run a mutation, you first call `useRejectInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRejectInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rejectInviteMutation, { data, loading, error }] = useRejectInviteMutation({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *      inviteTo: // value for 'inviteTo'
+ *   },
+ * });
+ */
+export function useRejectInviteMutation(baseOptions?: Apollo.MutationHookOptions<RejectInviteMutation, RejectInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RejectInviteMutation, RejectInviteMutationVariables>(RejectInviteDocument, options);
+      }
+export type RejectInviteMutationHookResult = ReturnType<typeof useRejectInviteMutation>;
+export type RejectInviteMutationResult = Apollo.MutationResult<RejectInviteMutation>;
+export type RejectInviteMutationOptions = Apollo.BaseMutationOptions<RejectInviteMutation, RejectInviteMutationVariables>;
 export const GetAllCpeEventDocument = gql`
     query GetAllCpeEvent {
   getAllCpeEvent {
@@ -7216,3 +7256,59 @@ export function useGetEventSpeakerByIdLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetEventSpeakerByIdQueryHookResult = ReturnType<typeof useGetEventSpeakerByIdQuery>;
 export type GetEventSpeakerByIdLazyQueryHookResult = ReturnType<typeof useGetEventSpeakerByIdLazyQuery>;
 export type GetEventSpeakerByIdQueryResult = Apollo.QueryResult<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>;
+export const GetAllInvitationDocument = gql`
+    query GetAllInvitation {
+  getAllInvitation {
+    _id
+    inviteFrom {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    inviteTo {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    cpeEvent {
+      _id
+      name
+    }
+    isAccepted
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllInvitationQuery__
+ *
+ * To run a query within a React component, call `useGetAllInvitationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllInvitationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllInvitationQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllInvitationQuery(baseOptions?: Apollo.QueryHookOptions<GetAllInvitationQuery, GetAllInvitationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllInvitationQuery, GetAllInvitationQueryVariables>(GetAllInvitationDocument, options);
+      }
+export function useGetAllInvitationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllInvitationQuery, GetAllInvitationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllInvitationQuery, GetAllInvitationQueryVariables>(GetAllInvitationDocument, options);
+        }
+export type GetAllInvitationQueryHookResult = ReturnType<typeof useGetAllInvitationQuery>;
+export type GetAllInvitationLazyQueryHookResult = ReturnType<typeof useGetAllInvitationLazyQuery>;
+export type GetAllInvitationQueryResult = Apollo.QueryResult<GetAllInvitationQuery, GetAllInvitationQueryVariables>;

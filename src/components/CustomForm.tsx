@@ -73,7 +73,7 @@ export const CustomInput: React.FC<ICustomInput> = memo((props) => {
   return (
     <FormControl isRequired={isRequired} isInvalid={isInvalid}>
       {label && (
-        <FormControl.Label fontWeight={"bold"}>
+        <FormControl.Label fontWeight={"bold"} textTransform="capitalize">
           {_.capitalize(label)}
         </FormControl.Label>
       )}
@@ -113,7 +113,9 @@ export const CustomTextArea: React.FC<ICustomInput> = memo((props) => {
   return (
     <FormControl isRequired={isRequired} isInvalid={isInvalid}>
       {label && (
-        <FormControl.Label fontWeight={"bold"}>{label}</FormControl.Label>
+        <FormControl.Label fontWeight={"bold"} textTransform="capitalize">
+          {label}
+        </FormControl.Label>
       )}
       <TextArea
         {...props}
@@ -163,7 +165,7 @@ export const CustomSelect: React.FC<ICustomSelect> = memo((props) => {
   return (
     <>
       <FormControl isRequired={isRequired} isInvalid={isInvalid}>
-        <FormControl.Label fontWeight={"bold"}>
+        <FormControl.Label fontWeight={"bold"} textTransform="capitalize">
           {capitalize(label) + " "}
         </FormControl.Label>
       </FormControl>
@@ -172,8 +174,9 @@ export const CustomSelect: React.FC<ICustomSelect> = memo((props) => {
           return (
             <Select.Item
               key={item.label + item.value}
-              label={capitalize(item.label)}
+              label={item.label}
               value={item.value}
+              textTransform="capitalize"
             />
           );
         })}
@@ -192,7 +195,7 @@ export const CustomCheckBox: React.FC<ICustomCheckBox> = memo((props) => {
 
   return (
     <FormControl isRequired={isRequired} isInvalid={isInvalid}>
-      <FormControl.Label fontWeight={"bold"}>
+      <FormControl.Label fontWeight={"bold"} textTransform="capitalize">
         {capitalize(label) + " "}
       </FormControl.Label>
       <FormControl.ErrorMessage>{capitalize(errMsg)}</FormControl.ErrorMessage>

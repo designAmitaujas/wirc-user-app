@@ -1,6 +1,11 @@
-import { useIsFocused } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { BarCodeScanner, PermissionStatus } from "expo-barcode-scanner";
-import _ from "lodash";
+import * as Location from "expo-location";
+import _, { debounce } from "lodash";
 import Lottie from "lottie-react-native";
 import { Box, Button, HStack, Text, VStack, View, useToast } from "native-base";
 import { useEffect, useState } from "react";
@@ -10,26 +15,52 @@ import {
   useMyProfileInformationQuery,
 } from "../gql/graphql";
 
-const QRScanner = () => {
+const QRScanner: React.FC = () => {
   const isFocused = useIsFocused();
+  const navigation = useNavigation();
 
-  if (isFocused === true) return <QRScreen />;
-
-  return <></>;
+  return isFocused ? <QRScreen /> : null;
 };
 
-function QRScreen() {
-  const [hasPermission, setHasPermission] = useState<boolean>(false);
+const QRScreen: React.FC = () => {
+  const { navigate } = useNavigation();
+  const { params } = useRoute();
+
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [info, setInfo] = useState("");
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null
+  );
+
   const { data: events } = useGetCpeEventByIdQuery({
-    variables: { options: { id: info || "" } },
+    //@ts-ignore
+    variables: { options: { id: params?.eventId || "" } },
   });
 
   const { data: profile } = useMyProfileInformationQuery();
   const [addAttendence] = useAddAttendenceMutation();
 
-  const { show } = useToast();
+  const handlehome = () => {
+    //@ts-ignore
+    navigate("EventHome");
+  };
+  const toast = useToast();
+  useEffect(() => {
+    (async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          throw new Error("Location permission not granted");
+        }
+
+        const location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      } catch (error) {
+        console.error("Error getting location:", error);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -38,33 +69,175 @@ function QRScreen() {
     })();
   }, []);
 
-  const handleBarCodeScanned = async ({ data }: { data: string }) => {
-    setScanned(true);
+  const isWithinGeoFence = () => {
+    if (!location || !events) {
+      return false;
+    }
 
-    const response = await addAttendence({
-      variables: {
-        options: {
-          eventId: data,
-          memberId: profile?.myProfileInformation?.membershipNo || "",
-        },
-      },
-    });
+    let withinGeoFence = false;
 
-    if (response.data?.addAttendence.success) {
-      show({
-        title: _.capitalize(response.data.addAttendence.msg),
-        placement: "top",
-      });
-      setInfo(data);
-      setScanned(true);
+    const R = 6371;
+    const lat2 = events.getCpeEventById.lati;
+    const lon2 = events.getCpeEventById.longi;
+
+    const dLat = (lat2 - location.coords.latitude) * (Math.PI / 180);
+    const dLon = (lon2 - location.coords.longitude) * (Math.PI / 180);
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(location.coords.latitude * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const distance = R * c;
+
+    const roundedDistance = Math.round(distance * 1000); // in meters
+
+    const geoFenceRadius = 500; // 1 kilometer
+    console.log(
+      "Event:",
+      events.getCpeEventById.name,
+      "Lat:",
+      location.coords.latitude,
+      "Long:",
+      location.coords.longitude,
+      "EventLat:",
+      lat2,
+      "EventLong:",
+      lon2,
+      "Distance:",
+      roundedDistance
+    );
+
+    if (roundedDistance < geoFenceRadius) {
+      console.log("Within geo-fence!");
+      withinGeoFence = true;
     } else {
-      show({
-        title: _.capitalize(response.data?.addAttendence.msg || ""),
+      console.log("Not within geo-fence!");
+    }
+
+    if (withinGeoFence) {
+      return true;
+    }
+  };
+  // const handleBarCodeScanned = async ({ data }: { data: string }) => {
+  //   try {
+  //     if (scanned) {
+  //       toast.show({
+  //         title: "Attendance already marked",
+  //         placement: "top",
+  //       });
+  //       handlehome();
+  //       return;
+  //     }
+
+  //     if (!isWithinGeoFence()) {
+  //       toast.show({
+  //         title: "Kindly mark your CPE Attendance only at the Venue...",
+  //         placement: "top",
+  //       });
+  //       setScanned(false);
+  //       handlehome();
+  //       return;
+  //     }
+  //     console.log("event id as data", data);
+  //     const response = await addAttendence({
+  //       variables: {
+  //         options: {
+  //           eventId: data,
+  //           memberId: profile?.myProfileInformation?.membershipNo || "",
+  //         },
+  //       },
+  //     });
+
+  //     if (response.data?.addAttendence.success) {
+  //       toast.show({
+  //         title: _.capitalize(response.data.addAttendence.msg),
+  //         placement: "top",
+  //       });
+  //       setInfo(data);
+  //       setScanned(true);
+  //     } else {
+  //       toast.show({
+  //         title: _.capitalize(response.data?.addAttendence.msg),
+  //         placement: "top",
+  //       });
+  //       handlehome();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error handling barcode scan:", error);
+  //     toast.show({
+  //       title: "Error handling barcode scan",
+  //       placement: "top",
+  //     });
+  //     handlehome();
+  //   }
+  // };
+  const handleBarCodeScanned = debounce(async ({ data }: { data: string }) => {
+    try {
+      // Check if already scanned
+      if (scanned) {
+        toast.show({
+          title: "Attendance already marked",
+          placement: "top",
+        });
+        return;
+      }
+
+      // Check geofence
+      if (!isWithinGeoFence()) {
+        toast.show({
+          title: "Kindly mark your CPE Attendance only at the Venue...",
+          placement: "top",
+        });
+        return;
+      }
+
+      const currentDateTime = new Date();
+      const eventStartTime = events?.getCpeEventById.time1
+        ? new Date(events.getCpeEventById.time1)
+        : new Date();
+      const isStartTimeScan = currentDateTime < eventStartTime;
+
+      const response = await addAttendence({
+        variables: {
+          options: {
+            eventId: data,
+            memberId: profile?.myProfileInformation?.membershipNo || "",
+          },
+        },
+      });
+
+      // Check if successful response
+      if (response.data?.addAttendence.success) {
+        toast.show({
+          title: _.capitalize(response.data.addAttendence.msg),
+          placement: "top",
+        });
+        setInfo(data);
+        setScanned(true);
+        if (isStartTimeScan) {
+          console.log("Handling half attendance scan at the start time...");
+        } else {
+          console.log("Handling full attendance scan at the end time...");
+        }
+      } else {
+        toast.show({
+          title: _.capitalize(response.data?.addAttendence.msg),
+          placement: "top",
+        });
+      }
+    } catch (error) {
+      console.error("Error handling barcode scan:", error);
+      toast.show({
+        title: "Error handling barcode scan",
         placement: "top",
       });
     }
-  };
-
+  }, 1000);
   if (hasPermission === null) {
     return <Text>Requesting camera permission...</Text>;
   }
@@ -116,16 +289,26 @@ function QRScreen() {
           <Text fontSize={"xl"} fontWeight={"semibold"}>
             Attendance Marked For
           </Text>
-
-          <HStack mx={5} w={"100%"}>
+          <HStack w={"100%"}>
             <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
-              Seminar ID
+              Seminar
             </Text>
             <Text w={"10%"}>:</Text>
+
             <Text w={"60%"} fontSize={"md"}>
-              {events?.getCpeEventById._id}
+              {events?.getCpeEventById.name}
             </Text>
           </HStack>
+          {/* <HStack mx={5} w={"100%"}>
+            <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
+              Seminar Location
+            </Text>
+            <Text w={"10%"}>:</Text>
+
+            <Text w={"60%"} fontSize={"md"}>
+              {events?.getCpeEventById.location}
+            </Text>
+          </HStack> */}
           <HStack w={"100%"}>
             <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
               Name
@@ -137,35 +320,23 @@ function QRScreen() {
               {profile?.myProfileInformation?.lastName}
             </Text>
           </HStack>
-          <HStack w={"100%"}>
-            <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
-              Seminar
-            </Text>
-            <Text w={"10%"}>:</Text>
-            <Text w={"60%"} fontSize={"md"}>
-              {events?.getCpeEventById.name}
-            </Text>
-          </HStack>
         </VStack>
-        <View
-          position={"relative"}
-          justifyContent={"flex-end"}
-          alignItems={"center"}
-          mb={30}
-          flex={1}
-        >
+
+        <HStack alignItems="center" justifyContent="center" flex={1} space={4}>
           <Button
             borderRadius={10}
-            position={"absolute"}
             bg={"#0f045d"}
             onPress={() => setScanned(false)}
           >
             Scan Again
           </Button>
-        </View>
+          <Button borderRadius={10} bg={"#0f045d"} onPress={handlehome}>
+            Event Home
+          </Button>
+        </HStack>
       </View>
     </>
   );
-}
+};
 
 export default QRScanner;

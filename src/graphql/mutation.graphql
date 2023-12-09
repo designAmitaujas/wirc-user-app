@@ -24,13 +24,16 @@ mutation AddFeedBackFrom($options: IFeedBackForm!) {
   }
 }
 
-mutation GetFilterdSkillMember($options: IGetAllMemberSkills!) {
-  getFilterdSkillMember(options: $options) {
+mutation GetFilterdSkillMemberV2($options: IGetAllMemberSkillsV2!) {
+  getFilterdSkillMemberV2(options: $options) {
     name
+    city
     email
     mobile
-    skill
     gender
+    skill
+    firebaseId
+    userid
   }
 }
 
@@ -99,5 +102,53 @@ mutation AddFeedBackFrom($options: IFeedBackForm!) {
     success
     msg
     data
+  }
+}
+
+mutation SendInvitation(
+  $firebaseId: String!
+  $eventId: String!
+  $inviteTo: String!
+) {
+  sendInvitation(
+    firebaseId: $firebaseId
+    eventId: $eventId
+    inviteTo: $inviteTo
+  )
+}
+
+mutation SetFirebaseId($firebaseId: String!) {
+  setFirebaseId(firebaseId: $firebaseId)
+}
+
+mutation IsInvitateAccepted($eventId: String!, $inviteTo: String!) {
+  IsInvitateAccepted(eventId: $eventId, inviteTo: $inviteTo)
+}
+
+mutation GetAllInvitation {
+  getAllInvitation {
+    _id
+    inviteFrom {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    inviteTo {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    cpeEvent {
+      _id
+      name
+    }
+    isAccepted
+    isActive
   }
 }

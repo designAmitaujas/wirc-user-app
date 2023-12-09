@@ -139,6 +139,14 @@ export type BranchV2Details = {
   top: Scalars['String']['output'];
 };
 
+export type Businesslisting = {
+  __typename?: 'Businesslisting';
+  _id: Scalars['String']['output'];
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  sponserimg: Scalars['String']['output'];
+};
+
 export type Cms = {
   __typename?: 'CMS';
   _id: Scalars['String']['output'];
@@ -254,14 +262,19 @@ export type CpeEvent = {
   cutoffDate?: Maybe<Scalars['DateTime']['output']>;
   date1: Scalars['DateTime']['output'];
   date2: Scalars['DateTime']['output'];
+  externalRegistration: Scalars['String']['output'];
   flyer: Scalars['String']['output'];
+  flyerArr?: Maybe<Array<MultiFlyerImage>>;
   igst: Scalars['Float']['output'];
   igstState?: Maybe<State>;
   img: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
   isArchived: Scalars['Boolean']['output'];
   isForStudent: Scalars['Boolean']['output'];
+  isRegistrationOn: Scalars['Boolean']['output'];
+  lati: Scalars['Float']['output'];
   location: Scalars['String']['output'];
+  longi: Scalars['Float']['output'];
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
   sgst: Scalars['Float']['output'];
@@ -399,6 +412,7 @@ export type EmailTemplate = {
 export type EventAttendence = {
   __typename?: 'EventAttendence';
   _id: Scalars['String']['output'];
+  attendanceStatus: Scalars['String']['output'];
   cpeEvent?: Maybe<CpeEvent>;
   isActive: Scalars['Boolean']['output'];
   membershipId: Scalars['String']['output'];
@@ -409,6 +423,7 @@ export type EventRegistrationMember = {
   _id: Scalars['String']['output'];
   addresss: Scalars['String']['output'];
   associatedUser?: Maybe<User>;
+  birthdate: Scalars['String']['output'];
   city?: Maybe<City>;
   contactNo: Scalars['String']['output'];
   country?: Maybe<Country>;
@@ -424,6 +439,15 @@ export type EventRegistrationMember = {
   rangeID?: Maybe<CpeEventRange>;
   state?: Maybe<State>;
   type: Scalars['String']['output'];
+};
+
+export type EventSpeaker = {
+  __typename?: 'EventSpeaker';
+  _id: Scalars['String']['output'];
+  cpeEvent?: Maybe<CpeEvent>;
+  detailsimg: Scalars['String']['output'];
+  isActive: Scalars['Boolean']['output'];
+  speakerimg: Scalars['String']['output'];
 };
 
 export type EventTopic = {
@@ -454,6 +478,7 @@ export type EventTransactionHistory = {
   createdAt: Scalars['DateTime']['output'];
   customId: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
+  isEmailSent: Scalars['Boolean']['output'];
   isPaymnetPaid: Scalars['Boolean']['output'];
   isSameCity: Scalars['Boolean']['output'];
   studyGroup?: Maybe<StudyGroup>;
@@ -750,6 +775,13 @@ export type ICreateBranchV2Details = {
   top: Scalars['String']['input'];
 };
 
+export type ICreateBusinesslisting = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  isActive: Scalars['Boolean']['input'];
+  name: Scalars['String']['input'];
+  sponserimg: Scalars['String']['input'];
+};
+
 export type ICreateCapacity = {
   _id?: InputMaybe<Scalars['String']['input']>;
   isActive: Scalars['Boolean']['input'];
@@ -855,13 +887,19 @@ export type ICreateCpeEvent = {
   cutoffDate: Scalars['String']['input'];
   date1: Scalars['String']['input'];
   date2: Scalars['String']['input'];
+  externalRegistration: Scalars['String']['input'];
   flyer: Scalars['String']['input'];
+  flyerArr: Array<Scalars['String']['input']>;
   igst: Scalars['Float']['input'];
   igstCity: Scalars['String']['input'];
   img: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
+  isArchived: Scalars['Boolean']['input'];
   isForStudent: Scalars['Boolean']['input'];
+  isRegistrationOn: Scalars['Boolean']['input'];
+  lati: Scalars['Float']['input'];
   location: Scalars['String']['input'];
+  longi: Scalars['Float']['input'];
   name: Scalars['String']['input'];
   price: Scalars['Float']['input'];
   sgst: Scalars['Float']['input'];
@@ -982,6 +1020,14 @@ export type ICreateEmailTemplate = {
   html: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
   name: Scalars['String']['input'];
+};
+
+export type ICreateEventSpeaker = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  cpeEvent: Scalars['String']['input'];
+  detailsimg: Scalars['String']['input'];
+  isActive: Scalars['Boolean']['input'];
+  speakerimg: Scalars['String']['input'];
 };
 
 export type ICreateEventTopic = {
@@ -1471,6 +1517,7 @@ export type ICreateStudentDownload = {
   name: Scalars['String']['input'];
   speaker: Scalars['String']['input'];
   uri: Scalars['String']['input'];
+  zoomvideo: Scalars['String']['input'];
 };
 
 export type ICreateStudentDownloadCategory = {
@@ -1478,6 +1525,13 @@ export type ICreateStudentDownloadCategory = {
   date: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
   name: Scalars['String']['input'];
+};
+
+export type ICreateStudentDownloadCode = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  category: Scalars['String']['input'];
+  isActive: Scalars['Boolean']['input'];
+  videocode: Scalars['String']['input'];
 };
 
 export type ICreateStudentWicasaCommunity = {
@@ -1639,6 +1693,7 @@ export type ICreateYoutube = {
 
 export type IEventPaymentRegistration = {
   addresss: Scalars['String']['input'];
+  birthdate: Scalars['String']['input'];
   city: Scalars['String']['input'];
   contactNo: Scalars['String']['input'];
   country: Scalars['String']['input'];
@@ -1699,6 +1754,12 @@ export type IGetAllMemberSkills = {
   skills: Scalars['String']['input'];
 };
 
+export type IGetAllMemberSkillsV2 = {
+  city: Scalars['String']['input'];
+  event: Scalars['String']['input'];
+  skills: Scalars['String']['input'];
+};
+
 export type IGetAllTransactionId = {
   ids: Array<Scalars['String']['input']>;
 };
@@ -1719,11 +1780,14 @@ export type IGetMemberSkill = {
 
 export type IGetMyList = {
   __typename?: 'IGetMyList';
+  city: Scalars['String']['output'];
   email: Scalars['String']['output'];
+  firebaseId: Scalars['String']['output'];
   gender: Scalars['String']['output'];
   mobile: Scalars['String']['output'];
   name: Scalars['String']['output'];
   skill: Array<Scalars['String']['output']>;
+  userid: Scalars['String']['output'];
 };
 
 export type IGetPaymentDetails = {
@@ -1739,6 +1803,12 @@ export type ILibraryCount = {
   libraryNonACCapacity: Scalars['String']['output'];
   libraryNoneACOccupied: Scalars['String']['output'];
   libraryOccupied: Scalars['String']['output'];
+};
+
+export type INetworkingSearch = {
+  category: Scalars['String']['input'];
+  firmName: Scalars['String']['input'];
+  location: Scalars['String']['input'];
 };
 
 export type IPaymentField = {
@@ -1772,7 +1842,6 @@ export type IPaytmIdResponseRespose = {
 export type IPrernaSearch = {
   city: Scalars['String']['input'];
   jobType: Scalars['String']['input'];
-  name: Scalars['String']['input'];
   workFrom: Scalars['String']['input'];
 };
 
@@ -1803,6 +1872,11 @@ export type IStatusResponse = {
   data: Scalars['String']['output'];
   msg: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
+};
+
+export type IStudentInput = {
+  id: Scalars['String']['input'];
+  studentId: Scalars['String']['input'];
 };
 
 export type IUserInfoByMembershipNumber = {
@@ -1855,6 +1929,7 @@ export type InitiativeMailInput = {
   id: Scalars['String']['input'];
   name: Scalars['String']['input'];
   number: Scalars['String']['input'];
+  query: Scalars['String']['input'];
   type: Scalars['String']['input'];
 };
 
@@ -2027,12 +2102,20 @@ export type MentorshipZone = {
   workType?: Maybe<WorkType>;
 };
 
+export type MultiFlyerImage = {
+  __typename?: 'MultiFlyerImage';
+  _id: Scalars['String']['output'];
+  img: Scalars['String']['output'];
+  parent?: Maybe<CpeEvent>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   GetAllPaymentDetailsByDateRange: Array<EventRegistrationMember>;
   GetAllPublicationPaymentDetailsByDateRange: Array<PublicationBilling>;
   GetPaymentDetails: Array<EventRegistrationMember>;
   GetPaymentDetailsByStudyGroup: Array<EventRegistrationMember>;
+  IsInvitateAccepted: Scalars['Boolean']['output'];
   addAttendence: IStatusResponse;
   addFeedBackFrom: IStatusResponse;
   addHelpDeskQA: IStatusResponse;
@@ -2052,6 +2135,7 @@ export type Mutation = {
   createOrUpdateBranchManual: IStatusResponse;
   createOrUpdateBranchV2: IStatusResponse;
   createOrUpdateBranchV2Details: IStatusResponse;
+  createOrUpdateBusinesslisting: IStatusResponse;
   createOrUpdateCapacity: IStatusResponse;
   createOrUpdateCity: IStatusResponse;
   createOrUpdateCms: IStatusResponse;
@@ -2074,6 +2158,7 @@ export type Mutation = {
   createOrUpdateCpeStudyGroupDetails: IStatusResponse;
   createOrUpdateEmailCredential: IStatusResponse;
   createOrUpdateEmailTemplate: IStatusResponse;
+  createOrUpdateEventSpeaker: IStatusResponse;
   createOrUpdateEventTopic: IStatusResponse;
   createOrUpdateFooterCateogry: IStatusResponse;
   createOrUpdateFooterLink: IStatusResponse;
@@ -2123,6 +2208,7 @@ export type Mutation = {
   createOrUpdateState: IStatusResponse;
   createOrUpdateStudentDownload: IStatusResponse;
   createOrUpdateStudentDownloadCategory: IStatusResponse;
+  createOrUpdateStudentDownloadCode: IStatusResponse;
   createOrUpdateStudentWicasaCommunity: IStatusResponse;
   createOrUpdateStudyCircleMetting: IStatusResponse;
   createOrUpdateStudyGroup: IStatusResponse;
@@ -2147,6 +2233,7 @@ export type Mutation = {
   deleteBranchManual: IStatusResponse;
   deleteBranchV2: IStatusResponse;
   deleteBranchV2Details: IStatusResponse;
+  deleteBusinesslisting: IStatusResponse;
   deleteCapacity: IStatusResponse;
   deleteCity: IStatusResponse;
   deleteCms: IStatusResponse;
@@ -2168,6 +2255,7 @@ export type Mutation = {
   deleteCpeStudyGroupDetails: IStatusResponse;
   deleteEmailCredential: IStatusResponse;
   deleteEmailTemplate: IStatusResponse;
+  deleteEventSpeaker: IStatusResponse;
   deleteEventTopic: IStatusResponse;
   deleteFooterCateogry: IStatusResponse;
   deleteFooterLink: IStatusResponse;
@@ -2217,6 +2305,7 @@ export type Mutation = {
   deleteState: IStatusResponse;
   deleteStudentDownload: IStatusResponse;
   deleteStudentDownloadCategory: IStatusResponse;
+  deleteStudentDownloadCode: IStatusResponse;
   deleteStudentWicasaCommunity: IStatusResponse;
   deleteStudyCircleMetting: IStatusResponse;
   deleteStudyGroup: IStatusResponse;
@@ -2235,18 +2324,24 @@ export type Mutation = {
   genEmailWithMembershipNumber: IStatusResponse;
   genEventPaymnet: IPaymentResponse;
   genPayment: IPaymentResponse;
+  getAllInvitation: Array<NetworkingInvite>;
   getAllPaytmIdfromTransactionId: Array<IPaytmIdResponseRespose>;
   getAllPublicationPaymentHistory: Array<PublicationBilling>;
   getFilterdSkillMember: Array<IGetMyList>;
+  getFilterdSkillMemberV2: Array<IGetMyList>;
   getMemberInfoByMembershipNumber?: Maybe<IUserInfoByMembershipNumber>;
   getPublicaLibraryRegistration: IStatusResponse;
   getRedeamCode: IStatusResponse;
+  getRedeemDownloadCode: IStatusResponse;
   initiativeMail: IStatusResponse;
   memberRegistrationAuthResolver: IAuthResoverResponse;
   mentorshipPlacementSearch: Array<MentorshipZone>;
   networkingZoneSearch: Array<NetworkingZone>;
   noneMemberRegistrationAuthResolver: IAuthResoverResponse;
   prenaSearch: Array<Prerna>;
+  sendInvitation: Scalars['Boolean']['output'];
+  setFirebaseId: Scalars['Boolean']['output'];
+  speakerMail: IStatusResponse;
   updateAdminUser: IStatusResponse;
   updateMyProfile: IStatusResponse;
   updateNewPassword: IStatusResponse;
@@ -2273,6 +2368,12 @@ export type MutationGetPaymentDetailsArgs = {
 
 export type MutationGetPaymentDetailsByStudyGroupArgs = {
   options: IGetPaymentDetails;
+};
+
+
+export type MutationIsInvitateAcceptedArgs = {
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
 };
 
 
@@ -2368,6 +2469,11 @@ export type MutationCreateOrUpdateBranchV2Args = {
 
 export type MutationCreateOrUpdateBranchV2DetailsArgs = {
   options: ICreateBranchV2Details;
+};
+
+
+export type MutationCreateOrUpdateBusinesslistingArgs = {
+  options: ICreateBusinesslisting;
 };
 
 
@@ -2478,6 +2584,11 @@ export type MutationCreateOrUpdateEmailCredentialArgs = {
 
 export type MutationCreateOrUpdateEmailTemplateArgs = {
   options: ICreateEmailTemplate;
+};
+
+
+export type MutationCreateOrUpdateEventSpeakerArgs = {
+  options: ICreateEventSpeaker;
 };
 
 
@@ -2726,6 +2837,11 @@ export type MutationCreateOrUpdateStudentDownloadCategoryArgs = {
 };
 
 
+export type MutationCreateOrUpdateStudentDownloadCodeArgs = {
+  options: ICreateStudentDownloadCode;
+};
+
+
 export type MutationCreateOrUpdateStudentWicasaCommunityArgs = {
   options: ICreateStudentWicasaCommunity;
 };
@@ -2846,6 +2962,11 @@ export type MutationDeleteBranchV2DetailsArgs = {
 };
 
 
+export type MutationDeleteBusinesslistingArgs = {
+  options: IGetById;
+};
+
+
 export type MutationDeleteCapacityArgs = {
   options: IGetById;
 };
@@ -2947,6 +3068,11 @@ export type MutationDeleteEmailCredentialArgs = {
 
 
 export type MutationDeleteEmailTemplateArgs = {
+  options: IGetById;
+};
+
+
+export type MutationDeleteEventSpeakerArgs = {
   options: IGetById;
 };
 
@@ -3196,6 +3322,11 @@ export type MutationDeleteStudentDownloadCategoryArgs = {
 };
 
 
+export type MutationDeleteStudentDownloadCodeArgs = {
+  options: IGetById;
+};
+
+
 export type MutationDeleteStudentWicasaCommunityArgs = {
   options: IGetById;
 };
@@ -3301,6 +3432,11 @@ export type MutationGetFilterdSkillMemberArgs = {
 };
 
 
+export type MutationGetFilterdSkillMemberV2Args = {
+  options: IGetAllMemberSkillsV2;
+};
+
+
 export type MutationGetMemberInfoByMembershipNumberArgs = {
   options: IGetById;
 };
@@ -3313,6 +3449,11 @@ export type MutationGetPublicaLibraryRegistrationArgs = {
 
 export type MutationGetRedeamCodeArgs = {
   options: IGetById;
+};
+
+
+export type MutationGetRedeemDownloadCodeArgs = {
+  options: IStudentInput;
 };
 
 
@@ -3332,7 +3473,7 @@ export type MutationMentorshipPlacementSearchArgs = {
 
 
 export type MutationNetworkingZoneSearchArgs = {
-  options: ICoworkingSearch;
+  options: INetworkingSearch;
 };
 
 
@@ -3343,6 +3484,23 @@ export type MutationNoneMemberRegistrationAuthResolverArgs = {
 
 export type MutationPrenaSearchArgs = {
   options: IPrernaSearch;
+};
+
+
+export type MutationSendInvitationArgs = {
+  eventId: Scalars['String']['input'];
+  firebaseId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+};
+
+
+export type MutationSetFirebaseIdArgs = {
+  firebaseId: Scalars['String']['input'];
+};
+
+
+export type MutationSpeakerMailArgs = {
+  options: QnaMailInput;
 };
 
 
@@ -3373,6 +3531,16 @@ export type MutationUpdateUserProfileArgs = {
 
 export type MutationVerifyEmailWithMembershipNumberArgs = {
   options: IGetEmailInput;
+};
+
+export type NetworkingInvite = {
+  __typename?: 'NetworkingInvite';
+  _id: Scalars['String']['output'];
+  cpeEvent?: Maybe<CpeEvent>;
+  inviteFrom?: Maybe<User>;
+  inviteTo?: Maybe<User>;
+  isAccepted: Scalars['Boolean']['output'];
+  isActive: Scalars['Boolean']['output'];
 };
 
 export type NetworkingZone = {
@@ -3611,6 +3779,15 @@ export type PublicationUserType = {
   publication?: Maybe<Publication>;
 };
 
+export type QnaMailInput = {
+  email: Scalars['String']['input'];
+  eventdate: Scalars['String']['input'];
+  eventname: Scalars['String']['input'];
+  id: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  query: Scalars['String']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   approveMemberRegistrationById: IStatusResponse;
@@ -3628,6 +3805,7 @@ export type Query = {
   getAllBranchManual: Array<BranchManual>;
   getAllBranchV2: Array<BranchV2>;
   getAllBranchV2Details: Array<BranchV2Details>;
+  getAllBusinessListing: Array<Businesslisting>;
   getAllCapacity: Array<Capacity>;
   getAllCapacityFront: Array<Capacity>;
   getAllCity: Array<City>;
@@ -3652,6 +3830,7 @@ export type Query = {
   getAllCpeStudyGroupDetails: Array<CpeStudyGroupDetails>;
   getAllEmailCredentials: Array<EmailCredential>;
   getAllEmailTemplate: Array<EmailTemplate>;
+  getAllEventSpeaker: Array<EventSpeaker>;
   getAllEventTopic: Array<EventTopic>;
   getAllFooterCateogry: Array<FooterLinkGroup>;
   getAllFooterLink: Array<FooterLink>;
@@ -3703,6 +3882,7 @@ export type Query = {
   getAllState: Array<State>;
   getAllStudentDownload: Array<StudentDownload>;
   getAllStudentDownloadCategory: Array<StudentDownloadCategory>;
+  getAllStudentDownloadCode: Array<StudentDownloadCode>;
   getAllStudentWicasaCommunity: Array<StudentWicasaCommunity>;
   getAllStudyCircleMetting: Array<StudyCircleMetting>;
   getAllStudyGroup: Array<StudyGroup>;
@@ -3728,6 +3908,7 @@ export type Query = {
   getBranchManualById: BranchManual;
   getBranchV2ById: BranchV2;
   getBranchV2DetailsById: BranchV2Details;
+  getBusinesslistingById: Businesslisting;
   getCapacityById: WorkType;
   getCityById: City;
   getCmsByCustId: Cms;
@@ -3760,6 +3941,7 @@ export type Query = {
   getCpeStudyGroupDetailsById: CpeStudyGroupDetails;
   getEmailCredentialsById: EmailCredential;
   getEmailTemplateById: EmailTemplate;
+  getEventSpeakerById: EventSpeaker;
   getEventTopicById: EventTopic;
   getFooterCateogryById: FooterLinkGroup;
   getFooterLinkById: FooterLink;
@@ -3785,6 +3967,7 @@ export type Query = {
   getLibraryRegistrationFormById: LibraryRegistrationForm;
   getLibraryRegistrationLocationById: LibraryRegistrationLocation;
   getMcsById: Mcs;
+  getMemberAttendanceList: Array<MemberRegistration>;
   getMemberById: Member;
   getMemberDesignationById: MemberDesignation;
   getMemberRegistrationById: MemberRegistration;
@@ -3793,6 +3976,8 @@ export type Query = {
   getMyAttendedEvent: Array<EventAttendence>;
   getMyEventList: Array<RegistrationList>;
   getMyEventList2: Array<RegistrationList>;
+  getMyMemberListByhistoryId: Array<EventRegistrationMember>;
+  getMyMobileEventList: Array<RegistrationEventList>;
   getMySkillList: Array<MemberSkill>;
   getNetworkingZoneById: NetworkingZone;
   getPastChairpersonById: PastChairperson;
@@ -3820,8 +4005,10 @@ export type Query = {
   getServicesById: Services;
   getSkillsById: Skills;
   getStateById: State;
+  getStudentCodeAccessById: IStatusResponse;
   getStudentDownloadById: StudentDownload;
   getStudentDownloadCategoryById: StudentDownloadCategory;
+  getStudentDownloadCodeById: StudentDownloadCode;
   getStudentWicasaCommunityById: StudentWicasaCommunity;
   getStudyCircleMettingById: StudyCircleMetting;
   getStudyGroupById: StudyGroup;
@@ -3837,6 +4024,7 @@ export type Query = {
   getWircdirectoryById: WircDirectory;
   getWorkTypeById: WorkType;
   getYoutubeLinksById: YoutubeLinks;
+  getrecepitsentEmails: Array<SentEmailResponse>;
   hello: Scalars['String']['output'];
   isUserPurchasePublication: IStatusResponse;
   myHelpDeskPost: Array<HelpDeskQa>;
@@ -3892,6 +4080,11 @@ export type QueryGetBranchV2ByIdArgs = {
 
 
 export type QueryGetBranchV2DetailsByIdArgs = {
+  options: IGetById;
+};
+
+
+export type QueryGetBusinesslistingByIdArgs = {
   options: IGetById;
 };
 
@@ -4041,6 +4234,11 @@ export type QueryGetEmailTemplateByIdArgs = {
 };
 
 
+export type QueryGetEventSpeakerByIdArgs = {
+  options: IGetById;
+};
+
+
 export type QueryGetEventTopicByIdArgs = {
   options: IGetById;
 };
@@ -4161,6 +4359,11 @@ export type QueryGetMcsByIdArgs = {
 };
 
 
+export type QueryGetMemberAttendanceListArgs = {
+  eventId: Scalars['String']['input'];
+};
+
+
 export type QueryGetMemberByIdArgs = {
   options: IGetById;
 };
@@ -4183,6 +4386,11 @@ export type QueryGetMemberSkillByIdArgs = {
 
 export type QueryGetMentorshipZoneByIdArgs = {
   options: IGetById;
+};
+
+
+export type QueryGetMyMemberListByhistoryIdArgs = {
+  historyId: Scalars['String']['input'];
 };
 
 
@@ -4321,6 +4529,11 @@ export type QueryGetStudentDownloadCategoryByIdArgs = {
 };
 
 
+export type QueryGetStudentDownloadCodeByIdArgs = {
+  options: IGetById;
+};
+
+
 export type QueryGetStudentWicasaCommunityByIdArgs = {
   options: IGetById;
 };
@@ -4405,6 +4618,16 @@ export type Region = {
   name: Scalars['String']['output'];
 };
 
+export type RegistrationEventList = {
+  __typename?: 'RegistrationEventList';
+  endDate: Scalars['String']['output'];
+  eventAddress: Scalars['String']['output'];
+  eventId: Scalars['String']['output'];
+  eventName: Scalars['String']['output'];
+  registrationDate: Scalars['String']['output'];
+  startDate: Scalars['String']['output'];
+};
+
 export type RegistrationList = {
   __typename?: 'RegistrationList';
   email: Scalars['String']['output'];
@@ -4417,6 +4640,14 @@ export type RegistrationList = {
   registrationDate: Scalars['String']['output'];
   totalPay: Scalars['String']['output'];
   transactionId: Scalars['String']['output'];
+};
+
+export type SentEmailResponse = {
+  __typename?: 'SentEmailResponse';
+  email: Scalars['String']['output'];
+  eventname: Scalars['String']['output'];
+  ismailsent: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type ServiceType = {
@@ -4458,6 +4689,7 @@ export type StudentDownload = {
   name: Scalars['String']['output'];
   speaker: Scalars['String']['output'];
   uri: Scalars['String']['output'];
+  zoomvideo: Scalars['String']['output'];
 };
 
 export type StudentDownloadCategory = {
@@ -4466,6 +4698,14 @@ export type StudentDownloadCategory = {
   date: Scalars['DateTime']['output'];
   isActive: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
+};
+
+export type StudentDownloadCode = {
+  __typename?: 'StudentDownloadCode';
+  _id: Scalars['String']['output'];
+  category?: Maybe<StudentDownload>;
+  isActive: Scalars['Boolean']['output'];
+  videocode: Scalars['String']['output'];
 };
 
 export type StudentWicasaCommunity = {
@@ -4686,12 +4926,12 @@ export type AddFeedBackFromMutationVariables = Exact<{
 
 export type AddFeedBackFromMutation = { __typename?: 'Mutation', addFeedBackFrom: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
 
-export type GetFilterdSkillMemberMutationVariables = Exact<{
-  options: IGetAllMemberSkills;
+export type GetFilterdSkillMemberV2MutationVariables = Exact<{
+  options: IGetAllMemberSkillsV2;
 }>;
 
 
-export type GetFilterdSkillMemberMutation = { __typename?: 'Mutation', getFilterdSkillMember: Array<{ __typename?: 'IGetMyList', name: string, email: string, mobile: string, skill: Array<string>, gender: string }> };
+export type GetFilterdSkillMemberV2Mutation = { __typename?: 'Mutation', getFilterdSkillMemberV2: Array<{ __typename?: 'IGetMyList', name: string, city: string, email: string, mobile: string, gender: string, skill: Array<string>, firebaseId: string, userid: string }> };
 
 export type GetMemberInfoByMembershipNumberMutationVariables = Exact<{
   options: IGetById;
@@ -4728,10 +4968,39 @@ export type DeleteMemberSkillMutationVariables = Exact<{
 
 export type DeleteMemberSkillMutation = { __typename?: 'Mutation', deleteMemberSkill: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
 
+export type SendInvitationMutationVariables = Exact<{
+  firebaseId: Scalars['String']['input'];
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+}>;
+
+
+export type SendInvitationMutation = { __typename?: 'Mutation', sendInvitation: boolean };
+
+export type SetFirebaseIdMutationVariables = Exact<{
+  firebaseId: Scalars['String']['input'];
+}>;
+
+
+export type SetFirebaseIdMutation = { __typename?: 'Mutation', setFirebaseId: boolean };
+
+export type IsInvitateAcceptedMutationVariables = Exact<{
+  eventId: Scalars['String']['input'];
+  inviteTo: Scalars['String']['input'];
+}>;
+
+
+export type IsInvitateAcceptedMutation = { __typename?: 'Mutation', IsInvitateAccepted: boolean };
+
+export type GetAllInvitationMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllInvitationMutation = { __typename?: 'Mutation', getAllInvitation: Array<{ __typename?: 'NetworkingInvite', _id: string, isAccepted: boolean, isActive: boolean, inviteFrom?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, inviteTo?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string } | null }> };
+
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllCpeEventQuery = { __typename?: 'Query', getAllCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null }> };
+export type GetAllCpeEventQuery = { __typename?: 'Query', getAllCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, lati: number, longi: number, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null }> };
 
 export type GetAllStateQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4784,6 +5053,30 @@ export type GetGenderByIdQueryVariables = Exact<{
 
 export type GetGenderByIdQuery = { __typename?: 'Query', getGenderById: { __typename?: 'Gender', _id: string, name: string, isActive: boolean } };
 
+export type GetMyMobileEventListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyMobileEventListQuery = { __typename?: 'Query', getMyMobileEventList: Array<{ __typename?: 'RegistrationEventList', registrationDate: string, eventName: string, startDate: string, endDate: string, eventAddress: string, eventId: string }> };
+
+export type GetEventTopicByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetEventTopicByIdQuery = { __typename?: 'Query', getEventTopicById: { __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, lati: number, longi: number, capacity: string, cutoffDate?: any | null, cms: string, externalRegistration: string, price: number, igst: number, cgst: number, sgst: number, isRegistrationOn: boolean, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null } };
+
+export type GetAllEventTopicQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllEventTopicQuery = { __typename?: 'Query', getAllEventTopic: Array<{ __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, lati: number, longi: number, capacity: string, cutoffDate?: any | null, cms: string, externalRegistration: string, price: number, igst: number, cgst: number, sgst: number, isRegistrationOn: boolean, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+
+export type GetMemberAttendanceListQueryVariables = Exact<{
+  eventId: Scalars['String']['input'];
+}>;
+
+
+export type GetMemberAttendanceListQuery = { __typename?: 'Query', getMemberAttendanceList: Array<{ __typename?: 'MemberRegistration', _id: string, firstName: string, lastName: string, middleName: string, hash: string, email: string, userType: string, membershipNo: string, username: string, gstNo: string, tradeName: string, address1: string, address2: string, pinCode: string, phone: string, isApproved: boolean, isActive: boolean, gender?: { __typename?: 'Gender', _id: string, name: string, isActive: boolean } | null }> };
+
 export type MyProfileInformationQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4792,19 +5085,19 @@ export type MyProfileInformationQuery = { __typename?: 'Query', myProfileInforma
 export type GetMyAttendedEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, lati: number, longi: number, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
 
 export type GetTodayCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTodayCpeEventQuery = { __typename?: 'Query', getTodayCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean }> };
+export type GetTodayCpeEventQuery = { __typename?: 'Query', getTodayCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, lati: number, longi: number, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean }> };
 
 export type GetCpeEventByIdQueryVariables = Exact<{
   options: IGetById;
 }>;
 
 
-export type GetCpeEventByIdQuery = { __typename?: 'Query', getCpeEventById: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null } };
+export type GetCpeEventByIdQuery = { __typename?: 'Query', getCpeEventById: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, lati: number, longi: number, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null } };
 
 export type GetCpeEventRangeByCpeIdQueryVariables = Exact<{
   options: IGetById;
@@ -4818,7 +5111,7 @@ export type GetPaymentReciptByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentReciptByIdQuery = { __typename?: 'Query', getPaymentReciptById: { __typename?: 'EventTransactionHistory', _id: string, customId: string, billingEmail: string, billingGst: string, billingName: string, isSameCity: boolean, CALLBACK_URL: string, CHANNEL_ID: string, CHECKSUMHASH: string, CUST_ID: string, EMAIL: string, MID: string, ORDER_ID: string, TXN_AMOUNT: string, WEBSITE: string, isPaymnetPaid: boolean, isActive: boolean, createdAt: any, cpeEvnet?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, isActive: boolean, name: string } | null } | null } };
+export type GetPaymentReciptByIdQuery = { __typename?: 'Query', getPaymentReciptById: { __typename?: 'EventTransactionHistory', _id: string, customId: string, billingEmail: string, billingGst: string, billingName: string, isSameCity: boolean, CALLBACK_URL: string, CHANNEL_ID: string, CHECKSUMHASH: string, CUST_ID: string, EMAIL: string, MID: string, ORDER_ID: string, TXN_AMOUNT: string, WEBSITE: string, isPaymnetPaid: boolean, isActive: boolean, createdAt: any, cpeEvnet?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, lati: number, longi: number, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, isActive: boolean, name: string } | null } | null } };
 
 export type GetCountByCpeEventQueryVariables = Exact<{
   options: IGetById;
@@ -4851,10 +5144,51 @@ export type GetMySkillListQueryVariables = Exact<{
 
 export type GetMySkillListQuery = { __typename?: 'Query', getMySkillList: Array<{ __typename?: 'MemberSkill', _id: string, membershipNumber: string, isActive: boolean, skills?: { __typename?: 'Skills', _id: string, name: string, isActive: boolean } | null }> };
 
-export type GetAllEventTopicQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetBusinesslistingByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
 
 
-export type GetAllEventTopicQuery = { __typename?: 'Query', getAllEventTopic: Array<{ __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+export type GetBusinesslistingByIdQuery = { __typename?: 'Query', getBusinesslistingById: { __typename?: 'Businesslisting', _id: string, sponserimg: string, name: string, isActive: boolean } };
+
+export type GetAllBusinessListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllBusinessListingQuery = { __typename?: 'Query', getAllBusinessListing: Array<{ __typename?: 'Businesslisting', _id: string, sponserimg: string, name: string, isActive: boolean }> };
+
+export type GetAllEventSpeakerQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllEventSpeakerQuery = { __typename?: 'Query', getAllEventSpeaker: Array<{ __typename?: 'EventSpeaker', _id: string, speakerimg: string, detailsimg: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, img: string, name: string } | null }> };
+
+export type GetAllWhatWeBrignToYouQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllWhatWeBrignToYouQuery = { __typename?: 'Query', getAllWhatWeBrignToYou: Array<{ __typename?: 'WhatWeBrignToYou', _id: string, name: string, image: string, description: string, redirectLink: string, icon: string, isWIRC: boolean, isActive: boolean }> };
+
+export type GetAllYoutubeLinksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllYoutubeLinksQuery = { __typename?: 'Query', getAllYoutubeLinks: Array<{ __typename?: 'YoutubeLinks', _id: string, name: string, redirectlink: string, isActive: boolean, category?: { __typename?: 'WhatWeBrignToYou', _id: string, name: string, isActive: boolean, isWIRC: boolean } | null }> };
+
+export type GetAllWicasaNewsLatterQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllWicasaNewsLatterQuery = { __typename?: 'Query', getAllWicasaNewsLatter: Array<{ __typename?: 'WicasaNewsLatter', _id: string, name: string, date: any, redirectlink: string, img: string, pdf: string, iswirc: boolean, showIndex: string, isActive: boolean }> };
+
+export type GetWhatWeBrignToYouByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetWhatWeBrignToYouByIdQuery = { __typename?: 'Query', getWhatWeBrignToYouById: { __typename?: 'WhatWeBrignToYou', _id: string, name: string, image: string, description: string, redirectLink: string, icon: string, isWIRC: boolean, isActive: boolean } };
+
+export type GetEventSpeakerByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetEventSpeakerByIdQuery = { __typename?: 'Query', getEventSpeakerById: { __typename?: 'EventSpeaker', _id: string, speakerimg: string, detailsimg: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, img: string, name: string } | null } };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -4964,43 +5298,46 @@ export function useAddFeedBackFromMutation(baseOptions?: Apollo.MutationHookOpti
 export type AddFeedBackFromMutationHookResult = ReturnType<typeof useAddFeedBackFromMutation>;
 export type AddFeedBackFromMutationResult = Apollo.MutationResult<AddFeedBackFromMutation>;
 export type AddFeedBackFromMutationOptions = Apollo.BaseMutationOptions<AddFeedBackFromMutation, AddFeedBackFromMutationVariables>;
-export const GetFilterdSkillMemberDocument = gql`
-    mutation GetFilterdSkillMember($options: IGetAllMemberSkills!) {
-  getFilterdSkillMember(options: $options) {
+export const GetFilterdSkillMemberV2Document = gql`
+    mutation GetFilterdSkillMemberV2($options: IGetAllMemberSkillsV2!) {
+  getFilterdSkillMemberV2(options: $options) {
     name
+    city
     email
     mobile
-    skill
     gender
+    skill
+    firebaseId
+    userid
   }
 }
     `;
-export type GetFilterdSkillMemberMutationFn = Apollo.MutationFunction<GetFilterdSkillMemberMutation, GetFilterdSkillMemberMutationVariables>;
+export type GetFilterdSkillMemberV2MutationFn = Apollo.MutationFunction<GetFilterdSkillMemberV2Mutation, GetFilterdSkillMemberV2MutationVariables>;
 
 /**
- * __useGetFilterdSkillMemberMutation__
+ * __useGetFilterdSkillMemberV2Mutation__
  *
- * To run a mutation, you first call `useGetFilterdSkillMemberMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useGetFilterdSkillMemberMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useGetFilterdSkillMemberV2Mutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetFilterdSkillMemberV2Mutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [getFilterdSkillMemberMutation, { data, loading, error }] = useGetFilterdSkillMemberMutation({
+ * const [getFilterdSkillMemberV2Mutation, { data, loading, error }] = useGetFilterdSkillMemberV2Mutation({
  *   variables: {
  *      options: // value for 'options'
  *   },
  * });
  */
-export function useGetFilterdSkillMemberMutation(baseOptions?: Apollo.MutationHookOptions<GetFilterdSkillMemberMutation, GetFilterdSkillMemberMutationVariables>) {
+export function useGetFilterdSkillMemberV2Mutation(baseOptions?: Apollo.MutationHookOptions<GetFilterdSkillMemberV2Mutation, GetFilterdSkillMemberV2MutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<GetFilterdSkillMemberMutation, GetFilterdSkillMemberMutationVariables>(GetFilterdSkillMemberDocument, options);
+        return Apollo.useMutation<GetFilterdSkillMemberV2Mutation, GetFilterdSkillMemberV2MutationVariables>(GetFilterdSkillMemberV2Document, options);
       }
-export type GetFilterdSkillMemberMutationHookResult = ReturnType<typeof useGetFilterdSkillMemberMutation>;
-export type GetFilterdSkillMemberMutationResult = Apollo.MutationResult<GetFilterdSkillMemberMutation>;
-export type GetFilterdSkillMemberMutationOptions = Apollo.BaseMutationOptions<GetFilterdSkillMemberMutation, GetFilterdSkillMemberMutationVariables>;
+export type GetFilterdSkillMemberV2MutationHookResult = ReturnType<typeof useGetFilterdSkillMemberV2Mutation>;
+export type GetFilterdSkillMemberV2MutationResult = Apollo.MutationResult<GetFilterdSkillMemberV2Mutation>;
+export type GetFilterdSkillMemberV2MutationOptions = Apollo.BaseMutationOptions<GetFilterdSkillMemberV2Mutation, GetFilterdSkillMemberV2MutationVariables>;
 export const GetMemberInfoByMembershipNumberDocument = gql`
     mutation GetMemberInfoByMembershipNumber($options: IGetByID!) {
   getMemberInfoByMembershipNumber(options: $options) {
@@ -5196,6 +5533,156 @@ export function useDeleteMemberSkillMutation(baseOptions?: Apollo.MutationHookOp
 export type DeleteMemberSkillMutationHookResult = ReturnType<typeof useDeleteMemberSkillMutation>;
 export type DeleteMemberSkillMutationResult = Apollo.MutationResult<DeleteMemberSkillMutation>;
 export type DeleteMemberSkillMutationOptions = Apollo.BaseMutationOptions<DeleteMemberSkillMutation, DeleteMemberSkillMutationVariables>;
+export const SendInvitationDocument = gql`
+    mutation SendInvitation($firebaseId: String!, $eventId: String!, $inviteTo: String!) {
+  sendInvitation(firebaseId: $firebaseId, eventId: $eventId, inviteTo: $inviteTo)
+}
+    `;
+export type SendInvitationMutationFn = Apollo.MutationFunction<SendInvitationMutation, SendInvitationMutationVariables>;
+
+/**
+ * __useSendInvitationMutation__
+ *
+ * To run a mutation, you first call `useSendInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendInvitationMutation, { data, loading, error }] = useSendInvitationMutation({
+ *   variables: {
+ *      firebaseId: // value for 'firebaseId'
+ *      eventId: // value for 'eventId'
+ *      inviteTo: // value for 'inviteTo'
+ *   },
+ * });
+ */
+export function useSendInvitationMutation(baseOptions?: Apollo.MutationHookOptions<SendInvitationMutation, SendInvitationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendInvitationMutation, SendInvitationMutationVariables>(SendInvitationDocument, options);
+      }
+export type SendInvitationMutationHookResult = ReturnType<typeof useSendInvitationMutation>;
+export type SendInvitationMutationResult = Apollo.MutationResult<SendInvitationMutation>;
+export type SendInvitationMutationOptions = Apollo.BaseMutationOptions<SendInvitationMutation, SendInvitationMutationVariables>;
+export const SetFirebaseIdDocument = gql`
+    mutation SetFirebaseId($firebaseId: String!) {
+  setFirebaseId(firebaseId: $firebaseId)
+}
+    `;
+export type SetFirebaseIdMutationFn = Apollo.MutationFunction<SetFirebaseIdMutation, SetFirebaseIdMutationVariables>;
+
+/**
+ * __useSetFirebaseIdMutation__
+ *
+ * To run a mutation, you first call `useSetFirebaseIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetFirebaseIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setFirebaseIdMutation, { data, loading, error }] = useSetFirebaseIdMutation({
+ *   variables: {
+ *      firebaseId: // value for 'firebaseId'
+ *   },
+ * });
+ */
+export function useSetFirebaseIdMutation(baseOptions?: Apollo.MutationHookOptions<SetFirebaseIdMutation, SetFirebaseIdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SetFirebaseIdMutation, SetFirebaseIdMutationVariables>(SetFirebaseIdDocument, options);
+      }
+export type SetFirebaseIdMutationHookResult = ReturnType<typeof useSetFirebaseIdMutation>;
+export type SetFirebaseIdMutationResult = Apollo.MutationResult<SetFirebaseIdMutation>;
+export type SetFirebaseIdMutationOptions = Apollo.BaseMutationOptions<SetFirebaseIdMutation, SetFirebaseIdMutationVariables>;
+export const IsInvitateAcceptedDocument = gql`
+    mutation IsInvitateAccepted($eventId: String!, $inviteTo: String!) {
+  IsInvitateAccepted(eventId: $eventId, inviteTo: $inviteTo)
+}
+    `;
+export type IsInvitateAcceptedMutationFn = Apollo.MutationFunction<IsInvitateAcceptedMutation, IsInvitateAcceptedMutationVariables>;
+
+/**
+ * __useIsInvitateAcceptedMutation__
+ *
+ * To run a mutation, you first call `useIsInvitateAcceptedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIsInvitateAcceptedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [isInvitateAcceptedMutation, { data, loading, error }] = useIsInvitateAcceptedMutation({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *      inviteTo: // value for 'inviteTo'
+ *   },
+ * });
+ */
+export function useIsInvitateAcceptedMutation(baseOptions?: Apollo.MutationHookOptions<IsInvitateAcceptedMutation, IsInvitateAcceptedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IsInvitateAcceptedMutation, IsInvitateAcceptedMutationVariables>(IsInvitateAcceptedDocument, options);
+      }
+export type IsInvitateAcceptedMutationHookResult = ReturnType<typeof useIsInvitateAcceptedMutation>;
+export type IsInvitateAcceptedMutationResult = Apollo.MutationResult<IsInvitateAcceptedMutation>;
+export type IsInvitateAcceptedMutationOptions = Apollo.BaseMutationOptions<IsInvitateAcceptedMutation, IsInvitateAcceptedMutationVariables>;
+export const GetAllInvitationDocument = gql`
+    mutation GetAllInvitation {
+  getAllInvitation {
+    _id
+    inviteFrom {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    inviteTo {
+      memberRegistration {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+    cpeEvent {
+      _id
+      name
+    }
+    isAccepted
+    isActive
+  }
+}
+    `;
+export type GetAllInvitationMutationFn = Apollo.MutationFunction<GetAllInvitationMutation, GetAllInvitationMutationVariables>;
+
+/**
+ * __useGetAllInvitationMutation__
+ *
+ * To run a mutation, you first call `useGetAllInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetAllInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getAllInvitationMutation, { data, loading, error }] = useGetAllInvitationMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllInvitationMutation(baseOptions?: Apollo.MutationHookOptions<GetAllInvitationMutation, GetAllInvitationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GetAllInvitationMutation, GetAllInvitationMutationVariables>(GetAllInvitationDocument, options);
+      }
+export type GetAllInvitationMutationHookResult = ReturnType<typeof useGetAllInvitationMutation>;
+export type GetAllInvitationMutationResult = Apollo.MutationResult<GetAllInvitationMutation>;
+export type GetAllInvitationMutationOptions = Apollo.BaseMutationOptions<GetAllInvitationMutation, GetAllInvitationMutationVariables>;
 export const GetAllCpeEventDocument = gql`
     query GetAllCpeEvent {
   getAllCpeEvent {
@@ -5204,6 +5691,8 @@ export const GetAllCpeEventDocument = gql`
     img
     date1
     cpehrs
+    lati
+    longi
     date2
     time1
     time2
@@ -5596,6 +6085,228 @@ export function useGetGenderByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetGenderByIdQueryHookResult = ReturnType<typeof useGetGenderByIdQuery>;
 export type GetGenderByIdLazyQueryHookResult = ReturnType<typeof useGetGenderByIdLazyQuery>;
 export type GetGenderByIdQueryResult = Apollo.QueryResult<GetGenderByIdQuery, GetGenderByIdQueryVariables>;
+export const GetMyMobileEventListDocument = gql`
+    query GetMyMobileEventList {
+  getMyMobileEventList {
+    registrationDate
+    eventName
+    startDate
+    endDate
+    eventAddress
+    eventId
+  }
+}
+    `;
+
+/**
+ * __useGetMyMobileEventListQuery__
+ *
+ * To run a query within a React component, call `useGetMyMobileEventListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyMobileEventListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyMobileEventListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyMobileEventListQuery(baseOptions?: Apollo.QueryHookOptions<GetMyMobileEventListQuery, GetMyMobileEventListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyMobileEventListQuery, GetMyMobileEventListQueryVariables>(GetMyMobileEventListDocument, options);
+      }
+export function useGetMyMobileEventListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyMobileEventListQuery, GetMyMobileEventListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyMobileEventListQuery, GetMyMobileEventListQueryVariables>(GetMyMobileEventListDocument, options);
+        }
+export type GetMyMobileEventListQueryHookResult = ReturnType<typeof useGetMyMobileEventListQuery>;
+export type GetMyMobileEventListLazyQueryHookResult = ReturnType<typeof useGetMyMobileEventListLazyQuery>;
+export type GetMyMobileEventListQueryResult = Apollo.QueryResult<GetMyMobileEventListQuery, GetMyMobileEventListQueryVariables>;
+export const GetEventTopicByIdDocument = gql`
+    query GetEventTopicById($options: IGetByID!) {
+  getEventTopicById(options: $options) {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      lati
+      longi
+      capacity
+      cutoffDate
+      cms
+      externalRegistration
+      price
+      igst
+      cgst
+      sgst
+      isRegistrationOn
+      isForStudent
+      isArchived
+      isActive
+    }
+    topic
+    faculty
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetEventTopicByIdQuery__
+ *
+ * To run a query within a React component, call `useGetEventTopicByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventTopicByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventTopicByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetEventTopicByIdQuery(baseOptions: Apollo.QueryHookOptions<GetEventTopicByIdQuery, GetEventTopicByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventTopicByIdQuery, GetEventTopicByIdQueryVariables>(GetEventTopicByIdDocument, options);
+      }
+export function useGetEventTopicByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventTopicByIdQuery, GetEventTopicByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventTopicByIdQuery, GetEventTopicByIdQueryVariables>(GetEventTopicByIdDocument, options);
+        }
+export type GetEventTopicByIdQueryHookResult = ReturnType<typeof useGetEventTopicByIdQuery>;
+export type GetEventTopicByIdLazyQueryHookResult = ReturnType<typeof useGetEventTopicByIdLazyQuery>;
+export type GetEventTopicByIdQueryResult = Apollo.QueryResult<GetEventTopicByIdQuery, GetEventTopicByIdQueryVariables>;
+export const GetAllEventTopicDocument = gql`
+    query GetAllEventTopic {
+  getAllEventTopic {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      lati
+      longi
+      capacity
+      cutoffDate
+      cms
+      externalRegistration
+      price
+      igst
+      cgst
+      sgst
+      isRegistrationOn
+      isForStudent
+      isArchived
+      isActive
+    }
+    topic
+    faculty
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllEventTopicQuery__
+ *
+ * To run a query within a React component, call `useGetAllEventTopicQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllEventTopicQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllEventTopicQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllEventTopicQuery(baseOptions?: Apollo.QueryHookOptions<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>(GetAllEventTopicDocument, options);
+      }
+export function useGetAllEventTopicLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>(GetAllEventTopicDocument, options);
+        }
+export type GetAllEventTopicQueryHookResult = ReturnType<typeof useGetAllEventTopicQuery>;
+export type GetAllEventTopicLazyQueryHookResult = ReturnType<typeof useGetAllEventTopicLazyQuery>;
+export type GetAllEventTopicQueryResult = Apollo.QueryResult<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>;
+export const GetMemberAttendanceListDocument = gql`
+    query GetMemberAttendanceList($eventId: String!) {
+  getMemberAttendanceList(eventId: $eventId) {
+    _id
+    firstName
+    lastName
+    middleName
+    hash
+    email
+    userType
+    gender {
+      _id
+      name
+      isActive
+    }
+    membershipNo
+    username
+    gstNo
+    tradeName
+    address1
+    address2
+    pinCode
+    phone
+    isApproved
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetMemberAttendanceListQuery__
+ *
+ * To run a query within a React component, call `useGetMemberAttendanceListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMemberAttendanceListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMemberAttendanceListQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useGetMemberAttendanceListQuery(baseOptions: Apollo.QueryHookOptions<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>(GetMemberAttendanceListDocument, options);
+      }
+export function useGetMemberAttendanceListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>(GetMemberAttendanceListDocument, options);
+        }
+export type GetMemberAttendanceListQueryHookResult = ReturnType<typeof useGetMemberAttendanceListQuery>;
+export type GetMemberAttendanceListLazyQueryHookResult = ReturnType<typeof useGetMemberAttendanceListLazyQuery>;
+export type GetMemberAttendanceListQueryResult = Apollo.QueryResult<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>;
 export const MyProfileInformationDocument = gql`
     query MyProfileInformation {
   myProfileInformation {
@@ -5689,6 +6400,8 @@ export const GetMyAttendedEventDocument = gql`
       _id
       name
       img
+      lati
+      longi
       date1
       cpehrs
       date2
@@ -5746,6 +6459,8 @@ export const GetTodayCpeEventDocument = gql`
     name
     img
     date1
+    lati
+    longi
     cpehrs
     date2
     time1
@@ -5801,6 +6516,8 @@ export const GetCpeEventByIdDocument = gql`
     date1
     cpehrs
     date2
+    lati
+    longi
     time1
     time2
     location
@@ -5906,6 +6623,8 @@ export const GetPaymentReciptByIdDocument = gql`
       name
       img
       date1
+      lati
+      longi
       cpehrs
       date2
       time1
@@ -6169,62 +6888,331 @@ export function useGetMySkillListLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetMySkillListQueryHookResult = ReturnType<typeof useGetMySkillListQuery>;
 export type GetMySkillListLazyQueryHookResult = ReturnType<typeof useGetMySkillListLazyQuery>;
 export type GetMySkillListQueryResult = Apollo.QueryResult<GetMySkillListQuery, GetMySkillListQueryVariables>;
-export const GetAllEventTopicDocument = gql`
-    query GetAllEventTopic {
-  getAllEventTopic {
+export const GetBusinesslistingByIdDocument = gql`
+    query GetBusinesslistingById($options: IGetByID!) {
+  getBusinesslistingById(options: $options) {
     _id
-    cpeEvent {
-      _id
-      name
-      img
-      date1
-      cpehrs
-      date2
-      time1
-      time2
-      location
-      flyer
-      capacity
-      cutoffDate
-      cms
-      price
-      igst
-      cgst
-      sgst
-      isForStudent
-      isArchived
-      isActive
-    }
-    topic
-    faculty
+    sponserimg
+    name
     isActive
   }
 }
     `;
 
 /**
- * __useGetAllEventTopicQuery__
+ * __useGetBusinesslistingByIdQuery__
  *
- * To run a query within a React component, call `useGetAllEventTopicQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllEventTopicQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetBusinesslistingByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBusinesslistingByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllEventTopicQuery({
+ * const { data, loading, error } = useGetBusinesslistingByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetBusinesslistingByIdQuery(baseOptions: Apollo.QueryHookOptions<GetBusinesslistingByIdQuery, GetBusinesslistingByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBusinesslistingByIdQuery, GetBusinesslistingByIdQueryVariables>(GetBusinesslistingByIdDocument, options);
+      }
+export function useGetBusinesslistingByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBusinesslistingByIdQuery, GetBusinesslistingByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBusinesslistingByIdQuery, GetBusinesslistingByIdQueryVariables>(GetBusinesslistingByIdDocument, options);
+        }
+export type GetBusinesslistingByIdQueryHookResult = ReturnType<typeof useGetBusinesslistingByIdQuery>;
+export type GetBusinesslistingByIdLazyQueryHookResult = ReturnType<typeof useGetBusinesslistingByIdLazyQuery>;
+export type GetBusinesslistingByIdQueryResult = Apollo.QueryResult<GetBusinesslistingByIdQuery, GetBusinesslistingByIdQueryVariables>;
+export const GetAllBusinessListingDocument = gql`
+    query GetAllBusinessListing {
+  getAllBusinessListing {
+    _id
+    sponserimg
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllBusinessListingQuery__
+ *
+ * To run a query within a React component, call `useGetAllBusinessListingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllBusinessListingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllBusinessListingQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetAllEventTopicQuery(baseOptions?: Apollo.QueryHookOptions<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>) {
+export function useGetAllBusinessListingQuery(baseOptions?: Apollo.QueryHookOptions<GetAllBusinessListingQuery, GetAllBusinessListingQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>(GetAllEventTopicDocument, options);
+        return Apollo.useQuery<GetAllBusinessListingQuery, GetAllBusinessListingQueryVariables>(GetAllBusinessListingDocument, options);
       }
-export function useGetAllEventTopicLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>) {
+export function useGetAllBusinessListingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllBusinessListingQuery, GetAllBusinessListingQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>(GetAllEventTopicDocument, options);
+          return Apollo.useLazyQuery<GetAllBusinessListingQuery, GetAllBusinessListingQueryVariables>(GetAllBusinessListingDocument, options);
         }
-export type GetAllEventTopicQueryHookResult = ReturnType<typeof useGetAllEventTopicQuery>;
-export type GetAllEventTopicLazyQueryHookResult = ReturnType<typeof useGetAllEventTopicLazyQuery>;
-export type GetAllEventTopicQueryResult = Apollo.QueryResult<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>;
+export type GetAllBusinessListingQueryHookResult = ReturnType<typeof useGetAllBusinessListingQuery>;
+export type GetAllBusinessListingLazyQueryHookResult = ReturnType<typeof useGetAllBusinessListingLazyQuery>;
+export type GetAllBusinessListingQueryResult = Apollo.QueryResult<GetAllBusinessListingQuery, GetAllBusinessListingQueryVariables>;
+export const GetAllEventSpeakerDocument = gql`
+    query GetAllEventSpeaker {
+  getAllEventSpeaker {
+    _id
+    cpeEvent {
+      _id
+      img
+      name
+    }
+    speakerimg
+    detailsimg
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllEventSpeakerQuery__
+ *
+ * To run a query within a React component, call `useGetAllEventSpeakerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllEventSpeakerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllEventSpeakerQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllEventSpeakerQuery(baseOptions?: Apollo.QueryHookOptions<GetAllEventSpeakerQuery, GetAllEventSpeakerQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllEventSpeakerQuery, GetAllEventSpeakerQueryVariables>(GetAllEventSpeakerDocument, options);
+      }
+export function useGetAllEventSpeakerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllEventSpeakerQuery, GetAllEventSpeakerQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllEventSpeakerQuery, GetAllEventSpeakerQueryVariables>(GetAllEventSpeakerDocument, options);
+        }
+export type GetAllEventSpeakerQueryHookResult = ReturnType<typeof useGetAllEventSpeakerQuery>;
+export type GetAllEventSpeakerLazyQueryHookResult = ReturnType<typeof useGetAllEventSpeakerLazyQuery>;
+export type GetAllEventSpeakerQueryResult = Apollo.QueryResult<GetAllEventSpeakerQuery, GetAllEventSpeakerQueryVariables>;
+export const GetAllWhatWeBrignToYouDocument = gql`
+    query GetAllWhatWeBrignToYou {
+  getAllWhatWeBrignToYou {
+    _id
+    name
+    image
+    description
+    redirectLink
+    icon
+    isWIRC
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllWhatWeBrignToYouQuery__
+ *
+ * To run a query within a React component, call `useGetAllWhatWeBrignToYouQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllWhatWeBrignToYouQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllWhatWeBrignToYouQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllWhatWeBrignToYouQuery(baseOptions?: Apollo.QueryHookOptions<GetAllWhatWeBrignToYouQuery, GetAllWhatWeBrignToYouQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllWhatWeBrignToYouQuery, GetAllWhatWeBrignToYouQueryVariables>(GetAllWhatWeBrignToYouDocument, options);
+      }
+export function useGetAllWhatWeBrignToYouLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllWhatWeBrignToYouQuery, GetAllWhatWeBrignToYouQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllWhatWeBrignToYouQuery, GetAllWhatWeBrignToYouQueryVariables>(GetAllWhatWeBrignToYouDocument, options);
+        }
+export type GetAllWhatWeBrignToYouQueryHookResult = ReturnType<typeof useGetAllWhatWeBrignToYouQuery>;
+export type GetAllWhatWeBrignToYouLazyQueryHookResult = ReturnType<typeof useGetAllWhatWeBrignToYouLazyQuery>;
+export type GetAllWhatWeBrignToYouQueryResult = Apollo.QueryResult<GetAllWhatWeBrignToYouQuery, GetAllWhatWeBrignToYouQueryVariables>;
+export const GetAllYoutubeLinksDocument = gql`
+    query GetAllYoutubeLinks {
+  getAllYoutubeLinks {
+    _id
+    name
+    redirectlink
+    category {
+      _id
+      name
+      isActive
+      isWIRC
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllYoutubeLinksQuery__
+ *
+ * To run a query within a React component, call `useGetAllYoutubeLinksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllYoutubeLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllYoutubeLinksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllYoutubeLinksQuery(baseOptions?: Apollo.QueryHookOptions<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>(GetAllYoutubeLinksDocument, options);
+      }
+export function useGetAllYoutubeLinksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>(GetAllYoutubeLinksDocument, options);
+        }
+export type GetAllYoutubeLinksQueryHookResult = ReturnType<typeof useGetAllYoutubeLinksQuery>;
+export type GetAllYoutubeLinksLazyQueryHookResult = ReturnType<typeof useGetAllYoutubeLinksLazyQuery>;
+export type GetAllYoutubeLinksQueryResult = Apollo.QueryResult<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>;
+export const GetAllWicasaNewsLatterDocument = gql`
+    query GetAllWicasaNewsLatter {
+  getAllWicasaNewsLatter {
+    _id
+    name
+    date
+    redirectlink
+    img
+    pdf
+    iswirc
+    showIndex
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllWicasaNewsLatterQuery__
+ *
+ * To run a query within a React component, call `useGetAllWicasaNewsLatterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllWicasaNewsLatterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllWicasaNewsLatterQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllWicasaNewsLatterQuery(baseOptions?: Apollo.QueryHookOptions<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>(GetAllWicasaNewsLatterDocument, options);
+      }
+export function useGetAllWicasaNewsLatterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>(GetAllWicasaNewsLatterDocument, options);
+        }
+export type GetAllWicasaNewsLatterQueryHookResult = ReturnType<typeof useGetAllWicasaNewsLatterQuery>;
+export type GetAllWicasaNewsLatterLazyQueryHookResult = ReturnType<typeof useGetAllWicasaNewsLatterLazyQuery>;
+export type GetAllWicasaNewsLatterQueryResult = Apollo.QueryResult<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>;
+export const GetWhatWeBrignToYouByIdDocument = gql`
+    query GetWhatWeBrignToYouById($options: IGetByID!) {
+  getWhatWeBrignToYouById(options: $options) {
+    _id
+    name
+    image
+    description
+    redirectLink
+    icon
+    isWIRC
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetWhatWeBrignToYouByIdQuery__
+ *
+ * To run a query within a React component, call `useGetWhatWeBrignToYouByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWhatWeBrignToYouByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWhatWeBrignToYouByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetWhatWeBrignToYouByIdQuery(baseOptions: Apollo.QueryHookOptions<GetWhatWeBrignToYouByIdQuery, GetWhatWeBrignToYouByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetWhatWeBrignToYouByIdQuery, GetWhatWeBrignToYouByIdQueryVariables>(GetWhatWeBrignToYouByIdDocument, options);
+      }
+export function useGetWhatWeBrignToYouByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWhatWeBrignToYouByIdQuery, GetWhatWeBrignToYouByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetWhatWeBrignToYouByIdQuery, GetWhatWeBrignToYouByIdQueryVariables>(GetWhatWeBrignToYouByIdDocument, options);
+        }
+export type GetWhatWeBrignToYouByIdQueryHookResult = ReturnType<typeof useGetWhatWeBrignToYouByIdQuery>;
+export type GetWhatWeBrignToYouByIdLazyQueryHookResult = ReturnType<typeof useGetWhatWeBrignToYouByIdLazyQuery>;
+export type GetWhatWeBrignToYouByIdQueryResult = Apollo.QueryResult<GetWhatWeBrignToYouByIdQuery, GetWhatWeBrignToYouByIdQueryVariables>;
+export const GetEventSpeakerByIdDocument = gql`
+    query GetEventSpeakerById($options: IGetByID!) {
+  getEventSpeakerById(options: $options) {
+    _id
+    cpeEvent {
+      _id
+      img
+      name
+    }
+    speakerimg
+    detailsimg
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetEventSpeakerByIdQuery__
+ *
+ * To run a query within a React component, call `useGetEventSpeakerByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventSpeakerByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventSpeakerByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetEventSpeakerByIdQuery(baseOptions: Apollo.QueryHookOptions<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>(GetEventSpeakerByIdDocument, options);
+      }
+export function useGetEventSpeakerByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>(GetEventSpeakerByIdDocument, options);
+        }
+export type GetEventSpeakerByIdQueryHookResult = ReturnType<typeof useGetEventSpeakerByIdQuery>;
+export type GetEventSpeakerByIdLazyQueryHookResult = ReturnType<typeof useGetEventSpeakerByIdLazyQuery>;
+export type GetEventSpeakerByIdQueryResult = Apollo.QueryResult<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>;

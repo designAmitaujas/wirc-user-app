@@ -1,20 +1,22 @@
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
 import {
   Avatar,
+  Box,
   Button,
   HStack,
   ScrollView,
+  Spinner,
   Text,
   VStack,
   View,
   useToast,
 } from "native-base";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import * as Yup from "yup";
-import { CustomInput } from "../../components/CustomForm";
+import { CustomInput, CustomSelect } from "../../components/CustomForm";
 import {
   ICreateMemberRegistration,
   useGetAllCityQuery,
@@ -124,9 +126,9 @@ const RestHeader = () => {
           />
         }
       /> */}
-      <TouchableOpacity onPress={visitingcard}>
+      {/* <TouchableOpacity onPress={visitingcard}>
         <FontAwesome name="id-card" size={24} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Text
         color="white"
         // ml={16}
@@ -145,8 +147,6 @@ const RestHeader = () => {
 };
 
 const ProfileScreen = () => {
-  const [key, setKey] = React.useState(Math.random());
-
   const [initValue, setInitValue] =
     useState<ICreateMemberRegistration>(initialvalues);
 
@@ -227,12 +227,27 @@ const ProfileScreen = () => {
     });
 
     if (response.data?.updateMyProfile.success === true) {
-      toast.show({ title: "Profile data updated successfully" });
+      toast.show({
+        render: () => {
+          return (
+            <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
+              Profile Updated Successfully
+            </Box>
+          );
+        },
+        placement: "top",
+      });
     } else {
       toast.show({
-        title:
-          response.data?.updateMyProfile.msg ||
-          "Something went wrong on server",
+        render: () => {
+          return (
+            <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
+              {response.data?.updateMyProfile.msg ||
+                "Something went wrong on server"}
+            </Box>
+          );
+        },
+        placement: "top",
       });
     }
 
@@ -247,7 +262,27 @@ const ProfileScreen = () => {
     !state?.getAllState ||
     !gender?.getAllGender
   ) {
-    return <></>;
+    return (
+      <>
+        <RestHeader />
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
   }
 
   return (
@@ -381,7 +416,7 @@ const ProfileScreen = () => {
                           keyboardType="number-pad"
                           value={values.phone}
                         />
-                        {/* <CustomSelect
+                        <CustomSelect
                           options={gender.getAllGender
                             .filter((item) => item.isActive === true)
                             .map((item) => ({
@@ -396,7 +431,11 @@ const ProfileScreen = () => {
                           initValue={values.gender}
                           isRequired={false}
                           setFieldValue={setFieldValue}
-                        /> */}
+                          w={"72"}
+                          borderColor={"#0f045d"}
+                          bgColor={"white"}
+                          borderRadius="xl"
+                        />
 
                         {/* <CustomSelect
                           options={country.getAllCountry

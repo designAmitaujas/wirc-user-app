@@ -1,86 +1,100 @@
-import {
-  Quicksand_300Light,
-  Quicksand_400Regular,
-  Quicksand_500Medium,
-  Quicksand_600SemiBold,
-  Quicksand_700Bold,
-  useFonts,
-} from "@expo-google-fonts/quicksand";
-import { useNetInfo } from "@react-native-community/netinfo";
-import { NavigationContainer } from "@react-navigation/native";
-import AppLoading from "expo-app-loading";
+import messaging from "@react-native-firebase/messaging";
 import * as SplashScreen from "expo-splash-screen";
-import { NativeBaseProvider, extendTheme } from "native-base";
-import { FC, ReactNode } from "react";
-import { NoInternet } from "./AppLoader";
+import { FC, ReactNode, useEffect } from "react";
+import { Alert } from "react-native";
+import { useSetFirebaseIdMutation } from "./gql/graphql";
+import { useAppAuthState } from "./store";
 
 SplashScreen.preventAutoHideAsync();
 
 const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { isConnected } = useNetInfo();
+  // const { isAuth } = useAppAuthState();
+  // const [response] = useSetFirebaseIdMutation();
 
-  const [fontsLoaded] = useFonts({
-    Quicksand_300Light,
-    Quicksand_400Regular,
-    Quicksand_500Medium,
-    Quicksand_600SemiBold,
-    Quicksand_700Bold,
-  });
+  // useEffect(() => {
+  //   (async () => {
+  //     const authStatus = await messaging().requestPermission();
+  //     const enabled =
+  //       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-  const theme = extendTheme({
-    fontConfig: {
-      quicksand: {
-        300: {
-          normal: "Quicksand_300Regular",
-        },
-        400: {
-          normal: "Quicksand_400Regular",
-        },
-        500: {
-          normal: "Quicksand_500Medium",
-        },
-        600: {
-          normal: "Quicksand_600SemiBold",
-        },
-        700: {
-          normal: "Quicksand_700Bold",
-        },
-      },
-    },
-    fonts: {
-      heading: "quicksand",
-      body: "quicksand",
-      mono: "quicksand",
-    },
-    colors: {
-      black: {
-        50: "#eceef9",
-        100: "#c5cbec",
-        200: "#D3D3D3",
-        300: "#808080",
-        400: "#696969",
-        500: "#5263c6",
-        600: "#0f045d",
-        700: "#4B4953",
-        800: "#322E32",
-        900: "#211F21",
-      },
-    },
-  });
+  //     console.log(authStatus);
 
-  if (fontsLoaded === false) {
-    return <AppLoading />;
-  } else {
-    return (
-      <>
-        <NativeBaseProvider theme={theme}>
-          <NavigationContainer>
-            {isConnected ? children : <NoInternet />}
-          </NavigationContainer>
-        </NativeBaseProvider>
-      </>
-    );
-  }
+  //     if (enabled) {
+  //       console.log("Authorization status:", authStatus);
+  //     }
+
+  //     // if (isAuth === true && authStatus) {
+  //     //   response({
+  //     //     variables: { firebaseId: authStatus },
+  //     //   });
+  //     // }
+  //   })();
+  // }, []);
+
+  const [response] = useSetFirebaseIdMutation();
+  const { isAuth } = useAppAuthState();
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    console.log(authStatus);
+
+    if (enabled) {
+      console.log("Authorization status:", authStatus);
+    }
+  };
+
+  useEffect(() => {
+    //@ts-ignore
+    if (requestUserPermission()) {
+      //return fcm token for the device
+      messaging()
+        .getToken()
+        .then((token) => {
+          if (isAuth) {
+            response({ variables: { firebaseId: token } });
+          }
+          console.log(token);
+        });
+    } else {
+      console.log("Failed token status");
+    }
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            "Notification caused app to open from quit state:",
+            remoteMessage.notification
+          );
+        }
+      });
+
+    messaging().onNotificationOpenedApp(async (remoteMessage) => {
+      console.log(
+        "Notification caused app to open from background state:",
+        remoteMessage.notification
+      );
+    });
+
+    // Register background handler
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log("Message handled in the background!", remoteMessage);
+    });
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, [isAuth]);
+
+  return children;
 };
 
 export default AppProvider;

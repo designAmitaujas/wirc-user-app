@@ -5,6 +5,8 @@ query GetAllCpeEvent {
     img
     date1
     cpehrs
+    lati
+    longi
     date2
     time1
     time2
@@ -114,6 +116,119 @@ query GetGenderById($options: IGetByID!) {
     isActive
   }
 }
+query GetMyMobileEventList {
+  getMyMobileEventList {
+    registrationDate
+    eventName
+    startDate
+    endDate
+    eventAddress
+    eventId
+  }
+}
+
+query GetEventTopicById($options: IGetByID!) {
+  getEventTopicById(options: $options) {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      lati
+      longi
+
+      capacity
+      cutoffDate
+      cms
+      externalRegistration
+      price
+
+      igst
+      cgst
+      sgst
+      isRegistrationOn
+      isForStudent
+      isArchived
+
+      isActive
+    }
+    topic
+    faculty
+    isActive
+  }
+}
+
+query GetAllEventTopic {
+  getAllEventTopic {
+    _id
+    cpeEvent {
+      _id
+      name
+      img
+      date1
+      cpehrs
+      date2
+      time1
+      time2
+      location
+      flyer
+      lati
+      longi
+
+      capacity
+      cutoffDate
+      cms
+      externalRegistration
+      price
+
+      igst
+      cgst
+      sgst
+      isRegistrationOn
+      isForStudent
+      isArchived
+
+      isActive
+    }
+    topic
+    faculty
+    isActive
+  }
+}
+
+query GetMemberAttendanceList($eventId: String!) {
+  getMemberAttendanceList(eventId: $eventId) {
+    _id
+    firstName
+    lastName
+    middleName
+    hash
+    email
+    userType
+    gender {
+      _id
+      name
+      isActive
+    }
+    membershipNo
+    username
+    gstNo
+    tradeName
+    address1
+    address2
+    pinCode
+    phone
+    isApproved
+    isActive
+  }
+}
 
 query MyProfileInformation {
   myProfileInformation {
@@ -179,6 +294,8 @@ query GetMyAttendedEvent {
       _id
       name
       img
+      lati
+      longi
       date1
       cpehrs
       date2
@@ -210,6 +327,8 @@ query GetTodayCpeEvent {
     name
     img
     date1
+    lati
+    longi
     cpehrs
     date2
     time1
@@ -239,6 +358,8 @@ query GetCpeEventById($options: IGetByID!) {
     date1
     cpehrs
     date2
+    lati
+    longi
     time1
     time2
     location
@@ -286,6 +407,8 @@ query GetPaymentReciptById($options: IGetByID!) {
       name
       img
       date1
+      lati
+      longi
       cpehrs
       date2
       time1
@@ -380,33 +503,102 @@ query GetMySkillList($options: IGetByID!) {
   }
 }
 
-query GetAllEventTopic {
-  getAllEventTopic {
+query GetBusinesslistingById($options: IGetByID!) {
+  getBusinesslistingById(options: $options) {
+    _id
+    sponserimg
+    name
+    isActive
+  }
+}
+
+query GetAllBusinessListing {
+  getAllBusinessListing {
+    _id
+    sponserimg
+    name
+    isActive
+  }
+}
+
+query GetAllEventSpeaker {
+  getAllEventSpeaker {
     _id
     cpeEvent {
       _id
-      name
       img
-      date1
-      cpehrs
-      date2
-      time1
-      time2
-      location
-      flyer
-      capacity
-      cutoffDate
-      cms
-      price
-      igst
-      cgst
-      sgst
-      isForStudent
-      isArchived
-      isActive
+      name
     }
-    topic
-    faculty
+    speakerimg
+    detailsimg
+    isActive
+  }
+}
+
+query GetAllWhatWeBrignToYou {
+  getAllWhatWeBrignToYou {
+    _id
+    name
+    image
+    description
+    redirectLink
+    icon
+    isWIRC
+    isActive
+  }
+}
+
+query GetAllYoutubeLinks {
+  getAllYoutubeLinks {
+    _id
+    name
+    redirectlink
+    category {
+      _id
+      name
+      isActive
+      isWIRC
+    }
+    isActive
+  }
+}
+
+query GetAllWicasaNewsLatter {
+  getAllWicasaNewsLatter {
+    _id
+    name
+    date
+    redirectlink
+    img
+    pdf
+    iswirc
+    showIndex
+    isActive
+  }
+}
+
+query GetWhatWeBrignToYouById($options: IGetByID!) {
+  getWhatWeBrignToYouById(options: $options) {
+    _id
+    name
+    image
+    description
+    redirectLink
+    icon
+    isWIRC
+    isActive
+  }
+}
+query GetEventSpeakerById($options: IGetByID!) {
+  getEventSpeakerById(options: $options) {
+    _id
+    cpeEvent {
+      _id
+      img
+      name
+    }
+    speakerimg
+    detailsimg
     isActive
   }
 }

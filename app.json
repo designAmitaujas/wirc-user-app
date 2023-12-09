@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/wirclogo.png",
     "userInterfaceStyle": "light",
-    "jsEngine": "hermes",
+    "jsEngine": "jsc",
     "splash": {
       "image": "./assets/splash-logo.png",
       "resizeMode": "conatin",
@@ -14,8 +14,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "jsEngine": "jsc"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {

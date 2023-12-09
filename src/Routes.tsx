@@ -1,10 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import BottomTab from "./screens/BottomTab";
+import Business from "./screens/Business/Business";
 import Home from "./screens/Event/EventHome";
 import EventSpeaker from "./screens/Event/EventSpeaker";
 import RegisterdEventDetails from "./screens/Event/RegisteredEventDetails";
+import ViewImage from "./screens/Event/ViewImage";
 import EventRegistration from "./screens/EventRegistration";
+import Details from "./screens/Initatives/Details";
+import Whatwe from "./screens/Initatives/Whatwe";
 import Transactiondetail from "./screens/Payment/Transactiondetail";
 import QRScanner from "./screens/QrScanner";
 import SkillSection from "./screens/SkillSection";
@@ -38,8 +42,14 @@ const Routes = () => {
           <Stack.Screen name="EditProfile" component={ProfileScreen} />
           <Stack.Screen name="mobile" component={MobileLogin} />
           <Stack.Screen name="QRcode" component={QRScanner} />
+          <Stack.Screen name="Business" component={Business} />
           <Stack.Screen name="Eventspeaker" component={EventSpeaker} />
           <Stack.Screen name="RegisteredEvents" component={UpcomingEvents} />
+
+          <Stack.Screen name="ViewImage" component={ViewImage} />
+          <Stack.Screen name="Whatwebring" component={Whatwe} />
+          <Stack.Screen name="Whatwebringdetails" component={Details} />
+
           <Stack.Screen
             name="EventsDetails"
             component={RegisterdEventDetails}

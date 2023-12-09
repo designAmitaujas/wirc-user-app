@@ -4,7 +4,7 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
 import _ from "lodash";
 import LottieView from "lottie-react-native";
@@ -13,6 +13,7 @@ import {
   Box,
   Button,
   Divider,
+  FlatList,
   HStack,
   Icon,
   Image,
@@ -24,30 +25,34 @@ import {
   View,
   useToast,
 } from "native-base";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Linking, TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import { CustomButton, CustomSelect } from "../../components/CustomForm";
 import {
   IGetMyList,
+  useGetAllCityQuery,
   useGetAllSkillsQuery,
-  useGetFilterdSkillMemberMutation,
-  useGetMyAttendedEventQuery,
+  useGetFilterdSkillMemberV2Mutation,
+  useGetMyMobileEventListQuery,
 } from "../../gql/graphql";
 
 interface IInputForm {
   skills: string;
   event: string;
+  city: string;
 }
 
 const initialValue: IInputForm = {
   skills: "",
   event: "",
+  city: "",
 };
 
 const validationSchema = Yup.object().shape({
-  skills: Yup.string().required(),
-  event: Yup.string().required(),
+  skills: Yup.string(),
+  event: Yup.string(),
+  city: Yup.string(),
 });
 
 const RestHeader = () => {
@@ -118,8 +123,9 @@ const ParticipantsCard: React.FC<{
       {gender.toLocaleLowerCase() === "male" ? (
         <VStack
           shadow={5}
-          style={{ shadowColor: "blue" }}
+          style={{ shadowColor: "blue", marginLeft: 10 }}
           bg={"white"}
+          mb={8}
           borderRadius={15}
           w={"45%"}
           p={1}
@@ -223,8 +229,9 @@ const ParticipantsCard: React.FC<{
       ) : gender.toLocaleLowerCase() === "female" ? (
         <VStack
           shadow={5}
-          style={{ shadowColor: "red" }}
+          style={{ shadowColor: "red", marginLeft: 10 }}
           bg={"white"}
+          mb={8}
           borderRadius={15}
           w={"45%"}
           p={1}
@@ -322,8 +329,9 @@ const ParticipantsCard: React.FC<{
       ) : (
         <VStack
           shadow={5}
-          style={{ shadowColor: "black" }}
+          style={{ shadowColor: "black", marginLeft: 10 }}
           bg={"white"}
+          mb={8}
           borderRadius={15}
           w={"45%"}
           p={1}
@@ -426,14 +434,40 @@ const ParticipantsCard: React.FC<{
 const NetworkingScreen = () => {
   const [participants, setParticipants] = React.useState<Array<IGetMyList>>();
   const [loadingParticipants, setLoadingParticipants] = React.useState(false);
-
+  const { params } = useRoute();
   const [key, setKey] = useState(Math.random());
+  const { eventId } = params as { eventId?: string };
 
   const { data: getAllskill, loading: l1 } = useGetAllSkillsQuery();
-  const { data: getAllEvent, loading: l2 } = useGetMyAttendedEventQuery();
+  const { data: getAllEvent, loading: l2 } = useGetMyMobileEventListQuery();
+  const { data: city, loading: l3 } = useGetAllCityQuery();
+
+  useEffect(() => {
+    (async () => {
+      setLoadingParticipants(true);
+
+      const response = await filter({
+        variables: {
+          options: {
+            city: "",
+            event: eventId || "",
+            skills: "",
+          },
+        },
+      });
+
+      if (response.data?.getFilterdSkillMemberV2) {
+        setParticipants(response.data.getFilterdSkillMemberV2);
+        setKey(Math.random());
+      } else {
+        toast.show({ title: _.capitalize(" error"), placement: "top" });
+      }
+      setLoadingParticipants(false);
+    })();
+  }, [eventId]);
 
   const toast = useToast();
-  const [filter] = useGetFilterdSkillMemberMutation();
+  const [filter] = useGetFilterdSkillMemberV2Mutation();
 
   const handleSubmit = async (
     val: IInputForm,
@@ -442,17 +476,21 @@ const NetworkingScreen = () => {
     actions.setSubmitting(true);
 
     setLoadingParticipants(true);
+
     const response = await filter({
       variables: {
         options: {
-          event: val.event,
+          city: val.city,
+          event: eventId || "",
           skills: val.skills,
         },
       },
     });
 
-    if (response.data?.getFilterdSkillMember) {
-      setParticipants(response.data.getFilterdSkillMember);
+    console.log(response);
+
+    if (response.data?.getFilterdSkillMemberV2) {
+      setParticipants(response.data.getFilterdSkillMemberV2);
       setKey(Math.random());
     } else {
       toast.show({ title: _.capitalize(" error"), placement: "top" });
@@ -461,7 +499,22 @@ const NetworkingScreen = () => {
     actions.setSubmitting(false);
   };
 
-  if (l1 || l2) {
+  const renderItem = useCallback(({ item }: { item: IGetMyList }) => {
+    return (
+      <ParticipantsCard
+        key={key}
+        keey={key}
+        gender={item.gender}
+        name={item.name}
+        email={item.email}
+        mo_number={item.mobile}
+        skills={item.skill}
+        position={item.firebaseId}
+      />
+    );
+  }, []);
+
+  if (l1 || l2 || l3) {
     <>
       <HStack
         flex={1}
@@ -481,7 +534,11 @@ const NetworkingScreen = () => {
       </HStack>
     </>;
   }
-  if (!getAllskill?.getAllSkills || !getAllEvent?.getMyAttendedEvent) {
+  if (
+    !getAllskill?.getAllSkills ||
+    !getAllEvent?.getMyMobileEventList ||
+    !city?.getAllCity
+  ) {
     return (
       <>
         <RestHeader />
@@ -569,16 +626,16 @@ const NetworkingScreen = () => {
                   <VStack space={1} mt={3}>
                     <CustomSelect
                       isRequired={true}
-                      isInvalid={!!touched.event && !!errors.event}
-                      label={"Select Event"}
-                      options={getAllEvent.getMyAttendedEvent.map((item) => ({
-                        label: item.cpeEvent?.name || "",
-                        value: item.cpeEvent?._id || "",
+                      isInvalid={!!touched.city && !!errors.city}
+                      label={"Select city"}
+                      options={city.getAllCity.map((item) => ({
+                        label: item.name || "",
+                        value: item._id || "",
                       }))}
-                      name="event"
+                      name="city"
                       setFieldValue={setFieldValue}
-                      initValue={values.event}
-                      errMsg={errors.event || ""}
+                      initValue={values.city}
+                      errMsg={errors.city || ""}
                       dropdownIcon={
                         <MaterialIcons
                           name="arrow-drop-down"
@@ -670,39 +727,35 @@ const NetworkingScreen = () => {
             <VStack space={3} mb={4} mt={2}>
               {participants?.length === 0 ? (
                 <>
-                  <Box h={64} w={64} alignSelf={"center"} mt={12}>
-                    <LottieView
-                      source={require("../../../assets/Animation_1701238770915.json")}
-                      autoPlay
-                      loop
+                  <HStack
+                    flex={1}
+                    alignSelf={"center"}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Spinner
+                      accessibilityLabel="Loading participants"
+                      size="lg"
+                      color="#0f045d"
                     />
-                  </Box>
+                    <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+                      No Participants
+                    </Text>
+                  </HStack>
                 </>
               ) : (
-                <VStack space={3}>
-                  <HStack
-                    justifyContent={"space-between"}
-                    w={"100%"}
-                    alignSelf={"center"}
-                    pl={5}
-                    pr={5}
-                    pb={2}
-                  >
-                    {participants?.map((item) => {
-                      return (
-                        <>
-                          <ParticipantsCard
-                            key={key}
-                            keey={key}
-                            gender={item.gender}
-                            name={item.name}
-                            email={item.email}
-                            mo_number={item.mobile}
-                            skills={item.skill}
-                          />
-                        </>
-                      );
-                    })}
+                <VStack>
+                  <HStack justifyContent={"space-between"} w={"100%"}>
+                    {Array.isArray(participants) && (
+                      <FlatList
+                        scrollEnabled={false}
+                        numColumns={2}
+                        data={participants}
+                        keyExtractor={(item) => item.city + key}
+                        renderItem={renderItem}
+                      />
+                    )}
                   </HStack>
                 </VStack>
               )}

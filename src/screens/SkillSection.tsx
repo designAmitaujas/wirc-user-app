@@ -63,7 +63,7 @@ const RestHeader = () => {
           mb={1}
           // w={"40%"}
         >
-          Members Skills
+          My Focus Area
         </Text>
       </HStack>
     </>

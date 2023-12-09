@@ -364,6 +364,7 @@ const Memberattendancelist = () => {
                 pb={2}
               >
                 {participants?.getMemberAttendanceList?.map((item) => {
+                  console.log(item);
                   return (
                     <>
                       <ParticipantsCard

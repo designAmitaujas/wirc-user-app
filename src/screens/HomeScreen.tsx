@@ -74,7 +74,12 @@ export const HomeCards = () => {
 
   const handleSkill = () => {
     // @ts-ignore
-    navigate("SkillSection");
+    navigate("Business");
+  };
+
+  const handleInitatives = () => {
+    // @ts-ignore
+    navigate("Whatwebring");
   };
   return (
     <>
@@ -98,41 +103,44 @@ export const HomeCards = () => {
               </Text>
             </Box>
           </TouchableOpacity>
-
-          <Box>
-            <Image
-              size={150}
-              borderRadius={100}
-              source={logo2}
-              alt="Alternate Text"
-            />
-            <Text
-              textAlign="center"
-              fontSize="xl"
-              fontWeight="bold"
-              textTransform="uppercase"
-            >
-              Business
-            </Text>
-          </Box>
+          <TouchableOpacity onPress={handleSkill}>
+            <Box>
+              <Image
+                size={150}
+                borderRadius={100}
+                source={logo2}
+                alt="Alternate Text"
+              />
+              <Text
+                textAlign="center"
+                fontSize="xl"
+                fontWeight="bold"
+                textTransform="uppercase"
+              >
+                Business
+              </Text>
+            </Box>
+          </TouchableOpacity>
         </HStack>
         <HStack flex={1} justifyContent="space-between">
-          <Box>
-            <Image
-              size={150}
-              borderRadius={100}
-              source={logo1}
-              alt="Alternate Text"
-            />
-            <Text
-              textAlign="center"
-              fontSize="xl"
-              fontWeight="bold"
-              textTransform="uppercase"
-            >
-              Initatives
-            </Text>
-          </Box>
+          <TouchableOpacity onPress={handleInitatives}>
+            <Box>
+              <Image
+                size={150}
+                borderRadius={100}
+                source={logo1}
+                alt="Alternate Text"
+              />
+              <Text
+                textAlign="center"
+                fontSize="xl"
+                fontWeight="bold"
+                textTransform="uppercase"
+              >
+                Initatives
+              </Text>
+            </Box>
+          </TouchableOpacity>
           <Box>
             <Image
               size={150}

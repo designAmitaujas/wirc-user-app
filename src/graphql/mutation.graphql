@@ -24,13 +24,15 @@ mutation AddFeedBackFrom($options: IFeedBackForm!) {
   }
 }
 
-mutation GetFilterdSkillMember($options: IGetAllMemberSkills!) {
-  getFilterdSkillMember(options: $options) {
+mutation GetFilterdSkillMemberV2($options: IGetAllMemberSkillsV2!) {
+  getFilterdSkillMemberV2(options: $options) {
     name
+    city
     email
     mobile
-    skill
     gender
+    skill
+    firebaseId
   }
 }
 

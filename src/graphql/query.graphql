@@ -502,3 +502,88 @@ query GetMySkillList($options: IGetByID!) {
     isActive
   }
 }
+
+query GetBusinesslistingById($options: IGetByID!) {
+  getBusinesslistingById(options: $options) {
+    _id
+    sponserimg
+    name
+    isActive
+  }
+}
+
+query GetAllBusinessListing {
+  getAllBusinessListing {
+    _id
+    sponserimg
+    name
+    isActive
+  }
+}
+
+query GetAllEventSpeaker {
+  getAllEventSpeaker {
+    _id
+    cpeEvent {
+      _id
+      img
+      name
+    }
+    speakerimg
+    detailsimg
+    isActive
+  }
+}
+
+query GetAllWhatWeBrignToYou {
+  getAllWhatWeBrignToYou {
+    _id
+    name
+    image
+    description
+    redirectLink
+    icon
+    isWIRC
+    isActive
+  }
+}
+
+query GetAllYoutubeLinks {
+  getAllYoutubeLinks {
+    _id
+    name
+    redirectlink
+    category {
+      _id
+      name
+      isActive
+      isWIRC
+    }
+    isActive
+  }
+}
+query GetWhatWeBrignToYouById($options: IGetByID!) {
+  getWhatWeBrignToYouById(options: $options) {
+    _id
+    name
+    image
+    description
+    redirectLink
+    icon
+    isWIRC
+    isActive
+  }
+}
+query GetEventSpeakerById($options: IGetByID!) {
+  getEventSpeakerById(options: $options) {
+    _id
+    cpeEvent {
+      _id
+      img
+      name
+    }
+    speakerimg
+    detailsimg
+    isActive
+  }
+}

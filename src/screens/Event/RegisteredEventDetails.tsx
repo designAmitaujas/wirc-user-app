@@ -214,9 +214,10 @@ const RegisterdEventDetails = () => {
     //@ts-ignore
     navigate("presentation");
   };
-  const handleqna = (name: string) => {
+  const handleqna = (id: string) => {
+    console.log("helo", id);
     //@ts-ignore
-    navigate("question", { name });
+    navigate("question", { id });
   };
 
   const networking = () => {
@@ -324,7 +325,7 @@ const RegisterdEventDetails = () => {
               <Button
                 bg="#00388D"
                 w="45%"
-                onPress={() => handleqna(eventInformation.name)}
+                onPress={() => handleqna(eventInformation._id)}
               >
                 Question & Answer
               </Button>

@@ -1,6 +1,14 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Button, HStack, Icon, Text, useToast } from "native-base";
+import {
+  Button,
+  Divider,
+  HStack,
+  Icon,
+  ScrollView,
+  Text,
+  useToast,
+} from "native-base";
 import React from "react";
 import {
   NetworkingInvite,
@@ -48,7 +56,7 @@ const RestHeader = () => {
           mb={1}
           // w={"40%"}
         >
-          Members Networking
+          Notifications
         </Text>
       </HStack>
     </>
@@ -104,13 +112,50 @@ const Rendercard: React.FC<{ item: NetworkingInvite; refetch: Function }> = ({
 
   return (
     <>
-      <Text>
-        {item.inviteTo?.memberRegistration.firstName}
-        {item.inviteTo?.memberRegistration.middleName}
-        {item.inviteTo?.memberRegistration.lastName}
-      </Text>
-      <Button onPress={handleAccpet}>Accept</Button>
-      <Button onPress={handleReject}>Reject</Button>
+      <HStack w={"100%"} space={2} px={2} py={3}>
+        <Text
+          color={"blue.900"}
+          fontWeight={"bold"}
+          fontSize="xl"
+          textAlign={"center"}
+          w="55%"
+        >
+          Name
+        </Text>
+
+        <Text color={"blue.900"} fontWeight={"bold"} fontSize="xl">
+          Action
+        </Text>
+      </HStack>
+
+      <Divider thickness="2" backgroundColor="#0f045d" />
+      <HStack space={2} p={6} w="96%" ml="2" mt="4">
+        <Text
+          fontSize="lg"
+          fontWeight="bold"
+          width="55%"
+          textTransform="capitalize"
+        >
+          {item.inviteTo?.memberRegistration.firstName}{" "}
+          {item.inviteTo?.memberRegistration.middleName}{" "}
+          {item.inviteTo?.memberRegistration.lastName}
+        </Text>
+        <Button backgroundColor="#0f045d" onPress={handleAccpet}>
+          <Text fontWeight="semibold" color="white" textAlign="center">
+            Accept
+          </Text>
+        </Button>
+        <Button
+          backgroundColor="#a70e0b"
+          onPress={handleReject}
+          fontWeight="semibold"
+        >
+          <Text fontWeight="semibold" color="white" textAlign="center">
+            Reject
+          </Text>
+        </Button>
+      </HStack>
+      <Divider thickness="2" backgroundColor="#0f045d" />
     </>
   );
 };
@@ -118,23 +163,22 @@ const Rendercard: React.FC<{ item: NetworkingInvite; refetch: Function }> = ({
 const Notification = () => {
   const { data, refetch } = useGetAllInvitationQuery();
 
-  console.log("hello", data?.getAllInvitation);
   return (
     <>
       <RestHeader />
-      {data?.getAllInvitation.map((item) => {
-        return (
-          <>
-            <HStack>
+      <ScrollView>
+        {data?.getAllInvitation.map((item) => {
+          return (
+            <>
               <Rendercard
                 // @ts-ignore
                 item={item}
                 refetch={refetch}
               />
-            </HStack>
-          </>
-        );
-      })}
+            </>
+          );
+        })}
+      </ScrollView>
     </>
   );
 };

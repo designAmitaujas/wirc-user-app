@@ -3794,9 +3794,8 @@ export type PublicationUserType = {
 
 export type QnaMailInput = {
   email: Scalars['String']['input'];
-  eventdate: Scalars['String']['input'];
+  eventid: Scalars['String']['input'];
   eventname: Scalars['String']['input'];
-  id: Scalars['String']['input'];
   name: Scalars['String']['input'];
   query: Scalars['String']['input'];
 };
@@ -5022,6 +5021,13 @@ export type RejectInviteMutationVariables = Exact<{
 
 export type RejectInviteMutation = { __typename?: 'Mutation', rejectInvite: boolean };
 
+export type SpeakerMailMutationVariables = Exact<{
+  options: QnaMailInput;
+}>;
+
+
+export type SpeakerMailMutation = { __typename?: 'Mutation', speakerMail: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
+
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5740,6 +5746,41 @@ export function useRejectInviteMutation(baseOptions?: Apollo.MutationHookOptions
 export type RejectInviteMutationHookResult = ReturnType<typeof useRejectInviteMutation>;
 export type RejectInviteMutationResult = Apollo.MutationResult<RejectInviteMutation>;
 export type RejectInviteMutationOptions = Apollo.BaseMutationOptions<RejectInviteMutation, RejectInviteMutationVariables>;
+export const SpeakerMailDocument = gql`
+    mutation SpeakerMail($options: QNAMailInput!) {
+  speakerMail(options: $options) {
+    success
+    msg
+    data
+  }
+}
+    `;
+export type SpeakerMailMutationFn = Apollo.MutationFunction<SpeakerMailMutation, SpeakerMailMutationVariables>;
+
+/**
+ * __useSpeakerMailMutation__
+ *
+ * To run a mutation, you first call `useSpeakerMailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSpeakerMailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [speakerMailMutation, { data, loading, error }] = useSpeakerMailMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useSpeakerMailMutation(baseOptions?: Apollo.MutationHookOptions<SpeakerMailMutation, SpeakerMailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SpeakerMailMutation, SpeakerMailMutationVariables>(SpeakerMailDocument, options);
+      }
+export type SpeakerMailMutationHookResult = ReturnType<typeof useSpeakerMailMutation>;
+export type SpeakerMailMutationResult = Apollo.MutationResult<SpeakerMailMutation>;
+export type SpeakerMailMutationOptions = Apollo.BaseMutationOptions<SpeakerMailMutation, SpeakerMailMutationVariables>;
 export const GetAllCpeEventDocument = gql`
     query GetAllCpeEvent {
   getAllCpeEvent {

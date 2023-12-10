@@ -1,4 +1,9 @@
-import { Entypo, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import {
+  Entypo,
+  FontAwesome,
+  FontAwesome5,
+  Ionicons,
+} from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import moment from "moment";
 
@@ -31,6 +36,10 @@ const Home = () => {
     // @ts-ignore
     navigate("SkillSection");
   };
+  const handlenotification = () => {
+    //@ts-ignore
+    navigate("notification");
+  };
 
   return (
     <>
@@ -58,11 +67,11 @@ const Home = () => {
               Event Home
             </Text>
             <HStack display="flex" space={10}>
-              <TouchableOpacity
-                onPress={handleSkill}
-                style={{ justifyContent: "center", display: "flex" }}
-              >
+              <TouchableOpacity onPress={handleSkill}>
                 <Entypo name="trophy" size={24} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handlenotification}>
+                <Ionicons name="notifications" size={24} color="white" />
               </TouchableOpacity>
             </HStack>
           </HStack>

@@ -5,6 +5,7 @@ import {
   Icon,
   Pressable,
   ScrollView,
+  Spinner,
   Text,
   VStack,
 } from "native-base";
@@ -12,6 +13,7 @@ import {
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
+import { Linking } from "react-native";
 import { useGetAllCpeResourceCategoryQuery } from "../../gql/graphql";
 
 const RestHeader = () => {
@@ -63,29 +65,67 @@ const PresenationCard: React.FC<{
   date: string;
   preID: string;
 }> = ({ name, date, preID }) => {
-  const { navigate } = useNavigation();
   const handledetails = () => {
-    //@ts-ignore
-    navigate("presentationdetails", { preID });
+    Linking.openURL(
+      `https://wirc-icai.org/members/cperesources-download/${preID}/${name}`
+    );
   };
   return (
     <>
       <Pressable onPress={handledetails}>
         <HStack space={2} p={4}>
-          <Text justifyContent="flex-start" fontSize="md" fontWeight="semibold">
+          <Text
+            w="28%"
+            fontSize="md"
+            fontWeight="semibold"
+            textAlign="center"
+            justifyContent="center"
+            alignItems="center"
+          >
             {date}
           </Text>
           <Divider orientation="vertical" thickness="2" bg="gray.800" />
-          <Text fontSize="md" fontWeight="semibold" w="80%">
+          <Text
+            fontSize="md"
+            fontWeight="semibold"
+            w="72%"
+            justifyContent="center"
+            alignItems="center"
+          >
             {name}
           </Text>
         </HStack>
+        <Divider thickness="2" bg="gray.800" />
       </Pressable>
     </>
   );
 };
 const Presentation = () => {
   const { data, loading } = useGetAllCpeResourceCategoryQuery();
+
+  if (loading) {
+    return (
+      <>
+        <RestHeader />
+
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
+  }
 
   return (
     <>

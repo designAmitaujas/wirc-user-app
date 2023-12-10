@@ -1,8 +1,11 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
 import {
   Button,
   HStack,
+  Icon,
+  Image,
   ScrollView,
   Spinner,
   Text,
@@ -79,9 +82,14 @@ const validationSchema = Yup.object().shape({
   tradeName: Yup.string(),
   username: Yup.string(),
   gender: Yup.string(),
-  userType: Yup.string().oneOf(["member"]).required(),
+  userType: Yup.string().oneOf(["member"]),
 });
 const RestHeader = () => {
+  const { navigate } = useNavigation();
+  const handlegobacck = () => {
+    // @ts-ignore
+    navigate("Login");
+  };
   return (
     <HStack
       backgroundColor="#0f045d"
@@ -94,19 +102,20 @@ const RestHeader = () => {
       alignSelf={"center"}
       w={"100%"}
     >
-      {/* <Button
+      <Button
         bg="transparent"
-        colorScheme={"#0f045d"}
-        w="14%"
-        ml={2}
+        colorScheme={"white"}
+        // w="14%"
+        onPress={handlegobacck}
+        justifyContent="flex-start"
         leftIcon={
           <Icon
-            size="md"
+            size="2xl"
             as={<FontAwesome5 name="arrow-left" />}
-            color="white"
+            color="#0f045d"
           />
         }
-      /> */}
+      />
 
       <Text color="white" textAlign="center" fontSize="22" fontWeight="bold">
         Registration
@@ -157,7 +166,7 @@ const Registration = () => {
           gender: val.gender || "",
           tradeName: val.tradeName,
           username: val.username,
-          userType: val.userType,
+          userType: "member",
           isActive: true,
           isApproved: false,
         },
@@ -232,12 +241,36 @@ const Registration = () => {
   return (
     <>
       <View bg={"white"} flex={1}>
-        <RestHeader />
         <ScrollView
           bg={"white"}
           showsVerticalScrollIndicator={false}
           h={"full"}
         >
+          <Image
+            alignSelf={"center"}
+            w={"32"}
+            h={"32"}
+            resizeMode="contain"
+            alt="Image not found"
+            source={require("../../../assets/wirclogo.png")}
+          />
+          <Image
+            alignSelf={"center"}
+            w={"100%"}
+            resizeMode="contain"
+            alt="Image not found"
+            source={require("../../../assets/wirclogo2.png")}
+          />
+
+          <Text
+            mt={5}
+            fontSize={"40"}
+            fontWeight={"semibold"}
+            color={"gray.500"}
+            alignSelf={"center"}
+          >
+            Login
+          </Text>
           <VStack>
             <Formik
               initialValues={initialvalues}
@@ -306,6 +339,21 @@ const Registration = () => {
                           w={"72"}
                           borderColor={"#0f045d"}
                           bgColor={"white"}
+                          currentValue={values.hash}
+                          errMsg={errors.hash || ""}
+                          isInvalid={!!touched.hash && !!errors.hash}
+                          label="Password"
+                          name="hash"
+                          placeholder="Enter your password"
+                          setFieldValue={setFieldValue}
+                          isRequired={true}
+                          value={values.hash}
+                        />
+
+                        <CustomInput
+                          w={"72"}
+                          borderColor={"#0f045d"}
+                          bgColor={"white"}
                           currentValue={values.email}
                           errMsg={errors.email || ""}
                           isInvalid={!!touched.email && !!errors.email}
@@ -333,6 +381,22 @@ const Registration = () => {
                           keyboardType="number-pad"
                           value={values.phone}
                         />
+
+                        <CustomInput
+                          w={"72"}
+                          borderColor={"#0f045d"}
+                          bgColor={"white"}
+                          currentValue={values.address1}
+                          errMsg={errors.address1 || ""}
+                          isInvalid={!!touched.address1 && !!errors.address1}
+                          label="Address"
+                          name="address1"
+                          placeholder="Enter your address"
+                          setFieldValue={setFieldValue}
+                          isRequired={true}
+                          value={values.address1}
+                        />
+
                         <CustomSelect
                           options={gender.getAllGender
                             .filter((item) => item.isActive === true)
@@ -354,7 +418,7 @@ const Registration = () => {
                           borderRadius="xl"
                         />
 
-                        {/* <CustomSelect
+                        <CustomSelect
                           options={country.getAllCountry
                             .filter((item) => item.isActive === true)
                             .map((item) => ({
@@ -369,6 +433,10 @@ const Registration = () => {
                           initValue={values.country}
                           isRequired={false}
                           setFieldValue={setFieldValue}
+                          w={"72"}
+                          borderColor={"#0f045d"}
+                          bgColor={"white"}
+                          borderRadius="xl"
                         />
                         <CustomSelect
                           options={state?.getAllState
@@ -385,6 +453,10 @@ const Registration = () => {
                           initValue={values.state}
                           isRequired={false}
                           setFieldValue={setFieldValue}
+                          w={"72"}
+                          borderColor={"#0f045d"}
+                          bgColor={"white"}
+                          borderRadius="xl"
                         />
                         <CustomSelect
                           options={city?.getAllCity
@@ -401,7 +473,11 @@ const Registration = () => {
                           initValue={values.city}
                           isRequired={false}
                           setFieldValue={setFieldValue}
-                        /> */}
+                          w={"72"}
+                          borderColor={"#0f045d"}
+                          bgColor={"white"}
+                          borderRadius="xl"
+                        />
                         <Button
                           mt="10"
                           mb="2"

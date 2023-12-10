@@ -121,6 +121,24 @@ mutation SendInvitation(
   }
 }
 
+mutation GenEmailWithMembershipNumber($options: IForgotPasswordInput!) {
+  genEmailWithMembershipNumber(options: $options) {
+    success
+    msg
+    data
+  }
+}
+
+mutation VerifyEmailWithMembershipNumber($options: IGetEmailInput!) {
+  verifyEmailWithMembershipNumber(options: $options) {
+    success
+    msg
+    jwt
+    email
+    name
+  }
+}
+
 mutation CreateMemberRegistration($options: ICreateMemberRegistration!) {
   createMemberRegistration(options: $options) {
     success

@@ -4990,6 +4990,20 @@ export type SendInvitationMutationVariables = Exact<{
 
 export type SendInvitationMutation = { __typename?: 'Mutation', sendInvitation: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
 
+export type GenEmailWithMembershipNumberMutationVariables = Exact<{
+  options: IForgotPasswordInput;
+}>;
+
+
+export type GenEmailWithMembershipNumberMutation = { __typename?: 'Mutation', genEmailWithMembershipNumber: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
+
+export type VerifyEmailWithMembershipNumberMutationVariables = Exact<{
+  options: IGetEmailInput;
+}>;
+
+
+export type VerifyEmailWithMembershipNumberMutation = { __typename?: 'Mutation', verifyEmailWithMembershipNumber: { __typename?: 'IAuthResoverResponse', success: boolean, msg: string, jwt: string, email: string, name: string } };
+
 export type CreateMemberRegistrationMutationVariables = Exact<{
   options: ICreateMemberRegistration;
 }>;
@@ -5630,6 +5644,78 @@ export function useSendInvitationMutation(baseOptions?: Apollo.MutationHookOptio
 export type SendInvitationMutationHookResult = ReturnType<typeof useSendInvitationMutation>;
 export type SendInvitationMutationResult = Apollo.MutationResult<SendInvitationMutation>;
 export type SendInvitationMutationOptions = Apollo.BaseMutationOptions<SendInvitationMutation, SendInvitationMutationVariables>;
+export const GenEmailWithMembershipNumberDocument = gql`
+    mutation GenEmailWithMembershipNumber($options: IForgotPasswordInput!) {
+  genEmailWithMembershipNumber(options: $options) {
+    success
+    msg
+    data
+  }
+}
+    `;
+export type GenEmailWithMembershipNumberMutationFn = Apollo.MutationFunction<GenEmailWithMembershipNumberMutation, GenEmailWithMembershipNumberMutationVariables>;
+
+/**
+ * __useGenEmailWithMembershipNumberMutation__
+ *
+ * To run a mutation, you first call `useGenEmailWithMembershipNumberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenEmailWithMembershipNumberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [genEmailWithMembershipNumberMutation, { data, loading, error }] = useGenEmailWithMembershipNumberMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGenEmailWithMembershipNumberMutation(baseOptions?: Apollo.MutationHookOptions<GenEmailWithMembershipNumberMutation, GenEmailWithMembershipNumberMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenEmailWithMembershipNumberMutation, GenEmailWithMembershipNumberMutationVariables>(GenEmailWithMembershipNumberDocument, options);
+      }
+export type GenEmailWithMembershipNumberMutationHookResult = ReturnType<typeof useGenEmailWithMembershipNumberMutation>;
+export type GenEmailWithMembershipNumberMutationResult = Apollo.MutationResult<GenEmailWithMembershipNumberMutation>;
+export type GenEmailWithMembershipNumberMutationOptions = Apollo.BaseMutationOptions<GenEmailWithMembershipNumberMutation, GenEmailWithMembershipNumberMutationVariables>;
+export const VerifyEmailWithMembershipNumberDocument = gql`
+    mutation VerifyEmailWithMembershipNumber($options: IGetEmailInput!) {
+  verifyEmailWithMembershipNumber(options: $options) {
+    success
+    msg
+    jwt
+    email
+    name
+  }
+}
+    `;
+export type VerifyEmailWithMembershipNumberMutationFn = Apollo.MutationFunction<VerifyEmailWithMembershipNumberMutation, VerifyEmailWithMembershipNumberMutationVariables>;
+
+/**
+ * __useVerifyEmailWithMembershipNumberMutation__
+ *
+ * To run a mutation, you first call `useVerifyEmailWithMembershipNumberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVerifyEmailWithMembershipNumberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [verifyEmailWithMembershipNumberMutation, { data, loading, error }] = useVerifyEmailWithMembershipNumberMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useVerifyEmailWithMembershipNumberMutation(baseOptions?: Apollo.MutationHookOptions<VerifyEmailWithMembershipNumberMutation, VerifyEmailWithMembershipNumberMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<VerifyEmailWithMembershipNumberMutation, VerifyEmailWithMembershipNumberMutationVariables>(VerifyEmailWithMembershipNumberDocument, options);
+      }
+export type VerifyEmailWithMembershipNumberMutationHookResult = ReturnType<typeof useVerifyEmailWithMembershipNumberMutation>;
+export type VerifyEmailWithMembershipNumberMutationResult = Apollo.MutationResult<VerifyEmailWithMembershipNumberMutation>;
+export type VerifyEmailWithMembershipNumberMutationOptions = Apollo.BaseMutationOptions<VerifyEmailWithMembershipNumberMutation, VerifyEmailWithMembershipNumberMutationVariables>;
 export const CreateMemberRegistrationDocument = gql`
     mutation CreateMemberRegistration($options: ICreateMemberRegistration!) {
   createMemberRegistration(options: $options) {

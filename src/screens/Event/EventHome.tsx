@@ -299,6 +299,7 @@ const UpcomingCard: React.FC<{
     //@ts-ignore
     navigate("RegisteredEvents", { eventId });
   };
+
   return (
     <>
       <VStack

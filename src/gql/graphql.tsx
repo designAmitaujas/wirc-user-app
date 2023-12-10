@@ -5220,6 +5220,23 @@ export type GetAllInvitationQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllInvitationQuery = { __typename?: 'Query', getAllInvitation: Array<{ __typename?: 'NetworkingInvite', _id: string, isAccepted: boolean, isActive: boolean, inviteFrom?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, inviteTo?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string } | null }> };
 
+export type GetAllCpeResourceCategoryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCpeResourceCategoryQuery = { __typename?: 'Query', getAllCpeResourceCategory: Array<{ __typename?: 'CpeResourceCategory', _id: string, name: string, date: any, isActive: boolean }> };
+
+export type GetCpeResourceByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetCpeResourceByIdQuery = { __typename?: 'Query', getCpeResourceById: { __typename?: 'CpeResource', _id: string, name: string, speaker: string, uri: string, urllink: string, isActive: boolean, cpeResourceCategory?: { __typename?: 'CpeResourceCategory', _id: string, date: any, name: string } | null } };
+
+export type GetAllCpeResourceQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCpeResourceQuery = { __typename?: 'Query', getAllCpeResource: Array<{ __typename?: 'CpeResource', _id: string, name: string, speaker: string, uri: string, urllink: string, isActive: boolean, cpeResourceCategory?: { __typename?: 'CpeResourceCategory', _id: string, date: any, isActive: boolean, name: string } | null }> };
+
 
 export const UpdateMyProfileDocument = gql`
     mutation UpdateMyProfile($options: ICreateMemberRegistration!) {
@@ -7312,3 +7329,130 @@ export function useGetAllInvitationLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetAllInvitationQueryHookResult = ReturnType<typeof useGetAllInvitationQuery>;
 export type GetAllInvitationLazyQueryHookResult = ReturnType<typeof useGetAllInvitationLazyQuery>;
 export type GetAllInvitationQueryResult = Apollo.QueryResult<GetAllInvitationQuery, GetAllInvitationQueryVariables>;
+export const GetAllCpeResourceCategoryDocument = gql`
+    query GetAllCpeResourceCategory {
+  getAllCpeResourceCategory {
+    _id
+    name
+    date
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllCpeResourceCategoryQuery__
+ *
+ * To run a query within a React component, call `useGetAllCpeResourceCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCpeResourceCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCpeResourceCategoryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCpeResourceCategoryQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>(GetAllCpeResourceCategoryDocument, options);
+      }
+export function useGetAllCpeResourceCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>(GetAllCpeResourceCategoryDocument, options);
+        }
+export type GetAllCpeResourceCategoryQueryHookResult = ReturnType<typeof useGetAllCpeResourceCategoryQuery>;
+export type GetAllCpeResourceCategoryLazyQueryHookResult = ReturnType<typeof useGetAllCpeResourceCategoryLazyQuery>;
+export type GetAllCpeResourceCategoryQueryResult = Apollo.QueryResult<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>;
+export const GetCpeResourceByIdDocument = gql`
+    query GetCpeResourceById($options: IGetByID!) {
+  getCpeResourceById(options: $options) {
+    _id
+    name
+    speaker
+    uri
+    urllink
+    cpeResourceCategory {
+      _id
+      date
+      name
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetCpeResourceByIdQuery__
+ *
+ * To run a query within a React component, call `useGetCpeResourceByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCpeResourceByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCpeResourceByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetCpeResourceByIdQuery(baseOptions: Apollo.QueryHookOptions<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>(GetCpeResourceByIdDocument, options);
+      }
+export function useGetCpeResourceByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>(GetCpeResourceByIdDocument, options);
+        }
+export type GetCpeResourceByIdQueryHookResult = ReturnType<typeof useGetCpeResourceByIdQuery>;
+export type GetCpeResourceByIdLazyQueryHookResult = ReturnType<typeof useGetCpeResourceByIdLazyQuery>;
+export type GetCpeResourceByIdQueryResult = Apollo.QueryResult<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>;
+export const GetAllCpeResourceDocument = gql`
+    query GetAllCpeResource {
+  getAllCpeResource {
+    _id
+    name
+    speaker
+    uri
+    urllink
+    cpeResourceCategory {
+      _id
+      date
+      isActive
+      name
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllCpeResourceQuery__
+ *
+ * To run a query within a React component, call `useGetAllCpeResourceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCpeResourceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCpeResourceQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCpeResourceQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>(GetAllCpeResourceDocument, options);
+      }
+export function useGetAllCpeResourceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>(GetAllCpeResourceDocument, options);
+        }
+export type GetAllCpeResourceQueryHookResult = ReturnType<typeof useGetAllCpeResourceQuery>;
+export type GetAllCpeResourceLazyQueryHookResult = ReturnType<typeof useGetAllCpeResourceLazyQuery>;
+export type GetAllCpeResourceQueryResult = Apollo.QueryResult<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>;

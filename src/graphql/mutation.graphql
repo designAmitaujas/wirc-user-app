@@ -114,7 +114,29 @@ mutation SendInvitation(
     firebaseId: $firebaseId
     eventId: $eventId
     inviteTo: $inviteTo
-  )
+  ) {
+    success
+    msg
+    data
+  }
+}
+
+mutation CreateMemberRegistration($options: ICreateMemberRegistration!) {
+  createMemberRegistration(options: $options) {
+    success
+    msg
+    data
+  }
+}
+
+mutation MemberRegistrationAuthResolver($options: IAuthMember!) {
+  memberRegistrationAuthResolver(options: $options) {
+    success
+    msg
+    jwt
+    email
+    name
+  }
 }
 
 mutation SetFirebaseId($firebaseId: String!) {

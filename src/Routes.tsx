@@ -21,6 +21,7 @@ import Newsletter from "./screens/Business/Newsletter";
 import Presentation from "./screens/Business/Presentation";
 import PresentationDetails from "./screens/Business/PresentationDetails";
 import Qna from "./screens/Business/Qna";
+import Registration from "./screens/auth/Registration";
 import NetworkingScreen from "./screens/networking/Networking";
 import Notification from "./screens/networking/Notification";
 import ProfileScreen from "./screens/profile/ProfileDetails";
@@ -39,13 +40,16 @@ const Routes = () => {
       initialRouteName={isAuth === true ? "BottomTab" : "Login"}
       screenOptions={{ headerShown: false }}
     >
+      <Stack.Screen name="Registration" component={Registration} />
+      <Stack.Screen name="mobile" component={MobileLogin} />
       {isAuth === true ? (
         <>
           <Stack.Screen name="BottomTab" component={BottomTab} />
           <Stack.Screen name="EventHome" component={Home} />
+
           <Stack.Screen name="SkillSection" component={SkillSection} />
           <Stack.Screen name="EditProfile" component={ProfileScreen} />
-          <Stack.Screen name="mobile" component={MobileLogin} />
+
           <Stack.Screen name="QRcode" component={QRScanner} />
           <Stack.Screen name="Business" component={Business} />
           <Stack.Screen name="Eventspeaker" component={EventSpeaker} />

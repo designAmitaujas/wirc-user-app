@@ -2340,7 +2340,7 @@ export type Mutation = {
   noneMemberRegistrationAuthResolver: IAuthResoverResponse;
   prenaSearch: Array<Prerna>;
   rejectInvite: Scalars['Boolean']['output'];
-  sendInvitation: Scalars['Boolean']['output'];
+  sendInvitation: IStatusResponse;
   setFirebaseId: Scalars['Boolean']['output'];
   speakerMail: IStatusResponse;
   updateAdminUser: IStatusResponse;
@@ -4988,7 +4988,14 @@ export type SendInvitationMutationVariables = Exact<{
 }>;
 
 
-export type SendInvitationMutation = { __typename?: 'Mutation', sendInvitation: boolean };
+export type SendInvitationMutation = { __typename?: 'Mutation', sendInvitation: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
+
+export type CreateMemberRegistrationMutationVariables = Exact<{
+  options: ICreateMemberRegistration;
+}>;
+
+
+export type CreateMemberRegistrationMutation = { __typename?: 'Mutation', createMemberRegistration: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
 
 export type SetFirebaseIdMutationVariables = Exact<{
   firebaseId: Scalars['String']['input'];
@@ -5588,7 +5595,11 @@ export type DeleteMemberSkillMutationResult = Apollo.MutationResult<DeleteMember
 export type DeleteMemberSkillMutationOptions = Apollo.BaseMutationOptions<DeleteMemberSkillMutation, DeleteMemberSkillMutationVariables>;
 export const SendInvitationDocument = gql`
     mutation SendInvitation($firebaseId: String!, $eventId: String!, $inviteTo: String!) {
-  sendInvitation(firebaseId: $firebaseId, eventId: $eventId, inviteTo: $inviteTo)
+  sendInvitation(firebaseId: $firebaseId, eventId: $eventId, inviteTo: $inviteTo) {
+    success
+    msg
+    data
+  }
 }
     `;
 export type SendInvitationMutationFn = Apollo.MutationFunction<SendInvitationMutation, SendInvitationMutationVariables>;
@@ -5619,6 +5630,41 @@ export function useSendInvitationMutation(baseOptions?: Apollo.MutationHookOptio
 export type SendInvitationMutationHookResult = ReturnType<typeof useSendInvitationMutation>;
 export type SendInvitationMutationResult = Apollo.MutationResult<SendInvitationMutation>;
 export type SendInvitationMutationOptions = Apollo.BaseMutationOptions<SendInvitationMutation, SendInvitationMutationVariables>;
+export const CreateMemberRegistrationDocument = gql`
+    mutation CreateMemberRegistration($options: ICreateMemberRegistration!) {
+  createMemberRegistration(options: $options) {
+    success
+    msg
+    data
+  }
+}
+    `;
+export type CreateMemberRegistrationMutationFn = Apollo.MutationFunction<CreateMemberRegistrationMutation, CreateMemberRegistrationMutationVariables>;
+
+/**
+ * __useCreateMemberRegistrationMutation__
+ *
+ * To run a mutation, you first call `useCreateMemberRegistrationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMemberRegistrationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMemberRegistrationMutation, { data, loading, error }] = useCreateMemberRegistrationMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useCreateMemberRegistrationMutation(baseOptions?: Apollo.MutationHookOptions<CreateMemberRegistrationMutation, CreateMemberRegistrationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMemberRegistrationMutation, CreateMemberRegistrationMutationVariables>(CreateMemberRegistrationDocument, options);
+      }
+export type CreateMemberRegistrationMutationHookResult = ReturnType<typeof useCreateMemberRegistrationMutation>;
+export type CreateMemberRegistrationMutationResult = Apollo.MutationResult<CreateMemberRegistrationMutation>;
+export type CreateMemberRegistrationMutationOptions = Apollo.BaseMutationOptions<CreateMemberRegistrationMutation, CreateMemberRegistrationMutationVariables>;
 export const SetFirebaseIdDocument = gql`
     mutation SetFirebaseId($firebaseId: String!) {
   setFirebaseId(firebaseId: $firebaseId)
@@ -5838,8 +5884,13 @@ export function useGetAllCpeEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllCpeEventQuery, GetAllCpeEventQueryVariables>(GetAllCpeEventDocument, options);
         }
+export function useGetAllCpeEventSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllCpeEventQuery, GetAllCpeEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllCpeEventQuery, GetAllCpeEventQueryVariables>(GetAllCpeEventDocument, options);
+        }
 export type GetAllCpeEventQueryHookResult = ReturnType<typeof useGetAllCpeEventQuery>;
 export type GetAllCpeEventLazyQueryHookResult = ReturnType<typeof useGetAllCpeEventLazyQuery>;
+export type GetAllCpeEventSuspenseQueryHookResult = ReturnType<typeof useGetAllCpeEventSuspenseQuery>;
 export type GetAllCpeEventQueryResult = Apollo.QueryResult<GetAllCpeEventQuery, GetAllCpeEventQueryVariables>;
 export const GetAllStateDocument = gql`
     query GetAllState {
@@ -5879,8 +5930,13 @@ export function useGetAllStateLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllStateQuery, GetAllStateQueryVariables>(GetAllStateDocument, options);
         }
+export function useGetAllStateSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllStateQuery, GetAllStateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllStateQuery, GetAllStateQueryVariables>(GetAllStateDocument, options);
+        }
 export type GetAllStateQueryHookResult = ReturnType<typeof useGetAllStateQuery>;
 export type GetAllStateLazyQueryHookResult = ReturnType<typeof useGetAllStateLazyQuery>;
+export type GetAllStateSuspenseQueryHookResult = ReturnType<typeof useGetAllStateSuspenseQuery>;
 export type GetAllStateQueryResult = Apollo.QueryResult<GetAllStateQuery, GetAllStateQueryVariables>;
 export const GetAllCountryDocument = gql`
     query GetAllCountry {
@@ -5915,8 +5971,13 @@ export function useGetAllCountryLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllCountryQuery, GetAllCountryQueryVariables>(GetAllCountryDocument, options);
         }
+export function useGetAllCountrySuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllCountryQuery, GetAllCountryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllCountryQuery, GetAllCountryQueryVariables>(GetAllCountryDocument, options);
+        }
 export type GetAllCountryQueryHookResult = ReturnType<typeof useGetAllCountryQuery>;
 export type GetAllCountryLazyQueryHookResult = ReturnType<typeof useGetAllCountryLazyQuery>;
+export type GetAllCountrySuspenseQueryHookResult = ReturnType<typeof useGetAllCountrySuspenseQuery>;
 export type GetAllCountryQueryResult = Apollo.QueryResult<GetAllCountryQuery, GetAllCountryQueryVariables>;
 export const GetAllCityDocument = gql`
     query GetAllCity {
@@ -5961,8 +6022,13 @@ export function useGetAllCityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllCityQuery, GetAllCityQueryVariables>(GetAllCityDocument, options);
         }
+export function useGetAllCitySuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllCityQuery, GetAllCityQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllCityQuery, GetAllCityQueryVariables>(GetAllCityDocument, options);
+        }
 export type GetAllCityQueryHookResult = ReturnType<typeof useGetAllCityQuery>;
 export type GetAllCityLazyQueryHookResult = ReturnType<typeof useGetAllCityLazyQuery>;
+export type GetAllCitySuspenseQueryHookResult = ReturnType<typeof useGetAllCitySuspenseQuery>;
 export type GetAllCityQueryResult = Apollo.QueryResult<GetAllCityQuery, GetAllCityQueryVariables>;
 export const GetTitleByIdDocument = gql`
     query GetTitleById($options: IGetByID!) {
@@ -5998,8 +6064,13 @@ export function useGetTitleByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetTitleByIdQuery, GetTitleByIdQueryVariables>(GetTitleByIdDocument, options);
         }
+export function useGetTitleByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetTitleByIdQuery, GetTitleByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTitleByIdQuery, GetTitleByIdQueryVariables>(GetTitleByIdDocument, options);
+        }
 export type GetTitleByIdQueryHookResult = ReturnType<typeof useGetTitleByIdQuery>;
 export type GetTitleByIdLazyQueryHookResult = ReturnType<typeof useGetTitleByIdLazyQuery>;
+export type GetTitleByIdSuspenseQueryHookResult = ReturnType<typeof useGetTitleByIdSuspenseQuery>;
 export type GetTitleByIdQueryResult = Apollo.QueryResult<GetTitleByIdQuery, GetTitleByIdQueryVariables>;
 export const GetRegionByIdDocument = gql`
     query GetRegionById($options: IGetByID!) {
@@ -6035,8 +6106,13 @@ export function useGetRegionByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetRegionByIdQuery, GetRegionByIdQueryVariables>(GetRegionByIdDocument, options);
         }
+export function useGetRegionByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetRegionByIdQuery, GetRegionByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetRegionByIdQuery, GetRegionByIdQueryVariables>(GetRegionByIdDocument, options);
+        }
 export type GetRegionByIdQueryHookResult = ReturnType<typeof useGetRegionByIdQuery>;
 export type GetRegionByIdLazyQueryHookResult = ReturnType<typeof useGetRegionByIdLazyQuery>;
+export type GetRegionByIdSuspenseQueryHookResult = ReturnType<typeof useGetRegionByIdSuspenseQuery>;
 export type GetRegionByIdQueryResult = Apollo.QueryResult<GetRegionByIdQuery, GetRegionByIdQueryVariables>;
 export const GetAllRegionDocument = gql`
     query GetAllRegion {
@@ -6071,8 +6147,13 @@ export function useGetAllRegionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllRegionQuery, GetAllRegionQueryVariables>(GetAllRegionDocument, options);
         }
+export function useGetAllRegionSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllRegionQuery, GetAllRegionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllRegionQuery, GetAllRegionQueryVariables>(GetAllRegionDocument, options);
+        }
 export type GetAllRegionQueryHookResult = ReturnType<typeof useGetAllRegionQuery>;
 export type GetAllRegionLazyQueryHookResult = ReturnType<typeof useGetAllRegionLazyQuery>;
+export type GetAllRegionSuspenseQueryHookResult = ReturnType<typeof useGetAllRegionSuspenseQuery>;
 export type GetAllRegionQueryResult = Apollo.QueryResult<GetAllRegionQuery, GetAllRegionQueryVariables>;
 export const GetAllTitleDocument = gql`
     query GetAllTitle {
@@ -6107,8 +6188,13 @@ export function useGetAllTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllTitleQuery, GetAllTitleQueryVariables>(GetAllTitleDocument, options);
         }
+export function useGetAllTitleSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllTitleQuery, GetAllTitleQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllTitleQuery, GetAllTitleQueryVariables>(GetAllTitleDocument, options);
+        }
 export type GetAllTitleQueryHookResult = ReturnType<typeof useGetAllTitleQuery>;
 export type GetAllTitleLazyQueryHookResult = ReturnType<typeof useGetAllTitleLazyQuery>;
+export type GetAllTitleSuspenseQueryHookResult = ReturnType<typeof useGetAllTitleSuspenseQuery>;
 export type GetAllTitleQueryResult = Apollo.QueryResult<GetAllTitleQuery, GetAllTitleQueryVariables>;
 export const GetAllGenderDocument = gql`
     query GetAllGender {
@@ -6143,8 +6229,13 @@ export function useGetAllGenderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllGenderQuery, GetAllGenderQueryVariables>(GetAllGenderDocument, options);
         }
+export function useGetAllGenderSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllGenderQuery, GetAllGenderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllGenderQuery, GetAllGenderQueryVariables>(GetAllGenderDocument, options);
+        }
 export type GetAllGenderQueryHookResult = ReturnType<typeof useGetAllGenderQuery>;
 export type GetAllGenderLazyQueryHookResult = ReturnType<typeof useGetAllGenderLazyQuery>;
+export type GetAllGenderSuspenseQueryHookResult = ReturnType<typeof useGetAllGenderSuspenseQuery>;
 export type GetAllGenderQueryResult = Apollo.QueryResult<GetAllGenderQuery, GetAllGenderQueryVariables>;
 export const GetGenderByIdDocument = gql`
     query GetGenderById($options: IGetByID!) {
@@ -6180,8 +6271,13 @@ export function useGetGenderByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetGenderByIdQuery, GetGenderByIdQueryVariables>(GetGenderByIdDocument, options);
         }
+export function useGetGenderByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetGenderByIdQuery, GetGenderByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetGenderByIdQuery, GetGenderByIdQueryVariables>(GetGenderByIdDocument, options);
+        }
 export type GetGenderByIdQueryHookResult = ReturnType<typeof useGetGenderByIdQuery>;
 export type GetGenderByIdLazyQueryHookResult = ReturnType<typeof useGetGenderByIdLazyQuery>;
+export type GetGenderByIdSuspenseQueryHookResult = ReturnType<typeof useGetGenderByIdSuspenseQuery>;
 export type GetGenderByIdQueryResult = Apollo.QueryResult<GetGenderByIdQuery, GetGenderByIdQueryVariables>;
 export const GetMyMobileEventListDocument = gql`
     query GetMyMobileEventList {
@@ -6219,8 +6315,13 @@ export function useGetMyMobileEventListLazyQuery(baseOptions?: Apollo.LazyQueryH
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMyMobileEventListQuery, GetMyMobileEventListQueryVariables>(GetMyMobileEventListDocument, options);
         }
+export function useGetMyMobileEventListSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMyMobileEventListQuery, GetMyMobileEventListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMyMobileEventListQuery, GetMyMobileEventListQueryVariables>(GetMyMobileEventListDocument, options);
+        }
 export type GetMyMobileEventListQueryHookResult = ReturnType<typeof useGetMyMobileEventListQuery>;
 export type GetMyMobileEventListLazyQueryHookResult = ReturnType<typeof useGetMyMobileEventListLazyQuery>;
+export type GetMyMobileEventListSuspenseQueryHookResult = ReturnType<typeof useGetMyMobileEventListSuspenseQuery>;
 export type GetMyMobileEventListQueryResult = Apollo.QueryResult<GetMyMobileEventListQuery, GetMyMobileEventListQueryVariables>;
 export const GetEventTopicByIdDocument = gql`
     query GetEventTopicById($options: IGetByID!) {
@@ -6283,8 +6384,13 @@ export function useGetEventTopicByIdLazyQuery(baseOptions?: Apollo.LazyQueryHook
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetEventTopicByIdQuery, GetEventTopicByIdQueryVariables>(GetEventTopicByIdDocument, options);
         }
+export function useGetEventTopicByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetEventTopicByIdQuery, GetEventTopicByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetEventTopicByIdQuery, GetEventTopicByIdQueryVariables>(GetEventTopicByIdDocument, options);
+        }
 export type GetEventTopicByIdQueryHookResult = ReturnType<typeof useGetEventTopicByIdQuery>;
 export type GetEventTopicByIdLazyQueryHookResult = ReturnType<typeof useGetEventTopicByIdLazyQuery>;
+export type GetEventTopicByIdSuspenseQueryHookResult = ReturnType<typeof useGetEventTopicByIdSuspenseQuery>;
 export type GetEventTopicByIdQueryResult = Apollo.QueryResult<GetEventTopicByIdQuery, GetEventTopicByIdQueryVariables>;
 export const GetAllEventTopicDocument = gql`
     query GetAllEventTopic {
@@ -6346,8 +6452,13 @@ export function useGetAllEventTopicLazyQuery(baseOptions?: Apollo.LazyQueryHookO
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>(GetAllEventTopicDocument, options);
         }
+export function useGetAllEventTopicSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>(GetAllEventTopicDocument, options);
+        }
 export type GetAllEventTopicQueryHookResult = ReturnType<typeof useGetAllEventTopicQuery>;
 export type GetAllEventTopicLazyQueryHookResult = ReturnType<typeof useGetAllEventTopicLazyQuery>;
+export type GetAllEventTopicSuspenseQueryHookResult = ReturnType<typeof useGetAllEventTopicSuspenseQuery>;
 export type GetAllEventTopicQueryResult = Apollo.QueryResult<GetAllEventTopicQuery, GetAllEventTopicQueryVariables>;
 export const GetMemberAttendanceListDocument = gql`
     query GetMemberAttendanceList($eventId: String!) {
@@ -6402,8 +6513,13 @@ export function useGetMemberAttendanceListLazyQuery(baseOptions?: Apollo.LazyQue
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>(GetMemberAttendanceListDocument, options);
         }
+export function useGetMemberAttendanceListSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>(GetMemberAttendanceListDocument, options);
+        }
 export type GetMemberAttendanceListQueryHookResult = ReturnType<typeof useGetMemberAttendanceListQuery>;
 export type GetMemberAttendanceListLazyQueryHookResult = ReturnType<typeof useGetMemberAttendanceListLazyQuery>;
+export type GetMemberAttendanceListSuspenseQueryHookResult = ReturnType<typeof useGetMemberAttendanceListSuspenseQuery>;
 export type GetMemberAttendanceListQueryResult = Apollo.QueryResult<GetMemberAttendanceListQuery, GetMemberAttendanceListQueryVariables>;
 export const MyProfileInformationDocument = gql`
     query MyProfileInformation {
@@ -6487,8 +6603,13 @@ export function useMyProfileInformationLazyQuery(baseOptions?: Apollo.LazyQueryH
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<MyProfileInformationQuery, MyProfileInformationQueryVariables>(MyProfileInformationDocument, options);
         }
+export function useMyProfileInformationSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<MyProfileInformationQuery, MyProfileInformationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<MyProfileInformationQuery, MyProfileInformationQueryVariables>(MyProfileInformationDocument, options);
+        }
 export type MyProfileInformationQueryHookResult = ReturnType<typeof useMyProfileInformationQuery>;
 export type MyProfileInformationLazyQueryHookResult = ReturnType<typeof useMyProfileInformationLazyQuery>;
+export type MyProfileInformationSuspenseQueryHookResult = ReturnType<typeof useMyProfileInformationSuspenseQuery>;
 export type MyProfileInformationQueryResult = Apollo.QueryResult<MyProfileInformationQuery, MyProfileInformationQueryVariables>;
 export const GetMyAttendedEventDocument = gql`
     query GetMyAttendedEvent {
@@ -6547,8 +6668,13 @@ export function useGetMyAttendedEventLazyQuery(baseOptions?: Apollo.LazyQueryHoo
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>(GetMyAttendedEventDocument, options);
         }
+export function useGetMyAttendedEventSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>(GetMyAttendedEventDocument, options);
+        }
 export type GetMyAttendedEventQueryHookResult = ReturnType<typeof useGetMyAttendedEventQuery>;
 export type GetMyAttendedEventLazyQueryHookResult = ReturnType<typeof useGetMyAttendedEventLazyQuery>;
+export type GetMyAttendedEventSuspenseQueryHookResult = ReturnType<typeof useGetMyAttendedEventSuspenseQuery>;
 export type GetMyAttendedEventQueryResult = Apollo.QueryResult<GetMyAttendedEventQuery, GetMyAttendedEventQueryVariables>;
 export const GetTodayCpeEventDocument = gql`
     query GetTodayCpeEvent {
@@ -6602,8 +6728,13 @@ export function useGetTodayCpeEventLazyQuery(baseOptions?: Apollo.LazyQueryHookO
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetTodayCpeEventQuery, GetTodayCpeEventQueryVariables>(GetTodayCpeEventDocument, options);
         }
+export function useGetTodayCpeEventSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetTodayCpeEventQuery, GetTodayCpeEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTodayCpeEventQuery, GetTodayCpeEventQueryVariables>(GetTodayCpeEventDocument, options);
+        }
 export type GetTodayCpeEventQueryHookResult = ReturnType<typeof useGetTodayCpeEventQuery>;
 export type GetTodayCpeEventLazyQueryHookResult = ReturnType<typeof useGetTodayCpeEventLazyQuery>;
+export type GetTodayCpeEventSuspenseQueryHookResult = ReturnType<typeof useGetTodayCpeEventSuspenseQuery>;
 export type GetTodayCpeEventQueryResult = Apollo.QueryResult<GetTodayCpeEventQuery, GetTodayCpeEventQueryVariables>;
 export const GetCpeEventByIdDocument = gql`
     query GetCpeEventById($options: IGetByID!) {
@@ -6663,8 +6794,13 @@ export function useGetCpeEventByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>(GetCpeEventByIdDocument, options);
         }
+export function useGetCpeEventByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>(GetCpeEventByIdDocument, options);
+        }
 export type GetCpeEventByIdQueryHookResult = ReturnType<typeof useGetCpeEventByIdQuery>;
 export type GetCpeEventByIdLazyQueryHookResult = ReturnType<typeof useGetCpeEventByIdLazyQuery>;
+export type GetCpeEventByIdSuspenseQueryHookResult = ReturnType<typeof useGetCpeEventByIdSuspenseQuery>;
 export type GetCpeEventByIdQueryResult = Apollo.QueryResult<GetCpeEventByIdQuery, GetCpeEventByIdQueryVariables>;
 export const GetCpeEventRangeByCpeIdDocument = gql`
     query GetCpeEventRangeByCpeId($options: IGetByID!) {
@@ -6705,8 +6841,13 @@ export function useGetCpeEventRangeByCpeIdLazyQuery(baseOptions?: Apollo.LazyQue
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>(GetCpeEventRangeByCpeIdDocument, options);
         }
+export function useGetCpeEventRangeByCpeIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>(GetCpeEventRangeByCpeIdDocument, options);
+        }
 export type GetCpeEventRangeByCpeIdQueryHookResult = ReturnType<typeof useGetCpeEventRangeByCpeIdQuery>;
 export type GetCpeEventRangeByCpeIdLazyQueryHookResult = ReturnType<typeof useGetCpeEventRangeByCpeIdLazyQuery>;
+export type GetCpeEventRangeByCpeIdSuspenseQueryHookResult = ReturnType<typeof useGetCpeEventRangeByCpeIdSuspenseQuery>;
 export type GetCpeEventRangeByCpeIdQueryResult = Apollo.QueryResult<GetCpeEventRangeByCpeIdQuery, GetCpeEventRangeByCpeIdQueryVariables>;
 export const GetPaymentReciptByIdDocument = gql`
     query GetPaymentReciptById($options: IGetByID!) {
@@ -6786,8 +6927,13 @@ export function useGetPaymentReciptByIdLazyQuery(baseOptions?: Apollo.LazyQueryH
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetPaymentReciptByIdQuery, GetPaymentReciptByIdQueryVariables>(GetPaymentReciptByIdDocument, options);
         }
+export function useGetPaymentReciptByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetPaymentReciptByIdQuery, GetPaymentReciptByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPaymentReciptByIdQuery, GetPaymentReciptByIdQueryVariables>(GetPaymentReciptByIdDocument, options);
+        }
 export type GetPaymentReciptByIdQueryHookResult = ReturnType<typeof useGetPaymentReciptByIdQuery>;
 export type GetPaymentReciptByIdLazyQueryHookResult = ReturnType<typeof useGetPaymentReciptByIdLazyQuery>;
+export type GetPaymentReciptByIdSuspenseQueryHookResult = ReturnType<typeof useGetPaymentReciptByIdSuspenseQuery>;
 export type GetPaymentReciptByIdQueryResult = Apollo.QueryResult<GetPaymentReciptByIdQuery, GetPaymentReciptByIdQueryVariables>;
 export const GetCountByCpeEventDocument = gql`
     query GetCountByCpeEvent($options: IGetByID!) {
@@ -6822,8 +6968,13 @@ export function useGetCountByCpeEventLazyQuery(baseOptions?: Apollo.LazyQueryHoo
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>(GetCountByCpeEventDocument, options);
         }
+export function useGetCountByCpeEventSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>(GetCountByCpeEventDocument, options);
+        }
 export type GetCountByCpeEventQueryHookResult = ReturnType<typeof useGetCountByCpeEventQuery>;
 export type GetCountByCpeEventLazyQueryHookResult = ReturnType<typeof useGetCountByCpeEventLazyQuery>;
+export type GetCountByCpeEventSuspenseQueryHookResult = ReturnType<typeof useGetCountByCpeEventSuspenseQuery>;
 export type GetCountByCpeEventQueryResult = Apollo.QueryResult<GetCountByCpeEventQuery, GetCountByCpeEventQueryVariables>;
 export const GetAllSkillsDocument = gql`
     query GetAllSkills {
@@ -6858,8 +7009,13 @@ export function useGetAllSkillsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllSkillsQuery, GetAllSkillsQueryVariables>(GetAllSkillsDocument, options);
         }
+export function useGetAllSkillsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllSkillsQuery, GetAllSkillsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllSkillsQuery, GetAllSkillsQueryVariables>(GetAllSkillsDocument, options);
+        }
 export type GetAllSkillsQueryHookResult = ReturnType<typeof useGetAllSkillsQuery>;
 export type GetAllSkillsLazyQueryHookResult = ReturnType<typeof useGetAllSkillsLazyQuery>;
+export type GetAllSkillsSuspenseQueryHookResult = ReturnType<typeof useGetAllSkillsSuspenseQuery>;
 export type GetAllSkillsQueryResult = Apollo.QueryResult<GetAllSkillsQuery, GetAllSkillsQueryVariables>;
 export const GetMemberSkillByIdDocument = gql`
     query GetMemberSkillById($options: IGetByID!) {
@@ -6900,8 +7056,13 @@ export function useGetMemberSkillByIdLazyQuery(baseOptions?: Apollo.LazyQueryHoo
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMemberSkillByIdQuery, GetMemberSkillByIdQueryVariables>(GetMemberSkillByIdDocument, options);
         }
+export function useGetMemberSkillByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMemberSkillByIdQuery, GetMemberSkillByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMemberSkillByIdQuery, GetMemberSkillByIdQueryVariables>(GetMemberSkillByIdDocument, options);
+        }
 export type GetMemberSkillByIdQueryHookResult = ReturnType<typeof useGetMemberSkillByIdQuery>;
 export type GetMemberSkillByIdLazyQueryHookResult = ReturnType<typeof useGetMemberSkillByIdLazyQuery>;
+export type GetMemberSkillByIdSuspenseQueryHookResult = ReturnType<typeof useGetMemberSkillByIdSuspenseQuery>;
 export type GetMemberSkillByIdQueryResult = Apollo.QueryResult<GetMemberSkillByIdQuery, GetMemberSkillByIdQueryVariables>;
 export const GetAllMemberSkillDocument = gql`
     query GetAllMemberSkill {
@@ -6941,8 +7102,13 @@ export function useGetAllMemberSkillLazyQuery(baseOptions?: Apollo.LazyQueryHook
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>(GetAllMemberSkillDocument, options);
         }
+export function useGetAllMemberSkillSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>(GetAllMemberSkillDocument, options);
+        }
 export type GetAllMemberSkillQueryHookResult = ReturnType<typeof useGetAllMemberSkillQuery>;
 export type GetAllMemberSkillLazyQueryHookResult = ReturnType<typeof useGetAllMemberSkillLazyQuery>;
+export type GetAllMemberSkillSuspenseQueryHookResult = ReturnType<typeof useGetAllMemberSkillSuspenseQuery>;
 export type GetAllMemberSkillQueryResult = Apollo.QueryResult<GetAllMemberSkillQuery, GetAllMemberSkillQueryVariables>;
 export const GetMySkillListDocument = gql`
     query GetMySkillList($options: IGetByID!) {
@@ -6983,8 +7149,13 @@ export function useGetMySkillListLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMySkillListQuery, GetMySkillListQueryVariables>(GetMySkillListDocument, options);
         }
+export function useGetMySkillListSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMySkillListQuery, GetMySkillListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMySkillListQuery, GetMySkillListQueryVariables>(GetMySkillListDocument, options);
+        }
 export type GetMySkillListQueryHookResult = ReturnType<typeof useGetMySkillListQuery>;
 export type GetMySkillListLazyQueryHookResult = ReturnType<typeof useGetMySkillListLazyQuery>;
+export type GetMySkillListSuspenseQueryHookResult = ReturnType<typeof useGetMySkillListSuspenseQuery>;
 export type GetMySkillListQueryResult = Apollo.QueryResult<GetMySkillListQuery, GetMySkillListQueryVariables>;
 export const GetBusinesslistingByIdDocument = gql`
     query GetBusinesslistingById($options: IGetByID!) {
@@ -7021,8 +7192,13 @@ export function useGetBusinesslistingByIdLazyQuery(baseOptions?: Apollo.LazyQuer
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetBusinesslistingByIdQuery, GetBusinesslistingByIdQueryVariables>(GetBusinesslistingByIdDocument, options);
         }
+export function useGetBusinesslistingByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetBusinesslistingByIdQuery, GetBusinesslistingByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetBusinesslistingByIdQuery, GetBusinesslistingByIdQueryVariables>(GetBusinesslistingByIdDocument, options);
+        }
 export type GetBusinesslistingByIdQueryHookResult = ReturnType<typeof useGetBusinesslistingByIdQuery>;
 export type GetBusinesslistingByIdLazyQueryHookResult = ReturnType<typeof useGetBusinesslistingByIdLazyQuery>;
+export type GetBusinesslistingByIdSuspenseQueryHookResult = ReturnType<typeof useGetBusinesslistingByIdSuspenseQuery>;
 export type GetBusinesslistingByIdQueryResult = Apollo.QueryResult<GetBusinesslistingByIdQuery, GetBusinesslistingByIdQueryVariables>;
 export const GetAllBusinessListingDocument = gql`
     query GetAllBusinessListing {
@@ -7058,8 +7234,13 @@ export function useGetAllBusinessListingLazyQuery(baseOptions?: Apollo.LazyQuery
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllBusinessListingQuery, GetAllBusinessListingQueryVariables>(GetAllBusinessListingDocument, options);
         }
+export function useGetAllBusinessListingSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllBusinessListingQuery, GetAllBusinessListingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllBusinessListingQuery, GetAllBusinessListingQueryVariables>(GetAllBusinessListingDocument, options);
+        }
 export type GetAllBusinessListingQueryHookResult = ReturnType<typeof useGetAllBusinessListingQuery>;
 export type GetAllBusinessListingLazyQueryHookResult = ReturnType<typeof useGetAllBusinessListingLazyQuery>;
+export type GetAllBusinessListingSuspenseQueryHookResult = ReturnType<typeof useGetAllBusinessListingSuspenseQuery>;
 export type GetAllBusinessListingQueryResult = Apollo.QueryResult<GetAllBusinessListingQuery, GetAllBusinessListingQueryVariables>;
 export const GetAllEventSpeakerDocument = gql`
     query GetAllEventSpeaker {
@@ -7100,8 +7281,13 @@ export function useGetAllEventSpeakerLazyQuery(baseOptions?: Apollo.LazyQueryHoo
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllEventSpeakerQuery, GetAllEventSpeakerQueryVariables>(GetAllEventSpeakerDocument, options);
         }
+export function useGetAllEventSpeakerSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllEventSpeakerQuery, GetAllEventSpeakerQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllEventSpeakerQuery, GetAllEventSpeakerQueryVariables>(GetAllEventSpeakerDocument, options);
+        }
 export type GetAllEventSpeakerQueryHookResult = ReturnType<typeof useGetAllEventSpeakerQuery>;
 export type GetAllEventSpeakerLazyQueryHookResult = ReturnType<typeof useGetAllEventSpeakerLazyQuery>;
+export type GetAllEventSpeakerSuspenseQueryHookResult = ReturnType<typeof useGetAllEventSpeakerSuspenseQuery>;
 export type GetAllEventSpeakerQueryResult = Apollo.QueryResult<GetAllEventSpeakerQuery, GetAllEventSpeakerQueryVariables>;
 export const GetAllWhatWeBrignToYouDocument = gql`
     query GetAllWhatWeBrignToYou {
@@ -7141,8 +7327,13 @@ export function useGetAllWhatWeBrignToYouLazyQuery(baseOptions?: Apollo.LazyQuer
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllWhatWeBrignToYouQuery, GetAllWhatWeBrignToYouQueryVariables>(GetAllWhatWeBrignToYouDocument, options);
         }
+export function useGetAllWhatWeBrignToYouSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllWhatWeBrignToYouQuery, GetAllWhatWeBrignToYouQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllWhatWeBrignToYouQuery, GetAllWhatWeBrignToYouQueryVariables>(GetAllWhatWeBrignToYouDocument, options);
+        }
 export type GetAllWhatWeBrignToYouQueryHookResult = ReturnType<typeof useGetAllWhatWeBrignToYouQuery>;
 export type GetAllWhatWeBrignToYouLazyQueryHookResult = ReturnType<typeof useGetAllWhatWeBrignToYouLazyQuery>;
+export type GetAllWhatWeBrignToYouSuspenseQueryHookResult = ReturnType<typeof useGetAllWhatWeBrignToYouSuspenseQuery>;
 export type GetAllWhatWeBrignToYouQueryResult = Apollo.QueryResult<GetAllWhatWeBrignToYouQuery, GetAllWhatWeBrignToYouQueryVariables>;
 export const GetAllYoutubeLinksDocument = gql`
     query GetAllYoutubeLinks {
@@ -7184,8 +7375,13 @@ export function useGetAllYoutubeLinksLazyQuery(baseOptions?: Apollo.LazyQueryHoo
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>(GetAllYoutubeLinksDocument, options);
         }
+export function useGetAllYoutubeLinksSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>(GetAllYoutubeLinksDocument, options);
+        }
 export type GetAllYoutubeLinksQueryHookResult = ReturnType<typeof useGetAllYoutubeLinksQuery>;
 export type GetAllYoutubeLinksLazyQueryHookResult = ReturnType<typeof useGetAllYoutubeLinksLazyQuery>;
+export type GetAllYoutubeLinksSuspenseQueryHookResult = ReturnType<typeof useGetAllYoutubeLinksSuspenseQuery>;
 export type GetAllYoutubeLinksQueryResult = Apollo.QueryResult<GetAllYoutubeLinksQuery, GetAllYoutubeLinksQueryVariables>;
 export const GetAllWicasaNewsLatterDocument = gql`
     query GetAllWicasaNewsLatter {
@@ -7226,8 +7422,13 @@ export function useGetAllWicasaNewsLatterLazyQuery(baseOptions?: Apollo.LazyQuer
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>(GetAllWicasaNewsLatterDocument, options);
         }
+export function useGetAllWicasaNewsLatterSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>(GetAllWicasaNewsLatterDocument, options);
+        }
 export type GetAllWicasaNewsLatterQueryHookResult = ReturnType<typeof useGetAllWicasaNewsLatterQuery>;
 export type GetAllWicasaNewsLatterLazyQueryHookResult = ReturnType<typeof useGetAllWicasaNewsLatterLazyQuery>;
+export type GetAllWicasaNewsLatterSuspenseQueryHookResult = ReturnType<typeof useGetAllWicasaNewsLatterSuspenseQuery>;
 export type GetAllWicasaNewsLatterQueryResult = Apollo.QueryResult<GetAllWicasaNewsLatterQuery, GetAllWicasaNewsLatterQueryVariables>;
 export const GetWhatWeBrignToYouByIdDocument = gql`
     query GetWhatWeBrignToYouById($options: IGetByID!) {
@@ -7268,8 +7469,13 @@ export function useGetWhatWeBrignToYouByIdLazyQuery(baseOptions?: Apollo.LazyQue
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetWhatWeBrignToYouByIdQuery, GetWhatWeBrignToYouByIdQueryVariables>(GetWhatWeBrignToYouByIdDocument, options);
         }
+export function useGetWhatWeBrignToYouByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetWhatWeBrignToYouByIdQuery, GetWhatWeBrignToYouByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetWhatWeBrignToYouByIdQuery, GetWhatWeBrignToYouByIdQueryVariables>(GetWhatWeBrignToYouByIdDocument, options);
+        }
 export type GetWhatWeBrignToYouByIdQueryHookResult = ReturnType<typeof useGetWhatWeBrignToYouByIdQuery>;
 export type GetWhatWeBrignToYouByIdLazyQueryHookResult = ReturnType<typeof useGetWhatWeBrignToYouByIdLazyQuery>;
+export type GetWhatWeBrignToYouByIdSuspenseQueryHookResult = ReturnType<typeof useGetWhatWeBrignToYouByIdSuspenseQuery>;
 export type GetWhatWeBrignToYouByIdQueryResult = Apollo.QueryResult<GetWhatWeBrignToYouByIdQuery, GetWhatWeBrignToYouByIdQueryVariables>;
 export const GetEventSpeakerByIdDocument = gql`
     query GetEventSpeakerById($options: IGetByID!) {
@@ -7311,8 +7517,13 @@ export function useGetEventSpeakerByIdLazyQuery(baseOptions?: Apollo.LazyQueryHo
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>(GetEventSpeakerByIdDocument, options);
         }
+export function useGetEventSpeakerByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>(GetEventSpeakerByIdDocument, options);
+        }
 export type GetEventSpeakerByIdQueryHookResult = ReturnType<typeof useGetEventSpeakerByIdQuery>;
 export type GetEventSpeakerByIdLazyQueryHookResult = ReturnType<typeof useGetEventSpeakerByIdLazyQuery>;
+export type GetEventSpeakerByIdSuspenseQueryHookResult = ReturnType<typeof useGetEventSpeakerByIdSuspenseQuery>;
 export type GetEventSpeakerByIdQueryResult = Apollo.QueryResult<GetEventSpeakerByIdQuery, GetEventSpeakerByIdQueryVariables>;
 export const GetAllInvitationDocument = gql`
     query GetAllInvitation {
@@ -7367,8 +7578,13 @@ export function useGetAllInvitationLazyQuery(baseOptions?: Apollo.LazyQueryHookO
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllInvitationQuery, GetAllInvitationQueryVariables>(GetAllInvitationDocument, options);
         }
+export function useGetAllInvitationSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllInvitationQuery, GetAllInvitationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllInvitationQuery, GetAllInvitationQueryVariables>(GetAllInvitationDocument, options);
+        }
 export type GetAllInvitationQueryHookResult = ReturnType<typeof useGetAllInvitationQuery>;
 export type GetAllInvitationLazyQueryHookResult = ReturnType<typeof useGetAllInvitationLazyQuery>;
+export type GetAllInvitationSuspenseQueryHookResult = ReturnType<typeof useGetAllInvitationSuspenseQuery>;
 export type GetAllInvitationQueryResult = Apollo.QueryResult<GetAllInvitationQuery, GetAllInvitationQueryVariables>;
 export const GetAllCpeResourceCategoryDocument = gql`
     query GetAllCpeResourceCategory {
@@ -7404,8 +7620,13 @@ export function useGetAllCpeResourceCategoryLazyQuery(baseOptions?: Apollo.LazyQ
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>(GetAllCpeResourceCategoryDocument, options);
         }
+export function useGetAllCpeResourceCategorySuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>(GetAllCpeResourceCategoryDocument, options);
+        }
 export type GetAllCpeResourceCategoryQueryHookResult = ReturnType<typeof useGetAllCpeResourceCategoryQuery>;
 export type GetAllCpeResourceCategoryLazyQueryHookResult = ReturnType<typeof useGetAllCpeResourceCategoryLazyQuery>;
+export type GetAllCpeResourceCategorySuspenseQueryHookResult = ReturnType<typeof useGetAllCpeResourceCategorySuspenseQuery>;
 export type GetAllCpeResourceCategoryQueryResult = Apollo.QueryResult<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>;
 export const GetCpeResourceByIdDocument = gql`
     query GetCpeResourceById($options: IGetByID!) {
@@ -7449,8 +7670,13 @@ export function useGetCpeResourceByIdLazyQuery(baseOptions?: Apollo.LazyQueryHoo
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>(GetCpeResourceByIdDocument, options);
         }
+export function useGetCpeResourceByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>(GetCpeResourceByIdDocument, options);
+        }
 export type GetCpeResourceByIdQueryHookResult = ReturnType<typeof useGetCpeResourceByIdQuery>;
 export type GetCpeResourceByIdLazyQueryHookResult = ReturnType<typeof useGetCpeResourceByIdLazyQuery>;
+export type GetCpeResourceByIdSuspenseQueryHookResult = ReturnType<typeof useGetCpeResourceByIdSuspenseQuery>;
 export type GetCpeResourceByIdQueryResult = Apollo.QueryResult<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>;
 export const GetAllCpeResourceDocument = gql`
     query GetAllCpeResource {
@@ -7494,6 +7720,11 @@ export function useGetAllCpeResourceLazyQuery(baseOptions?: Apollo.LazyQueryHook
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>(GetAllCpeResourceDocument, options);
         }
+export function useGetAllCpeResourceSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>(GetAllCpeResourceDocument, options);
+        }
 export type GetAllCpeResourceQueryHookResult = ReturnType<typeof useGetAllCpeResourceQuery>;
 export type GetAllCpeResourceLazyQueryHookResult = ReturnType<typeof useGetAllCpeResourceLazyQuery>;
+export type GetAllCpeResourceSuspenseQueryHookResult = ReturnType<typeof useGetAllCpeResourceSuspenseQuery>;
 export type GetAllCpeResourceQueryResult = Apollo.QueryResult<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>;

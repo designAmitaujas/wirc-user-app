@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
 import _ from "lodash";
 import {
+  HStack,
   Icon,
   IconButton,
   Image,
@@ -13,6 +14,7 @@ import {
   useToast,
 } from "native-base";
 import { useState } from "react";
+import { TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import { CustomButton, CustomInput } from "../../components/CustomForm";
 import {
@@ -37,6 +39,16 @@ const Login = () => {
   const { navigate } = useNavigation();
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+
+  const handleRegistration = () => {
+    //@ts-ignore
+    navigate("Registration");
+  };
+
+  const handleemail = () => {
+    //@ts-ignore
+    navigate("mobile");
+  };
 
   const { setAuth } = useAppAuthState();
 
@@ -196,6 +208,18 @@ const Login = () => {
                         />
                       }
                     />
+                    <HStack justifyContent="space-between">
+                      <TouchableOpacity onPress={handleRegistration}>
+                        <Text fontSize="lg" fontWeight="semibold">
+                          Register ?
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={handleemail}>
+                        <Text fontSize="lg" fontWeight="semibold">
+                          Login with email !
+                        </Text>
+                      </TouchableOpacity>
+                    </HStack>
 
                     <CustomButton
                       name="Login"

@@ -3,7 +3,7 @@ import Url from "url-parse";
 
 // export const GQL_API_URL = "https://admin.wirc-icai.org/graphql";
 export const GQL_API_URL =
-  "https://gi-districts-fo-virgin.trycloudflare.com/graphql";
+  "https://fleece-truck-mercury-reaction.trycloudflare.com/graphql";
 
 const parsedUrl = new Url(GQL_API_URL);
 

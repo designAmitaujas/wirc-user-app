@@ -20,11 +20,13 @@
       }
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "versionCode": 1010,
       "adaptiveIcon": {
         "foregroundImage": "./assets/wirclogo.png",
         "backgroundColor": "#ffffff"
       },
+      "plugins": ["@react-native-firebase/app"],
       "permissions": ["ACCESS_FINE_LOCATION"],
       "package": "com.amitaujas.WIRCUser"
     },

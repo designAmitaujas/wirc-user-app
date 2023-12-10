@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "703855841112",
+    "project_id": "wirc-1b868",
+    "storage_bucket": "wirc-1b868.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703855841112:android:9ad8298647e7c4b09c9f2d",
+        "android_client_info": {
+          "package_name": "com.amitaujas.WIRCUser"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqJWuH3XrQOVVP5eaOX2lTZay_k-2TmD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

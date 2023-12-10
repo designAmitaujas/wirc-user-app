@@ -630,3 +630,45 @@ query GetAllInvitation {
     isActive
   }
 }
+
+query GetAllCpeResourceCategory {
+  getAllCpeResourceCategory {
+    _id
+    name
+    date
+    isActive
+  }
+}
+
+query GetCpeResourceById($options: IGetByID!) {
+  getCpeResourceById(options: $options) {
+    _id
+    name
+    speaker
+    uri
+    urllink
+    cpeResourceCategory {
+      _id
+      date
+      name
+    }
+    isActive
+  }
+}
+
+query GetAllCpeResource {
+  getAllCpeResource {
+    _id
+    name
+    speaker
+    uri
+    urllink
+    cpeResourceCategory {
+      _id
+      date
+      isActive
+      name
+    }
+    isActive
+  }
+}

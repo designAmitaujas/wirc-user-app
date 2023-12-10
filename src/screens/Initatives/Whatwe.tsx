@@ -10,9 +10,9 @@ import {
   Image,
   Pressable,
   ScrollView,
+  Spinner,
   Text,
 } from "native-base";
-import { useCallback } from "react";
 import { downloadPath } from "../../constant";
 import {
   ICreateWhatWeBrignToYou,
@@ -117,57 +117,81 @@ const ProductCard: React.FC<{
           </Stack>
         </HStack>
       </Card> */}
-      <ScrollView mt={3}>
-        <Pressable onPress={handledetails} flex={1}>
-          <HStack space="2" mx="2" mb="2">
-            <Box flex={1} mb={2}>
-              <AspectRatio flex={1} ratio={16 / 10}>
-                <Image
-                  source={{ uri: downloadPath(img), cache: "reload" }}
-                  alt="image"
-                />
-              </AspectRatio>
-              <Text flex="1" textAlign={"center"} fontWeight={"bold"} mt="2">
-                {name}
-              </Text>
-            </Box>
-          </HStack>
-        </Pressable>
-      </ScrollView>
+
+      <Pressable onPress={handledetails} flex={1}>
+        <HStack
+          p={2}
+          mx="2"
+          borderColor={"#00388D"}
+          borderWidth="1"
+          borderRadius="lg"
+        >
+          <Box flex={1} mb={2}>
+            <AspectRatio flex={1} ratio={16 / 10}>
+              <Image
+                source={{ uri: downloadPath(img), cache: "reload" }}
+                alt="image"
+              />
+            </AspectRatio>
+          </Box>
+        </HStack>
+        <Text flex="1" textAlign={"center"} fontWeight={"bold"} mt="2" mb={3}>
+          {name}
+        </Text>
+      </Pressable>
     </>
   );
 };
 
 const Whatwe = () => {
-  const { data } = useGetAllWhatWeBrignToYouQuery();
+  const { data, loading } = useGetAllWhatWeBrignToYouQuery();
 
-  const renderItem = useCallback(
-    ({ item }: { item: ICreateWhatWeBrignToYou }) => {
-      return (
-        <ProductCard
-          img={item.image}
-          name={item.name}
-          whatid={item._id || ""}
-          desc1={item.description}
-          desc2={item.icon}
-        />
-      );
-    },
-    []
-  );
+  if (loading) {
+    return (
+      <>
+        <RestHeader />
+
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
+  }
 
   return (
     <>
       <RestHeader />
-
-      {Array.isArray(data?.getAllWhatWeBrignToYou) && (
-        <FlatList
-          numColumns={2}
-          data={data.getAllWhatWeBrignToYou}
-          keyExtractor={(item) => item._id}
-          renderItem={renderItem}
-        />
-      )}
+      <ScrollView mt={3} bg="white">
+        {data?.getAllWhatWeBrignToYou && (
+          <FlatList
+            scrollEnabled={false}
+            numColumns={2}
+            data={data.getAllWhatWeBrignToYou}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }: { item: ICreateWhatWeBrignToYou }) => (
+              <ProductCard
+                img={item.image}
+                name={item.name}
+                whatid={item._id || ""}
+                desc1={item.description}
+                desc2={item.icon}
+              />
+            )}
+          />
+        )}
+      </ScrollView>
     </>
   );
 };

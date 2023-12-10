@@ -210,6 +210,16 @@ const RegisterdEventDetails = () => {
     navigate("Eventspeaker", { eventId });
   };
 
+  const handlepresentation = () => {
+    //@ts-ignore
+    navigate("presentation");
+  };
+  const handleqna = (id: string) => {
+    console.log("helo", id);
+    //@ts-ignore
+    navigate("question", { id });
+  };
+
   const networking = () => {
     const { eventId } = params as { eventId?: string };
     // @ts-ignore
@@ -289,34 +299,41 @@ const RegisterdEventDetails = () => {
             <RenderHtml
               contentWidth={windowWidth - 40}
               source={{ html: eventInformation.cms }}
+              tagsStyles={{
+                table: {
+                  borderWidth: 1,
+                  borderColor: "#2c333d",
+                  paddingLeft: 4,
+                  paddingRight: 4,
+                  paddingBottom: 4,
+                },
+              }}
             />
           )}
 
-          <VStack
-            space={4}
-            flex={1}
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Button width="70%" onPress={handleSpeaker}>
-              Event Speaker
-            </Button>
+          <VStack space={4} mt="8">
+            <HStack alignItems="center" space="10">
+              <Button bg="#00388D" w="45%" onPress={handleSpeaker}>
+                Speaker Profile
+              </Button>
+              <Button bg="#00388D" w="45%" onPress={handlepresentation}>
+                Presentation
+              </Button>
+            </HStack>
 
-            <Button width="70%" onPress={networking}>
-              Networking
-              {/* <Ionicons name="earth" size={24} color="white" /> */}
-            </Button>
+            <HStack alignItems="center" space="10">
+              <Button
+                bg="#00388D"
+                w="45%"
+                onPress={() => handleqna(eventInformation._id)}
+              >
+                Question & Answer
+              </Button>
+              <Button bg="#00388D" w="45%" onPress={networking}>
+                Participants List
+              </Button>
+            </HStack>
           </VStack>
-
-          {/* <Button
-            onPress={handleRedirect}
-            bg={"#0f045d"}
-            mt={5}
-            borderRadius={10}
-            mb="30"
-          >
-            Registration
-          </Button> */}
         </ScrollView>
       </View>
     </>

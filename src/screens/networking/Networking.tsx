@@ -77,6 +77,7 @@ const RestHeader = () => {
         alignItems="center"
         alignSelf={"center"}
         w={"100%"}
+        space={2}
       >
         <Button
           bg="transparent"
@@ -93,7 +94,6 @@ const RestHeader = () => {
         />
         <Text
           color="white"
-          ml={8}
           fontSize="20"
           fontWeight="bold"
           mb={1}
@@ -101,12 +101,13 @@ const RestHeader = () => {
         >
           Members Networking
         </Text>
-        <HStack>
-          <Button
-            leftIcon={<Ionicons name="notifications" size={24} color="black" />}
-            onPress={handlenotification}
-          ></Button>
-        </HStack>
+
+        <Button
+          ml={4}
+          backgroundColor="#0f045d"
+          leftIcon={<Ionicons name="notifications" size={24} color="white" />}
+          onPress={handlenotification}
+        />
       </HStack>
     </>
   );

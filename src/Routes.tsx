@@ -18,6 +18,9 @@ import MobileLogin from "./screens/auth/NumberLogin";
 import FeedbackForm from "./screens/feedbackform/FeedbackForm";
 
 import Newsletter from "./screens/Business/Newsletter";
+import Presentation from "./screens/Business/Presentation";
+import PresentationDetails from "./screens/Business/PresentationDetails";
+import Qna from "./screens/Business/Qna";
 import NetworkingScreen from "./screens/networking/Networking";
 import Notification from "./screens/networking/Notification";
 import ProfileScreen from "./screens/profile/ProfileDetails";
@@ -53,6 +56,13 @@ const Routes = () => {
           <Stack.Screen name="Whatwebringdetails" component={Details} />
           <Stack.Screen name="newsletter" component={Newsletter} />
           <Stack.Screen name="notification" component={Notification} />
+          <Stack.Screen name="presentation" component={Presentation} />
+          <Stack.Screen name="question" component={Qna} />
+
+          <Stack.Screen
+            name="presentationdetails"
+            component={PresentationDetails}
+          />
 
           <Stack.Screen
             name="EventsDetails"

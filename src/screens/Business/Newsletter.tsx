@@ -1,4 +1,4 @@
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import {
@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
   ScrollView,
+  Spinner,
   Text,
 } from "native-base";
 import { Linking } from "react-native";
@@ -118,34 +119,94 @@ const ProductCard: React.FC<{
           </HStack>
         </Card> */}
 
-      <HStack space="2" mx="2" mb="2">
-        <Pressable onPress={handlePress}>
+      <Pressable onPress={handlePress}>
+        <HStack
+          p={4}
+          alignItems="center"
+          borderColor={"#00388D"}
+          borderWidth="4"
+          w="95%"
+          ml={3}
+          mt={4}
+          borderRadius="lg"
+        >
           <Image
-            w="56"
-            h="56"
-            borderRadius="full"
+            w="32"
+            h="32"
             source={{ uri: downloadPath(img), cache: "reload" }}
             alt="image"
+            borderRadius="full"
           />
 
-          <Text fontWeight={"bold"}>
+          <Text
+            color="black"
+            fontSize="lg"
+            textAlign="center"
+            fontWeight={"bold"}
+          >
             {name} {moment(whatid).format("DD-MM-YYYY")}
           </Text>
-        </Pressable>
-      </HStack>
+          <Button
+            bg="transparent"
+            colorScheme={"white"}
+            // w="14%"
+            onPress={handlePress}
+            leftIcon={
+              <Icon
+                size="md"
+                as={
+                  pdf ? (
+                    <>
+                      <FontAwesome name="download" size={24} color="black" />
+                    </>
+                  ) : (
+                    <>
+                      <FontAwesome name="link" size={24} color="black" />
+                    </>
+                  )
+                }
+                color="white"
+              />
+            }
+          />
+        </HStack>
+      </Pressable>
     </>
   );
 };
 
 const Newsletter = () => {
   const { data, loading } = useGetAllWicasaNewsLatterQuery();
+  if (loading) {
+    return (
+      <>
+        <RestHeader />
+
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
+  }
   return (
     <>
       <RestHeader />
-      <ScrollView>
+      <ScrollView bg="white">
         {data?.getAllWicasaNewsLatter
           .filter((item) => item.isActive === true)
-          .filter((item) => item.iswirc === false)
+          .filter((item) => item.iswirc === true)
           .sort((a, b) => {
             return (
               moment(b.date).toDate().getTime() -

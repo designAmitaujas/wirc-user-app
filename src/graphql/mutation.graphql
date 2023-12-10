@@ -132,3 +132,11 @@ mutation AcceptInvite($eventId: String!, $inviteTo: String!) {
 mutation RejectInvite($eventId: String!, $inviteTo: String!) {
   rejectInvite(eventId: $eventId, inviteTo: $inviteTo)
 }
+
+mutation SpeakerMail($options: QNAMailInput!) {
+  speakerMail(options: $options) {
+    success
+    msg
+    data
+  }
+}

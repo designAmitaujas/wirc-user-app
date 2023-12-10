@@ -3794,9 +3794,8 @@ export type PublicationUserType = {
 
 export type QnaMailInput = {
   email: Scalars['String']['input'];
-  eventdate: Scalars['String']['input'];
+  eventid: Scalars['String']['input'];
   eventname: Scalars['String']['input'];
-  id: Scalars['String']['input'];
   name: Scalars['String']['input'];
   query: Scalars['String']['input'];
 };
@@ -5022,6 +5021,13 @@ export type RejectInviteMutationVariables = Exact<{
 
 export type RejectInviteMutation = { __typename?: 'Mutation', rejectInvite: boolean };
 
+export type SpeakerMailMutationVariables = Exact<{
+  options: QnaMailInput;
+}>;
+
+
+export type SpeakerMailMutation = { __typename?: 'Mutation', speakerMail: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
+
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5219,6 +5225,23 @@ export type GetAllInvitationQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllInvitationQuery = { __typename?: 'Query', getAllInvitation: Array<{ __typename?: 'NetworkingInvite', _id: string, isAccepted: boolean, isActive: boolean, inviteFrom?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, inviteTo?: { __typename?: 'User', memberRegistration: { __typename?: 'MemberRegistration', _id: string, firstName: string, middleName: string, lastName: string } } | null, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string } | null }> };
+
+export type GetAllCpeResourceCategoryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCpeResourceCategoryQuery = { __typename?: 'Query', getAllCpeResourceCategory: Array<{ __typename?: 'CpeResourceCategory', _id: string, name: string, date: any, isActive: boolean }> };
+
+export type GetCpeResourceByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetCpeResourceByIdQuery = { __typename?: 'Query', getCpeResourceById: { __typename?: 'CpeResource', _id: string, name: string, speaker: string, uri: string, urllink: string, isActive: boolean, cpeResourceCategory?: { __typename?: 'CpeResourceCategory', _id: string, date: any, name: string } | null } };
+
+export type GetAllCpeResourceQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCpeResourceQuery = { __typename?: 'Query', getAllCpeResource: Array<{ __typename?: 'CpeResource', _id: string, name: string, speaker: string, uri: string, urllink: string, isActive: boolean, cpeResourceCategory?: { __typename?: 'CpeResourceCategory', _id: string, date: any, isActive: boolean, name: string } | null }> };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -5723,6 +5746,41 @@ export function useRejectInviteMutation(baseOptions?: Apollo.MutationHookOptions
 export type RejectInviteMutationHookResult = ReturnType<typeof useRejectInviteMutation>;
 export type RejectInviteMutationResult = Apollo.MutationResult<RejectInviteMutation>;
 export type RejectInviteMutationOptions = Apollo.BaseMutationOptions<RejectInviteMutation, RejectInviteMutationVariables>;
+export const SpeakerMailDocument = gql`
+    mutation SpeakerMail($options: QNAMailInput!) {
+  speakerMail(options: $options) {
+    success
+    msg
+    data
+  }
+}
+    `;
+export type SpeakerMailMutationFn = Apollo.MutationFunction<SpeakerMailMutation, SpeakerMailMutationVariables>;
+
+/**
+ * __useSpeakerMailMutation__
+ *
+ * To run a mutation, you first call `useSpeakerMailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSpeakerMailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [speakerMailMutation, { data, loading, error }] = useSpeakerMailMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useSpeakerMailMutation(baseOptions?: Apollo.MutationHookOptions<SpeakerMailMutation, SpeakerMailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SpeakerMailMutation, SpeakerMailMutationVariables>(SpeakerMailDocument, options);
+      }
+export type SpeakerMailMutationHookResult = ReturnType<typeof useSpeakerMailMutation>;
+export type SpeakerMailMutationResult = Apollo.MutationResult<SpeakerMailMutation>;
+export type SpeakerMailMutationOptions = Apollo.BaseMutationOptions<SpeakerMailMutation, SpeakerMailMutationVariables>;
 export const GetAllCpeEventDocument = gql`
     query GetAllCpeEvent {
   getAllCpeEvent {
@@ -7312,3 +7370,130 @@ export function useGetAllInvitationLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetAllInvitationQueryHookResult = ReturnType<typeof useGetAllInvitationQuery>;
 export type GetAllInvitationLazyQueryHookResult = ReturnType<typeof useGetAllInvitationLazyQuery>;
 export type GetAllInvitationQueryResult = Apollo.QueryResult<GetAllInvitationQuery, GetAllInvitationQueryVariables>;
+export const GetAllCpeResourceCategoryDocument = gql`
+    query GetAllCpeResourceCategory {
+  getAllCpeResourceCategory {
+    _id
+    name
+    date
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllCpeResourceCategoryQuery__
+ *
+ * To run a query within a React component, call `useGetAllCpeResourceCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCpeResourceCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCpeResourceCategoryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCpeResourceCategoryQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>(GetAllCpeResourceCategoryDocument, options);
+      }
+export function useGetAllCpeResourceCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>(GetAllCpeResourceCategoryDocument, options);
+        }
+export type GetAllCpeResourceCategoryQueryHookResult = ReturnType<typeof useGetAllCpeResourceCategoryQuery>;
+export type GetAllCpeResourceCategoryLazyQueryHookResult = ReturnType<typeof useGetAllCpeResourceCategoryLazyQuery>;
+export type GetAllCpeResourceCategoryQueryResult = Apollo.QueryResult<GetAllCpeResourceCategoryQuery, GetAllCpeResourceCategoryQueryVariables>;
+export const GetCpeResourceByIdDocument = gql`
+    query GetCpeResourceById($options: IGetByID!) {
+  getCpeResourceById(options: $options) {
+    _id
+    name
+    speaker
+    uri
+    urllink
+    cpeResourceCategory {
+      _id
+      date
+      name
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetCpeResourceByIdQuery__
+ *
+ * To run a query within a React component, call `useGetCpeResourceByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCpeResourceByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCpeResourceByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetCpeResourceByIdQuery(baseOptions: Apollo.QueryHookOptions<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>(GetCpeResourceByIdDocument, options);
+      }
+export function useGetCpeResourceByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>(GetCpeResourceByIdDocument, options);
+        }
+export type GetCpeResourceByIdQueryHookResult = ReturnType<typeof useGetCpeResourceByIdQuery>;
+export type GetCpeResourceByIdLazyQueryHookResult = ReturnType<typeof useGetCpeResourceByIdLazyQuery>;
+export type GetCpeResourceByIdQueryResult = Apollo.QueryResult<GetCpeResourceByIdQuery, GetCpeResourceByIdQueryVariables>;
+export const GetAllCpeResourceDocument = gql`
+    query GetAllCpeResource {
+  getAllCpeResource {
+    _id
+    name
+    speaker
+    uri
+    urllink
+    cpeResourceCategory {
+      _id
+      date
+      isActive
+      name
+    }
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllCpeResourceQuery__
+ *
+ * To run a query within a React component, call `useGetAllCpeResourceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCpeResourceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCpeResourceQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCpeResourceQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>(GetAllCpeResourceDocument, options);
+      }
+export function useGetAllCpeResourceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>(GetAllCpeResourceDocument, options);
+        }
+export type GetAllCpeResourceQueryHookResult = ReturnType<typeof useGetAllCpeResourceQuery>;
+export type GetAllCpeResourceLazyQueryHookResult = ReturnType<typeof useGetAllCpeResourceLazyQuery>;
+export type GetAllCpeResourceQueryResult = Apollo.QueryResult<GetAllCpeResourceQuery, GetAllCpeResourceQueryVariables>;

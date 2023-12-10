@@ -5,14 +5,16 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   HStack,
   Icon,
   Image,
   ScrollView,
+  Spinner,
   Stack,
   Text,
 } from "native-base";
-import { Linking } from "react-native";
+import { Linking, Pressable } from "react-native";
 import { downloadPath } from "../../constant";
 import {
   useGetAllYoutubeLinksQuery,
@@ -72,23 +74,45 @@ const Details = () => {
   const { whatid } = params as { whatid?: string };
   const { img } = params as { img?: string };
 
-  const { data } = useGetWhatWeBrignToYouByIdQuery({
+  const { data, loading: l1 } = useGetWhatWeBrignToYouByIdQuery({
     variables: { options: { id: whatid || "" } },
   });
 
-  const { data: youtube } = useGetAllYoutubeLinksQuery();
+  const { data: youtube, loading: l2 } = useGetAllYoutubeLinksQuery();
 
+  if (l1 || l2) {
+    return (
+      <>
+        <RestHeader />
+
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
+  }
   return (
     <>
       <RestHeader />
       <ScrollView bg="white">
         <Box alignItems="center" mt={4} p={4}>
           <Box
-            maxW="80"
             rounded="lg"
             overflow="hidden"
-            borderColor="coolGray.200"
-            borderWidth="1"
+            borderColor="coolGray.400"
+            borderWidth="2"
             _dark={{
               borderColor: "coolGray.600",
               backgroundColor: "gray.700",
@@ -113,14 +137,11 @@ const Details = () => {
                 />
               </AspectRatio>
               <Center
-                bg="violet.500"
-                _dark={{
-                  bg: "violet.400",
-                }}
+                bg="#00388D"
                 _text={{
                   color: "warmGray.50",
-                  fontWeight: "700",
-                  fontSize: "xs",
+                  fontWeight: "bold",
+                  fontSize: "md",
                 }}
                 position="absolute"
                 bottom="0"
@@ -132,89 +153,92 @@ const Details = () => {
             </Box>
             <Stack p="4" space={3}>
               <Stack space={2}>
-                <Text
-                  fontSize="xs"
-                  _light={{
-                    color: "violet.500",
-                  }}
-                  _dark={{
-                    color: "violet.400",
-                  }}
-                  fontWeight="500"
-                  ml="-0.5"
-                  mt="-1"
-                >
+                <Text fontSize="md" fontWeight="semibold" ml="-0.5" mt="-1">
                   {data?.getWhatWeBrignToYouById.name}
                 </Text>
               </Stack>
-              <Text fontWeight="400">
+              <Text fontWeight="semibold">
                 {data?.getWhatWeBrignToYouById.description}
               </Text>
-              <Text fontWeight="400">{data?.getWhatWeBrignToYouById.icon}</Text>
+              <Text fontWeight="semibold">
+                {data?.getWhatWeBrignToYouById.icon}
+              </Text>
             </Stack>
-            <Box
-              maxW="80"
-              p={4}
-              rounded="lg"
-              overflow="hidden"
-              borderColor="coolGray.200"
-              borderWidth="1"
-              _dark={{
-                borderColor: "coolGray.600",
-                backgroundColor: "gray.700",
-              }}
-              _web={{
-                shadow: 2,
-                borderWidth: 0,
-              }}
-              _light={{
-                backgroundColor: "gray.50",
-              }}
-            >
-              <Box>
-                {youtube?.getAllYoutubeLinks
-                  .filter((item) => item.isActive === true)
-                  .filter((item) => item.category?._id === whatid)
-                  .map((item, index) => {
-                    return (
-                      <>
-                        <Stack space={2}>
-                          <Text
-                            fontSize="2xl"
-                            fontWeight="500"
-                            textAlign="center"
-                          >
-                            Youtube Links
-                          </Text>
-                        </Stack>
-
-                        <Button
-                          justifyContent="flex-start"
-                          bg="transparent"
-                          colorScheme={"violet.500"}
-                          leftIcon={
-                            <Icon
-                              size="2xl"
-                              as={
-                                <MaterialCommunityIcons
-                                  name="youtube"
-                                  size={24}
-                                  color="black"
-                                />
-                              }
-                              color="violet.500"
-                            />
-                          }
-                          onPress={() => {
-                            Linking.openURL(item.redirectlink);
-                          }}
+          </Box>
+        </Box>
+        <Box alignItems="center" mt={4} p={4}>
+          <Box
+            p={2}
+            rounded="lg"
+            overflow="hidden"
+            borderColor="coolGray.400"
+            borderWidth="2"
+            _dark={{
+              borderColor: "coolGray.600",
+              backgroundColor: "gray.700",
+            }}
+            _web={{
+              shadow: 2,
+              borderWidth: 0,
+            }}
+            _light={{
+              backgroundColor: "gray.50",
+            }}
+          >
+            <Box>
+              <Stack>
+                <Text
+                  fontSize="4xl"
+                  fontWeight="bold"
+                  textAlign="center"
+                  color="#00388D"
+                >
+                  Youtube Links
+                </Text>
+              </Stack>
+              {youtube?.getAllYoutubeLinks
+                .filter((item) => item.isActive === true)
+                .filter((item) => item.category?._id === whatid)
+                .map((item, index) => {
+                  return (
+                    <>
+                      <Pressable
+                        onPress={() => {
+                          Linking.openURL(item.redirectlink);
+                        }}
+                      >
+                        <HStack
+                          p={3}
+                          space={2}
+                          justifyContent="center"
+                          alignItems="center"
                         >
-                          <Text width="70%">{item.name}</Text>
-                        </Button>
-                      </>
-                    );
-                  })}
-              </Box>
+                          <Icon
+                            size="2xl"
+                            as={
+                              <MaterialCommunityIcons
+                                name="youtube"
+                                size={24}
+                                color="black"
+                              />
+                            }
+                            color="#00388D"
+                          />
+                          <Text fontWeight="semibold">{item.name}</Text>
+                        </HStack>
+                        <Divider
+                          my="2"
+                          _light={{
+                            bg: "muted.800",
+                          }}
+                          _dark={{
+                            bg: "muted.50",
+                          }}
+                        />
+                      </Pressable>
+                    </>
+                  );
+                })}
             </Box>
           </Box>
         </Box>

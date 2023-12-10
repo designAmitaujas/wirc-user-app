@@ -1,6 +1,15 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Button, HStack, Icon, Image, Text, VStack, View } from "native-base";
+import {
+  Button,
+  HStack,
+  Icon,
+  Image,
+  Spinner,
+  Text,
+  VStack,
+  View,
+} from "native-base";
 import { useEffect, useState } from "react";
 //@ts-ignore
 import { FlatListSlider } from "react-native-flatlist-slider";
@@ -52,7 +61,7 @@ const RestHeader = () => {
 };
 
 const Business = () => {
-  const { data } = useGetAllBusinessListingQuery();
+  const { data, loading } = useGetAllBusinessListingQuery();
   const [imgList, setImgList] = useState<{ image: string }[]>([]);
   const { navigate } = useNavigation();
   useEffect(() => {
@@ -63,6 +72,30 @@ const Business = () => {
       setImgList(arr);
     }
   }, [data]);
+
+  if (loading) {
+    return (
+      <>
+        <RestHeader />
+
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
+  }
   return (
     <>
       <RestHeader />

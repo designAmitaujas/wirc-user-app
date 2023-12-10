@@ -131,8 +131,8 @@ const ProductCard: React.FC<{
           borderRadius="lg"
         >
           <Image
-            w="32"
-            h="32"
+            w="24"
+            h="24"
             source={{ uri: downloadPath(img), cache: "reload" }}
             alt="image"
             borderRadius="full"
@@ -143,6 +143,7 @@ const ProductCard: React.FC<{
             fontSize="lg"
             textAlign="center"
             fontWeight={"bold"}
+            w="50%"
           >
             {name} {moment(whatid).format("DD-MM-YYYY")}
           </Text>

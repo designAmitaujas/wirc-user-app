@@ -10,8 +10,6 @@ const logo4 = require("../../assets/news.png");
 const logo5 = require("../../assets/75icai.png");
 
 const HomeScreen = () => {
-  const { navigate } = useNavigation();
-
   return (
     <VStack bg={"white"} flex={1}>
       <Box

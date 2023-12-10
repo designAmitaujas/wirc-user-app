@@ -299,15 +299,6 @@ const RegisterdEventDetails = () => {
             <RenderHtml
               contentWidth={windowWidth - 40}
               source={{ html: eventInformation.cms }}
-              tagsStyles={{
-                table: {
-                  borderWidth: 1,
-                  borderColor: "#2c333d",
-                  paddingLeft: 4,
-                  paddingRight: 4,
-                  paddingBottom: 4,
-                },
-              }}
             />
           )}
 

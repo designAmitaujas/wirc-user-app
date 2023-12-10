@@ -123,59 +123,7 @@ const QRScreen: React.FC = () => {
       return true;
     }
   };
-  // const handleBarCodeScanned = async ({ data }: { data: string }) => {
-  //   try {
-  //     if (scanned) {
-  //       toast.show({
-  //         title: "Attendance already marked",
-  //         placement: "top",
-  //       });
-  //       handlehome();
-  //       return;
-  //     }
 
-  //     if (!isWithinGeoFence()) {
-  //       toast.show({
-  //         title: "Kindly mark your CPE Attendance only at the Venue...",
-  //         placement: "top",
-  //       });
-  //       setScanned(false);
-  //       handlehome();
-  //       return;
-  //     }
-  //     console.log("event id as data", data);
-  //     const response = await addAttendence({
-  //       variables: {
-  //         options: {
-  //           eventId: data,
-  //           memberId: profile?.myProfileInformation?.membershipNo || "",
-  //         },
-  //       },
-  //     });
-
-  //     if (response.data?.addAttendence.success) {
-  //       toast.show({
-  //         title: _.capitalize(response.data.addAttendence.msg),
-  //         placement: "top",
-  //       });
-  //       setInfo(data);
-  //       setScanned(true);
-  //     } else {
-  //       toast.show({
-  //         title: _.capitalize(response.data?.addAttendence.msg),
-  //         placement: "top",
-  //       });
-  //       handlehome();
-  //     }
-  //   } catch (error) {
-  //     console.error("Error handling barcode scan:", error);
-  //     toast.show({
-  //       title: "Error handling barcode scan",
-  //       placement: "top",
-  //     });
-  //     handlehome();
-  //   }
-  // };
   const handleBarCodeScanned = debounce(async ({ data }: { data: string }) => {
     try {
       // Check if already scanned
@@ -232,10 +180,6 @@ const QRScreen: React.FC = () => {
       }
     } catch (error) {
       console.error("Error handling barcode scan:", error);
-      toast.show({
-        title: "Error handling barcode scan",
-        placement: "top",
-      });
     }
   }, 1000);
   if (hasPermission === null) {

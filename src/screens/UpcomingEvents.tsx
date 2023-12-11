@@ -213,6 +213,32 @@ const UpcomingEvents = () => {
   if (loading || !eventInformation)
     return (
       <>
+        <Box
+          bg={"#0f045d"}
+          h={"16"}
+          w={"full"}
+          borderBottomRadius={40}
+          justifyContent={"center"}
+        >
+          <HStack mx={7} alignItems={"center"}>
+            <TouchableOpacity onPress={goBack}>
+              <FontAwesome5 name="arrow-left" size={22} color="white" />
+            </TouchableOpacity>
+            <Text
+              color={"white"}
+              fontSize={"xl"}
+              fontWeight={"semibold"}
+              ml={4}
+            >
+              {
+                //@ts-ignore
+                eventInformation?.name.length > 25
+                  ? eventInformation?.name.slice(0, 25) + "..."
+                  : eventInformation?.name
+              }
+            </Text>
+          </HStack>
+        </Box>
         <HStack
           flex={1}
           alignSelf={"center"}

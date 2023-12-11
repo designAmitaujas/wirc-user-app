@@ -121,6 +121,7 @@ const UpcomingCard: React.FC<{
         style={{ shadowColor: "#FFD54F" }}
         borderRadius={"15"}
         bg={"white"}
+        mb="5"
       >
         <HStack justifyContent={"space-between"} alignItems={"center"}>
           <Text
@@ -229,6 +230,32 @@ const RegisterdEventDetails = () => {
   if (loading || !eventInformation)
     return (
       <>
+        <Box
+          bg={"#0f045d"}
+          h={"16"}
+          w={"full"}
+          borderBottomRadius={40}
+          justifyContent={"center"}
+        >
+          <HStack mx={7} alignItems={"center"}>
+            <TouchableOpacity onPress={goBack}>
+              <FontAwesome5 name="arrow-left" size={22} color="white" />
+            </TouchableOpacity>
+            <Text
+              color={"white"}
+              fontSize={"xl"}
+              fontWeight={"semibold"}
+              ml={4}
+            >
+              {
+                //@ts-ignore
+                eventInformation?.name.length > 25
+                  ? eventInformation?.name.slice(0, 25) + "..."
+                  : eventInformation?.name
+              }
+            </Text>
+          </HStack>
+        </Box>
         <HStack
           flex={1}
           alignSelf={"center"}
@@ -302,7 +329,7 @@ const RegisterdEventDetails = () => {
             />
           )}
 
-          <VStack space={4} mt="8">
+          <VStack space={4} mt="8" mb="8">
             <HStack alignItems="center" space="10">
               <Button bg="#00388D" w="45%" onPress={handleSpeaker}>
                 Speaker Profile
@@ -318,7 +345,7 @@ const RegisterdEventDetails = () => {
                 w="45%"
                 onPress={() => handleqna(eventInformation._id)}
               >
-                Question & Answer
+                QNA
               </Button>
               <Button bg="#00388D" w="45%" onPress={networking}>
                 Participants List

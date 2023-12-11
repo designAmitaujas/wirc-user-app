@@ -178,7 +178,9 @@ const Whatwe = () => {
           <FlatList
             scrollEnabled={false}
             numColumns={2}
-            data={data.getAllWhatWeBrignToYou}
+            data={data.getAllWhatWeBrignToYou
+              .filter((item) => item.isActive === true)
+              .filter((item) => item.isWIRC === false)}
             keyExtractor={(item) => item._id}
             renderItem={({ item }: { item: ICreateWhatWeBrignToYou }) => (
               <ProductCard

@@ -26,6 +26,7 @@ interface ICustomInput extends IInputProps {
   setFieldValue: (arg0: string, arg1: string) => void;
   isRequired: boolean;
   isInvalid: boolean;
+  editable?: boolean;
 }
 
 interface ICustomButton extends IButtonProps {
@@ -64,6 +65,7 @@ export const CustomInput: React.FC<ICustomInput> = memo((props) => {
     isInvalid,
     keyboardType,
     type,
+    editable = true,
   } = props;
 
   const handleChangeText = (val: string) => {
@@ -85,6 +87,7 @@ export const CustomInput: React.FC<ICustomInput> = memo((props) => {
         onChangeText={handleChangeText}
         borderRadius="12"
         type={type}
+        isReadOnly={!editable}
       />
       <FormControl.ErrorMessage mt={0.5}>
         {capitalize(errMsg)}

@@ -5,9 +5,9 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import moment from "moment";
-
 import _ from "lodash";
+import LottieView from "lottie-react-native";
+import moment from "moment";
 import {
   Box,
   Button,
@@ -206,18 +206,22 @@ export const Seminar = () => {
     }
   }, 10 * 1000);
 
-  // if (loading) {
-  //   return (
-  //     <>
-  //       <Box>
-  //         <LottieView
-  //           autoPlay
-  //           source={require("../../assets/participants-loader/76352-people-brainstorming-and-get-feedback.json")}
-  //         />
-  //       </Box>
-  //     </>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <>
+        <HStack flex={1} justifyContent="center" space="2" alignItems="center">
+          <Spinner
+            accessibilityLabel="Loading posts"
+            size="lg"
+            color="#0f045d"
+          />
+          <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Heading>
+        </HStack>
+      </>
+    );
+  }
 
   return (
     <>
@@ -227,23 +231,21 @@ export const Seminar = () => {
             Attended Events
           </Text>
         </HStack>
-        {loading ? (
+        {data?.getMyAttendedEvent.length === 0 ? (
           <>
-            <HStack
+            <Box
+              w={"72"}
+              h={"72"}
+              justifyContent={"center"}
               flex={1}
-              justifyContent="center"
-              space="2"
-              alignItems="center"
+              alignSelf={"center"}
+              mb={"4"}
             >
-              <Spinner
-                accessibilityLabel="Loading posts"
-                size="lg"
-                color="#0f045d"
+              <LottieView
+                autoPlay
+                source={require("../../../assets/Simple-text-[remix] (4).json")}
               />
-              <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
-                Loading
-              </Heading>
-            </HStack>
+            </Box>
           </>
         ) : (
           <>

@@ -198,6 +198,7 @@ const RenderForm: FC<{
         isRequired={true}
         isInvalid={!!touched.membershipNumber && !!errors.membershipNumber}
         bgColor="white"
+        editable={false}
       />
 
       <CustomInput
@@ -627,6 +628,31 @@ const EventRegistration = () => {
   ) {
     return (
       <>
+        <Box
+          bg={"#0f045d"}
+          h={"16"}
+          w={"full"}
+          borderBottomRadius={40}
+          justifyContent={"center"}
+        >
+          <HStack mx={7} alignItems={"center"}>
+            <TouchableOpacity onPress={goBack}>
+              <FontAwesome5 name="arrow-left" size={22} color="white" />
+            </TouchableOpacity>
+            <Text
+              w={"90%"}
+              fontWeight={"medium"}
+              fontSize={"lg"}
+              color={"#fff"}
+              alignSelf={"center"}
+              ml={4}
+            >
+              {eventInformation?.name.length || 0 > 25
+                ? eventInformation?.name.slice(0, 25) + "..."
+                : eventInformation?.name}
+            </Text>
+          </HStack>
+        </Box>
         <HStack
           flex={1}
           alignSelf={"center"}

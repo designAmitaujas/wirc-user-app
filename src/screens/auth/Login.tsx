@@ -1,8 +1,8 @@
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
-import _ from "lodash";
 import {
+  Box,
   HStack,
   Icon,
   IconButton,
@@ -77,11 +77,29 @@ const Login = () => {
         jwt: response.data.memberRegistrationAuthResolver.jwt,
         name: response.data.memberRegistrationAuthResolver.name,
       });
-      toast.show({ title: _.capitalize("authenticated successfully") });
+      toast.show({
+        render: () => {
+          return (
+            <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
+              Authentication Successfull
+            </Box>
+          );
+        },
+        placement: "top",
+      });
       // @ts-ignore
       navigate("BottomTab");
     } else {
-      toast.show({ title: _.capitalize("authentication error") });
+      toast.show({
+        render: () => {
+          return (
+            <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
+              {response.data?.memberRegistrationAuthResolver.msg}
+            </Box>
+          );
+        },
+        placement: "top",
+      });
     }
 
     actions.setSubmitting(false);
@@ -113,7 +131,7 @@ const Login = () => {
                 <ScrollView bg={"white"} h={"full"}>
                   <Image
                     alignSelf={"center"}
-                    mt={24}
+                    mt={"10"}
                     w={"32"}
                     h={"32"}
                     resizeMode="contain"

@@ -291,13 +291,6 @@ const ParticipantsCard: React.FC<{
                     <Text w={"10%"}>:</Text>
                     <Text w={"65%"}>{name}</Text>
                   </HStack>
-                  {/* <HStack w={"100%"}>
-                    <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Position
-                    </Text>
-                    <Text w={"10%"}>:</Text>
-                    <Text w={"65%"}>{position}</Text>
-                  </HStack> */}
 
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
@@ -329,7 +322,7 @@ const ParticipantsCard: React.FC<{
       ) : gender.toLocaleLowerCase() === "female" ? (
         <VStack
           shadow={5}
-          style={{ shadowColor: "red", marginLeft: 10 }}
+          style={{ shadowColor: "blue", marginLeft: 10 }}
           bg={"white"}
           mb={8}
           borderRadius={15}
@@ -351,7 +344,12 @@ const ParticipantsCard: React.FC<{
 
           <Divider marginY={2} />
           <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
-            <TouchableOpacity onPress={phonecall}>
+            <TouchableOpacity
+              onPress={async () => {
+                await handleinvite();
+                setShowModal1(true);
+              }}
+            >
               <Ionicons name="call-outline" size={20} color="black" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setShowModal(true)}>
@@ -362,6 +360,55 @@ const ParticipantsCard: React.FC<{
               />
             </TouchableOpacity>
           </HStack>
+          <Modal
+            isOpen={showModal1}
+            onClose={() => setShowModal1(false)}
+            _backdrop={{
+              _dark: {
+                bg: "coolGray.800",
+              },
+              bg: "warmGray.900",
+            }}
+          >
+            <Modal.Content w={"90%"} borderRadius={15}>
+              <Modal.CloseButton />
+              <Modal.Header>Profile</Modal.Header>
+              <Modal.Body>
+                {showModal3 === true ? (
+                  <>
+                    <HStack w={"100%"}>
+                      <Text
+                        color={"gray.500"}
+                        fontWeight={"semibold"}
+                        w={"30%"}
+                      >
+                        Email
+                      </Text>
+                      <Text w={"10%"}>:</Text>
+                      <Text w={"65%"}>{email}</Text>
+                    </HStack>
+                    <HStack w={"100%"}>
+                      <Text
+                        color={"gray.500"}
+                        fontWeight={"semibold"}
+                        w={"30%"}
+                      >
+                        Mobile No.
+                      </Text>
+                      <Text w={"10%"}>:</Text>
+                      <Text w={"65%"}>{mo_number}</Text>
+                    </HStack>
+                  </>
+                ) : (
+                  <>
+                    <VStack space={2}>
+                      <Button onPress={handlesubmit}>Send Invite</Button>
+                    </VStack>
+                  </>
+                )}
+              </Modal.Body>
+            </Modal.Content>
+          </Modal>
           <Modal
             isOpen={showModal}
             onClose={() => setShowModal(false)}
@@ -385,20 +432,6 @@ const ParticipantsCard: React.FC<{
                     <Text w={"65%"}>{name}</Text>
                   </HStack>
 
-                  <HStack w={"100%"}>
-                    <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Email
-                    </Text>
-                    <Text w={"10%"}>:</Text>
-                    <Text w={"65%"}>{email}</Text>
-                  </HStack>
-                  <HStack w={"100%"}>
-                    <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Mobile No.
-                    </Text>
-                    <Text w={"10%"}>:</Text>
-                    <Text w={"65%"}>{mo_number}</Text>
-                  </HStack>
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                       Skills
@@ -429,7 +462,7 @@ const ParticipantsCard: React.FC<{
       ) : (
         <VStack
           shadow={5}
-          style={{ shadowColor: "black", marginLeft: 10 }}
+          style={{ shadowColor: "blue", marginLeft: 10 }}
           bg={"white"}
           mb={8}
           borderRadius={15}
@@ -451,7 +484,12 @@ const ParticipantsCard: React.FC<{
 
           <Divider marginY={2} />
           <HStack justifyContent={"space-around"} pb={1} alignItems={"center"}>
-            <TouchableOpacity onPress={phonecall}>
+            <TouchableOpacity
+              onPress={async () => {
+                await handleinvite();
+                setShowModal1(true);
+              }}
+            >
               <Ionicons name="call-outline" size={20} color="black" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setShowModal(true)}>
@@ -462,6 +500,55 @@ const ParticipantsCard: React.FC<{
               />
             </TouchableOpacity>
           </HStack>
+          <Modal
+            isOpen={showModal1}
+            onClose={() => setShowModal1(false)}
+            _backdrop={{
+              _dark: {
+                bg: "coolGray.800",
+              },
+              bg: "warmGray.900",
+            }}
+          >
+            <Modal.Content w={"90%"} borderRadius={15}>
+              <Modal.CloseButton />
+              <Modal.Header>Profile</Modal.Header>
+              <Modal.Body>
+                {showModal3 === true ? (
+                  <>
+                    <HStack w={"100%"}>
+                      <Text
+                        color={"gray.500"}
+                        fontWeight={"semibold"}
+                        w={"30%"}
+                      >
+                        Email
+                      </Text>
+                      <Text w={"10%"}>:</Text>
+                      <Text w={"65%"}>{email}</Text>
+                    </HStack>
+                    <HStack w={"100%"}>
+                      <Text
+                        color={"gray.500"}
+                        fontWeight={"semibold"}
+                        w={"30%"}
+                      >
+                        Mobile No.
+                      </Text>
+                      <Text w={"10%"}>:</Text>
+                      <Text w={"65%"}>{mo_number}</Text>
+                    </HStack>
+                  </>
+                ) : (
+                  <>
+                    <VStack space={2}>
+                      <Button onPress={handlesubmit}>Send Invite</Button>
+                    </VStack>
+                  </>
+                )}
+              </Modal.Body>
+            </Modal.Content>
+          </Modal>
           <Modal
             isOpen={showModal}
             onClose={() => setShowModal(false)}
@@ -485,20 +572,6 @@ const ParticipantsCard: React.FC<{
                     <Text w={"65%"}>{name}</Text>
                   </HStack>
 
-                  <HStack w={"100%"}>
-                    <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Email
-                    </Text>
-                    <Text w={"10%"}>:</Text>
-                    <Text w={"65%"}>{email}</Text>
-                  </HStack>
-                  <HStack w={"100%"}>
-                    <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Mobile No.
-                    </Text>
-                    <Text w={"10%"}>:</Text>
-                    <Text w={"65%"}>{mo_number}</Text>
-                  </HStack>
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
                       Skills

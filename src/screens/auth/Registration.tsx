@@ -68,11 +68,7 @@ const validationSchema = Yup.object().shape({
   hash: Yup.string().required(),
   isApproved: Yup.boolean().oneOf([true, false]),
   lastName: Yup.string().required(),
-  membershipNo: Yup.string().when("userType", {
-    is: (v: string) => v === "member",
-    then: (schema) => schema.required(),
-    otherwise: (schema) => schema,
-  }),
+  membershipNo: Yup.string().required(),
   middleName: Yup.string().required(),
   phone: Yup.string().required(),
   pinCode: Yup.string(),
@@ -91,36 +87,20 @@ const RestHeader = () => {
     navigate("Login");
   };
   return (
-    <HStack
-      backgroundColor="#0f045d"
-      borderBottomRadius={40}
-      justifyContent={"space-between"}
-      // py="3.5"
-      h={16}
-      px={7}
-      alignItems="center"
-      alignSelf={"center"}
-      w={"100%"}
-    >
-      <Button
-        bg="transparent"
-        colorScheme={"white"}
-        // w="14%"
-        onPress={handlegobacck}
-        justifyContent="flex-start"
-        leftIcon={
-          <Icon
-            size="2xl"
-            as={<FontAwesome5 name="arrow-left" />}
-            color="#0f045d"
-          />
-        }
-      />
-
-      <Text color="white" textAlign="center" fontSize="22" fontWeight="bold">
-        Registration
-      </Text>
-    </HStack>
+    <Button
+      bg="transparent"
+      colorScheme={"white"}
+      // w="14%"
+      onPress={handlegobacck}
+      justifyContent="flex-start"
+      leftIcon={
+        <Icon
+          size="2xl"
+          as={<FontAwesome5 name="arrow-left" />}
+          color="#0f045d"
+        />
+      }
+    />
   );
 };
 
@@ -241,6 +221,7 @@ const Registration = () => {
   return (
     <>
       <View bg={"white"} flex={1}>
+        <RestHeader />
         <ScrollView
           bg={"white"}
           showsVerticalScrollIndicator={false}
@@ -269,7 +250,7 @@ const Registration = () => {
             color={"gray.500"}
             alignSelf={"center"}
           >
-            Login
+            Registration
           </Text>
           <VStack>
             <Formik
@@ -290,6 +271,22 @@ const Registration = () => {
                   <>
                     <ScrollView p={4}>
                       <VStack space={1} mt={5} mb={3} alignSelf={"center"}>
+                        <CustomInput
+                          w={"72"}
+                          borderColor={"#0f045d"}
+                          bgColor={"white"}
+                          currentValue={values.membershipNo}
+                          errMsg={errors.membershipNo || ""}
+                          isInvalid={
+                            !!touched.membershipNo && !!errors.membershipNo
+                          }
+                          label="Membership Number"
+                          name="membershipNo"
+                          placeholder="Enter membership number"
+                          setFieldValue={setFieldValue}
+                          isRequired={true}
+                          value={values.membershipNo}
+                        />
                         <CustomInput
                           w={"72"}
                           borderColor={"#0f045d"}

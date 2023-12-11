@@ -79,6 +79,8 @@ const QRScreen: React.FC = () => {
     const R = 6371;
     const lat2 = events.getCpeEventById.lati;
     const lon2 = events.getCpeEventById.longi;
+    console.log(lat2);
+    console.log(lon2);
 
     const dLat = (lat2 - location.coords.latitude) * (Math.PI / 180);
     const dLon = (lon2 - location.coords.longitude) * (Math.PI / 180);

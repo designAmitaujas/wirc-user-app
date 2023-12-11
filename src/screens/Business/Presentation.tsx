@@ -73,10 +73,10 @@ const PresenationCard: React.FC<{
   return (
     <>
       <Pressable onPress={handledetails}>
-        <HStack space={2} p={4}>
+        <HStack space={2} p={4} mb={4} mt={2}>
           <Text
-            w="28%"
-            fontSize="md"
+            w="30%"
+            fontSize="sm"
             fontWeight="semibold"
             textAlign="center"
             justifyContent="center"
@@ -86,9 +86,9 @@ const PresenationCard: React.FC<{
           </Text>
           <Divider orientation="vertical" thickness="2" bg="gray.800" />
           <Text
-            fontSize="md"
+            fontSize="sm"
             fontWeight="semibold"
-            w="72%"
+            w="70%"
             justifyContent="center"
             alignItems="center"
           >
@@ -132,17 +132,24 @@ const Presentation = () => {
       <RestHeader />
       <ScrollView p={2}>
         <VStack borderWidth="1" borderColor="gray.400" w="100%">
-          {data?.getAllCpeResourceCategory.map((item) => {
-            return (
-              <>
-                <PresenationCard
-                  preID={item._id}
-                  date={moment(item.date).format("DD-MMM-YYYY")}
-                  name={item.name}
-                />
-              </>
-            );
-          })}
+          {data?.getAllCpeResourceCategory
+            .sort((a, b) => {
+              return (
+                moment(b.date).toDate().getTime() -
+                moment(a.date).toDate().getTime()
+              );
+            })
+            .map((item) => {
+              return (
+                <>
+                  <PresenationCard
+                    preID={item._id}
+                    date={moment(item.date).format("DD-MMM-YYYY")}
+                    name={item.name}
+                  />
+                </>
+              );
+            })}
         </VStack>
       </ScrollView>
     </>

@@ -52,7 +52,7 @@ const RestHeader = () => {
           mb={1}
           // w={"40%"}
         >
-          WIRC NewsLetter
+          WIRC Newsletter
         </Text>
       </HStack>
     </>
@@ -209,10 +209,10 @@ const Newsletter = () => {
           .filter((item) => item.isActive === true)
           .filter((item) => item.iswirc === true)
           .sort((a, b) => {
-            return (
-              moment(b.date).toDate().getTime() -
-              moment(a.date).toDate().getTime()
-            );
+            const dateA = moment(a.date).toDate();
+            const dateB = moment(b.date).toDate();
+
+            return dateB.getTime() - dateA.getTime();
           })
           .map((item) => {
             console.log(item.pdf);

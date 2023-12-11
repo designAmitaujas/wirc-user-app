@@ -17,7 +17,6 @@ import {
 import { useEffect, useState } from "react";
 import { RefreshControl, ScrollView } from "react-native";
 
-import { useInterval } from "usehooks-ts";
 import {
   Skills,
   useCreateOrUpdateMemberSkillMutation,
@@ -232,11 +231,11 @@ const SkillSection = () => {
     }
   }, [isFocused]);
 
-  useInterval(() => {
-    if (!refreshing) {
-      newRefetch();
-    }
-  }, 10 * 1000);
+  // useInterval(() => {
+  //   if (!refreshing) {
+  //     newRefetch();
+  //   }
+  // }, 10 * 1000);
 
   if (!data?.getAllSkills)
     return (
@@ -314,7 +313,7 @@ const SkillSection = () => {
                 Update
               </Button>
               <Text mt="12" fontSize="lg" fontWeight="bold">
-                Your Selected Skills
+                Your Selected Focus Area
               </Text>
               <Box h={"32"} w={"48"}>
                 <LottieView

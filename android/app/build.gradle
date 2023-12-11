@@ -118,8 +118,8 @@ android {
         applicationId 'com.amitaujas.WIRCUser'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1011
-        versionName "2.1"
+        versionCode 1013
+        versionName "2.3"
     }
 
     splits {

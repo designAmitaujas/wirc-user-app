@@ -83,12 +83,13 @@ const validationSchema = Yup.object().shape({
   gstNo: Yup.string(),
   address: Yup.string().required(),
   country: Yup.string().required(),
-  state: Yup.string().required(),
+  state: Yup.string().required("State is required"),
   city: Yup.string().required(),
   pincode: Yup.string().required(),
   billingEmail: Yup.string().required(),
   billingGst: Yup.string(),
   billingName: Yup.string().required(),
+  userType: Yup.string().required(),
 });
 
 type IFormikInputType = typeof initalValue;
@@ -266,7 +267,7 @@ const RenderForm: FC<{
         errMsg={errors.gstNo || ""}
         placeholder="Your gst No"
         setFieldValue={setFieldValue}
-        isRequired={true}
+        isRequired={false}
         isInvalid={!!touched.gstNo && !!errors.gstNo}
         bgColor="white"
       />
@@ -328,7 +329,7 @@ const RenderForm: FC<{
         w={"72"}
         borderColor={"#0f045d"}
         name="city"
-        label="city"
+        label="City"
         options={city
           .filter((item) => item.isActive === true)
           .filter((item) => item.state?._id === values.state)
@@ -337,7 +338,7 @@ const RenderForm: FC<{
             label: item.name,
           }))}
         errMsg={errors.city || ""}
-        placeholder="Select state"
+        placeholder="Select your city"
         setFieldValue={setFieldValue}
         isRequired={true}
         isInvalid={!!touched.city && !!errors.city}
@@ -401,7 +402,7 @@ const RenderForm: FC<{
         errMsg={errors.billingGst || ""}
         placeholder="Your billing Gst"
         setFieldValue={setFieldValue}
-        isRequired={true}
+        isRequired={false}
         isInvalid={!!touched.billingGst && !!errors.billingGst}
         bgColor="white"
       />
@@ -413,7 +414,7 @@ const RenderForm: FC<{
         label="billing Name"
         currentValue={values.billingName}
         errMsg={errors.billingName || ""}
-        placeholder="Your billing Gst"
+        placeholder="Your billing name"
         setFieldValue={setFieldValue}
         isRequired={true}
         isInvalid={!!touched.billingName && !!errors.billingName}
@@ -579,7 +580,7 @@ const EventRegistration = () => {
               render: () => {
                 return (
                   <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
-                    Your registration and Payment done successfully
+                    {resposne.data?.genEventPaymnet.msg}
                   </Box>
                 );
               },
@@ -624,7 +625,8 @@ const EventRegistration = () => {
     !stateList?.getAllState ||
     !cityList.getAllCity ||
     !eventRenge?.getCpeEventRangeByCpeId ||
-    !countryList?.getAllCountry
+    !countryList?.getAllCountry ||
+    !profile
   ) {
     return (
       <>

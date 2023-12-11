@@ -897,9 +897,9 @@ export type ICreateCpeEvent = {
   isArchived: Scalars['Boolean']['input'];
   isForStudent: Scalars['Boolean']['input'];
   isRegistrationOn: Scalars['Boolean']['input'];
-  lati: Scalars['Float']['input'];
+  lati: Scalars['String']['input'];
   location: Scalars['String']['input'];
-  longi: Scalars['Float']['input'];
+  longi: Scalars['String']['input'];
   name: Scalars['String']['input'];
   price: Scalars['Float']['input'];
   sgst: Scalars['Float']['input'];

@@ -15,7 +15,7 @@ import {
   useToast,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { Platform, ScrollView, TouchableOpacity } from "react-native";
+import { Linking, Platform, ScrollView, TouchableOpacity } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import RenderHtml from "react-native-render-html";
 import { downloadPath, windowWidth } from "../constant";
@@ -206,8 +206,10 @@ const UpcomingEvents = () => {
 
   const handleRedirect = () => {
     const { eventId } = params as { eventId?: string };
-    // @ts-ignore
-    navigate("EventRegistration", { eventId });
+    const { name } = params as { name?: string };
+    Linking.openURL(
+      `https://wirc-icai.org/members/members-events-details/${eventId}/${name}`
+    );
   };
 
   if (loading || !eventInformation)

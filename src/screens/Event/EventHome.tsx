@@ -308,7 +308,7 @@ const UpcomingCard: React.FC<{
 
   const handleEvents = () => {
     //@ts-ignore
-    navigate("RegisteredEvents", { eventId });
+    navigate("RegisteredEvents", { eventId, name });
   };
 
   return (

@@ -27,7 +27,7 @@ const initialvalues: QnaMailInput = {
 const validationSchema = Yup.object().shape({
   email: Yup.string().required(),
   eventid: Yup.string(),
-  eventname: Yup.string().required(),
+  eventname: Yup.string().required("speaker name is required"),
   name: Yup.string().required(),
   query: Yup.string().required(),
 });

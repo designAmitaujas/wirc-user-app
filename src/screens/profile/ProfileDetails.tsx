@@ -351,7 +351,7 @@ const ProfileScreen = () => {
                           name="firstName"
                           placeholder="Enter First Name "
                           setFieldValue={setFieldValue}
-                          isRequired={true}
+                          isRequired={false}
                           value={values.firstName}
                         />
                         <CustomInput
@@ -367,7 +367,7 @@ const ProfileScreen = () => {
                           name="middleName"
                           placeholder="Enter Middle Name "
                           setFieldValue={setFieldValue}
-                          isRequired={true}
+                          isRequired={false}
                           value={values.middleName}
                         />
                         <CustomInput
@@ -381,7 +381,7 @@ const ProfileScreen = () => {
                           name="lastName"
                           placeholder="Enter last Name "
                           setFieldValue={setFieldValue}
-                          isRequired={true}
+                          isRequired={false}
                           value={values.lastName}
                         />
 
@@ -397,7 +397,7 @@ const ProfileScreen = () => {
                           name="email"
                           placeholder="Enter Email Address"
                           setFieldValue={setFieldValue}
-                          isRequired={true}
+                          isRequired={false}
                           value={values.email}
                         />
                         <CustomInput
@@ -411,7 +411,7 @@ const ProfileScreen = () => {
                           name="phone"
                           placeholder="Enter Mobile Number"
                           setFieldValue={setFieldValue}
-                          isRequired={true}
+                          isRequired={false}
                           keyboardAppearance="light"
                           keyboardType="number-pad"
                           value={values.phone}

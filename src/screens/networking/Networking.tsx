@@ -99,7 +99,7 @@ const RestHeader = () => {
           mb={1}
           // w={"40%"}
         >
-          Members Networking
+          Networking
         </Text>
 
         <Button
@@ -166,7 +166,7 @@ const ParticipantsCard: React.FC<{
     console.log(hello);
     if (hello.data?.sendInvitation) {
       toast.show({
-        title: "Attendance already marked",
+        title: "Invitation Sent",
         placement: "top",
       });
       setShowModal1(false);
@@ -262,7 +262,9 @@ const ParticipantsCard: React.FC<{
                 ) : (
                   <>
                     <VStack space={2}>
-                      <Button onPress={handlesubmit}>Send Invite</Button>
+                      <Button onPress={handlesubmit} bg="#0f045d">
+                        Send Invite
+                      </Button>
                     </VStack>
                   </>
                 )}
@@ -402,7 +404,9 @@ const ParticipantsCard: React.FC<{
                 ) : (
                   <>
                     <VStack space={2}>
-                      <Button onPress={handlesubmit}>Send Invite</Button>
+                      <Button onPress={handlesubmit} bg="#0f045d">
+                        Send Invite
+                      </Button>
                     </VStack>
                   </>
                 )}
@@ -542,7 +546,9 @@ const ParticipantsCard: React.FC<{
                 ) : (
                   <>
                     <VStack space={2}>
-                      <Button onPress={handlesubmit}>Send Invite</Button>
+                      <Button onPress={handlesubmit} bg="#0f045d">
+                        Send Invite
+                      </Button>
                     </VStack>
                   </>
                 )}
@@ -759,11 +765,12 @@ const NetworkingScreen = () => {
                 <>
                   <VStack space={1}>
                     <CustomSelect
-                      isRequired={true}
+                      isRequired={false}
                       isInvalid={!!touched.skills && !!errors.skills}
-                      label={"Select Skill"}
+                      label={"Select Focus Area"}
                       options={getAllskill.getAllSkills
                         .filter((item) => item.isActive === true)
+                        .sort((a, b) => a.name.localeCompare(b.name))
                         .map((item) => ({ label: item.name, value: item._id }))}
                       name="skills"
                       setFieldValue={setFieldValue}
@@ -800,13 +807,16 @@ const NetworkingScreen = () => {
 
                   <VStack space={1} mt={3}>
                     <CustomSelect
-                      isRequired={true}
+                      isRequired={false}
                       isInvalid={!!touched.city && !!errors.city}
                       label={"Select city"}
-                      options={city.getAllCity.map((item) => ({
-                        label: item.name || "",
-                        value: item._id || "",
-                      }))}
+                      options={city.getAllCity
+
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((item) => ({
+                          label: item.name || "",
+                          value: item._id || "",
+                        }))}
                       name="city"
                       setFieldValue={setFieldValue}
                       initValue={values.city}

@@ -332,7 +332,7 @@ const RegisterdEventDetails = () => {
           <VStack space={4} mt="8" mb="8">
             <HStack alignItems="center" space="10">
               <Button bg="#00388D" w="45%" onPress={handleSpeaker}>
-                Speaker Profile
+                Speaker Profiles
               </Button>
               <Button bg="#00388D" w="45%" onPress={handlepresentation}>
                 Presentation

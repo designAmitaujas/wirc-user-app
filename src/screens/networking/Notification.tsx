@@ -1,5 +1,6 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import LottieView from "lottie-react-native";
 import {
   Button,
   Divider,
@@ -7,6 +8,7 @@ import {
   Icon,
   ScrollView,
   Text,
+  VStack,
   useToast,
 } from "native-base";
 import React from "react";
@@ -167,6 +169,30 @@ const Notification = () => {
     <>
       <RestHeader />
       <ScrollView>
+        {data?.getAllInvitation.length === 0 ? (
+          <>
+            <VStack
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LottieView
+                source={require("../../../assets/animation_loeanypk.json")}
+                autoPlay
+                loop
+                style={{ width: "50%" }}
+              />
+
+              <Text fontSize="2xl" fontWeight="semibold">
+                No Notifications !
+              </Text>
+            </VStack>
+          </>
+        ) : (
+          <></>
+        )}
         {data?.getAllInvitation.map((item) => {
           return (
             <>

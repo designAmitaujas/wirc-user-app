@@ -296,7 +296,7 @@ const ParticipantsCard: React.FC<{
 
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Skills
+                      Focus Area
                     </Text>
                     <Text w={"10%"}>:</Text>
                     <Badge
@@ -438,7 +438,7 @@ const ParticipantsCard: React.FC<{
 
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Skills
+                      Focus Area
                     </Text>
                     <Text w={"10%"}>:</Text>
                     <Badge
@@ -580,7 +580,7 @@ const ParticipantsCard: React.FC<{
 
                   <HStack w={"100%"}>
                     <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-                      Skills
+                      Focus Area
                     </Text>
                     <Text w={"10%"}>:</Text>
                     <Badge
@@ -890,61 +890,54 @@ const NetworkingScreen = () => {
 
           {/* <AnimatedSearchBar /> */}
         </HStack>
-        {loadingParticipants ? (
-          <HStack
-            flex={1}
-            alignSelf={"center"}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Spinner
-              accessibilityLabel="Loading participants"
-              size="lg"
-              color="#0f045d"
+        {participants?.length === 0 ? (
+          <VStack flex={1} display="flex" alignItems="center">
+            <LottieView
+              source={require("../../../assets/animation_loeanypk.json")}
+              autoPlay
+              loop
+              style={{ width: "50%" }}
             />
             <Text color="#0f045d" fontSize="lg" fontWeight="bold">
-              Loading Participants
+              No Participants For Current Event
             </Text>
-          </HStack>
+          </VStack>
         ) : (
           <ScrollView showsVerticalScrollIndicator={false}>
-            <VStack space={3} mb={4} mt={2}>
-              {participants?.length === 0 ? (
-                <>
-                  <HStack
-                    flex={1}
-                    alignSelf={"center"}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Spinner
-                      accessibilityLabel="Loading participants"
-                      size="lg"
-                      color="#0f045d"
+            {loadingParticipants ? (
+              <>
+                <HStack
+                  flex={1}
+                  alignSelf={"center"}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Spinner
+                    accessibilityLabel="Loading participants"
+                    size="lg"
+                    color="#0f045d"
+                  />
+                  <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+                    Loading Participants
+                  </Text>
+                </HStack>
+              </>
+            ) : (
+              <VStack space={3} mb={4} mt={2}>
+                <HStack justifyContent={"space-between"} w={"100%"}>
+                  {Array.isArray(participants) && (
+                    <FlatList
+                      scrollEnabled={false}
+                      numColumns={2}
+                      data={participants}
+                      keyExtractor={(item) => item.city + key}
+                      renderItem={renderItem}
                     />
-                    <Text color="#0f045d" fontSize="lg" fontWeight="bold">
-                      No Participants
-                    </Text>
-                  </HStack>
-                </>
-              ) : (
-                <VStack>
-                  <HStack justifyContent={"space-between"} w={"100%"}>
-                    {Array.isArray(participants) && (
-                      <FlatList
-                        scrollEnabled={false}
-                        numColumns={2}
-                        data={participants}
-                        keyExtractor={(item) => item.city + key}
-                        renderItem={renderItem}
-                      />
-                    )}
-                  </HStack>
-                </VStack>
-              )}
-            </VStack>
+                  )}
+                </HStack>
+              </VStack>
+            )}
           </ScrollView>
         )}
       </View>

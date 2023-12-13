@@ -77,8 +77,8 @@ const QRScreen: React.FC = () => {
     let withinGeoFence = false;
 
     const R = 6371;
-    const lat2 = events.getCpeEventById.lati;
-    const lon2 = events.getCpeEventById.longi;
+    const lat2 = _.toNumber(events.getCpeEventById.lati);
+    const lon2 = _.toNumber(events.getCpeEventById.longi);
     console.log(lat2);
     console.log(lon2);
 

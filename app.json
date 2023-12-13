@@ -2,7 +2,7 @@
   "expo": {
     "name": "WIRC Connect",
     "slug": "WIRC Connect",
-    "version": "2.3",
+    "version": "2.4",
     "orientation": "portrait",
     "icon": "./assets/wirclogo.png",
     "userInterfaceStyle": "light",
@@ -21,7 +21,7 @@
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "versionCode": 1013,
+      "versionCode": 1014,
       "adaptiveIcon": {
         "foregroundImage": "./assets/wirclogo.png",
         "backgroundColor": "#ffffff"

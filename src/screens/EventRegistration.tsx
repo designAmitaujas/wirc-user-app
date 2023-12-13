@@ -576,17 +576,8 @@ const EventRegistration = () => {
             navigate("TransactionDetails", {
               id: resposne.data?.genEventPaymnet.data?.EventHistoryID || "",
             });
-            show({
-              render: () => {
-                return (
-                  <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
-                    {resposne.data?.genEventPaymnet.msg}
-                  </Box>
-                );
-              },
-              placement: "top",
-            });
           })
+
           .catch((err) => {
             //@ts-ignore
             navigate("TransactionDetails", {

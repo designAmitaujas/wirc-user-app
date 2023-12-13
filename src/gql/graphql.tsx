@@ -272,9 +272,9 @@ export type CpeEvent = {
   isArchived: Scalars['Boolean']['output'];
   isForStudent: Scalars['Boolean']['output'];
   isRegistrationOn: Scalars['Boolean']['output'];
-  lati: Scalars['Float']['output'];
+  lati: Scalars['String']['output'];
   location: Scalars['String']['output'];
-  longi: Scalars['Float']['output'];
+  longi: Scalars['String']['output'];
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
   sgst: Scalars['Float']['output'];
@@ -1764,6 +1764,12 @@ export type IGetAllTransactionId = {
   ids: Array<Scalars['String']['input']>;
 };
 
+export type IGetAttendanceDetails = {
+  endDate: Scalars['String']['input'];
+  eventId: Scalars['String']['input'];
+  startDate: Scalars['String']['input'];
+};
+
 export type IGetById = {
   id: Scalars['String']['input'];
 };
@@ -2327,6 +2333,7 @@ export type Mutation = {
   genPayment: IPaymentResponse;
   getAllPaytmIdfromTransactionId: Array<IPaytmIdResponseRespose>;
   getAllPublicationPaymentHistory: Array<PublicationBilling>;
+  getAttendanceDetailsByDateRange: Array<EventAttendence>;
   getFilterdSkillMember: Array<IGetMyList>;
   getFilterdSkillMemberV2: Array<IGetMyList>;
   getMemberInfoByMembershipNumber?: Maybe<IUserInfoByMembershipNumber>;
@@ -3431,6 +3438,11 @@ export type MutationGetAllPaytmIdfromTransactionIdArgs = {
 
 export type MutationGetAllPublicationPaymentHistoryArgs = {
   options: IGetPaymentDetails;
+};
+
+
+export type MutationGetAttendanceDetailsByDateRangeArgs = {
+  options: IGetAttendanceDetails;
 };
 
 
@@ -5052,7 +5064,7 @@ export type SpeakerMailMutation = { __typename?: 'Mutation', speakerMail: { __ty
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllCpeEventQuery = { __typename?: 'Query', getAllCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, lati: number, longi: number, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null }> };
+export type GetAllCpeEventQuery = { __typename?: 'Query', getAllCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, lati: string, longi: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null }> };
 
 export type GetAllStateQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5115,12 +5127,12 @@ export type GetEventTopicByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetEventTopicByIdQuery = { __typename?: 'Query', getEventTopicById: { __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, lati: number, longi: number, capacity: string, cutoffDate?: any | null, cms: string, externalRegistration: string, price: number, igst: number, cgst: number, sgst: number, isRegistrationOn: boolean, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null } };
+export type GetEventTopicByIdQuery = { __typename?: 'Query', getEventTopicById: { __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, lati: string, longi: string, capacity: string, cutoffDate?: any | null, cms: string, externalRegistration: string, price: number, igst: number, cgst: number, sgst: number, isRegistrationOn: boolean, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null } };
 
 export type GetAllEventTopicQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllEventTopicQuery = { __typename?: 'Query', getAllEventTopic: Array<{ __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, lati: number, longi: number, capacity: string, cutoffDate?: any | null, cms: string, externalRegistration: string, price: number, igst: number, cgst: number, sgst: number, isRegistrationOn: boolean, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+export type GetAllEventTopicQuery = { __typename?: 'Query', getAllEventTopic: Array<{ __typename?: 'EventTopic', _id: string, topic: string, faculty: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, lati: string, longi: string, capacity: string, cutoffDate?: any | null, cms: string, externalRegistration: string, price: number, igst: number, cgst: number, sgst: number, isRegistrationOn: boolean, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
 
 export type GetMemberAttendanceListQueryVariables = Exact<{
   eventId: Scalars['String']['input'];
@@ -5137,19 +5149,19 @@ export type MyProfileInformationQuery = { __typename?: 'Query', myProfileInforma
 export type GetMyAttendedEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, lati: number, longi: number, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, lati: string, longi: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
 
 export type GetTodayCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTodayCpeEventQuery = { __typename?: 'Query', getTodayCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, lati: number, longi: number, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean }> };
+export type GetTodayCpeEventQuery = { __typename?: 'Query', getTodayCpeEvent: Array<{ __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, lati: string, longi: string, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean }> };
 
 export type GetCpeEventByIdQueryVariables = Exact<{
   options: IGetById;
 }>;
 
 
-export type GetCpeEventByIdQuery = { __typename?: 'Query', getCpeEventById: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, lati: number, longi: number, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null } };
+export type GetCpeEventByIdQuery = { __typename?: 'Query', getCpeEventById: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, cpehrs: string, date2: any, lati: string, longi: string, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, name: string, isActive: boolean } | null } };
 
 export type GetCpeEventRangeByCpeIdQueryVariables = Exact<{
   options: IGetById;
@@ -5163,7 +5175,7 @@ export type GetPaymentReciptByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentReciptByIdQuery = { __typename?: 'Query', getPaymentReciptById: { __typename?: 'EventTransactionHistory', _id: string, customId: string, billingEmail: string, billingGst: string, billingName: string, isSameCity: boolean, CALLBACK_URL: string, CHANNEL_ID: string, CHECKSUMHASH: string, CUST_ID: string, EMAIL: string, MID: string, ORDER_ID: string, TXN_AMOUNT: string, WEBSITE: string, isPaymnetPaid: boolean, isActive: boolean, createdAt: any, cpeEvnet?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, lati: number, longi: number, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, isActive: boolean, name: string } | null } | null } };
+export type GetPaymentReciptByIdQuery = { __typename?: 'Query', getPaymentReciptById: { __typename?: 'EventTransactionHistory', _id: string, customId: string, billingEmail: string, billingGst: string, billingName: string, isSameCity: boolean, CALLBACK_URL: string, CHANNEL_ID: string, CHECKSUMHASH: string, CUST_ID: string, EMAIL: string, MID: string, ORDER_ID: string, TXN_AMOUNT: string, WEBSITE: string, isPaymnetPaid: boolean, isActive: boolean, createdAt: any, cpeEvnet?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, date1: any, lati: string, longi: string, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean, igstState?: { __typename?: 'State', _id: string, isActive: boolean, name: string } | null } | null } };
 
 export type GetCountByCpeEventQueryVariables = Exact<{
   options: IGetById;

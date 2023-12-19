@@ -1,19 +1,73 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import {
   useIsFocused,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
-import { BarCodeScanner, PermissionStatus } from "expo-barcode-scanner";
 import * as Location from "expo-location";
-import _, { debounce } from "lodash";
+import _ from "lodash";
 import Lottie from "lottie-react-native";
-import { Box, Button, HStack, Text, VStack, View, useToast } from "native-base";
+import {
+  Box,
+  Button,
+  HStack,
+  Icon,
+  Input,
+  Text,
+  VStack,
+  View,
+  useToast,
+} from "native-base";
 import { useEffect, useState } from "react";
 import {
   useAddAttendenceMutation,
   useGetCpeEventByIdQuery,
   useMyProfileInformationQuery,
 } from "../gql/graphql";
+
+const RestHeader = () => {
+  const { goBack } = useNavigation();
+
+  return (
+    <>
+      <HStack
+        backgroundColor="#0f045d"
+        borderBottomRadius={40}
+        // justifyContent={"space-between"}
+        py="3"
+        // h={16}
+        px={4}
+        alignItems="center"
+        alignSelf={"center"}
+        w={"100%"}
+      >
+        <Button
+          bg="transparent"
+          colorScheme={"white"}
+          // w="14%"
+          onPress={goBack}
+          leftIcon={
+            <Icon
+              size="md"
+              as={<FontAwesome5 name="arrow-left" />}
+              color="white"
+            />
+          }
+        />
+        <Text
+          color="white"
+          ml={8}
+          fontSize="20"
+          fontWeight="bold"
+          mb={1}
+          // w={"40%"}
+        >
+          Mark Attendance
+        </Text>
+      </HStack>
+    </>
+  );
+};
 
 const QRScanner: React.FC = () => {
   const isFocused = useIsFocused();
@@ -26,7 +80,8 @@ const QRScreen: React.FC = () => {
   const { navigate } = useNavigation();
   const { params } = useRoute();
 
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [responsedata, setResponsedata] = useState("");
+
   const [scanned, setScanned] = useState(false);
   const [info, setInfo] = useState("");
   const [location, setLocation] = useState<Location.LocationObject | null>(
@@ -62,13 +117,6 @@ const QRScreen: React.FC = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === PermissionStatus.GRANTED);
-    })();
-  }, []);
-
   const isWithinGeoFence = () => {
     if (!location || !events) {
       return false;
@@ -98,7 +146,7 @@ const QRScreen: React.FC = () => {
 
     const roundedDistance = Math.round(distance * 1000); // in meters
 
-    const geoFenceRadius = 500; // 1 kilometer
+    const geoFenceRadius = 1500; // 1 kilometer
     console.log(
       "Event:",
       events.getCpeEventById.name,
@@ -126,7 +174,7 @@ const QRScreen: React.FC = () => {
     }
   };
 
-  const handleBarCodeScanned = debounce(async ({ data }: { data: string }) => {
+  const handleBarCodeScanned = async () => {
     try {
       // Check if already scanned
       if (scanned) {
@@ -136,7 +184,13 @@ const QRScreen: React.FC = () => {
         });
         return;
       }
-
+      if (!info.trim()) {
+        toast.show({
+          title: "Please enter a valid QR code",
+          placement: "top",
+        });
+        return;
+      }
       // Check geofence
       if (!isWithinGeoFence()) {
         toast.show({
@@ -146,16 +200,10 @@ const QRScreen: React.FC = () => {
         return;
       }
 
-      const currentDateTime = new Date();
-      const eventStartTime = events?.getCpeEventById.time1
-        ? new Date(events.getCpeEventById.time1)
-        : new Date();
-      const isStartTimeScan = currentDateTime < eventStartTime;
-
       const response = await addAttendence({
         variables: {
           options: {
-            eventId: data,
+            eventId: info,
             memberId: profile?.myProfileInformation?.membershipNo || "",
           },
         },
@@ -167,13 +215,8 @@ const QRScreen: React.FC = () => {
           title: _.capitalize(response.data.addAttendence.msg),
           placement: "top",
         });
-        setInfo(data);
+        setResponsedata(response.data.addAttendence.msg);
         setScanned(true);
-        if (isStartTimeScan) {
-          console.log("Handling half attendance scan at the start time...");
-        } else {
-          console.log("Handling full attendance scan at the end time...");
-        }
       } else {
         toast.show({
           title: _.capitalize(response.data?.addAttendence.msg),
@@ -183,29 +226,38 @@ const QRScreen: React.FC = () => {
     } catch (error) {
       console.error("Error handling barcode scan:", error);
     }
-  }, 1000);
-  if (hasPermission === null) {
-    return <Text>Requesting camera permission...</Text>;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+  };
 
   if (!scanned) {
     return (
       <>
-        <View flex={1} justifyContent={"center"} alignItems={"center"}>
-          <Text fontSize={"2xl"} fontWeight={"semibold"} textAlign={"center"}>
-            Scanned QR{"\n"}For Attendance
+        <RestHeader />
+        <View flex={1} alignItems={"center"} justifyContent="center">
+          <Text fontSize={"25"} mb={3} fontWeight={"bold"} textAlign={"center"}>
+            Enter the code For Attendance
           </Text>
 
-          <BarCodeScanner
-            style={{
-              width: "80%",
-              height: "60%",
-            }}
-            onBarCodeScanned={handleBarCodeScanned}
-          />
+          <VStack space={2}>
+            <Input
+              w={"72"}
+              placeholder="Enter QR Code"
+              value={info}
+              onChangeText={(value) => setInfo(value)}
+            />
+            <Button
+              onPress={handleBarCodeScanned}
+              disabled={!info.trim()}
+              mt="10"
+              mb="2"
+              borderRadius={25}
+              size={"lg"}
+              w={"40"}
+              alignSelf={"center"}
+              bgColor={"#0f045d"}
+            >
+              Mark Attendance
+            </Button>
+          </VStack>
         </View>
       </>
     );
@@ -236,31 +288,32 @@ const QRScreen: React.FC = () => {
             Attendance Marked For
           </Text>
           <HStack w={"100%"}>
-            <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
+            <Text w={"25%"} fontSize={"md"} fontWeight={"semibold"}>
               Seminar
             </Text>
-            <Text w={"10%"}>:</Text>
+            <Text w={"5%"}>:</Text>
 
-            <Text w={"60%"} fontSize={"md"}>
+            <Text w={"70%"} fontSize={"md"}>
               {events?.getCpeEventById.name}
             </Text>
           </HStack>
-          {/* <HStack mx={5} w={"100%"}>
-            <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
-              Seminar Location
-            </Text>
-            <Text w={"10%"}>:</Text>
-
-            <Text w={"60%"} fontSize={"md"}>
-              {events?.getCpeEventById.location}
-            </Text>
-          </HStack> */}
           <HStack w={"100%"}>
-            <Text w={"30%"} fontSize={"md"} fontWeight={"semibold"}>
+            <Text w={"25%"} fontSize={"md"} fontWeight={"semibold"}>
+              Message
+            </Text>
+            <Text w={"5%"}>:</Text>
+
+            <Text w={"70%"} fontSize={"md"}>
+              {responsedata}
+            </Text>
+          </HStack>
+
+          <HStack w={"100%"}>
+            <Text w={"25%"} fontSize={"md"} fontWeight={"semibold"}>
               Name
             </Text>
-            <Text w={"10%"}>:</Text>
-            <Text w={"60%"} fontSize={"md"}>
+            <Text w={"5%"}>:</Text>
+            <Text w={"70%"} fontSize={"md"}>
               {profile?.myProfileInformation?.firstName}{" "}
               {profile?.myProfileInformation?.middleName}{" "}
               {profile?.myProfileInformation?.lastName}
@@ -274,7 +327,7 @@ const QRScreen: React.FC = () => {
             bg={"#0f045d"}
             onPress={() => setScanned(false)}
           >
-            Scan Again
+            Enter Code Again
           </Button>
           <Button borderRadius={10} bg={"#0f045d"} onPress={handlehome}>
             Event Home

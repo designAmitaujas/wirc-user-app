@@ -1,13 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 import { Box, HStack, Image, ScrollView, Text, VStack } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { Linking, TouchableOpacity } from "react-native";
 
 const logo = require("../../assets/wirclogo.png");
 const logo1 = require("../../assets/123.png");
+const logo6 = require("../../assets/Benefits3.png");
 const logo2 = require("../../assets/business.png");
 const logo3 = require("../../assets/evnts.png");
 const logo4 = require("../../assets/news.png");
-const logo5 = require("../../assets/75icai.png");
+const logo5 = require("../../assets/75ici.png");
+const logo7 = require("../../assets/person.png");
+const logo8 = require("../../assets/services.png");
 
 const HomeScreen = () => {
   return (
@@ -30,12 +33,19 @@ const HomeScreen = () => {
             // mb={1}
             // w={"40%"}
           >
-            WIRC
+            WIRC Connect
           </Text>
-          <Image source={logo5} alt="logo" resizeMode="contain" h={12} w={12} />
+          <Image
+            source={logo5}
+            alt="logo"
+            resizeMode="contain"
+            h={12}
+            w={12}
+            borderRadius="full"
+          />
         </HStack>
       </Box>
-      <ScrollView flex={1} marginTop="20">
+      <ScrollView flex={1}>
         <HomeCards />
       </ScrollView>
     </VStack>
@@ -59,13 +69,25 @@ export const HomeCards = () => {
     // @ts-ignore
     navigate("Whatwebring");
   };
+
   const handlenews = () => {
     // @ts-ignore
     navigate("newsletter");
   };
+
+  const handlebearer = () => {
+    // @ts-ignore
+    navigate("bearer");
+  };
+
+  const handleservice = () => {
+    // @ts-ignore
+    navigate("service");
+  };
+
   return (
     <>
-      <VStack p={"5"} flex={1} justifyContent={"center"} space={10}>
+      <VStack p={"5"} flex={1} justifyContent={"center"} space={5}>
         <HStack flex={1} justifyContent="space-between">
           <TouchableOpacity onPress={events}>
             <Box>
@@ -85,12 +107,12 @@ export const HomeCards = () => {
               </Text>
             </Box>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleSkill}>
+          <TouchableOpacity onPress={handlebearer}>
             <Box>
               <Image
                 size={150}
                 borderRadius={100}
-                source={logo2}
+                source={logo7}
                 alt="Alternate Text"
               />
               <Text
@@ -99,7 +121,7 @@ export const HomeCards = () => {
                 fontWeight="bold"
                 textTransform="uppercase"
               >
-                Business
+                WIRC Office {"\n"}Bearers
               </Text>
             </Box>
           </TouchableOpacity>
@@ -123,6 +145,28 @@ export const HomeCards = () => {
               </Text>
             </Box>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => Linking.openURL("https://cmpbenefits.icai.org/")}
+          >
+            <Box>
+              <Image
+                size={150}
+                borderRadius={100}
+                source={logo6}
+                alt="Alternate Text"
+              />
+              <Text
+                textAlign="center"
+                fontSize="xl"
+                fontWeight="bold"
+                textTransform="uppercase"
+              >
+                CMP Benefits
+              </Text>
+            </Box>
+          </TouchableOpacity>
+        </HStack>
+        <HStack flex={1} justifyContent="space-between">
           <TouchableOpacity onPress={handlenews}>
             <Box>
               <Image
@@ -138,6 +182,44 @@ export const HomeCards = () => {
                 textTransform="uppercase"
               >
                 Newsletters
+              </Text>
+            </Box>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleservice}>
+            <Box>
+              <Image
+                size={150}
+                borderRadius={100}
+                source={logo8}
+                alt="Alternate Text"
+              />
+              <Text
+                textAlign="center"
+                fontSize="xl"
+                fontWeight="bold"
+                textTransform="uppercase"
+              >
+                WIRC {"\n"} Services
+              </Text>
+            </Box>
+          </TouchableOpacity>
+        </HStack>
+        <HStack flex={1} justifyContent="space-between">
+          <TouchableOpacity onPress={handleSkill}>
+            <Box>
+              <Image
+                size={150}
+                borderRadius={100}
+                source={logo2}
+                alt="Alternate Text"
+              />
+              <Text
+                textAlign="center"
+                fontSize="xl"
+                fontWeight="bold"
+                textTransform="uppercase"
+              >
+                Business {"\n"} Listing
               </Text>
             </Box>
           </TouchableOpacity>

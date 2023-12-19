@@ -5,8 +5,8 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import _ from "lodash";
-import LottieView from "lottie-react-native";
 import moment from "moment";
 import {
   Box,
@@ -18,22 +18,29 @@ import {
   Text,
   VStack,
 } from "native-base";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { useInterval } from "usehooks-ts";
+import { RootStackParamList } from "../../Routes";
 import {
   useGetAllCpeEventQuery,
   useGetMyAttendedEventQuery,
-  useGetMyMobileEventListQuery,
+  useGetMyMobileEventList2Query,
 } from "../../gql/graphql";
 
 const logo = require("../../../assets/wirclogo.png");
+
+// type ScreenProps2 = NativeStackScreenProps<
+//   RootStackParamList,
+//   "SkillSection",
+//   "notification"
+// >;
 
 const Home = () => {
   const { navigate, goBack } = useNavigation();
 
   const handleSkill = () => {
-    // @ts-ignore
+    //@ts-ignore
     navigate("SkillSection");
   };
   const handlenotification = () => {
@@ -233,19 +240,16 @@ export const Seminar = () => {
         </HStack>
         {data?.getMyAttendedEvent.length === 0 ? (
           <>
-            <Box
-              w={"72"}
-              h={"72"}
-              justifyContent={"center"}
+            <HStack
               flex={1}
-              alignSelf={"center"}
-              mb={"4"}
+              justifyContent="center"
+              space="2"
+              alignItems="center"
             >
-              <LottieView
-                autoPlay
-                source={require("../../../assets/Simple-text-[remix] (4).json")}
-              />
-            </Box>
+              <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
+                No Events
+              </Heading>
+            </HStack>
           </>
         ) : (
           <>
@@ -305,7 +309,6 @@ const UpcomingCard: React.FC<{
   endtime: string;
 }> = ({ name, startdatetime, enddatetime, eventId, start, endtime }) => {
   const { navigate } = useNavigation();
-
   const handleEvents = () => {
     //@ts-ignore
     navigate("RegisteredEvents", { eventId, name });
@@ -376,13 +379,6 @@ const UpcomingCard: React.FC<{
 
 export const UpcomingEvent = () => {
   const { data, loading } = useGetAllCpeEventQuery();
-
-  // if (loading) {
-  //   return (
-  //     <>
-  //     </>
-  //   );
-  // }
 
   return (
     <>
@@ -463,36 +459,19 @@ const RegisterdCard: React.FC<{
   enddatetime: string;
   eventId: string;
 }> = ({ name, startdatetime, enddatetime, eventId }) => {
-  const [showModal, setShowModal] = useState(false);
   const { navigate } = useNavigation();
-
   const handleEvents = () => {
     //@ts-ignore
     navigate("EventsDetails", { eventId });
-
-    setShowModal(false);
   };
 
   const handleQrscan = () => {
     //@ts-ignore
     navigate("QRcode", { eventId });
-    setShowModal(false);
   };
 
   return (
     <>
-      {/* <Center>
-        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-          <Modal.Content maxWidth="400px">
-            <Modal.CloseButton />
-            <Modal.Header>Contact Us</Modal.Header>
-            <Modal.Body>
-            
-            </Modal.Body>
-          </Modal.Content>
-        </Modal>
-      </Center> */}
-
       <VStack
         space={2}
         p={2}
@@ -541,7 +520,7 @@ const RegisterdCard: React.FC<{
             borderRadius={12}
             onPress={handleQrscan}
           >
-            Attendance Scan
+            Mark Attendance
           </Button>
         </HStack>
       </VStack>
@@ -549,8 +528,14 @@ const RegisterdCard: React.FC<{
   );
 };
 
+type ScreenProps1 = NativeStackScreenProps<
+  RootStackParamList,
+  "EventsDetails",
+  "QRcode"
+>;
+
 export const RegisteredEvent = () => {
-  const { data, refetch, loading } = useGetMyMobileEventListQuery();
+  const { data, refetch, loading } = useGetMyMobileEventList2Query();
 
   return (
     <>
@@ -583,7 +568,7 @@ export const RegisteredEvent = () => {
           <>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
-                {data?.getMyMobileEventList
+                {data?.getMyMobileEventList2
 
                   .sort((a, b) => {
                     return (
@@ -591,6 +576,7 @@ export const RegisteredEvent = () => {
                       _.toNumber(moment(b.startDate).toDate())
                     );
                   })
+                  .filter((item) => item.isEventOff === false)
                   .map((item) => {
                     const startDate = moment(item.startDate, "DD-MM-YYYY");
                     const endDate = moment(item.endDate, "DD-MM-YYYY");

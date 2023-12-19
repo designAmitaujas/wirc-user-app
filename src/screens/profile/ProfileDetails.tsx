@@ -1,4 +1,8 @@
-import { Feather } from "@expo/vector-icons";
+import {
+  Feather,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
 import {
@@ -15,6 +19,7 @@ import {
 } from "native-base";
 import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
+import QRCode from "react-native-qrcode-svg";
 import * as Yup from "yup";
 import { CustomInput, CustomSelect } from "../../components/CustomForm";
 import {
@@ -89,6 +94,10 @@ const RestHeader = () => {
 
   const { navigate } = useNavigation();
 
+  const handleqrcode = () => {
+    // @ts-ignore
+    navigate("ticket");
+  };
   const visitingcard = () => {
     // @ts-ignore
     navigate("VisitingCard");
@@ -113,22 +122,12 @@ const RestHeader = () => {
       alignSelf={"center"}
       w={"100%"}
     >
-      {/* <Button
-        bg="transparent"
-        colorScheme={"#0f045d"}
-        w="14%"
-        ml={2}
-        leftIcon={
-          <Icon
-            size="md"
-            as={<FontAwesome5 name="arrow-left" />}
-            color="white"
-          />
-        }
-      /> */}
-      {/* <TouchableOpacity onPress={visitingcard}>
+      <TouchableOpacity onPress={handleqrcode}>
+        <MaterialCommunityIcons name="qrcode-scan" size={24} color="white" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={visitingcard}>
         <FontAwesome name="id-card" size={24} color="white" />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <Text
         color="white"
         // ml={16}
@@ -284,7 +283,6 @@ const ProfileScreen = () => {
       </>
     );
   }
-
   return (
     <>
       <View bg={"white"} flex={1}>
@@ -311,11 +309,11 @@ const ProfileScreen = () => {
               }) => {
                 return (
                   <>
-                    <ScrollView p={4}>
-                      <VStack space={1} mt={5} mb={3} alignSelf={"center"}>
-                        {profile?.myProfileInformation?.gender?.name.toLocaleLowerCase() ===
-                        "male" ? (
-                          <>
+                    <VStack space={1} mt={5} mb={3} alignSelf={"center"}>
+                      {profile?.myProfileInformation?.gender?.name.toLocaleLowerCase() ===
+                      "male" ? (
+                        <>
+                          <HStack justifyContent="space-between">
                             <Avatar
                               borderWidth={2}
                               borderColor={"#0f045d"}
@@ -325,187 +323,141 @@ const ProfileScreen = () => {
                               size={"xl"}
                               source={male}
                             />
-                          </>
-                        ) : (
-                          <>
-                            <Avatar
-                              borderWidth={2}
-                              borderColor={"#0f045d"}
-                              bg="white"
-                              alignSelf={"center"}
-                              mb={3}
-                              size={"xl"}
-                              source={female}
+                            <QRCode
+                              value={profile.myProfileInformation._id}
+                              size={100}
                             />
-                          </>
-                        )}
+                          </HStack>
+                        </>
+                      ) : (
+                        <>
+                          <Avatar
+                            borderWidth={2}
+                            borderColor={"#0f045d"}
+                            bg="white"
+                            alignSelf={"center"}
+                            mb={3}
+                            size={"xl"}
+                            source={female}
+                          />
+                        </>
+                      )}
 
-                        <CustomInput
-                          w={"72"}
-                          borderColor={"#0f045d"}
-                          bgColor={"white"}
-                          currentValue={values.firstName}
-                          errMsg={errors.firstName || ""}
-                          isInvalid={!!touched.firstName && !!errors.firstName}
-                          label="First Name"
-                          name="firstName"
-                          placeholder="Enter First Name "
-                          setFieldValue={setFieldValue}
-                          isRequired={false}
-                          value={values.firstName}
-                        />
-                        <CustomInput
-                          w={"72"}
-                          borderColor={"#0f045d"}
-                          bgColor={"white"}
-                          currentValue={values.middleName}
-                          errMsg={errors.middleName || ""}
-                          isInvalid={
-                            !!touched.middleName && !!errors.middleName
-                          }
-                          label="Middle Name"
-                          name="middleName"
-                          placeholder="Enter Middle Name "
-                          setFieldValue={setFieldValue}
-                          isRequired={false}
-                          value={values.middleName}
-                        />
-                        <CustomInput
-                          w={"72"}
-                          borderColor={"#0f045d"}
-                          bgColor={"white"}
-                          currentValue={values.lastName}
-                          errMsg={errors.lastName || ""}
-                          isInvalid={!!touched.lastName && !!errors.lastName}
-                          label="Last Name"
-                          name="lastName"
-                          placeholder="Enter last Name "
-                          setFieldValue={setFieldValue}
-                          isRequired={false}
-                          value={values.lastName}
-                        />
+                      <CustomInput
+                        w={"72"}
+                        borderColor={"#0f045d"}
+                        bgColor={"white"}
+                        currentValue={values.firstName}
+                        errMsg={errors.firstName || ""}
+                        isInvalid={!!touched.firstName && !!errors.firstName}
+                        label="First Name"
+                        name="firstName"
+                        placeholder="Enter First Name "
+                        setFieldValue={setFieldValue}
+                        isRequired={false}
+                        value={values.firstName}
+                      />
+                      <CustomInput
+                        w={"72"}
+                        borderColor={"#0f045d"}
+                        bgColor={"white"}
+                        currentValue={values.middleName}
+                        errMsg={errors.middleName || ""}
+                        isInvalid={!!touched.middleName && !!errors.middleName}
+                        label="Middle Name"
+                        name="middleName"
+                        placeholder="Enter Middle Name "
+                        setFieldValue={setFieldValue}
+                        isRequired={false}
+                        value={values.middleName}
+                      />
+                      <CustomInput
+                        w={"72"}
+                        borderColor={"#0f045d"}
+                        bgColor={"white"}
+                        currentValue={values.lastName}
+                        errMsg={errors.lastName || ""}
+                        isInvalid={!!touched.lastName && !!errors.lastName}
+                        label="Last Name"
+                        name="lastName"
+                        placeholder="Enter last Name "
+                        setFieldValue={setFieldValue}
+                        isRequired={false}
+                        value={values.lastName}
+                      />
 
-                        <CustomInput
-                          w={"72"}
-                          borderColor={"#0f045d"}
-                          bgColor={"white"}
-                          currentValue={values.email}
-                          errMsg={errors.email || ""}
-                          isInvalid={!!touched.email && !!errors.email}
-                          label="Email Address"
-                          keyboardType="email-address"
-                          name="email"
-                          placeholder="Enter Email Address"
-                          setFieldValue={setFieldValue}
-                          isRequired={false}
-                          value={values.email}
-                        />
-                        <CustomInput
-                          w={"72"}
-                          borderColor={"#0f045d"}
-                          bgColor={"white"}
-                          currentValue={values.phone}
-                          errMsg={errors.phone || ""}
-                          isInvalid={!!touched.phone && !!errors.phone}
-                          label="Mobile Number"
-                          name="phone"
-                          placeholder="Enter Mobile Number"
-                          setFieldValue={setFieldValue}
-                          isRequired={false}
-                          keyboardAppearance="light"
-                          keyboardType="number-pad"
-                          value={values.phone}
-                        />
-                        <CustomSelect
-                          options={gender.getAllGender
-                            .filter((item) => item.isActive === true)
-                            .map((item) => ({
-                              value: item._id,
-                              label: item.name,
-                            }))}
-                          errMsg={errors.gender || ""}
-                          isInvalid={!!touched.gender && !!errors.gender}
-                          label={"gender"}
-                          name="gender"
-                          placeholder="Select gender"
-                          initValue={values.gender}
-                          isRequired={false}
-                          setFieldValue={setFieldValue}
-                          w={"72"}
-                          borderColor={"#0f045d"}
-                          bgColor={"white"}
-                          borderRadius="xl"
-                        />
+                      <CustomInput
+                        w={"72"}
+                        borderColor={"#0f045d"}
+                        bgColor={"white"}
+                        currentValue={values.email}
+                        errMsg={errors.email || ""}
+                        isInvalid={!!touched.email && !!errors.email}
+                        label="Email Address"
+                        keyboardType="email-address"
+                        name="email"
+                        placeholder="Enter Email Address"
+                        setFieldValue={setFieldValue}
+                        isRequired={false}
+                        value={values.email}
+                      />
+                      <CustomInput
+                        w={"72"}
+                        borderColor={"#0f045d"}
+                        bgColor={"white"}
+                        currentValue={values.phone}
+                        errMsg={errors.phone || ""}
+                        isInvalid={!!touched.phone && !!errors.phone}
+                        label="Mobile Number"
+                        name="phone"
+                        placeholder="Enter Mobile Number"
+                        setFieldValue={setFieldValue}
+                        isRequired={false}
+                        keyboardAppearance="light"
+                        keyboardType="number-pad"
+                        value={values.phone}
+                      />
+                      <CustomSelect
+                        options={gender.getAllGender
+                          .filter((item) => item.isActive === true)
+                          .map((item) => ({
+                            value: item._id,
+                            label: item.name,
+                          }))}
+                        errMsg={errors.gender || ""}
+                        isInvalid={!!touched.gender && !!errors.gender}
+                        label={"gender"}
+                        name="gender"
+                        placeholder="Select gender"
+                        initValue={values.gender}
+                        isRequired={false}
+                        setFieldValue={setFieldValue}
+                        w={"72"}
+                        borderColor={"#0f045d"}
+                        bgColor={"white"}
+                        borderRadius="xl"
+                      />
 
-                        {/* <CustomSelect
-                          options={country.getAllCountry
-                            .filter((item) => item.isActive === true)
-                            .map((item) => ({
-                              value: item._id,
-                              label: item.name,
-                            }))}
-                          errMsg={errors.country || ""}
-                          isInvalid={!!touched.country && !!errors.country}
-                          label={"country"}
-                          name="country"
-                          placeholder="Select country"
-                          initValue={values.country}
-                          isRequired={false}
-                          setFieldValue={setFieldValue}
-                        />
-                        <CustomSelect
-                          options={state?.getAllState
-                            .filter((item) => item.isActive === true)
-                            .map((item) => ({
-                              value: item._id,
-                              label: item.name,
-                            }))}
-                          errMsg={errors.state || ""}
-                          isInvalid={!!touched.state && !!errors.state}
-                          label={"state"}
-                          name="state"
-                          placeholder="Select state"
-                          initValue={values.state}
-                          isRequired={false}
-                          setFieldValue={setFieldValue}
-                        />
-                        <CustomSelect
-                          options={city?.getAllCity
-                            .filter((item) => item.isActive === true)
-                            .map((item) => ({
-                              value: item._id,
-                              label: item.name,
-                            }))}
-                          errMsg={errors.city || ""}
-                          isInvalid={!!touched.city && !!errors.city}
-                          label={"city"}
-                          name="city"
-                          placeholder="Select city"
-                          initValue={values.city}
-                          isRequired={false}
-                          setFieldValue={setFieldValue}
-                        /> */}
-                        <Button
-                          mt="10"
-                          mb="2"
-                          borderRadius={25}
-                          size={"lg"}
-                          w={"40"}
-                          alignSelf={"center"}
-                          bgColor={"#0f045d"}
-                          //@ts-ignore
-                          onPress={handleSubmit}
+                      <Button
+                        mt="10"
+                        mb="2"
+                        borderRadius={25}
+                        size={"lg"}
+                        w={"40"}
+                        alignSelf={"center"}
+                        bgColor={"#0f045d"}
+                        //@ts-ignore
+                        onPress={handleSubmit}
+                      >
+                        <Text
+                          color={"white"}
+                          fontSize={"sm"}
+                          fontWeight={"medium"}
                         >
-                          <Text
-                            color={"white"}
-                            fontSize={"sm"}
-                            fontWeight={"medium"}
-                          >
-                            Submit
-                          </Text>
-                        </Button>
-                      </VStack>
-                    </ScrollView>
+                          Submit
+                        </Text>
+                      </Button>
+                    </VStack>
                   </>
                 );
               }}

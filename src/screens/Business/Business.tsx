@@ -1,20 +1,24 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
+  AspectRatio,
+  Box,
   Button,
+  FlatList,
   HStack,
   Icon,
   Image,
+  Pressable,
+  ScrollView,
   Spinner,
   Text,
-  VStack,
-  View,
 } from "native-base";
-import { useEffect, useState } from "react";
 //@ts-ignore
-import { FlatListSlider } from "react-native-flatlist-slider";
 import { downloadPath } from "../../constant";
-import { useGetAllBusinessListingQuery } from "../../gql/graphql";
+import {
+  ICreateBusinesslisting,
+  useGetAllBusinessListingQuery,
+} from "../../gql/graphql";
 
 const RestHeader = () => {
   const { goBack } = useNavigation();
@@ -53,25 +57,54 @@ const RestHeader = () => {
           mb={1}
           // w={"40%"}
         >
-          WIRC Business Sponsers
+          Business Listing
         </Text>
       </HStack>
+    </>
+  );
+};
+const ProductCard: React.FC<{
+  img: string;
+  whatid: string;
+  name: string;
+}> = ({ img, name, whatid }) => {
+  const { navigate } = useNavigation();
+  const handledetails = () => {
+    //@ts-ignore
+    navigate("presentationdetails", { whatid, name, img });
+  };
+
+  return (
+    <>
+      <Pressable onPress={handledetails} flex={1}>
+        <HStack
+          p={2}
+          mx="2"
+          borderColor={"#00388D"}
+          borderWidth="1"
+          borderRadius="lg"
+        >
+          <Box flex={1} mb={2}>
+            <AspectRatio flex={1} ratio={16 / 10}>
+              <Image
+                source={{ uri: downloadPath(img), cache: "reload" }}
+                alt="image"
+              />
+            </AspectRatio>
+          </Box>
+        </HStack>
+        <Text flex="1" textAlign={"center"} fontWeight={"bold"} mt="2" mb={3}>
+          {name}
+        </Text>
+      </Pressable>
     </>
   );
 };
 
 const Business = () => {
   const { data, loading } = useGetAllBusinessListingQuery();
-  const [imgList, setImgList] = useState<{ image: string }[]>([]);
+
   const { navigate } = useNavigation();
-  useEffect(() => {
-    if (data) {
-      const arr = data.getAllBusinessListing.map((x) => ({
-        image: downloadPath(x.sponserimg),
-      }));
-      setImgList(arr);
-    }
-  }, [data]);
 
   if (loading) {
     return (
@@ -99,44 +132,26 @@ const Business = () => {
   return (
     <>
       <RestHeader />
-      <View backgroundColor="white" flex={1}>
-        <VStack justifyContent="center" alignItems="center" mt={4}>
-          <Text fontWeight="bold" w="90%" textAlign="justify">
-            "Discover the backbone of our success – the extraordinary sponsors
-            of WIRC. These dynamic partners, including industry giants and
-            innovators, fuel our mission for excellence. With WIRC, they embark
-            on a shared journey of impact and innovation. Their invaluable
-            support propels us forward, shaping the future of our endeavors.
-            Proudly sponsored by visionaries, powered by WIRC."
-          </Text>
-        </VStack>
-        <HStack
-          justifyContent="center"
-          alignItems="center"
-          mt={10}
-          borderRadius="lg"
-          borderWidth="2"
-          p={4}
-          ml={2}
-          mr={2}
-          borderColor={"#0f045d"}
-        >
-          {Array.isArray(imgList) && imgList.length !== 0 && (
-            <FlatListSlider
-              data={imgList}
-              onPress={(item: { image: string }) => (
-                <Image
-                  source={{ uri: downloadPath(item.image) }}
-                  borderRadius="lg"
-                  borderColor={"#0f045d"}
-                  borderWidth="2"
-                  alt="img"
-                />
-              )}
-            />
-          )}
-        </HStack>
-      </View>
+      <ScrollView mt={3} bg="white">
+        {data?.getAllBusinessListing && (
+          <FlatList
+            scrollEnabled={false}
+            numColumns={2}
+            data={data.getAllBusinessListing.filter(
+              (item) => item.isActive === true
+            )}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }: { item: ICreateBusinesslisting }) => (
+              <ProductCard
+                img={item.sponserimg}
+                name={item.name}
+                whatid={item._id || ""}
+                key={item._id}
+              />
+            )}
+          />
+        )}
+      </ScrollView>
     </>
   );
 };

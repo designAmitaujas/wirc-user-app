@@ -1,4 +1,7 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  NativeStackScreenProps,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import BottomTab from "./screens/BottomTab";
 import Business from "./screens/Business/Business";
@@ -19,18 +22,61 @@ import FeedbackForm from "./screens/feedbackform/FeedbackForm";
 
 import Newsletter from "./screens/Business/Newsletter";
 import Presentation from "./screens/Business/Presentation";
-import PresentationDetails from "./screens/Business/PresentationDetails";
+
+import BussinessDetails from "./screens/Business/BussinessDetails";
 import Qna from "./screens/Business/Qna";
+import Bearer from "./screens/Initatives/Bearer";
+import Service from "./screens/Initatives/Service";
 import Registration from "./screens/auth/Registration";
 import NetworkingScreen from "./screens/networking/Networking";
 import Notification from "./screens/networking/Notification";
 import ProfileScreen from "./screens/profile/ProfileDetails";
+import RaiseTicket from "./screens/profile/RaiseTicket";
 import VisitingCard from "./screens/profile/VisitingCrad";
 import { useAppAuthState } from "./store";
 
 SplashScreen.preventAutoHideAsync();
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  BottomTab: undefined;
+  Registration: undefined;
+  mobile: undefined;
+  SkillSection: undefined;
+  EditProfile: undefined;
+  QRcode: { eventId: string };
+  Business: undefined;
+  EventHome: undefined;
+  Eventspeaker: undefined;
+  RegisteredEvents:
+    | {
+        eventId: string;
+        name: string;
+      }
+    | undefined;
+  ViewImage: undefined;
+  Whatwebring: undefined;
+  Whatwebringdetails: undefined;
+  newsletter: undefined;
+  notification: undefined;
+  presentation: undefined;
+  question: undefined;
+  bearer: undefined;
+  service: undefined;
+  ticket: undefined;
+  presentationdetails: undefined;
+  EventsDetails: { eventId: string };
+  Feedback: undefined;
+  VisitingCard: undefined;
+  Networking: undefined;
+  TransactionDetails: undefined;
+  EventRegistration: undefined;
+  Login: undefined;
+};
+
+export type StackNativeScreenProps<T extends keyof RootStackParamList> =
+  NativeStackScreenProps<RootStackParamList, T>;
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Routes = () => {
   const { isAuth } = useAppAuthState();
@@ -62,10 +108,13 @@ const Routes = () => {
           <Stack.Screen name="notification" component={Notification} />
           <Stack.Screen name="presentation" component={Presentation} />
           <Stack.Screen name="question" component={Qna} />
+          <Stack.Screen name="bearer" component={Bearer} />
+          <Stack.Screen name="service" component={Service} />
+          <Stack.Screen name="ticket" component={RaiseTicket} />
 
           <Stack.Screen
             name="presentationdetails"
-            component={PresentationDetails}
+            component={BussinessDetails}
           />
 
           <Stack.Screen

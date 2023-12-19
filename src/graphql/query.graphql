@@ -503,11 +503,36 @@ query GetMySkillList($options: IGetByID!) {
   }
 }
 
+query GetAllPodcast {
+  getAllPodcast {
+    _id
+    name
+    contact
+    cms
+    email
+    img
+    isActive
+  }
+}
+
+query GetPodcastById($options: IGetByID!) {
+  getPodcastById(options: $options) {
+    _id
+    name
+    contact
+    cms
+    email
+    img
+    isActive
+  }
+}
+
 query GetBusinesslistingById($options: IGetByID!) {
   getBusinesslistingById(options: $options) {
     _id
     sponserimg
     name
+    cms
     isActive
   }
 }
@@ -515,6 +540,7 @@ query GetBusinesslistingById($options: IGetByID!) {
 query GetAllBusinessListing {
   getAllBusinessListing {
     _id
+    cms
     sponserimg
     name
     isActive
@@ -670,5 +696,17 @@ query GetAllCpeResource {
       name
     }
     isActive
+  }
+}
+
+query GetMyMobileEventList2 {
+  getMyMobileEventList2 {
+    registrationDate
+    eventName
+    startDate
+    endDate
+    eventAddress
+    eventId
+    isEventOff
   }
 }

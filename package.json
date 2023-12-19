@@ -60,6 +60,7 @@
     "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-modal-datetime-picker": "^15.0.1",
     "react-native-pager-view": "6.2.0",
+    "react-native-qrcode-generator": "^1.2.2",
     "react-native-qrcode-svg": "^6.2.0",
     "react-native-reanimated": "~3.3.0",
     "react-native-render-html": "^6.3.4",

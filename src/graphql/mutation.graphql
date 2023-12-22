@@ -180,3 +180,20 @@ mutation SpeakerMail($options: QNAMailInput!) {
     data
   }
 }
+
+mutation GetMemberInfoByMembershipNumber2($options: IGetByID!) {
+  getMemberInfoByMembershipNumber2(options: $options) {
+    isData
+    name
+    organization
+    membershipNo
+    email
+    contactInfo
+    gst
+    address
+    country
+    state
+    city
+    pincode
+  }
+}

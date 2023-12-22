@@ -418,6 +418,7 @@ export type EventAttendence = {
   currentdate: Scalars['DateTime']['output'];
   isActive: Scalars['Boolean']['output'];
   membershipId: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type EventRegistrationMember = {
@@ -1912,6 +1913,22 @@ export type IUserInfoByMembershipNumber = {
   state: Scalars['String']['output'];
 };
 
+export type IUserInfoByMembershipNumber2 = {
+  __typename?: 'IUserInfoByMembershipNumber2';
+  address: Scalars['String']['output'];
+  city: Scalars['String']['output'];
+  contactInfo: Scalars['String']['output'];
+  country: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  gst: Scalars['String']['output'];
+  isData: Scalars['Boolean']['output'];
+  membershipNo: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  organization: Scalars['String']['output'];
+  pincode: Scalars['String']['output'];
+  state: Scalars['String']['output'];
+};
+
 export type IVacancyPost = {
   __typename?: 'IVacancyPost';
   articlesVacancy: Array<ArticlesPlacement>;
@@ -2355,6 +2372,7 @@ export type Mutation = {
   getFilterdSkillMember: Array<IGetMyList>;
   getFilterdSkillMemberV2: Array<IGetMyList>;
   getMemberInfoByMembershipNumber?: Maybe<IUserInfoByMembershipNumber>;
+  getMemberInfoByMembershipNumber2?: Maybe<IUserInfoByMembershipNumber2>;
   getPublicaLibraryRegistration: IStatusResponse;
   getRedeamCode: IStatusResponse;
   getRedeemDownloadCode: IStatusResponse;
@@ -3476,6 +3494,11 @@ export type MutationGetFilterdSkillMemberV2Args = {
 
 
 export type MutationGetMemberInfoByMembershipNumberArgs = {
+  options: IGetById;
+};
+
+
+export type MutationGetMemberInfoByMembershipNumber2Args = {
   options: IGetById;
 };
 
@@ -5100,6 +5123,13 @@ export type SpeakerMailMutationVariables = Exact<{
 
 export type SpeakerMailMutation = { __typename?: 'Mutation', speakerMail: { __typename?: 'IStatusResponse', success: boolean, msg: string, data: string } };
 
+export type GetMemberInfoByMembershipNumber2MutationVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetMemberInfoByMembershipNumber2Mutation = { __typename?: 'Mutation', getMemberInfoByMembershipNumber2?: { __typename?: 'IUserInfoByMembershipNumber2', isData: boolean, name: string, organization: string, membershipNo: string, email: string, contactInfo: string, gst: string, address: string, country: string, state: string, city: string, pincode: string } | null };
+
 export type GetAllCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5188,7 +5218,7 @@ export type MyProfileInformationQuery = { __typename?: 'Query', myProfileInforma
 export type GetMyAttendedEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, lati: string, longi: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
+export type GetMyAttendedEventQuery = { __typename?: 'Query', getMyAttendedEvent: Array<{ __typename?: 'EventAttendence', _id: string, membershipId: string, updatedAt: any, isActive: boolean, cpeEvent?: { __typename?: 'CpeEvent', _id: string, name: string, img: string, lati: string, longi: string, date1: any, cpehrs: string, date2: any, time1: string, time2: string, location: string, flyer: string, capacity: string, cutoffDate?: any | null, cms: string, price: number, igst: number, cgst: number, sgst: number, isForStudent: boolean, isArchived: boolean, isActive: boolean } | null }> };
 
 export type GetTodayCpeEventQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5331,6 +5361,13 @@ export type GetMyMobileEventList2QueryVariables = Exact<{ [key: string]: never; 
 
 
 export type GetMyMobileEventList2Query = { __typename?: 'Query', getMyMobileEventList2: Array<{ __typename?: 'RegistrationEventList2', registrationDate: string, eventName: string, startDate: string, endDate: string, eventAddress: string, eventId: string, isEventOff: boolean }> };
+
+export type GetCityByIdQueryVariables = Exact<{
+  options: IGetById;
+}>;
+
+
+export type GetCityByIdQuery = { __typename?: 'Query', getCityById: { __typename?: 'City', _id: string, name: string, isActive: boolean } };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -5981,6 +6018,50 @@ export function useSpeakerMailMutation(baseOptions?: Apollo.MutationHookOptions<
 export type SpeakerMailMutationHookResult = ReturnType<typeof useSpeakerMailMutation>;
 export type SpeakerMailMutationResult = Apollo.MutationResult<SpeakerMailMutation>;
 export type SpeakerMailMutationOptions = Apollo.BaseMutationOptions<SpeakerMailMutation, SpeakerMailMutationVariables>;
+export const GetMemberInfoByMembershipNumber2Document = gql`
+    mutation GetMemberInfoByMembershipNumber2($options: IGetByID!) {
+  getMemberInfoByMembershipNumber2(options: $options) {
+    isData
+    name
+    organization
+    membershipNo
+    email
+    contactInfo
+    gst
+    address
+    country
+    state
+    city
+    pincode
+  }
+}
+    `;
+export type GetMemberInfoByMembershipNumber2MutationFn = Apollo.MutationFunction<GetMemberInfoByMembershipNumber2Mutation, GetMemberInfoByMembershipNumber2MutationVariables>;
+
+/**
+ * __useGetMemberInfoByMembershipNumber2Mutation__
+ *
+ * To run a mutation, you first call `useGetMemberInfoByMembershipNumber2Mutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetMemberInfoByMembershipNumber2Mutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getMemberInfoByMembershipNumber2Mutation, { data, loading, error }] = useGetMemberInfoByMembershipNumber2Mutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetMemberInfoByMembershipNumber2Mutation(baseOptions?: Apollo.MutationHookOptions<GetMemberInfoByMembershipNumber2Mutation, GetMemberInfoByMembershipNumber2MutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GetMemberInfoByMembershipNumber2Mutation, GetMemberInfoByMembershipNumber2MutationVariables>(GetMemberInfoByMembershipNumber2Document, options);
+      }
+export type GetMemberInfoByMembershipNumber2MutationHookResult = ReturnType<typeof useGetMemberInfoByMembershipNumber2Mutation>;
+export type GetMemberInfoByMembershipNumber2MutationResult = Apollo.MutationResult<GetMemberInfoByMembershipNumber2Mutation>;
+export type GetMemberInfoByMembershipNumber2MutationOptions = Apollo.BaseMutationOptions<GetMemberInfoByMembershipNumber2Mutation, GetMemberInfoByMembershipNumber2MutationVariables>;
 export const GetAllCpeEventDocument = gql`
     query GetAllCpeEvent {
   getAllCpeEvent {
@@ -6794,6 +6875,7 @@ export const GetMyAttendedEventDocument = gql`
       isActive
     }
     membershipId
+    updatedAt
     isActive
   }
 }
@@ -8020,3 +8102,45 @@ export type GetMyMobileEventList2QueryHookResult = ReturnType<typeof useGetMyMob
 export type GetMyMobileEventList2LazyQueryHookResult = ReturnType<typeof useGetMyMobileEventList2LazyQuery>;
 export type GetMyMobileEventList2SuspenseQueryHookResult = ReturnType<typeof useGetMyMobileEventList2SuspenseQuery>;
 export type GetMyMobileEventList2QueryResult = Apollo.QueryResult<GetMyMobileEventList2Query, GetMyMobileEventList2QueryVariables>;
+export const GetCityByIdDocument = gql`
+    query GetCityById($options: IGetByID!) {
+  getCityById(options: $options) {
+    _id
+    name
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetCityByIdQuery__
+ *
+ * To run a query within a React component, call `useGetCityByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCityByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCityByIdQuery({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useGetCityByIdQuery(baseOptions: Apollo.QueryHookOptions<GetCityByIdQuery, GetCityByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCityByIdQuery, GetCityByIdQueryVariables>(GetCityByIdDocument, options);
+      }
+export function useGetCityByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCityByIdQuery, GetCityByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCityByIdQuery, GetCityByIdQueryVariables>(GetCityByIdDocument, options);
+        }
+export function useGetCityByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetCityByIdQuery, GetCityByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCityByIdQuery, GetCityByIdQueryVariables>(GetCityByIdDocument, options);
+        }
+export type GetCityByIdQueryHookResult = ReturnType<typeof useGetCityByIdQuery>;
+export type GetCityByIdLazyQueryHookResult = ReturnType<typeof useGetCityByIdLazyQuery>;
+export type GetCityByIdSuspenseQueryHookResult = ReturnType<typeof useGetCityByIdSuspenseQuery>;
+export type GetCityByIdQueryResult = Apollo.QueryResult<GetCityByIdQuery, GetCityByIdQueryVariables>;

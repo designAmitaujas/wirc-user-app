@@ -1,5 +1,5 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 import {
   Box,
@@ -12,7 +12,8 @@ import {
   Text,
   VStack,
 } from "native-base";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
 import RenderHtml from "react-native-render-html";
 import { downloadPath, windowWidth } from "../../constant";
 import { useGetAllPodcastQuery } from "../../gql/graphql";
@@ -62,11 +63,36 @@ const RestHeader = () => {
 };
 
 const Bearer = () => {
-  const { data } = useGetAllPodcastQuery();
-  const { params } = useRoute();
+  const { data, loading } = useGetAllPodcastQuery();
 
-  const [visible, setIsVisible] = useState(false);
-  const { navigate } = useNavigation();
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  useEffect(() => {
+    const progressInterval = setInterval(() => {
+      setLoadingProgress((prevProgress) =>
+        prevProgress < 100 ? prevProgress + 1 : prevProgress
+      );
+    }, 50);
+
+    return () => {
+      clearInterval(progressInterval);
+    };
+  }, []);
+  if (loading) {
+    return (
+      <>
+        <ActivityIndicator
+          size="large"
+          color="#0f045d"
+          style={{ marginTop: 20 }}
+        />
+        <Text style={{ textAlign: "center", marginTop: 10 }}>
+          Loading {loadingProgress}%
+        </Text>
+      </>
+    );
+  }
+
   return (
     <>
       <RestHeader />
@@ -130,18 +156,6 @@ const Bearer = () => {
                           source={{ html: item.cms }}
                         />
                       )}
-
-                      {/* <ImagePanZoom
-                        cropWidth={300}
-                        cropHeight={300}
-                        imageWidth={200}
-                        imageHeight={200}
-                      >
-                        <Image
-                          source={{ uri: downloadPath(item.detailsimg) }}
-                          style={{ width: 200, height: 200 }}
-                        />
-                      </ImagePanZoom> */}
                     </Box>
                     <Divider
                       my="2"

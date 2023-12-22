@@ -1,8 +1,4 @@
-import {
-  Feather,
-  FontAwesome,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, FormikHelpers } from "formik";
 import {
@@ -125,9 +121,7 @@ const RestHeader = () => {
       <TouchableOpacity onPress={handleqrcode}>
         <MaterialCommunityIcons name="qrcode-scan" size={24} color="white" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={visitingcard}>
-        <FontAwesome name="id-card" size={24} color="white" />
-      </TouchableOpacity>
+
       <Text
         color="white"
         // ml={16}

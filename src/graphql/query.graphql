@@ -317,6 +317,7 @@ query GetMyAttendedEvent {
       isActive
     }
     membershipId
+    updatedAt
     isActive
   }
 }
@@ -708,5 +709,14 @@ query GetMyMobileEventList2 {
     eventAddress
     eventId
     isEventOff
+  }
+}
+
+query GetCityById($options: IGetByID!) {
+  getCityById(options: $options) {
+    _id
+    name
+
+    isActive
   }
 }

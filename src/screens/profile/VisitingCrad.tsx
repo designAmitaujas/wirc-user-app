@@ -649,9 +649,6 @@ const SecondRoute = () => (
 const ThirdRoute = () => (
   <>
     <ScrollView>
-      {/* <Box alignSelf={"flex-end"} pt={5} pr={5}>
-        <VisitingCardForm />
-      </Box> */}
       <Center mt={5} mb={10}>
         <VStack>
           <VStack bg={"#313031"} shadow={9} m={5}>

@@ -14,12 +14,11 @@ import {
   HStack,
   Heading,
   ScrollView,
-  Spinner,
   Text,
   VStack,
 } from "native-base";
-import React, { useEffect } from "react";
-import { TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { useInterval } from "usehooks-ts";
 import { RootStackParamList } from "../../Routes";
 import {
@@ -97,8 +96,8 @@ const Home = () => {
 const AttendedCard: React.FC<{
   name: string;
   duration: string;
-  startdatetime: string;
-  enddatetime: string;
+  startdatetime?: string;
+  enddatetime?: string;
   vanue: string;
   id: string;
 }> = ({ name, duration, startdatetime, enddatetime, vanue, id }) => {
@@ -131,27 +130,22 @@ const AttendedCard: React.FC<{
         </Text>
 
         <HStack w={"100%"}>
-          <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-            Duration
+          <Text color={"gray.500"} fontWeight={"semibold"} w={"40%"}>
+            Attendacne Date
           </Text>
           <Text w={"5%"}>:</Text>
           <Text w={"65%"}>{duration}</Text>
         </HStack>
         <HStack w={"100%"}>
-          <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
-            Date & Time
+          <Text color={"gray.500"} fontWeight={"semibold"} w={"40%"}>
+            Time Stamp
           </Text>
           <Text w={"5%"}>:</Text>
-          <VStack>
-            <HStack space={3}>
-              <Text>{startdatetime}</Text>
-              <Text>to</Text>
-            </HStack>
-            <Text>{enddatetime}</Text>
-          </VStack>
+
+          <Text>{enddatetime}</Text>
         </HStack>
         <HStack w={"100%"} flex={1}>
-          <Text color={"gray.500"} fontWeight={"semibold"} w={"30%"}>
+          <Text color={"gray.500"} fontWeight={"semibold"} w={"40%"}>
             Venue
           </Text>
           <Text w={"5%"}>:</Text>
@@ -180,22 +174,26 @@ export const Seminar = () => {
   const { data, refetch, loading } = useGetMyAttendedEventQuery();
   const [refreshing, setRefreshing] = React.useState(false);
   const isFocused = useIsFocused();
-  // const [list, setList] = useState<Array<EventAttendence>>([]); // Initialize as an empty array
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
-  // useEffect(() => {
-  //   if (data?.getMyAttendedEvent) {
-  //     setList(data?.getMyAttendedEvent);
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    const progressInterval = setInterval(() => {
+      setLoadingProgress((prevProgress) =>
+        prevProgress < 100 ? prevProgress + 1 : prevProgress
+      );
+    }, 50);
 
+    return () => {
+      clearInterval(progressInterval);
+    };
+  }, []);
   const newRefetch = async () => {
     setRefreshing(true);
 
     try {
-      await refetch(); // Refetch the data
+      await refetch();
       setRefreshing(false);
     } catch (error) {
-      // Handle any errors that may occur during refetch
       console.error("Error while refetching data:", error);
       setRefreshing(false);
     }
@@ -203,29 +201,27 @@ export const Seminar = () => {
 
   useEffect(() => {
     if (isFocused) {
-      newRefetch(); // Trigger a refresh when the component is focused
+      newRefetch();
     }
   }, [isFocused]);
 
   useInterval(() => {
     if (!refreshing) {
-      newRefetch(); // Trigger a refresh at regular intervals only if not already refreshing
+      newRefetch();
     }
   }, 10 * 1000);
 
   if (loading) {
     return (
       <>
-        <HStack flex={1} justifyContent="center" space="2" alignItems="center">
-          <Spinner
-            accessibilityLabel="Loading posts"
-            size="lg"
-            color="#0f045d"
-          />
-          <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
-            Loading
-          </Heading>
-        </HStack>
+        <ActivityIndicator
+          size="large"
+          color="#0f045d"
+          style={{ marginTop: 20 }}
+        />
+        <Text style={{ textAlign: "center", marginTop: 10 }}>
+          Loading {loadingProgress}%
+        </Text>
       </>
     );
   }
@@ -278,14 +274,11 @@ export const Seminar = () => {
                           "_"
                         )}`}
                         name={item.cpeEvent?.name || ""}
-                        duration={item.cpeEvent?.cpehrs || ""}
-                        startdatetime={
-                          moment(item.cpeEvent?.date1).format("DD-MM-YYYY") ||
-                          ""
+                        duration={
+                          moment(item.updatedAt).format("DD-MM-YYYY") || ""
                         }
                         enddatetime={
-                          moment(item.cpeEvent?.date2).format("DD-MM-YYYY") ||
-                          ""
+                          moment(item?.updatedAt).format("hh:mm:ss") || ""
                         }
                         vanue={item.cpeEvent?.location || ""}
                       />
@@ -379,6 +372,19 @@ const UpcomingCard: React.FC<{
 
 export const UpcomingEvent = () => {
   const { data, loading } = useGetAllCpeEventQuery();
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  useEffect(() => {
+    const progressInterval = setInterval(() => {
+      setLoadingProgress((prevProgress) =>
+        prevProgress < 100 ? prevProgress + 1 : prevProgress
+      );
+    }, 50);
+
+    return () => {
+      clearInterval(progressInterval);
+    };
+  }, []);
 
   return (
     <>
@@ -391,21 +397,14 @@ export const UpcomingEvent = () => {
 
         {loading ? (
           <>
-            <HStack
-              flex={1}
-              justifyContent="center"
-              space="2"
-              alignItems="center"
-            >
-              <Spinner
-                accessibilityLabel="Loading posts"
-                size="lg"
-                color="#0f045d"
-              />
-              <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
-                Loading
-              </Heading>
-            </HStack>
+            <ActivityIndicator
+              size="large"
+              color="#0f045d"
+              style={{ marginTop: 20 }}
+            />
+            <Text style={{ textAlign: "center", marginTop: 10 }}>
+              Loading {loadingProgress}%
+            </Text>
           </>
         ) : (
           <>
@@ -537,6 +536,20 @@ type ScreenProps1 = NativeStackScreenProps<
 export const RegisteredEvent = () => {
   const { data, refetch, loading } = useGetMyMobileEventList2Query();
 
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  useEffect(() => {
+    const progressInterval = setInterval(() => {
+      setLoadingProgress((prevProgress) =>
+        prevProgress < 100 ? prevProgress + 1 : prevProgress
+      );
+    }, 50);
+
+    return () => {
+      clearInterval(progressInterval);
+    };
+  }, []);
+
   return (
     <>
       <VStack space={4} p={4} mb={5}>
@@ -548,21 +561,14 @@ export const RegisteredEvent = () => {
 
         {loading ? (
           <>
-            <HStack
-              flex={1}
-              justifyContent="center"
-              space="2"
-              alignItems="center"
-            >
-              <Spinner
-                accessibilityLabel="Loading posts"
-                size="lg"
-                color="#0f045d"
-              />
-              <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
-                Loading
-              </Heading>
-            </HStack>
+            <ActivityIndicator
+              size="large"
+              color="#0f045d"
+              style={{ marginTop: 20 }}
+            />
+            <Text style={{ textAlign: "center", marginTop: 10 }}>
+              Loading {loadingProgress}%
+            </Text>
           </>
         ) : (
           <>

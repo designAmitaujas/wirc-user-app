@@ -24,7 +24,14 @@ const HomeScreen = () => {
         justifyContent={"center"}
       >
         <HStack mx={8} justifyContent={"space-between"} alignItems={"center"}>
-          <Image source={logo} alt="logo" resizeMode="contain" h={12} w={12} />
+          <Image
+            source={logo}
+            alt="logo"
+            resizeMode="contain"
+            h={12}
+            w={12}
+            borderRadius="full"
+          />
           <Text
             color="white"
             // ml={16}

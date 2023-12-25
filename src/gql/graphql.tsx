@@ -421,6 +421,17 @@ export type EventAttendence = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type EventQrRegistrationMember = {
+  __typename?: 'EventQRRegistrationMember';
+  _id: Scalars['String']['output'];
+  contactNo: Scalars['String']['output'];
+  cpeEvent?: Maybe<CpeEvent>;
+  email: Scalars['String']['output'];
+  isActive: Scalars['Boolean']['output'];
+  membershipNo: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type EventRegistrationMember = {
   __typename?: 'EventRegistrationMember';
   _id: Scalars['String']['output'];
@@ -1023,6 +1034,16 @@ export type ICreateEmailTemplate = {
   emailCredentials: Scalars['String']['input'];
   html: Scalars['String']['input'];
   isActive: Scalars['Boolean']['input'];
+  name: Scalars['String']['input'];
+};
+
+export type ICreateEventQrRegistrationMember = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  contactNo: Scalars['String']['input'];
+  cpeEvent: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  isActive: Scalars['Boolean']['input'];
+  membershipNo: Scalars['String']['input'];
   name: Scalars['String']['input'];
 };
 
@@ -2076,6 +2097,14 @@ export type MemberDesignation = {
   name: Scalars['String']['output'];
 };
 
+export type MemberInfo = {
+  __typename?: 'MemberInfo';
+  contactNo: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  membershipNo: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type MemberRegistration = {
   __typename?: 'MemberRegistration';
   _id: Scalars['String']['output'];
@@ -2159,6 +2188,7 @@ export type Mutation = {
   IsInvitateAccepted: Scalars['Boolean']['output'];
   acceptInvite: Scalars['Boolean']['output'];
   addAttendence: IStatusResponse;
+  addEventQRRegistrationMembers: IStatusResponse;
   addFeedBackFrom: IStatusResponse;
   addHelpDeskQA: IStatusResponse;
   articleVacancySearch: Array<ArticlesPlacement>;
@@ -2200,6 +2230,7 @@ export type Mutation = {
   createOrUpdateCpeStudyGroupDetails: IStatusResponse;
   createOrUpdateEmailCredential: IStatusResponse;
   createOrUpdateEmailTemplate: IStatusResponse;
+  createOrUpdateEventQRRegistrationMember: IStatusResponse;
   createOrUpdateEventSpeaker: IStatusResponse;
   createOrUpdateEventTopic: IStatusResponse;
   createOrUpdateFooterCateogry: IStatusResponse;
@@ -2297,6 +2328,7 @@ export type Mutation = {
   deleteCpeStudyGroupDetails: IStatusResponse;
   deleteEmailCredential: IStatusResponse;
   deleteEmailTemplate: IStatusResponse;
+  deleteEventQRRegistrationMember: IStatusResponse;
   deleteEventSpeaker: IStatusResponse;
   deleteEventTopic: IStatusResponse;
   deleteFooterCateogry: IStatusResponse;
@@ -2430,6 +2462,12 @@ export type MutationAcceptInviteArgs = {
 
 export type MutationAddAttendenceArgs = {
   options: IAddAttendenceInput;
+};
+
+
+export type MutationAddEventQrRegistrationMembersArgs = {
+  data: Array<ICreateEventQrRegistrationMember>;
+  eventId: Scalars['String']['input'];
 };
 
 
@@ -2635,6 +2673,11 @@ export type MutationCreateOrUpdateEmailCredentialArgs = {
 
 export type MutationCreateOrUpdateEmailTemplateArgs = {
   options: ICreateEmailTemplate;
+};
+
+
+export type MutationCreateOrUpdateEventQrRegistrationMemberArgs = {
+  options: ICreateEventQrRegistrationMember;
 };
 
 
@@ -3119,6 +3162,11 @@ export type MutationDeleteEmailCredentialArgs = {
 
 
 export type MutationDeleteEmailTemplateArgs = {
+  options: IGetById;
+};
+
+
+export type MutationDeleteEventQrRegistrationMemberArgs = {
   options: IGetById;
 };
 
@@ -3640,6 +3688,13 @@ export type NetworkingZone = {
   workType?: Maybe<WorkType>;
 };
 
+export type OfflineResponse = {
+  __typename?: 'OfflineResponse';
+  data: MemberInfo;
+  msg: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
 export type PastChairperson = {
   __typename?: 'PastChairperson';
   _id: Scalars['String']['output'];
@@ -3865,6 +3920,7 @@ export type QnaMailInput = {
 export type Query = {
   __typename?: 'Query';
   approveMemberRegistrationById: IStatusResponse;
+  checkExhibition: OfflineResponse;
   getAboutChairperson?: Maybe<AboutChairperson>;
   getActivityReportById: ActivityReport;
   getAdminUserById: User;
@@ -3904,6 +3960,7 @@ export type Query = {
   getAllCpeStudyGroupDetails: Array<CpeStudyGroupDetails>;
   getAllEmailCredentials: Array<EmailCredential>;
   getAllEmailTemplate: Array<EmailTemplate>;
+  getAllEventQRRegistrationMember: Array<EventQrRegistrationMember>;
   getAllEventSpeaker: Array<EventSpeaker>;
   getAllEventTopic: Array<EventTopic>;
   getAllFooterCateogry: Array<FooterLinkGroup>;
@@ -4016,6 +4073,7 @@ export type Query = {
   getCpeStudyGroupDetailsById: CpeStudyGroupDetails;
   getEmailCredentialsById: EmailCredential;
   getEmailTemplateById: EmailTemplate;
+  getEventQRRegistrationMemberById: EventQrRegistrationMember;
   getEventSpeakerById: EventSpeaker;
   getEventTopicById: EventTopic;
   getFooterCateogryById: FooterLinkGroup;
@@ -4054,6 +4112,7 @@ export type Query = {
   getMyMemberListByhistoryId: Array<EventRegistrationMember>;
   getMyMobileEventList: Array<RegistrationEventList>;
   getMyMobileEventList2: Array<RegistrationEventList2>;
+  getMyOfflineMobileEventList2: Array<RegistrationEventList2>;
   getMySkillList: Array<MemberSkill>;
   getNetworkingZoneById: NetworkingZone;
   getPastChairpersonById: PastChairperson;
@@ -4112,6 +4171,12 @@ export type Query = {
 
 export type QueryApproveMemberRegistrationByIdArgs = {
   options: IGetById;
+};
+
+
+export type QueryCheckExhibitionArgs = {
+  cpeEvent: Scalars['String']['input'];
+  membershipNo: Scalars['String']['input'];
 };
 
 
@@ -4306,6 +4371,11 @@ export type QueryGetEmailCredentialsByIdArgs = {
 
 
 export type QueryGetEmailTemplateByIdArgs = {
+  options: IGetById;
+};
+
+
+export type QueryGetEventQrRegistrationMemberByIdArgs = {
   options: IGetById;
 };
 
@@ -5368,6 +5438,14 @@ export type GetCityByIdQueryVariables = Exact<{
 
 
 export type GetCityByIdQuery = { __typename?: 'Query', getCityById: { __typename?: 'City', _id: string, name: string, isActive: boolean } };
+
+export type CheckExhibitionQueryVariables = Exact<{
+  membershipNo: Scalars['String']['input'];
+  cpeEvent: Scalars['String']['input'];
+}>;
+
+
+export type CheckExhibitionQuery = { __typename?: 'Query', checkExhibition: { __typename?: 'OfflineResponse', success: boolean, msg: string, data: { __typename?: 'MemberInfo', name: string, email: string, contactNo: string, membershipNo: string } } };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -8144,3 +8222,51 @@ export type GetCityByIdQueryHookResult = ReturnType<typeof useGetCityByIdQuery>;
 export type GetCityByIdLazyQueryHookResult = ReturnType<typeof useGetCityByIdLazyQuery>;
 export type GetCityByIdSuspenseQueryHookResult = ReturnType<typeof useGetCityByIdSuspenseQuery>;
 export type GetCityByIdQueryResult = Apollo.QueryResult<GetCityByIdQuery, GetCityByIdQueryVariables>;
+export const CheckExhibitionDocument = gql`
+    query CheckExhibition($membershipNo: String!, $cpeEvent: String!) {
+  checkExhibition(membershipNo: $membershipNo, cpeEvent: $cpeEvent) {
+    success
+    data {
+      name
+      email
+      contactNo
+      membershipNo
+    }
+    msg
+  }
+}
+    `;
+
+/**
+ * __useCheckExhibitionQuery__
+ *
+ * To run a query within a React component, call `useCheckExhibitionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckExhibitionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckExhibitionQuery({
+ *   variables: {
+ *      membershipNo: // value for 'membershipNo'
+ *      cpeEvent: // value for 'cpeEvent'
+ *   },
+ * });
+ */
+export function useCheckExhibitionQuery(baseOptions: Apollo.QueryHookOptions<CheckExhibitionQuery, CheckExhibitionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckExhibitionQuery, CheckExhibitionQueryVariables>(CheckExhibitionDocument, options);
+      }
+export function useCheckExhibitionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckExhibitionQuery, CheckExhibitionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckExhibitionQuery, CheckExhibitionQueryVariables>(CheckExhibitionDocument, options);
+        }
+export function useCheckExhibitionSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<CheckExhibitionQuery, CheckExhibitionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<CheckExhibitionQuery, CheckExhibitionQueryVariables>(CheckExhibitionDocument, options);
+        }
+export type CheckExhibitionQueryHookResult = ReturnType<typeof useCheckExhibitionQuery>;
+export type CheckExhibitionLazyQueryHookResult = ReturnType<typeof useCheckExhibitionLazyQuery>;
+export type CheckExhibitionSuspenseQueryHookResult = ReturnType<typeof useCheckExhibitionSuspenseQuery>;
+export type CheckExhibitionQueryResult = Apollo.QueryResult<CheckExhibitionQuery, CheckExhibitionQueryVariables>;

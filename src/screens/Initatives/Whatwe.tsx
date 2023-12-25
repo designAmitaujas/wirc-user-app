@@ -10,10 +10,9 @@ import {
   Image,
   Pressable,
   ScrollView,
+  Spinner,
   Text,
 } from "native-base";
-import { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
 import { downloadPath } from "../../constant";
 import {
   ICreateWhatWeBrignToYou,
@@ -147,30 +146,25 @@ const ProductCard: React.FC<{
 const Whatwe = () => {
   const { data, loading } = useGetAllWhatWeBrignToYouQuery();
 
-  const [loadingProgress, setLoadingProgress] = useState(0);
-
-  useEffect(() => {
-    const progressInterval = setInterval(() => {
-      setLoadingProgress((prevProgress) =>
-        prevProgress < 100 ? prevProgress + 1 : prevProgress
-      );
-    }, 50);
-
-    return () => {
-      clearInterval(progressInterval);
-    };
-  }, []);
   if (loading) {
     return (
       <>
-        <ActivityIndicator
-          size="large"
-          color="#0f045d"
-          style={{ marginTop: 20 }}
-        />
-        <Text style={{ textAlign: "center", marginTop: 10 }}>
-          Loading {loadingProgress}%
-        </Text>
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
       </>
     );
   }

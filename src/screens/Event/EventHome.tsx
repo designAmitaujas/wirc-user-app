@@ -14,11 +14,12 @@ import {
   HStack,
   Heading,
   ScrollView,
+  Spinner,
   Text,
   VStack,
 } from "native-base";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
+import { TouchableOpacity } from "react-native";
 import { useInterval } from "usehooks-ts";
 import { RootStackParamList } from "../../Routes";
 import {
@@ -174,19 +175,7 @@ export const Seminar = () => {
   const { data, refetch, loading } = useGetMyAttendedEventQuery();
   const [refreshing, setRefreshing] = React.useState(false);
   const isFocused = useIsFocused();
-  const [loadingProgress, setLoadingProgress] = useState(0);
 
-  useEffect(() => {
-    const progressInterval = setInterval(() => {
-      setLoadingProgress((prevProgress) =>
-        prevProgress < 100 ? prevProgress + 1 : prevProgress
-      );
-    }, 50);
-
-    return () => {
-      clearInterval(progressInterval);
-    };
-  }, []);
   const newRefetch = async () => {
     setRefreshing(true);
 
@@ -213,16 +202,22 @@ export const Seminar = () => {
 
   if (loading) {
     return (
-      <>
-        <ActivityIndicator
-          size="large"
+      <HStack
+        flex={1}
+        alignSelf={"center"}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Spinner
+          accessibilityLabel="Loading participants"
+          size="lg"
           color="#0f045d"
-          style={{ marginTop: 20 }}
         />
-        <Text style={{ textAlign: "center", marginTop: 10 }}>
-          Loading {loadingProgress}%
+        <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+          Loading
         </Text>
-      </>
+      </HStack>
     );
   }
 
@@ -372,19 +367,6 @@ const UpcomingCard: React.FC<{
 
 export const UpcomingEvent = () => {
   const { data, loading } = useGetAllCpeEventQuery();
-  const [loadingProgress, setLoadingProgress] = useState(0);
-
-  useEffect(() => {
-    const progressInterval = setInterval(() => {
-      setLoadingProgress((prevProgress) =>
-        prevProgress < 100 ? prevProgress + 1 : prevProgress
-      );
-    }, 50);
-
-    return () => {
-      clearInterval(progressInterval);
-    };
-  }, []);
 
   return (
     <>
@@ -397,14 +379,22 @@ export const UpcomingEvent = () => {
 
         {loading ? (
           <>
-            <ActivityIndicator
-              size="large"
-              color="#0f045d"
-              style={{ marginTop: 20 }}
-            />
-            <Text style={{ textAlign: "center", marginTop: 10 }}>
-              Loading {loadingProgress}%
-            </Text>
+            <HStack
+              flex={1}
+              alignSelf={"center"}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Spinner
+                accessibilityLabel="Loading participants"
+                size="lg"
+                color="#0f045d"
+              />
+              <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+                Loading
+              </Text>
+            </HStack>
           </>
         ) : (
           <>
@@ -536,20 +526,6 @@ type ScreenProps1 = NativeStackScreenProps<
 export const RegisteredEvent = () => {
   const { data, refetch, loading } = useGetMyMobileEventList2Query();
 
-  const [loadingProgress, setLoadingProgress] = useState(0);
-
-  useEffect(() => {
-    const progressInterval = setInterval(() => {
-      setLoadingProgress((prevProgress) =>
-        prevProgress < 100 ? prevProgress + 1 : prevProgress
-      );
-    }, 50);
-
-    return () => {
-      clearInterval(progressInterval);
-    };
-  }, []);
-
   return (
     <>
       <VStack space={4} p={4} mb={5}>
@@ -561,14 +537,22 @@ export const RegisteredEvent = () => {
 
         {loading ? (
           <>
-            <ActivityIndicator
-              size="large"
-              color="#0f045d"
-              style={{ marginTop: 20 }}
-            />
-            <Text style={{ textAlign: "center", marginTop: 10 }}>
-              Loading {loadingProgress}%
-            </Text>
+            <HStack
+              flex={1}
+              alignSelf={"center"}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Spinner
+                accessibilityLabel="Loading participants"
+                size="lg"
+                color="#0f045d"
+              />
+              <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+                Loading
+              </Text>
+            </HStack>
           </>
         ) : (
           <>

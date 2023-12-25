@@ -720,3 +720,16 @@ query GetCityById($options: IGetByID!) {
     isActive
   }
 }
+
+query CheckExhibition($membershipNo: String!, $cpeEvent: String!) {
+  checkExhibition(membershipNo: $membershipNo, cpeEvent: $cpeEvent) {
+    success
+    data {
+      name
+      email
+      contactNo
+      membershipNo
+    }
+    msg
+  }
+}

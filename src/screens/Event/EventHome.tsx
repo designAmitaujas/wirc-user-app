@@ -18,7 +18,7 @@ import {
   Text,
   VStack,
 } from "native-base";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { useInterval } from "usehooks-ts";
 import { RootStackParamList } from "../../Routes";
@@ -26,6 +26,7 @@ import {
   useGetAllCpeEventQuery,
   useGetMyAttendedEventQuery,
   useGetMyMobileEventList2Query,
+  useGetMyOfflineMobileEventList2Query,
 } from "../../gql/graphql";
 
 const logo = require("../../../assets/wirclogo.png");
@@ -447,7 +448,8 @@ const RegisterdCard: React.FC<{
   startdatetime: string;
   enddatetime: string;
   eventId: string;
-}> = ({ name, startdatetime, enddatetime, eventId }) => {
+  offlinecheck: boolean;
+}> = ({ name, startdatetime, enddatetime, eventId, offlinecheck }) => {
   const { navigate } = useNavigation();
   const handleEvents = () => {
     //@ts-ignore
@@ -456,7 +458,7 @@ const RegisterdCard: React.FC<{
 
   const handleQrscan = () => {
     //@ts-ignore
-    navigate("QRcode", { eventId });
+    navigate("QRcode", { eventId, offlinecheck });
   };
 
   return (
@@ -525,6 +527,25 @@ type ScreenProps1 = NativeStackScreenProps<
 
 export const RegisteredEvent = () => {
   const { data, refetch, loading } = useGetMyMobileEventList2Query();
+  const { data: offline, loading: l2 } = useGetMyOfflineMobileEventList2Query();
+
+  const [offlinecheck, setOfflinecheck] = useState(true);
+
+  // useEffect(() => {
+  //   const respone = data?.getMyMobileEventList2;
+  //   const respone2 = offline?.getMyOfflineMobileEventList2;
+
+  //   console.log("online", respone);
+  //   console.log("offline", respone2);
+  // }, [data, offline]);
+
+  useEffect(() => {
+    if (!l2) {
+      setOfflinecheck(true);
+    } else {
+      setOfflinecheck(false);
+    }
+  }, [l2]);
 
   return (
     <>
@@ -535,7 +556,7 @@ export const RegisteredEvent = () => {
           </Text>
         </HStack>
 
-        {loading ? (
+        {loading || l2 ? (
           <>
             <HStack
               flex={1}
@@ -558,32 +579,64 @@ export const RegisteredEvent = () => {
           <>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
-                {data?.getMyMobileEventList2
+                {data?.getMyMobileEventList2.length !== 0 &&
+                  data?.getMyMobileEventList2
 
-                  .sort((a, b) => {
-                    return (
-                      _.toNumber(moment(a.startDate).toDate()) -
-                      _.toNumber(moment(b.startDate).toDate())
-                    );
-                  })
-                  .filter((item) => item.isEventOff === false)
-                  .map((item) => {
-                    const startDate = moment(item.startDate, "DD-MM-YYYY");
-                    const endDate = moment(item.endDate, "DD-MM-YYYY");
+                    .sort((a, b) => {
+                      return (
+                        _.toNumber(moment(a.startDate).toDate()) -
+                        _.toNumber(moment(b.startDate).toDate())
+                      );
+                    })
+                    .filter((item) => item.isEventOff === false)
 
-                    return (
-                      <RegisterdCard
-                        key={`${item.eventId}_${item.eventId.replace(
-                          /\s+/g,
-                          "_"
-                        )}`}
-                        eventId={item.eventId}
-                        name={item.eventName}
-                        startdatetime={startDate.format("DD-MMM-YYYY")}
-                        enddatetime={endDate.format("DD-MMM-YYYY")}
-                      />
-                    );
-                  })}
+                    .map((item) => {
+                      const startDate = moment(item.startDate, "DD-MM-YYYY");
+                      const endDate = moment(item.endDate, "DD-MM-YYYY");
+
+                      return (
+                        <RegisterdCard
+                          key={`${item.eventId}_${item.eventId.replace(
+                            /\s+/g,
+                            "_"
+                          )}`}
+                          eventId={item.eventId}
+                          name={item.eventName}
+                          startdatetime={startDate.format("DD-MMM-YYYY")}
+                          enddatetime={endDate.format("DD-MMM-YYYY")}
+                          offlinecheck={offlinecheck}
+                        />
+                      );
+                    })}
+
+                {offline?.getMyOfflineMobileEventList2.length !== 0 &&
+                  offline?.getMyOfflineMobileEventList2
+
+                    .sort((a, b) => {
+                      return (
+                        _.toNumber(moment(a.startDate).toDate()) -
+                        _.toNumber(moment(b.startDate).toDate())
+                      );
+                    })
+                    .filter((item) => item.isEventOff === false)
+                    .map((item) => {
+                      const startDate = moment(item.startDate, "DD-MM-YYYY");
+                      const endDate = moment(item.endDate, "DD-MM-YYYY");
+
+                      return (
+                        <RegisterdCard
+                          key={`${item.eventId}_${item.eventId.replace(
+                            /\s+/g,
+                            "_"
+                          )}`}
+                          eventId={item.eventId}
+                          name={item.eventName}
+                          startdatetime={startDate.format("DD-MMM-YYYY")}
+                          enddatetime={endDate.format("DD-MMM-YYYY")}
+                          offlinecheck={offlinecheck}
+                        />
+                      );
+                    })}
               </HStack>
             </ScrollView>
           </>

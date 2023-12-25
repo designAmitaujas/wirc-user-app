@@ -733,3 +733,16 @@ query CheckExhibition($membershipNo: String!, $cpeEvent: String!) {
     msg
   }
 }
+
+query GetMyOfflineMobileEventList2 {
+  getMyOfflineMobileEventList2 {
+    registrationDate
+    eventName
+    startDate
+    endDate
+    eventAddress
+    eventId
+    isEventOff
+    membershipnumber
+  }
+}

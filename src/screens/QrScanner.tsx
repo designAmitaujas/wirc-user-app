@@ -93,6 +93,9 @@ const QRScreen: React.FC = () => {
     variables: { options: { id: params?.eventId || "" } },
   });
 
+  //@ts-ignore
+  console.log(params?.offlinecheck);
+
   const { data: profile } = useMyProfileInformationQuery();
   const [addAttendence] = useAddAttendenceMutation();
 
@@ -101,6 +104,7 @@ const QRScreen: React.FC = () => {
     navigate("EventHome");
   };
   const toast = useToast();
+
   useEffect(() => {
     (async () => {
       try {
@@ -205,6 +209,8 @@ const QRScreen: React.FC = () => {
           options: {
             eventId: info,
             memberId: profile?.myProfileInformation?.membershipNo || "",
+            //@ts-ignore
+            offlinecheck: params?.offlinecheck,
           },
         },
       });

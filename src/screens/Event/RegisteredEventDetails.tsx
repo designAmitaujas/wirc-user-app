@@ -345,7 +345,7 @@ const RegisterdEventDetails = () => {
                 w="45%"
                 onPress={() => handleqna(eventInformation._id)}
               >
-                QNA
+                Q & A
               </Button>
               <Button bg="#00388D" w="45%" onPress={networking}>
                 Participants List

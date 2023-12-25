@@ -34,7 +34,6 @@ import {
   useGetAllCityQuery,
   useGetAllSkillsQuery,
   useGetFilterdSkillMemberV2Mutation,
-  useGetMyMobileEventListQuery,
   useIsInvitateAcceptedMutation,
   useSendInvitationMutation,
 } from "../../gql/graphql";
@@ -618,7 +617,7 @@ const NetworkingScreen = () => {
   const { eventId } = params as { eventId?: string };
 
   const { data: getAllskill, loading: l1 } = useGetAllSkillsQuery();
-  const { data: getAllEvent, loading: l2 } = useGetMyMobileEventListQuery();
+
   const { data: city, loading: l3 } = useGetAllCityQuery();
 
   useEffect(() => {
@@ -666,8 +665,6 @@ const NetworkingScreen = () => {
       },
     });
 
-    console.log(response);
-
     if (response.data?.getFilterdSkillMemberV2) {
       setParticipants(response.data.getFilterdSkillMemberV2);
       setKey(Math.random());
@@ -695,7 +692,7 @@ const NetworkingScreen = () => {
     );
   }, []);
 
-  if (l1 || l2 || l3) {
+  if (l1 || l3) {
     <>
       <HStack
         flex={1}
@@ -715,11 +712,7 @@ const NetworkingScreen = () => {
       </HStack>
     </>;
   }
-  if (
-    !getAllskill?.getAllSkills ||
-    !getAllEvent?.getMyMobileEventList ||
-    !city?.getAllCity
-  ) {
+  if (!getAllskill?.getAllSkills || !city?.getAllCity) {
     return (
       <>
         <RestHeader />

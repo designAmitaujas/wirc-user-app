@@ -69,7 +69,7 @@ const RestHeader = () => {
           mb={1}
           // w={"40%"}
         >
-          Question And Answer
+          Question & Answer
         </Text>
       </HStack>
     </>

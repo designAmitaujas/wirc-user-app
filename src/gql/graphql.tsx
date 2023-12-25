@@ -424,6 +424,7 @@ export type EventAttendence = {
 export type EventQrRegistrationMember = {
   __typename?: 'EventQRRegistrationMember';
   _id: Scalars['String']['output'];
+  associatedUser?: Maybe<User>;
   contactNo: Scalars['String']['output'];
   cpeEvent?: Maybe<CpeEvent>;
   email: Scalars['String']['output'];
@@ -625,6 +626,7 @@ export type HomePortalCategory = {
 export type IAddAttendenceInput = {
   eventId: Scalars['String']['input'];
   memberId: Scalars['String']['input'];
+  offlinecheck: Scalars['Boolean']['input'];
 };
 
 export type IArticleVacancies = {
@@ -3688,6 +3690,18 @@ export type NetworkingZone = {
   workType?: Maybe<WorkType>;
 };
 
+export type OfflineRegistrationEventList = {
+  __typename?: 'OfflineRegistrationEventList';
+  endDate: Scalars['String']['output'];
+  eventAddress: Scalars['String']['output'];
+  eventId: Scalars['String']['output'];
+  eventName: Scalars['String']['output'];
+  isEventOff: Scalars['Boolean']['output'];
+  membershipnumber: Scalars['String']['output'];
+  registrationDate: Scalars['String']['output'];
+  startDate: Scalars['String']['output'];
+};
+
 export type OfflineResponse = {
   __typename?: 'OfflineResponse';
   data: MemberInfo;
@@ -4112,7 +4126,7 @@ export type Query = {
   getMyMemberListByhistoryId: Array<EventRegistrationMember>;
   getMyMobileEventList: Array<RegistrationEventList>;
   getMyMobileEventList2: Array<RegistrationEventList2>;
-  getMyOfflineMobileEventList2: Array<RegistrationEventList2>;
+  getMyOfflineMobileEventList2: Array<OfflineRegistrationEventList>;
   getMySkillList: Array<MemberSkill>;
   getNetworkingZoneById: NetworkingZone;
   getPastChairpersonById: PastChairperson;
@@ -5446,6 +5460,11 @@ export type CheckExhibitionQueryVariables = Exact<{
 
 
 export type CheckExhibitionQuery = { __typename?: 'Query', checkExhibition: { __typename?: 'OfflineResponse', success: boolean, msg: string, data: { __typename?: 'MemberInfo', name: string, email: string, contactNo: string, membershipNo: string } } };
+
+export type GetMyOfflineMobileEventList2QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyOfflineMobileEventList2Query = { __typename?: 'Query', getMyOfflineMobileEventList2: Array<{ __typename?: 'OfflineRegistrationEventList', registrationDate: string, eventName: string, startDate: string, endDate: string, eventAddress: string, eventId: string, isEventOff: boolean, membershipnumber: string }> };
 
 
 export const UpdateMyProfileDocument = gql`
@@ -8270,3 +8289,49 @@ export type CheckExhibitionQueryHookResult = ReturnType<typeof useCheckExhibitio
 export type CheckExhibitionLazyQueryHookResult = ReturnType<typeof useCheckExhibitionLazyQuery>;
 export type CheckExhibitionSuspenseQueryHookResult = ReturnType<typeof useCheckExhibitionSuspenseQuery>;
 export type CheckExhibitionQueryResult = Apollo.QueryResult<CheckExhibitionQuery, CheckExhibitionQueryVariables>;
+export const GetMyOfflineMobileEventList2Document = gql`
+    query GetMyOfflineMobileEventList2 {
+  getMyOfflineMobileEventList2 {
+    registrationDate
+    eventName
+    startDate
+    endDate
+    eventAddress
+    eventId
+    isEventOff
+    membershipnumber
+  }
+}
+    `;
+
+/**
+ * __useGetMyOfflineMobileEventList2Query__
+ *
+ * To run a query within a React component, call `useGetMyOfflineMobileEventList2Query` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyOfflineMobileEventList2Query` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyOfflineMobileEventList2Query({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyOfflineMobileEventList2Query(baseOptions?: Apollo.QueryHookOptions<GetMyOfflineMobileEventList2Query, GetMyOfflineMobileEventList2QueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyOfflineMobileEventList2Query, GetMyOfflineMobileEventList2QueryVariables>(GetMyOfflineMobileEventList2Document, options);
+      }
+export function useGetMyOfflineMobileEventList2LazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyOfflineMobileEventList2Query, GetMyOfflineMobileEventList2QueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyOfflineMobileEventList2Query, GetMyOfflineMobileEventList2QueryVariables>(GetMyOfflineMobileEventList2Document, options);
+        }
+export function useGetMyOfflineMobileEventList2SuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMyOfflineMobileEventList2Query, GetMyOfflineMobileEventList2QueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMyOfflineMobileEventList2Query, GetMyOfflineMobileEventList2QueryVariables>(GetMyOfflineMobileEventList2Document, options);
+        }
+export type GetMyOfflineMobileEventList2QueryHookResult = ReturnType<typeof useGetMyOfflineMobileEventList2Query>;
+export type GetMyOfflineMobileEventList2LazyQueryHookResult = ReturnType<typeof useGetMyOfflineMobileEventList2LazyQuery>;
+export type GetMyOfflineMobileEventList2SuspenseQueryHookResult = ReturnType<typeof useGetMyOfflineMobileEventList2SuspenseQuery>;
+export type GetMyOfflineMobileEventList2QueryResult = Apollo.QueryResult<GetMyOfflineMobileEventList2Query, GetMyOfflineMobileEventList2QueryVariables>;

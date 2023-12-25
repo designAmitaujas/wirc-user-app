@@ -199,7 +199,7 @@ export const HomeCards = () => {
                 fontWeight="bold"
                 textTransform="uppercase"
               >
-                WIRC {"\n"} Services
+                WIRC Services
               </Text>
             </Box>
           </TouchableOpacity>
@@ -219,7 +219,7 @@ export const HomeCards = () => {
                 fontWeight="bold"
                 textTransform="uppercase"
               >
-                Business {"\n"} Listing
+                Business Listing
               </Text>
             </Box>
           </TouchableOpacity>

@@ -12,6 +12,7 @@ import {
   ScrollView,
   Spinner,
   Text,
+  View,
 } from "native-base";
 import { downloadPath } from "../../constant";
 import {
@@ -24,41 +25,43 @@ const RestHeader = () => {
 
   return (
     <>
-      <HStack
-        backgroundColor="#0f045d"
-        borderBottomRadius={40}
-        // justifyContent={"space-between"}
-        py="3"
-        // h={16}
-        px={4}
-        alignItems="center"
-        alignSelf={"center"}
-        w={"100%"}
-      >
-        <Button
-          bg="transparent"
-          colorScheme={"white"}
-          // w="14%"
-          onPress={goBack}
-          leftIcon={
-            <Icon
-              size="md"
-              as={<FontAwesome5 name="arrow-left" />}
-              color="white"
-            />
-          }
-        />
-        <Text
-          color="white"
-          ml={8}
-          fontSize="24"
-          fontWeight="bold"
-          mb={1}
-          // w={"40%"}
+      <View bg="white">
+        <HStack
+          backgroundColor="#0f045d"
+          borderBottomRadius={40}
+          // justifyContent={"space-between"}
+          py="3"
+          // h={16}
+          px={4}
+          alignItems="center"
+          alignSelf={"center"}
+          w={"100%"}
         >
-          WIRC Initiatives
-        </Text>
-      </HStack>
+          <Button
+            bg="transparent"
+            colorScheme={"white"}
+            // w="14%"
+            onPress={goBack}
+            leftIcon={
+              <Icon
+                size="md"
+                as={<FontAwesome5 name="arrow-left" />}
+                color="white"
+              />
+            }
+          />
+          <Text
+            color="white"
+            ml={8}
+            fontSize="24"
+            fontWeight="bold"
+            mb={1}
+            // w={"40%"}
+          >
+            WIRC Initiatives
+          </Text>
+        </HStack>
+      </View>
     </>
   );
 };
@@ -172,7 +175,7 @@ const Whatwe = () => {
   return (
     <>
       <RestHeader />
-      <ScrollView mt={3} bg="white">
+      <ScrollView pt={3} bg="white">
         {data?.getAllWhatWeBrignToYou && (
           <FlatList
             scrollEnabled={false}

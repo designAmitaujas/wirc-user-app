@@ -13,6 +13,7 @@ import {
   ScrollView,
   Text,
   VStack,
+  View,
 } from "native-base";
 import { useState } from "react";
 import { downloadPath } from "../../constant";
@@ -23,41 +24,43 @@ const RestHeader = () => {
 
   return (
     <>
-      <HStack
-        backgroundColor="#0f045d"
-        borderBottomRadius={40}
-        // justifyContent={"space-between"}
-        py="3"
-        // h={16}
-        px={4}
-        alignItems="center"
-        alignSelf={"center"}
-        w={"100%"}
-      >
-        <Button
-          bg="transparent"
-          colorScheme={"white"}
-          // w="14%"
-          onPress={goBack}
-          leftIcon={
-            <Icon
-              size="md"
-              as={<FontAwesome5 name="arrow-left" />}
-              color="white"
-            />
-          }
-        />
-        <Text
-          color="white"
-          ml={8}
-          fontSize="20"
-          fontWeight="bold"
-          mb={1}
-          // w={"40%"}
+      <View bg={"white"}>
+        <HStack
+          backgroundColor="#0f045d"
+          borderBottomRadius={40}
+          // justifyContent={"space-between"}
+          py="3"
+          // h={16}
+          px={4}
+          alignItems="center"
+          alignSelf={"center"}
+          w={"100%"}
         >
-          Speaker Profiles
-        </Text>
-      </HStack>
+          <Button
+            bg="transparent"
+            colorScheme={"white"}
+            // w="14%"
+            onPress={goBack}
+            leftIcon={
+              <Icon
+                size="md"
+                as={<FontAwesome5 name="arrow-left" />}
+                color="white"
+              />
+            }
+          />
+          <Text
+            color="white"
+            ml={8}
+            fontSize="20"
+            fontWeight="bold"
+            mb={1}
+            // w={"40%"}
+          >
+            Speaker Profiles
+          </Text>
+        </HStack>
+      </View>
     </>
   );
 };
@@ -71,7 +74,7 @@ const EventSpeaker = () => {
   return (
     <>
       <RestHeader />
-      <ScrollView>
+      <ScrollView bg="white">
         {data?.getAllEventSpeaker.filter(
           (item) => item.cpeEvent?._id === eventId
         ).length === 0 ? (

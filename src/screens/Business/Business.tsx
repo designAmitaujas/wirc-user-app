@@ -12,6 +12,7 @@ import {
   ScrollView,
   Spinner,
   Text,
+  View,
 } from "native-base";
 //@ts-ignore
 import { downloadPath } from "../../constant";
@@ -25,41 +26,43 @@ const RestHeader = () => {
 
   return (
     <>
-      <HStack
-        backgroundColor="#0f045d"
-        borderBottomRadius={40}
-        // justifyContent={"space-between"}
-        py="3"
-        // h={16}
-        px={4}
-        alignItems="center"
-        alignSelf={"center"}
-        w={"100%"}
-      >
-        <Button
-          bg="transparent"
-          colorScheme={"white"}
-          // w="14%"
-          onPress={goBack}
-          leftIcon={
-            <Icon
-              size="md"
-              as={<FontAwesome5 name="arrow-left" />}
-              color="white"
-            />
-          }
-        />
-        <Text
-          color="white"
-          ml={8}
-          fontSize="20"
-          fontWeight="bold"
-          mb={1}
-          // w={"40%"}
+      <View bg="white">
+        <HStack
+          backgroundColor="#0f045d"
+          borderBottomRadius={40}
+          // justifyContent={"space-between"}
+          py="3"
+          // h={16}
+          px={4}
+          alignItems="center"
+          alignSelf={"center"}
+          w={"100%"}
         >
-          Business Listing
-        </Text>
-      </HStack>
+          <Button
+            bg="transparent"
+            colorScheme={"white"}
+            // w="14%"
+            onPress={goBack}
+            leftIcon={
+              <Icon
+                size="md"
+                as={<FontAwesome5 name="arrow-left" />}
+                color="white"
+              />
+            }
+          />
+          <Text
+            color="white"
+            ml={8}
+            fontSize="20"
+            fontWeight="bold"
+            mb={1}
+            // w={"40%"}
+          >
+            Business Listing
+          </Text>
+        </HStack>
+      </View>
     </>
   );
 };
@@ -132,7 +135,7 @@ const Business = () => {
   return (
     <>
       <RestHeader />
-      <ScrollView mt={3} bg="white">
+      <ScrollView pt={3} bg="white">
         {data?.getAllBusinessListing && (
           <FlatList
             scrollEnabled={false}

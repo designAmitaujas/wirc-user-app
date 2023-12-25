@@ -75,6 +75,7 @@ const Bearer = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
+          bg="white"
         >
           <Spinner
             accessibilityLabel="Loading participants"
@@ -110,7 +111,7 @@ const Bearer = () => {
               />
 
               <Text fontSize="2xl" fontWeight="semibold">
-                No Speaker Profile For The Current Event !
+                No Profile Available !
               </Text>
             </VStack>
           </>

@@ -440,7 +440,7 @@ const RenderForm: FC<{
 const EventRegistration = () => {
   const { params } = useRoute();
   const { goBack } = useNavigation();
-
+  const { data: profile } = useMyProfileInformationQuery();
   const [eventInformation, setEventInformation] = useState<
     GetCpeEventByIdQuery["getCpeEventById"] | null | undefined
   >();
@@ -456,7 +456,7 @@ const EventRegistration = () => {
   const { show } = useToast();
 
   const [getEventInformation] = useGetCpeEventByIdLazyQuery();
-  const { data: profile } = useMyProfileInformationQuery();
+
   const [initValue, setInitValue] = useState(initalValue);
   const [generatePayment] = useGenEventPaymnetMutation();
 
@@ -617,7 +617,7 @@ const EventRegistration = () => {
     !cityList.getAllCity ||
     !eventRenge?.getCpeEventRangeByCpeId ||
     !countryList?.getAllCountry ||
-    !profile
+    !profile?.myProfileInformation
   ) {
     return (
       <>

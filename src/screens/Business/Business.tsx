@@ -1,5 +1,7 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import LottieView from "lottie-react-native";
+
 import {
   AspectRatio,
   Box,
@@ -12,6 +14,7 @@ import {
   ScrollView,
   Spinner,
   Text,
+  VStack,
   View,
 } from "native-base";
 //@ts-ignore
@@ -136,23 +139,46 @@ const Business = () => {
     <>
       <RestHeader />
       <ScrollView pt={3} bg="white">
-        {data?.getAllBusinessListing && (
-          <FlatList
-            scrollEnabled={false}
-            numColumns={2}
-            data={data.getAllBusinessListing.filter(
-              (item) => item.isActive === true
-            )}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }: { item: ICreateBusinesslisting }) => (
-              <ProductCard
-                img={item.sponserimg}
-                name={item.name}
-                whatid={item._id || ""}
-                key={item._id}
+        {data?.getAllBusinessListing.length === 0 ? (
+          <VStack
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <LottieView
+              source={require("../../../assets/animation_loeanypk.json")}
+              autoPlay
+              loop
+              style={{ width: "50%" }}
+            />
+
+            <Text fontSize="2xl" fontWeight="semibold">
+              No Listing !!!
+            </Text>
+          </VStack>
+        ) : (
+          <>
+            {data?.getAllBusinessListing && (
+              <FlatList
+                scrollEnabled={false}
+                numColumns={2}
+                data={data.getAllBusinessListing.filter(
+                  (item) => item.isActive === true
+                )}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }: { item: ICreateBusinesslisting }) => (
+                  <ProductCard
+                    img={item.sponserimg}
+                    name={item.name}
+                    whatid={item._id || ""}
+                    key={item._id}
+                  />
+                )}
               />
             )}
-          />
+          </>
         )}
       </ScrollView>
     </>

@@ -103,11 +103,10 @@ const FirstRoute: React.FC<{
               <VStack p={7}>
                 <Image
                   alignSelf={"center"}
-                  w={"12"}
-                  h={"12"}
-                  resizeMode="contain"
+                  w={"45%"}
+                  h={"16"}
                   alt="Image not found"
-                  source={require("../../../assets/c1.png")}
+                  source={require("../../../assets/75ici.png")}
                 />
                 <Heading
                   alignSelf={"center"}
@@ -139,13 +138,14 @@ const FirstRoute: React.FC<{
                   <VStack space={5} p={2}>
                     <Image
                       alignSelf={"center"}
-                      w={"8"}
-                      h={"8"}
+                      w={"10"}
+                      h={"10"}
+                      borderRadius="md"
                       resizeMode="contain"
                       alt="Image not found"
-                      source={require("../../../assets/amitaujas.png")}
+                      source={require("../../../assets/75ici.png")}
                     />
-                    <Box alignSelf={"center"}>
+                    <Box alignSelf={"center"} mb={4}>
                       <QRCode
                         size={80}
                         value={data.membershipNo || ""}
@@ -192,7 +192,7 @@ const FirstRoute: React.FC<{
                     </HStack>
                     <HStack space={2} alignItems={"center"}>
                       <Text fontSize={10} textAlign={"right"}>
-                        {data.gst || ""}
+                        {data.city || ""}
                       </Text>
 
                       <Ionicons
@@ -267,11 +267,10 @@ const SecondRoute: React.FC<{
                 <VStack p={7}>
                   <Image
                     alignSelf={"center"}
-                    w={"16"}
+                    w={"45%"}
                     h={"16"}
-                    resizeMode="contain"
                     alt="Image not found"
-                    source={require("../../../assets/c2.png")}
+                    source={require("../../../assets/75ici.png")}
                   />
                   <Text
                     fontWeight={"semibold"}
@@ -373,12 +372,12 @@ const SecondRoute: React.FC<{
                         {data.email}
                       </Text>
                     </HStack>
-                    {/* <HStack space={2} alignItems={"center"}>
+                    <HStack space={2} alignItems={"center"}>
                       <Ionicons name="ios-globe-sharp" size={16} color="#fff" />
                       <Text fontSize={10} color="#fff">
-                        WWW.AMITAUJAS.COM
+                        {data.city || ""}
                       </Text>
-                    </HStack> */}
+                    </HStack>
                     <HStack space={2}>
                       <Ionicons name="location" size={16} color="#fff" />
                       <Text fontSize={10} color="#fff" textAlign={"justify"}>
@@ -455,14 +454,15 @@ const ThirdRoute: React.FC<{
                 <VStack pb={1} pr={2} pt={20} alignSelf={"flex-end"}>
                   <Image
                     alignSelf={"flex-end"}
-                    mr={3}
-                    w={"12"}
-                    h={"12"}
-                    resizeMode="contain"
+                    borderRadius="full"
+                    w={"24"}
+                    h={"16"}
+                    mr={-2}
                     alt="Image not found"
-                    source={require("../../../assets/amitaujas.png")}
+                    source={require("../../../assets/c5.png")}
                   />
                   <Text
+                    mr={4}
                     alignSelf={"flex-end"}
                     color={"#fff"}
                     fontSize={"lg"}
@@ -524,7 +524,7 @@ const ThirdRoute: React.FC<{
                         color="#313031"
                       />
                       <Text fontSize={10} fontWeight={"thin"}>
-                        {data.city}
+                        {data.city || ""}
                       </Text>
                     </HStack>
                     <HStack space={2}>
@@ -581,11 +581,12 @@ const ThirdRoute: React.FC<{
                   <VStack space={3}>
                     <Image
                       alignSelf={"center"}
-                      w={"8"}
-                      h={"8"}
+                      w={"10"}
+                      h={"10"}
+                      borderRadius="full"
                       resizeMode="contain"
                       alt="Image not found"
-                      source={require("../../../assets/amitaujas.png")}
+                      source={require("../../../assets/75ici.png")}
                     />
                     <Box alignSelf={"center"} mb={4}>
                       <QRCode
@@ -646,13 +647,21 @@ const ForthRoute: React.FC<{
                   pr={3}
                 >
                   <Image
-                    w={"12"}
-                    h={"12"}
-                    resizeMode="contain"
+                    w={"24"}
+                    h={"16"}
+                    bg={"#385ca6"}
                     alt="Image not found"
-                    source={require("../../../assets/amitaujas.png")}
+                    source={require("../../../assets/c6.png")}
                   />
-                  <Heading mt={-5} color={"#fff"}>
+                  <Heading
+                    color={"#fff"}
+                    mb={2}
+                    fontWeight={"thin"}
+                    fontSize="lg"
+                    // textTransform={"uppercase"}
+                    textAlign="center"
+                    letterSpacing={"2xl"}
+                  >
                     {data.organization}
                   </Heading>
                 </HStack>
@@ -687,13 +696,12 @@ const ForthRoute: React.FC<{
                   <VStack space={5}>
                     <Image
                       alignSelf={"center"}
-                      w={"8"}
+                      w={"12"}
                       h={"8"}
-                      resizeMode="contain"
                       alt="Image not found"
-                      source={require("../../../assets/c4.png")}
+                      source={require("../../../assets/75ici.png")}
                     />
-                    <Box alignSelf={"center"}>
+                    <Box alignSelf={"center"} mb={4}>
                       <QRCode color="#385ca6" value={data.membershipNo} />
                     </Box>
                   </VStack>
@@ -719,7 +727,7 @@ const ForthRoute: React.FC<{
                 <VStack w={"57%"} alignItems={"flex-end"} p={3}>
                   <Text
                     color={"#385ca6"}
-                    fontSize={"lg"}
+                    fontSize={"md"}
                     fontWeight={"semibold"}
                     textTransform={"uppercase"}
                   >
@@ -751,9 +759,9 @@ const ForthRoute: React.FC<{
 
                       <Ionicons name="mail" size={16} color="#385ca6" />
                     </HStack>
-                    {/* <HStack space={2} alignItems={"center"}>
+                    <HStack space={2} alignItems={"center"}>
                       <Text fontSize={10} textAlign={"right"} color={"#385ca6"}>
-                        WWW.AMITAUJAS.COM
+                        {data.city || ""}
                       </Text>
 
                       <Ionicons
@@ -761,7 +769,7 @@ const ForthRoute: React.FC<{
                         size={16}
                         color="#385ca6"
                       />
-                    </HStack> */}
+                    </HStack>
                     <HStack space={2}>
                       <Text
                         fontSize={10}
@@ -820,17 +828,31 @@ const FifthRoute: React.FC<{
                 <Image
                   mt={2}
                   alignSelf={"center"}
-                  w={"12"}
-                  h={"12"}
-                  resizeMode="contain"
+                  w={"32"}
+                  h={"16"}
                   alt="Image not found"
-                  source={require("../../../assets/amitaujas.png")}
+                  source={require("../../../assets/c7.png")}
+                />
+                <Divider
+                  bg={"white"}
+                  w={"24"}
+                  alignSelf={"center"}
+                  thickness={"0.7"}
+                />
+
+                <Divider
+                  bg={"white"}
+                  w={"16"}
+                  alignSelf={"center"}
+                  thickness={"0.7"}
                 />
                 <Heading
                   color={"#fff"}
                   mb={2}
                   fontWeight={"thin"}
+                  fontSize="lg"
                   // textTransform={"uppercase"}
+                  textAlign="center"
                   letterSpacing={"2xl"}
                 >
                   {data.organization}
@@ -862,7 +884,7 @@ const FifthRoute: React.FC<{
               </VStack>
               <HStack w={"100%"}>
                 <VStack bg={"white"} justifyContent={"center"} w={"35%"}>
-                  <Box alignSelf={"center"}>
+                  <Box alignSelf={"center"} mb={4}>
                     <QRCode
                       color="#424242"
                       value={data.membershipNo}
@@ -885,16 +907,16 @@ const FifthRoute: React.FC<{
                         {data.email}
                       </Text>
                     </HStack>
-                    {/* <HStack space={2}>
+                    <HStack space={2}>
                       <Ionicons
                         name="ios-globe-sharp"
                         size={16}
                         color="#424242"
                       />
                       <Text fontSize={10} color={"#9E9E9E"} fontWeight={"thin"}>
-                        WWW.AMITAUJAS.COM
+                        {data.city || ""}
                       </Text>
-                    </HStack> */}
+                    </HStack>
                     <HStack space={2}>
                       <Ionicons name="location" size={16} color="#424242" />
                       <Text
@@ -1184,7 +1206,7 @@ const QRScreen = () => {
       </>
     );
   }
-
+  console.log(info1);
   return (
     <>
       <VisitingCard

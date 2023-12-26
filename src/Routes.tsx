@@ -86,8 +86,8 @@ const Routes = () => {
       initialRouteName={isAuth === true ? "BottomTab" : "Login"}
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Registration" component={Registration} />
       <Stack.Screen name="mobile" component={MobileLogin} />
+      <Stack.Screen name="Registration" component={Registration} />
       {isAuth === true ? (
         <>
           <Stack.Screen name="BottomTab" component={BottomTab} />

@@ -69,7 +69,7 @@ const RestHeader = () => {
           mb={1}
           // w={"40%"}
         >
-          Question & Answer
+          Ask a Question
         </Text>
       </HStack>
     </>
@@ -208,9 +208,9 @@ const Qna = () => {
                       currentValue={values.query}
                       errMsg={errors.query || ""}
                       isInvalid={!!touched.query && !!errors.query}
-                      label="Query"
+                      label="Ask a Question"
                       name="query"
-                      placeholder="Enter your Query"
+                      placeholder="Enter your question"
                       setFieldValue={setFieldValue}
                       isRequired={true}
                       value={values.query}

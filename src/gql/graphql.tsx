@@ -418,6 +418,7 @@ export type EventAttendence = {
   currentdate: Scalars['DateTime']['output'];
   isActive: Scalars['Boolean']['output'];
   membershipId: Scalars['String']['output'];
+  previousAttendance?: Maybe<PreviousAttendence>;
   updatedAt: Scalars['DateTime']['output'];
 };
 
@@ -3807,6 +3808,18 @@ export type PresidentFromWesternRegion = {
   telOffice: Scalars['String']['output'];
   telResidential: Scalars['String']['output'];
   uri: Scalars['String']['output'];
+};
+
+export type PreviousAttendence = {
+  __typename?: 'PreviousAttendence';
+  _id: Scalars['String']['output'];
+  attendanceStatus: Scalars['String']['output'];
+  cpeEvent?: Maybe<CpeEvent>;
+  currentdate: Scalars['DateTime']['output'];
+  eventAttendance?: Maybe<EventAttendence>;
+  isActive: Scalars['Boolean']['output'];
+  membershipId: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type ProfessionalTool = {

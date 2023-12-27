@@ -1,3 +1,4 @@
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 import _ from "lodash";
 import capitalize from "lodash/capitalize";
 import toString from "lodash/toString";
@@ -7,14 +8,13 @@ import {
   IButtonProps,
   ICheckboxProps,
   IInputProps,
-  Input,
   ISelectProps,
+  Input,
   Select,
   Spinner,
-  Text,
   TextArea,
 } from "native-base";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import isEqual from "react-fast-compare";
 
 interface ICustomInput extends IInputProps {
@@ -146,52 +146,179 @@ export const CustomSelect: React.FC<ICustomSelect> = memo((props) => {
     setFieldValue,
     initValue,
     errMsg,
+    placeholder,
   } = props;
 
   const [val, setValue] = useState("");
+  const [key, setKey] = useState(Math.random());
 
   useEffect(() => {
     if (initValue) {
-      setValue(val);
+      setFieldValue(name, initValue);
+    }
+  }, [initValue]);
+
+  useMemo(() => {
+    if (options) {
+      if (options.length !== 0) {
+        if (initValue) {
+          options.map((x) => {
+            if (
+              _.toString(x.label) === _.toString(initValue) ||
+              _.toString(x.value) === _.toString(initValue)
+            ) {
+              setValue(x.value.toString());
+              setKey(Math.random());
+              return;
+            } else {
+            }
+          });
+        }
+      }
     }
   }, [initValue]);
 
   const handleValueChange = (e: string) => {
     if (e) {
       setValue(e);
-      setFieldValue(name, e);
+
+      if (options) {
+        setFieldValue(
+          name,
+          options.filter((item) => _.toString(item.value) === _.toString(e))[0]
+            .label
+        );
+      }
+      // setFieldValue(name, e);
     }
   };
-
-  useEffect(() => {}, [errMsg]);
 
   return (
     <>
       <FormControl isRequired={isRequired} isInvalid={isInvalid}>
-        <FormControl.Label fontWeight={"bold"} textTransform="capitalize">
-          {capitalize(label) + " "}
+        <FormControl.Label fontWeight={"bold"} color={"gray.500"}>
+          {label + " "}
         </FormControl.Label>
       </FormControl>
-      <Select {...props} selectedValue={val} onValueChange={handleValueChange}>
+      <Select
+        key={key}
+        {...props}
+        selectedValue={val}
+        onValueChange={handleValueChange}
+        placeholder={placeholder}
+        borderRadius={"md"}
+        fontSize={"sm"}
+        dropdownIcon={
+          <MaterialIcons
+            name="arrow-drop-down"
+            size={30}
+            color="#1A237E"
+            style={{ marginRight: 8 }}
+          />
+        }
+        _selectedItem={{
+          bg: "gray.300",
+          endIcon: (
+            <Feather
+              name="check"
+              size={18}
+              color="#000000"
+              style={{ marginTop: 2 }}
+            />
+          ),
+        }}
+      >
         {options.map((item) => {
           return (
             <Select.Item
               key={item.label + item.value}
-              label={item.label}
-              value={item.value}
-              textTransform="capitalize"
+              label={capitalize(item.label)}
+              value={_.toString(item.value)}
+              fontSize={"sm"}
             />
           );
         })}
       </Select>
-      <FormControl>
-        <FormControl.ErrorMessage>
-          <Text>{capitalize(errMsg)}</Text>
-        </FormControl.ErrorMessage>
-      </FormControl>
+      {/* <Stack w={"100%"} mt={-1.5}>
+        {isInvalid ? (
+          <>
+            <CustomError errMsg={errMsg?.toLowerCase()} />
+          </>
+        ) : (
+          <></>
+        )}
+      </Stack> */}
     </>
   );
 }, isEqual);
+// export const CustomSelect: React.FC<ICustomSelect> = memo((props) => {
+//   const {
+//     isRequired,
+//     isInvalid,
+//     label,
+//     options,
+//     name,
+//     setFieldValue,
+//     initValue,
+//     errMsg,
+//   } = props;
+
+//   const [val, setValue] = useState("");
+//   const [key, setKey] = useState(Math.random());
+
+//   useEffect(() => {
+//     console.log(options);
+//   }, [options]);
+
+//   useEffect(() => {
+//     if (initValue) {
+//       console.log("inint", initValue);
+//       setValue(val);
+//       setKey(Math.random());
+//     }
+//   }, [initValue]);
+
+//   const handleValueChange = (e: string) => {
+//     if (e) {
+//       setValue(e);
+//       setFieldValue(name, e);
+//     }
+//   };
+//   console.log("gello", val);
+//   useEffect(() => {}, [errMsg]);
+
+//   return (
+//     <>
+//       <FormControl isRequired={isRequired} isInvalid={isInvalid}>
+//         <FormControl.Label fontWeight={"bold"} textTransform="capitalize">
+//           {capitalize(label) + " "}
+//         </FormControl.Label>
+//       </FormControl>
+//       <Select
+//         {...props}
+//         selectedValue={val}
+//         onValueChange={handleValueChange}
+//         key={key}
+//       >
+//         {options.map((item) => {
+//           return (
+//             <Select.Item
+//               key={item.label + item.value}
+//               label={item.label}
+//               value={item.value}
+//               textTransform="capitalize"
+//             />
+//           );
+//         })}
+//       </Select>
+//       <FormControl>
+//         <FormControl.ErrorMessage>
+//           <Text>{capitalize(errMsg)}</Text>
+//         </FormControl.ErrorMessage>
+//       </FormControl>
+//     </>
+//   );
+// }, isEqual);
 
 export const CustomCheckBox: React.FC<ICustomCheckBox> = memo((props) => {
   const { isInvalid, isRequired, label, errMsg } = props;

@@ -7,6 +7,7 @@ import {
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import _ from "lodash";
+import LottieView from "lottie-react-native";
 import moment from "moment";
 import {
   Box,
@@ -232,16 +233,23 @@ export const Seminar = () => {
         </HStack>
         {data?.getMyAttendedEvent.length === 0 ? (
           <>
-            <HStack
+            <VStack
               flex={1}
               justifyContent="center"
               space="2"
               alignItems="center"
             >
+              <LottieView
+                source={require("../../../assets/animation_loeanypk.json")}
+                autoPlay
+                loop
+                style={{ width: "20%" }}
+              />
+
               <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
                 No Events
               </Heading>
-            </HStack>
+            </VStack>
           </>
         ) : (
           <>
@@ -531,14 +539,6 @@ export const RegisteredEvent = () => {
 
   const [offlinecheck, setOfflinecheck] = useState(true);
 
-  // useEffect(() => {
-  //   const respone = data?.getMyMobileEventList2;
-  //   const respone2 = offline?.getMyOfflineMobileEventList2;
-
-  //   console.log("online", respone);
-  //   console.log("offline", respone2);
-  // }, [data, offline]);
-
   useEffect(() => {
     if (!l2) {
       setOfflinecheck(true);
@@ -546,6 +546,29 @@ export const RegisteredEvent = () => {
       setOfflinecheck(false);
     }
   }, [l2]);
+
+  if (loading || l2) {
+    return (
+      <>
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
+  }
 
   return (
     <>
@@ -556,24 +579,26 @@ export const RegisteredEvent = () => {
           </Text>
         </HStack>
 
-        {loading || l2 ? (
+        {data?.getMyMobileEventList2.length !== 0 &&
+        offline?.getMyOfflineMobileEventList2.length !== 0 ? (
           <>
-            <HStack
+            <VStack
               flex={1}
-              alignSelf={"center"}
-              display="flex"
               justifyContent="center"
+              space="2"
               alignItems="center"
             >
-              <Spinner
-                accessibilityLabel="Loading participants"
-                size="lg"
-                color="#0f045d"
+              <LottieView
+                source={require("../../../assets/animation_loeanypk.json")}
+                autoPlay
+                loop
+                style={{ width: "20%" }}
               />
-              <Text color="#0f045d" fontSize="lg" fontWeight="bold">
-                Loading
-              </Text>
-            </HStack>
+
+              <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
+                No Events
+              </Heading>
+            </VStack>
           </>
         ) : (
           <>

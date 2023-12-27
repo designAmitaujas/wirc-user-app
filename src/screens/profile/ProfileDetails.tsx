@@ -143,7 +143,10 @@ const ProfileScreen = () => {
   const [initValue, setInitValue] =
     useState<ICreateMemberRegistration>(initialvalues);
 
+  const [key, setKey] = useState(Math.random());
+
   const { data: profile } = useMyProfileInformationQuery();
+  console.log(profile?.myProfileInformation?.gender);
 
   useEffect(() => {
     if (profile?.myProfileInformation) {
@@ -171,6 +174,8 @@ const ProfileScreen = () => {
         isActive: true,
         isApproved: true,
       });
+
+      setKey(Math.random());
     }
   }, [profile]);
 
@@ -291,6 +296,7 @@ const ProfileScreen = () => {
               initialValues={initValue}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
+              key={key}
             >
               {({
                 handleSubmit,

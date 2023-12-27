@@ -709,6 +709,7 @@ query GetMyMobileEventList2 {
     eventAddress
     eventId
     isEventOff
+    membershipNo
   }
 }
 

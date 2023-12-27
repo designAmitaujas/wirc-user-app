@@ -103,18 +103,20 @@ const FirstRoute: React.FC<{
               <VStack p={7}>
                 <Image
                   alignSelf={"center"}
-                  w={"45%"}
+                  w={"40%"}
                   h={"16"}
                   alt="Image not found"
                   source={require("../../../assets/75ici.png")}
                 />
-                <Heading
+                <Text
+                  fontWeight={"semibold"}
+                  fontSize={"lg"}
                   alignSelf={"center"}
                   color={"#4f7329"}
                   textTransform={"uppercase"}
                 >
                   {data.organization || ""}
-                </Heading>
+                </Text>
                 {/* <Text
                   alignSelf={"center"}
                   color={"#7bc231"}
@@ -267,7 +269,7 @@ const SecondRoute: React.FC<{
                 <VStack p={7}>
                   <Image
                     alignSelf={"center"}
-                    w={"45%"}
+                    w={"40%"}
                     h={"16"}
                     alt="Image not found"
                     source={require("../../../assets/75ici.png")}

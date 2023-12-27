@@ -4808,6 +4808,7 @@ export type RegistrationEventList2 = {
   eventId: Scalars['String']['output'];
   eventName: Scalars['String']['output'];
   isEventOff: Scalars['Boolean']['output'];
+  membershipNo: Scalars['String']['output'];
   registrationDate: Scalars['String']['output'];
   startDate: Scalars['String']['output'];
 };
@@ -5457,7 +5458,7 @@ export type GetAllCpeResourceQuery = { __typename?: 'Query', getAllCpeResource: 
 export type GetMyMobileEventList2QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyMobileEventList2Query = { __typename?: 'Query', getMyMobileEventList2: Array<{ __typename?: 'RegistrationEventList2', registrationDate: string, eventName: string, startDate: string, endDate: string, eventAddress: string, eventId: string, isEventOff: boolean }> };
+export type GetMyMobileEventList2Query = { __typename?: 'Query', getMyMobileEventList2: Array<{ __typename?: 'RegistrationEventList2', registrationDate: string, eventName: string, startDate: string, endDate: string, eventAddress: string, eventId: string, isEventOff: boolean, membershipNo: string }> };
 
 export type GetCityByIdQueryVariables = Exact<{
   options: IGetById;
@@ -8177,6 +8178,7 @@ export const GetMyMobileEventList2Document = gql`
     eventAddress
     eventId
     isEventOff
+    membershipNo
   }
 }
     `;

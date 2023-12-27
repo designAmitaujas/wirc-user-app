@@ -2,7 +2,7 @@
   "expo": {
     "name": "WIRC Connect",
     "slug": "WIRC Connect",
-    "version": "2.6",
+    "version": "2.7",
     "orientation": "portrait",
     "icon": "./assets/wirclogo.png",
     "userInterfaceStyle": "light",
@@ -13,7 +13,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "2",
+      "buildNumber": "3",
       "bundleIdentifier": "com.amitaujas.WIRCUser",
       "supportsTablet": true,
       "infoPlist": {
@@ -23,7 +23,7 @@
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "versionCode": 1016,
+      "versionCode": 1017,
       "adaptiveIcon": {
         "foregroundImage": "./assets/wirclogo.png",
         "backgroundColor": "#ffffff"

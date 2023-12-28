@@ -158,7 +158,6 @@ const Newsletter = () => {
           alignSelf={"center"}
           justifyContent="center"
           alignItems="center"
-          bg="white"
         >
           <Spinner
             accessibilityLabel="Loading participants"

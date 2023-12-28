@@ -9,6 +9,7 @@ import {
   Icon,
   Radio,
   ScrollView,
+  Spinner,
   Text,
   TextArea,
   VStack,
@@ -138,7 +139,8 @@ const FeedbackForm = () => {
   const { data } = useGetAllEventTopicQuery();
 
   const [getfeedback] = useAddFeedBackFromMutation();
-  const [getData, { data: fetchedEvent }] = useGetCpeEventByIdLazyQuery();
+  const [getData, { data: fetchedEvent, loading }] =
+    useGetCpeEventByIdLazyQuery();
 
   const [programDesign, setProgramDesign] = useState("");
   const [readingMaterial, setReadingMaterial] = useState("");
@@ -246,6 +248,29 @@ const FeedbackForm = () => {
         });
       });
   };
+
+  if (loading) {
+    return (
+      <>
+        <RestHeader />
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
+  }
 
   return (
     <>

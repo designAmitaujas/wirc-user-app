@@ -259,7 +259,6 @@ const RegisterdEventDetails = () => {
         <HStack
           flex={1}
           alignSelf={"center"}
-          display="flex"
           justifyContent="center"
           alignItems="center"
         >

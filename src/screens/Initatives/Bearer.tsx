@@ -75,7 +75,6 @@ const Bearer = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          bg="white"
         >
           <Spinner
             accessibilityLabel="Loading participants"

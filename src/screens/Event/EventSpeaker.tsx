@@ -11,11 +11,11 @@ import {
   Image,
   Pressable,
   ScrollView,
+  Spinner,
   Text,
   VStack,
   View,
 } from "native-base";
-import { useState } from "react";
 import { downloadPath } from "../../constant";
 import { useGetAllEventSpeakerQuery } from "../../gql/graphql";
 
@@ -66,11 +66,33 @@ const RestHeader = () => {
 };
 
 const EventSpeaker = () => {
-  const { data } = useGetAllEventSpeakerQuery();
+  const { data, loading } = useGetAllEventSpeakerQuery();
   const { params } = useRoute();
   const { eventId } = params as { eventId?: string };
-  const [visible, setIsVisible] = useState(false);
   const { navigate } = useNavigation();
+
+  if (loading) {
+    return (
+      <>
+        <RestHeader />
+        <HStack
+          flex={1}
+          alignSelf={"center"}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner
+            accessibilityLabel="Loading participants"
+            size="lg"
+            color="#0f045d"
+          />
+          <Text color="#0f045d" fontSize="lg" fontWeight="bold">
+            Loading
+          </Text>
+        </HStack>
+      </>
+    );
+  }
   return (
     <>
       <RestHeader />

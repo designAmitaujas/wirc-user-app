@@ -207,7 +207,6 @@ export const Seminar = () => {
       <HStack
         flex={1}
         alignSelf={"center"}
-        display="flex"
         justifyContent="center"
         alignItems="center"
       >
@@ -391,7 +390,6 @@ export const UpcomingEvent = () => {
             <HStack
               flex={1}
               alignSelf={"center"}
-              display="flex"
               justifyContent="center"
               alignItems="center"
             >
@@ -553,7 +551,6 @@ export const RegisteredEvent = () => {
         <HStack
           flex={1}
           alignSelf={"center"}
-          display="flex"
           justifyContent="center"
           alignItems="center"
         >

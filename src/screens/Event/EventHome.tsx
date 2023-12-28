@@ -152,7 +152,7 @@ const AttendedCard: React.FC<{
             Venue
           </Text>
           <Text w={"5%"}>:</Text>
-          <Text w={"65%"}>{vanue}</Text>
+          <Text w={"60%"}>{vanue}</Text>
         </HStack>
         <HStack w={"100%"} flex={1} justifyContent="center" space="2">
           <Button
@@ -576,93 +576,197 @@ export const RegisteredEvent = () => {
           </Text>
         </HStack>
 
-        {data?.getMyMobileEventList2.length !== 0 &&
-        offline?.getMyOfflineMobileEventList2.length !== 0 ? (
-          <>
-            <VStack
-              flex={1}
-              justifyContent="center"
-              space="2"
-              alignItems="center"
-            >
-              <LottieView
-                source={require("../../../assets/animation_loeanypk.json")}
-                autoPlay
-                loop
-                style={{ width: "20%" }}
-              />
+        {/* {data?.getMyMobileEventList2.length === 0 && (
+          <VStack
+            flex={1}
+            justifyContent="center"
+            space="2"
+            alignItems="center"
+          >
+            <LottieView
+              source={require("../../../assets/animation_loeanypk.json")}
+              autoPlay
+              loop
+              style={{ width: "20%" }}
+            />
 
-              <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
-                No Events
-              </Heading>
-            </VStack>
-          </>
-        ) : (
-          <>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
-                {data?.getMyMobileEventList2.length !== 0 &&
-                  data?.getMyMobileEventList2
-
-                    .sort((a, b) => {
-                      return (
-                        _.toNumber(moment(a.startDate).toDate()) -
-                        _.toNumber(moment(b.startDate).toDate())
-                      );
-                    })
-                    .filter((item) => item.isEventOff === false)
-
-                    .map((item) => {
-                      const startDate = moment(item.startDate, "DD-MM-YYYY");
-                      const endDate = moment(item.endDate, "DD-MM-YYYY");
-
-                      return (
-                        <RegisterdCard
-                          key={`${item.eventId}_${item.eventId.replace(
-                            /\s+/g,
-                            "_"
-                          )}`}
-                          eventId={item.eventId}
-                          name={item.eventName}
-                          startdatetime={startDate.format("DD-MMM-YYYY")}
-                          enddatetime={endDate.format("DD-MMM-YYYY")}
-                          offlinecheck={offlinecheck}
-                        />
-                      );
-                    })}
-
-                {offline?.getMyOfflineMobileEventList2.length !== 0 &&
-                  offline?.getMyOfflineMobileEventList2
-
-                    .sort((a, b) => {
-                      return (
-                        _.toNumber(moment(a.startDate).toDate()) -
-                        _.toNumber(moment(b.startDate).toDate())
-                      );
-                    })
-                    .filter((item) => item.isEventOff === false)
-                    .map((item) => {
-                      const startDate = moment(item.startDate, "DD-MM-YYYY");
-                      const endDate = moment(item.endDate, "DD-MM-YYYY");
-
-                      return (
-                        <RegisterdCard
-                          key={`${item.eventId}_${item.eventId.replace(
-                            /\s+/g,
-                            "_"
-                          )}`}
-                          eventId={item.eventId}
-                          name={item.eventName}
-                          startdatetime={startDate.format("DD-MMM-YYYY")}
-                          enddatetime={endDate.format("DD-MMM-YYYY")}
-                          offlinecheck={offlinecheck}
-                        />
-                      );
-                    })}
-              </HStack>
-            </ScrollView>
-          </>
+            <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
+              No registered Events
+            </Heading>
+          </VStack>
         )}
+
+        {offline?.getMyOfflineMobileEventList2.length === 0 && (
+          <VStack
+            flex={1}
+            justifyContent="center"
+            space="2"
+            alignItems="center"
+          >
+            <LottieView
+              source={require("../../../assets/animation_loeanypk.json")}
+              autoPlay
+              loop
+              style={{ width: "20%" }}
+            />
+
+            <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
+              No registered Events
+            </Heading>
+          </VStack>
+        )} */}
+
+        {data?.getMyMobileEventList2.length !== 0 ||
+        offline?.getMyOfflineMobileEventList2.length !== 0 ? (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
+              {data?.getMyMobileEventList2.length !== 0 &&
+                data?.getMyMobileEventList2
+
+                  .sort((a, b) => {
+                    return (
+                      _.toNumber(moment(a.startDate).toDate()) -
+                      _.toNumber(moment(b.startDate).toDate())
+                    );
+                  })
+                  .filter((item) => item.isEventOff === false)
+
+                  .map((item) => {
+                    const startDate = moment(item.startDate, "DD-MM-YYYY");
+                    const endDate = moment(item.endDate, "DD-MM-YYYY");
+
+                    return (
+                      <RegisterdCard
+                        key={`${item.eventId}_${item.eventId.replace(
+                          /\s+/g,
+                          "_"
+                        )}`}
+                        eventId={item.eventId}
+                        name={item.eventName}
+                        startdatetime={startDate.format("DD-MMM-YYYY")}
+                        enddatetime={endDate.format("DD-MMM-YYYY")}
+                        offlinecheck={offlinecheck}
+                      />
+                    );
+                  })}
+
+              {offline?.getMyOfflineMobileEventList2.length !== 0 &&
+                offline?.getMyOfflineMobileEventList2
+
+                  .sort((a, b) => {
+                    return (
+                      _.toNumber(moment(a.startDate).toDate()) -
+                      _.toNumber(moment(b.startDate).toDate())
+                    );
+                  })
+                  .filter((item) => item.isEventOff === false)
+                  .map((item) => {
+                    const startDate = moment(item.startDate, "DD-MM-YYYY");
+                    const endDate = moment(item.endDate, "DD-MM-YYYY");
+
+                    return (
+                      <RegisterdCard
+                        key={`${item.eventId}_${item.eventId.replace(
+                          /\s+/g,
+                          "_"
+                        )}`}
+                        eventId={item.eventId}
+                        name={item.eventName}
+                        startdatetime={startDate.format("DD-MMM-YYYY")}
+                        enddatetime={endDate.format("DD-MMM-YYYY")}
+                        offlinecheck={offlinecheck}
+                      />
+                    );
+                  })}
+            </HStack>
+          </ScrollView>
+        ) : (
+          <VStack
+            flex={1}
+            justifyContent="center"
+            space="2"
+            alignItems="center"
+          >
+            <LottieView
+              source={require("../../../assets/animation_loeanypk.json")}
+              autoPlay
+              loop
+              style={{ width: "20%" }}
+            />
+
+            <Heading color="#0f045d" fontSize="lg" fontWeight="bold">
+              No registered Events
+            </Heading>
+          </VStack>
+        )}
+
+        {/* {data?.getMyMobileEventList2.length !== 0 &&
+          offline?.getMyOfflineMobileEventList2.length !== 0 && (
+            <>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <HStack space={15} ml={1} mr={1} mt={2} mb={2}>
+                  {data?.getMyMobileEventList2.length !== 0 &&
+                    data?.getMyMobileEventList2
+
+                      .sort((a, b) => {
+                        return (
+                          _.toNumber(moment(a.startDate).toDate()) -
+                          _.toNumber(moment(b.startDate).toDate())
+                        );
+                      })
+                      .filter((item) => item.isEventOff === false)
+
+                      .map((item) => {
+                        const startDate = moment(item.startDate, "DD-MM-YYYY");
+                        const endDate = moment(item.endDate, "DD-MM-YYYY");
+
+                        return (
+                          <RegisterdCard
+                            key={`${item.eventId}_${item.eventId.replace(
+                              /\s+/g,
+                              "_"
+                            )}`}
+                            eventId={item.eventId}
+                            name={item.eventName}
+                            startdatetime={startDate.format("DD-MMM-YYYY")}
+                            enddatetime={endDate.format("DD-MMM-YYYY")}
+                            offlinecheck={offlinecheck}
+                          />
+                        );
+                      })}
+
+                  {offline?.getMyOfflineMobileEventList2.length !== 0 &&
+                    offline?.getMyOfflineMobileEventList2
+
+                      .sort((a, b) => {
+                        return (
+                          _.toNumber(moment(a.startDate).toDate()) -
+                          _.toNumber(moment(b.startDate).toDate())
+                        );
+                      })
+                      .filter((item) => item.isEventOff === false)
+                      .map((item) => {
+                        const startDate = moment(item.startDate, "DD-MM-YYYY");
+                        const endDate = moment(item.endDate, "DD-MM-YYYY");
+
+                        return (
+                          <RegisterdCard
+                            key={`${item.eventId}_${item.eventId.replace(
+                              /\s+/g,
+                              "_"
+                            )}`}
+                            eventId={item.eventId}
+                            name={item.eventName}
+                            startdatetime={startDate.format("DD-MMM-YYYY")}
+                            enddatetime={endDate.format("DD-MMM-YYYY")}
+                            offlinecheck={offlinecheck}
+                          />
+                        );
+                      })}
+                </HStack>
+              </ScrollView>
+            </>
+          )} */}
       </VStack>
     </>
   );

@@ -2150,6 +2150,12 @@ export type MemberWithAttendanceStatus = {
   member: MemberRegistration;
 };
 
+export type MemberWithPreviousAttendanceStatus = {
+  __typename?: 'MemberWithPreviousAttendanceStatus';
+  attendanceStatus?: Maybe<PreviousAttendence>;
+  member: MemberRegistration;
+};
+
 export type MentorshipZone = {
   __typename?: 'MentorshipZone';
   _id: Scalars['String']['output'];
@@ -2411,6 +2417,7 @@ export type Mutation = {
   getPublicaLibraryRegistration: IStatusResponse;
   getRedeamCode: IStatusResponse;
   getRedeemDownloadCode: IStatusResponse;
+  getmemberPreviousattendancedetails: Array<MemberWithPreviousAttendanceStatus>;
   getmemberattendancedetails: Array<MemberWithAttendanceStatus>;
   initiativeMail: IStatusResponse;
   memberRegistrationAuthResolver: IAuthResoverResponse;
@@ -3566,6 +3573,11 @@ export type MutationGetRedeamCodeArgs = {
 
 export type MutationGetRedeemDownloadCodeArgs = {
   options: IStudentInput;
+};
+
+
+export type MutationGetmemberPreviousattendancedetailsArgs = {
+  options: IGetMemberAttendanceDetails;
 };
 
 

@@ -331,15 +331,21 @@ const ProfileScreen = () => {
                         </>
                       ) : (
                         <>
-                          <Avatar
-                            borderWidth={2}
-                            borderColor={"#0f045d"}
-                            bg="white"
-                            alignSelf={"center"}
-                            mb={3}
-                            size={"xl"}
-                            source={female}
-                          />
+                          <HStack justifyContent="space-between">
+                            <Avatar
+                              borderWidth={2}
+                              borderColor={"#0f045d"}
+                              bg="white"
+                              alignSelf={"center"}
+                              mb={3}
+                              size={"xl"}
+                              source={female}
+                            />
+                            <QRCode
+                              value={profile?.myProfileInformation?._id}
+                              size={100}
+                            />
+                          </HStack>
                         </>
                       )}
 

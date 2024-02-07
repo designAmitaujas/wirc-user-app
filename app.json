@@ -1,29 +1,29 @@
 {
   "expo": {
     "name": "WIRC Connect",
-    "slug": "WIRC Connect",
-    "version": "2.9",
+    "slug": "WIRC_Connect",
+    "version": "3.0",
     "orientation": "portrait",
     "icon": "./assets/wirclogo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash-logo.png",
-      "resizeMode": "conatin",
       "backgroundColor": "#fff"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "3",
+      "buildNumber": "4",
       "bundleIdentifier": "com.amitaujas.WIRCUser",
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "We need your location to take attendance tracking.",
         "NSCameraUsageDescription": "We need access to your camera to scan QR codes for Member Details."
-      }
+      },
+      "plugins": ["@react-native-firebase/app", "expo-build-properties"]
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "versionCode": 1019,
+      "versionCode": 1020,
       "adaptiveIcon": {
         "foregroundImage": "./assets/wirclogo.png",
         "backgroundColor": "#ffffff"
@@ -34,6 +34,11 @@
     },
     "web": {
       "favicon": "./assets/wirclogo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "88c09754-c144-42c1-875a-413c1ab24ffd"
+      }
     }
   }
 }
